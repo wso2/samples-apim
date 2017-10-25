@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.eclipse.equinox:org.apache.commons.logging:1.0.4.v200706111724">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/equinox/org.apache.commons.logging/1.0.4.v200706111724/org.apache.commons.logging-1.0.4.v200706111724.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/equinox/org.apache.commons.logging/1.0.4.v200706111724/org.apache.commons.logging-1.0.4.v200706111724-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/equinox/org.apache.commons.logging/1.0.4.v200706111724/org.apache.commons.logging-1.0.4.v200706111724-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

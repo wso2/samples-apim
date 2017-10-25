@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.apache.woden:woden-impl-commons:1.0M9">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/woden/woden-impl-commons/1.0M9/woden-impl-commons-1.0M9.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/woden/woden-impl-commons/1.0M9/woden-impl-commons-1.0M9-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/woden/woden-impl-commons/1.0M9/woden-impl-commons-1.0M9-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

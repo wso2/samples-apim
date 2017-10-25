@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.apache.ws.commons.axiom:axiom-dom:1.2.11-wso2v2">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/ws/commons/axiom/axiom-dom/1.2.11-wso2v2/axiom-dom-1.2.11-wso2v2.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/ws/commons/axiom/axiom-dom/1.2.11-wso2v2/axiom-dom-1.2.11-wso2v2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/ws/commons/axiom/axiom-dom/1.2.11-wso2v2/axiom-dom-1.2.11-wso2v2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

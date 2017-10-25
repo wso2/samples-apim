@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.eclipse.equinox:org.apache.jasper:5.5.17.v200806031609">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/equinox/org.apache.jasper/5.5.17.v200806031609/org.apache.jasper-5.5.17.v200806031609.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/equinox/org.apache.jasper/5.5.17.v200806031609/org.apache.jasper-5.5.17.v200806031609-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/equinox/org.apache.jasper/5.5.17.v200806031609/org.apache.jasper-5.5.17.v200806031609-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

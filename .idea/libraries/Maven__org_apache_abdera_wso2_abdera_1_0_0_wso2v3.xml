@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.apache.abdera.wso2:abdera:1.0.0.wso2v3">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/abdera/wso2/abdera/1.0.0.wso2v3/abdera-1.0.0.wso2v3.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/abdera/wso2/abdera/1.0.0.wso2v3/abdera-1.0.0.wso2v3-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/abdera/wso2/abdera/1.0.0.wso2v3/abdera-1.0.0.wso2v3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

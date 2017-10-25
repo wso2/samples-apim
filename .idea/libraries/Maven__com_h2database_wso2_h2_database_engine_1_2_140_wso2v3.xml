@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.h2database.wso2:h2-database-engine:1.2.140.wso2v3">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/h2database/wso2/h2-database-engine/1.2.140.wso2v3/h2-database-engine-1.2.140.wso2v3.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/h2database/wso2/h2-database-engine/1.2.140.wso2v3/h2-database-engine-1.2.140.wso2v3-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/h2database/wso2/h2-database-engine/1.2.140.wso2v3/h2-database-engine-1.2.140.wso2v3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

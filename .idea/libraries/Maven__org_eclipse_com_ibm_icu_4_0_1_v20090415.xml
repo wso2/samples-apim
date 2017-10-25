@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.eclipse:com.ibm.icu:4.0.1.v20090415">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/com.ibm.icu/4.0.1.v20090415/com.ibm.icu-4.0.1.v20090415.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/com.ibm.icu/4.0.1.v20090415/com.ibm.icu-4.0.1.v20090415-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/com.ibm.icu/4.0.1.v20090415/com.ibm.icu-4.0.1.v20090415-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

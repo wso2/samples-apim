@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.apache.synapse:synapse-extensions:2.1.0-wso2v6">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/synapse/synapse-extensions/2.1.0-wso2v6/synapse-extensions-2.1.0-wso2v6.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/synapse/synapse-extensions/2.1.0-wso2v6/synapse-extensions-2.1.0-wso2v6-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/synapse/synapse-extensions/2.1.0-wso2v6/synapse-extensions-2.1.0-wso2v6-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

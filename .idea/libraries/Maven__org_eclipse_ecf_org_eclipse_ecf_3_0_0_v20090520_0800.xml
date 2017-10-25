@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.eclipse.ecf:org.eclipse.ecf:3.0.0.v20090520-0800">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/ecf/org.eclipse.ecf/3.0.0.v20090520-0800/org.eclipse.ecf-3.0.0.v20090520-0800.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/ecf/org.eclipse.ecf/3.0.0.v20090520-0800/org.eclipse.ecf-3.0.0.v20090520-0800-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/ecf/org.eclipse.ecf/3.0.0.v20090520-0800/org.eclipse.ecf-3.0.0.v20090520-0800-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

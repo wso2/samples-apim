@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.apache.ws.security:wss4j:1.5.9-wso2v1">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/ws/security/wss4j/1.5.9-wso2v1/wss4j-1.5.9-wso2v1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/ws/security/wss4j/1.5.9-wso2v1/wss4j-1.5.9-wso2v1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/ws/security/wss4j/1.5.9-wso2v1/wss4j-1.5.9-wso2v1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

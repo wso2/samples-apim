@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.eclipse.core:org.eclipse.core.runtime.compatibility.auth:3.2.100.v20090413">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/core/org.eclipse.core.runtime.compatibility.auth/3.2.100.v20090413/org.eclipse.core.runtime.compatibility.auth-3.2.100.v20090413.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/core/org.eclipse.core.runtime.compatibility.auth/3.2.100.v20090413/org.eclipse.core.runtime.compatibility.auth-3.2.100.v20090413-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/core/org.eclipse.core.runtime.compatibility.auth/3.2.100.v20090413/org.eclipse.core.runtime.compatibility.auth-3.2.100.v20090413-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

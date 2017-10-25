@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.apache.santuario:xmlsec:1.4.2-patched">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/santuario/xmlsec/1.4.2-patched/xmlsec-1.4.2-patched.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/santuario/xmlsec/1.4.2-patched/xmlsec-1.4.2-patched-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/santuario/xmlsec/1.4.2-patched/xmlsec-1.4.2-patched-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

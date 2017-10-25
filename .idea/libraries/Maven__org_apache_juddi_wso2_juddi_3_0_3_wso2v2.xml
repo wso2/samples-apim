@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.apache.juddi.wso2:juddi:3.0.3.wso2v2">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/juddi/wso2/juddi/3.0.3.wso2v2/juddi-3.0.3.wso2v2.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/juddi/wso2/juddi/3.0.3.wso2v2/juddi-3.0.3.wso2v2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/juddi/wso2/juddi/3.0.3.wso2v2/juddi-3.0.3.wso2v2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

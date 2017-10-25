@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.apache.amber:oauth2-common:0.22.1358727-wso2v2">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/amber/oauth2-common/0.22.1358727-wso2v2/oauth2-common-0.22.1358727-wso2v2.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/amber/oauth2-common/0.22.1358727-wso2v2/oauth2-common-0.22.1358727-wso2v2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/amber/oauth2-common/0.22.1358727-wso2v2/oauth2-common-0.22.1358727-wso2v2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

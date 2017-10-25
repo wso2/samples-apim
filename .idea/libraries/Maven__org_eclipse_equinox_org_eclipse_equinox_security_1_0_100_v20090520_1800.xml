@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.eclipse.equinox:org.eclipse.equinox.security:1.0.100.v20090520-1800">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/equinox/org.eclipse.equinox.security/1.0.100.v20090520-1800/org.eclipse.equinox.security-1.0.100.v20090520-1800.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/equinox/org.eclipse.equinox.security/1.0.100.v20090520-1800/org.eclipse.equinox.security-1.0.100.v20090520-1800-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/equinox/org.eclipse.equinox.security/1.0.100.v20090520-1800/org.eclipse.equinox.security-1.0.100.v20090520-1800-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

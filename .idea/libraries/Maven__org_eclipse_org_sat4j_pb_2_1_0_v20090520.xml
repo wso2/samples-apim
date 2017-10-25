@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.eclipse:org.sat4j.pb:2.1.0.v20090520">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/org.sat4j.pb/2.1.0.v20090520/org.sat4j.pb-2.1.0.v20090520.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/org.sat4j.pb/2.1.0.v20090520/org.sat4j.pb-2.1.0.v20090520-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/org.sat4j.pb/2.1.0.v20090520/org.sat4j.pb-2.1.0.v20090520-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
