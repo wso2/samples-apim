@@ -9,7 +9,7 @@ import org.wso2.carbon.identity.entitlement.mediator.callback.EntitlementCallbac
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.wso2.carbon.user.api.AuthorizationManager;
+
 
 public class APIEntitlementCallbackHandler extends EntitlementCallbackHandler {
 	private static final Log log = LogFactory.getLog(APIEntitlementCallbackHandler.class);
