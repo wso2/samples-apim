@@ -27,7 +27,8 @@
 **2.Deploying Backend service**
 
 ## **1.Deploying WSO2 API Manager pattern-1**
-----
+
+
  **Step 1: Create a [NFS Server](https://cloud.google.com/marketplace/docs/single-node-fileserver) in gCloud**
 - A pre-configured Network File System (NFS) to be used as the persistent volume for artifact sharing and persistence. In the NFS server instance, create a Linux system user account named `wso2carbon` with user id `802` and a system group named `wso2` with group id `802`. Add the `wso2carbon` user to the group `wso2`.
   ```
@@ -124,7 +125,7 @@
   
   
 ## **2.Deploying vehicle service**
-----
+
 - Execute `ingress-deploy.sh` with Kubernetes cluster admin password.
 (Update the <PATH_FOR_THE_SERVICE_YML_FILE> with the backend service’s service file yml and <PATH_FOR_THE_SERICE_DEPLOYMENT_YML_FILE> with the backend service deployment file
   ```
