@@ -1,4 +1,4 @@
-# Automating WSO2 API Manager Deployment pattern 1 using Ansible in gCloud
+# Kubernetes Demo
 *The goal of this repository is to automate the deployment environment for deployment pattern 1,deployment of WSO2 API Manager deployment pattern 1,automating sample backend service.*
 
 ### Prerequisites
