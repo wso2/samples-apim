@@ -1,152 +1,187 @@
-# Kubernetes Demo
-*The goal of this repository is to automate the deployment environment for deployment pattern 1,deployment of WSO2 API Manager deployment pattern 1,automating sample backend service.*
+# Deploying API Manager In Kubernetes in gcloud
+*This documentation is to deploy of WSO2 API Manager deployment pattern 1 in gcloud Kubernetes Engine and automating a sample backend service.
+This is the simplest deployment pattern consists of a scalable deployment of WSO2 API Manager with WSO2 API Manager Analytics support.*
+![WSO2 API Manager deployment with WSO2 API Manager Analytics support](pattern01.jpg)
 
-### Prerequisites
------
+**Overview**
 
-1.Create a [Google Cloud Platform Project.](https://console.cloud.google.com/projectselector/compute/instances)
+This development would require main steps ,please follow the each step in details.
 
-2.In order for Ansible to create Compute Engine instances, you'll need a [Service Account](https://cloud.google.com/compute/docs/access/service-accounts#serviceaccount). Make sure to create a new JSON formatted private key file for this Service Account. Note the Email address of this Service Account should be YOUR_SERVICEACCOUNT@YOUR_PROJECT_ID.iam.gserviceaccount.com, since this will be required in the Ansible configuration files.
+1.1 Install Prerequisites
 
-3.Next  install the [Cloud SDK](https://cloud.google.com/sdk/) and make sure you've successfully authenticated.
+1.2 Deploying WSO2 API Manager
 
-4.Set up SSH keys that will allow you to access your Compute Engine instances. You can either [manually generate the keys](https://cloud.google.com/compute/docs/instances/adding-removing-ssh-keys#createsshkeys) and paste the public key into the [metadata server](https://console.cloud.google.com/compute/metadata/sshKeys) or you can use gcloud compute ssh to access an existing Compute Engine instance and it will handle generating the keys and uploading them to the metadata server.
+           
+		      A. Creating a Single node file server in gcloud
+	              B. Creating a kubernetes Cluster in gcloud
+	              C. Deploying WSO2 API Manager and Analytics
+	              D. Deploying NGINX Ingress
+	   	      E. Access Management Consoles
+
+1.3 Deploying Sample Back end service.
+
+*In order to use WSO2 Kubernetes resources, you need an active WSO2 subscription. If you do not possess an active WSO2 subscription already, you can sign up for a WSO2 Free Trial Subscription from [here](https://wso2.com/free-trial-subscription).*
 ### Getting Started
-------
-**1.Deploying [WSO2 API Manager pattern-1]((https://github.com/wso2/kubernetes-apim/blob/master/pattern-1/README.md))**
+
+## **1.1 Install Prerequisites**
+
+
+-   Install Docker v17.09.0 or above
     
- This deployment process would require steps   
- 
-*Step 1: Create a [NFS Server](https://cloud.google.com/marketplace/docs/single-node-fileserver) in gCloud*
 
-*Step 2: Create a Kubernetes Cluster in gCloud*
+	-   [https://docs.docker.com/install/](https://docs.docker.com/install/)
+    
 
-*Step 3: Deploy WSO2 API Manager*
+-   Install gcloud-sdk
+    
+
+	-   [https://cloud.google.com/sdk/install](https://cloud.google.com/sdk/install)
+    
+
+-   Install kubectl
+    
+
+-   gcloud components install kubectl
+    
+	-   [https://kubernetes.io/docs/tasks/tools/install-kubectl/](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+    
+
+-   Install [](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) Git
+    
+
+	-   [https://git-scm.com/book/en/v2/Getting-Started-Installing-Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+    
+
+-   [Kubernetes client](https://kubernetes.io/docs/tasks/tools/install-kubectl/) (compatible with v1.10)
+    
+
+-   Create a Google Cloud Platform [](https://console.cloud.google.com/projectselector/compute/instances) Project
+    
+
+	-   [https://cloud.google.com/resource-manager/docs/creating-managing-projects?visit_id=636882414440593811-4047135311&rd=1#identifying_projects](https://cloud.google.com/resource-manager/docs/creating-managing-projects?visit_id=636882414440593811-4047135311&rd=1#identifying_projects)
 
 
-**2.Deploying Backend service**
+## **1.2 Deploying WSO2 API Manager pattern-1**
 
-## **1.Deploying WSO2 API Manager pattern-1**
+**A.  Creating a Single node file server in gcloud**
+    Steps to create a Single node file server
+1.  Login to Google Cloud Console using your Google Account.    
+2.  Visit GCP Marketplace
+    [https://console.cloud.google.com/marketplace/details/click-to-deploy-images/singlefs](https://console.cloud.google.com/marketplace/details/click-to-deploy-images/singlefs)
+3.  Click LAUNCH ON COMPUTE ENGINE and select your specific project  
+4.  Choose the default configurations ,provide a unique name and the corresponding Zone.
+(Name: It must be unique within the project and the zone.
+Zone and Region : choosing according to region)
+[https://cloud.google.com/compute/docs/regions-zones/#available](https://cloud.google.com/compute/docs/regions-zones/#available)
+5.  Click Deploy
+- A pre-configured [Single node file server](https://cloud.google.com/marketplace/docs/single-node-fileserver) to be used as the persistent volume for artifact sharing and persistence.
 
+ **Ssh to the Single node file server instance by gcloud UI,**
 
- **Step 1: Create a [NFS Server](https://cloud.google.com/marketplace/docs/single-node-fileserver) in gCloud**
-- A pre-configured Network File System (NFS) to be used as the persistent volume for artifact sharing and persistence. In the NFS server instance, create a Linux system user account named `wso2carbon` with user id `802` and a system group named `wso2` with group id `802`. Add the `wso2carbon` user to the group `wso2`.
-  ```
-  sudo groupadd --system -g 802 wso2
-  ```
-  ```
-  sudo useradd --system -g 802 -u 802 wso2carbon
-  ```
-- Create unique directories within the NFS server instance for each Kubernetes Persistent Volume.
-  ```
-  mkdir /data/<directory_name>
-  ```
-  ```
-  Mkdir /data/<directory_name_mysql>
-  ```
-
-- Grant ownership to `wso2carbon` user and `wso2` group, for each of the previously created directories.
-  ```
-  sudo chown -R wso2carbon:wso2  <directory_name>
-  ```
-- Grant read-write-execute permissions to the `wso2carbon` user, for each of the previously created directories. 
-  ```
-  sudo chmod -R 700 <directory_name>
-  ```
+-   create a Linux system user account named wso2carbon with user id 802 and a system group named wso2 with group id   `802`. Add the wso2carbon user to the group wso2.
+    
+	  ```
+	sudo groupadd --system -g 802 wso2  
+	sudo useradd --system -g 802 -u 802 wso2carbon
+	  ```
+-   Create unique directories within the Single node file server instance for each Kubernetes Persistent Volume
+    
+	   ```
+	   mkdir /data/<directory_name>
+	   mkdir /data/<directory_name_database>
+	   ```
   
-**Step 2: Create a [Kubernetes Cluster](https://docs.ansible.com/ansible/latest/modules/gcp_container_cluster_module.html) in gCloud**
+-   Grant ownership to wso2carbon user and wso2 group, for each of the previously created directories.
+	```
+	sudo chown -R wso2carbon:wso2 <directory_name_apim>
+	 ```
+-   Grant read-write-execute permissions to the wso2carbon user, for each of the previously created directories.
+    
+	 ```
+	sudo chmod -R 700 <directory_name_apim>
+	sudo chmod -R 757 <directory_name_database>
+	 ```
+  
+**B.  Creating a kubernetes Cluster in gcloud**
+    
 
-   *Step 2.1: Create a GC service account with credentials and download JSON credential*
+Steps to create a kubernetes Cluster
+
+1.  Visit the Google Kubernetes Engine menu in GCP Console.
     
-   *Step 2.2: Create An VM instance in Google Compute Engine*
+2.  Click Create cluster.
     
-   *Step 2.3: Provide Credentials as Module Parameters for Ansible*
+3.  Choose the Standard cluster template and Customize the template with the necessary following fields
+
+	-   Name: It must be unique within the project and the zone.
     
-   *Step 2.4: Create a host Inventory file*
-    
-   *Step 2.5: Testing the Playbook*
-    
-   *Step 2.6: Creating the kubernetes cluster by executing the Playbook*
-    
-    
-   **Step 2.2: Create A [VM instance](https://cloud.google.com/compute/docs/instances/create-start-instance) in Google Compute Engine**
+	-   Zone and Region : choosing according to region
+	    [https://cloud.google.com/compute/docs/regions-zones/#available](https://cloud.google.com/compute/docs/regions-zones/#available)
+	-   node pool:choose the default nood pool and customized with necessary fields
+	-   Cluster size: The number of nodes to create in the cluster. For this use case **number of nodes are 2.**
+	-   Machine type: Compute Engine [machine type](https://cloud.google.com/compute/docs/machine-types) to use for the instances. Each machine type is billed differently. The default machine type is n1-standard-1. This should change to **n1-standard-4 15GB memory**.
+	
+**C.  Deploying WSO2 API Manager and Analytics**
+    Clone the .... for Kubernetes Resources.
+-   Update the Kubernetes Persistent Volume resource with the corresponding Single node file server IP (NFS_SERVER_IP) and exported, NFS server directory path (NFS_LOCATION_PATH) in
+
+	 ```
+	kubernetes-apim-2.6x/pattern-1/extras/rdbms/volumes/persistent-volumes.yaml
+	kubernetes-apim-2.6x/pattern-1/volumes/persistent-volumes.yaml
+	 ```
+	(to get the IP address of Single node file server visit VM Instance under the Compute Engine)
+  
+Next connect to the Kubernetes cluster by Command-line access,follow the steps below to connect to the Kubernetes Cluster
    
- Requirements
-  1. python >= v2.6,
-  2. requests >= v2.18.4
-  3. google-auth >= v1.3.0
-  4. ansible<=v2.7
-
-- Install Python
-- Install [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
-- Install libcloud
-  ```
-  sudo pip install apache-libcloud==0.20.1
-  ```
-- Install request and google-auth
-  ```
-  pip install requests google-auth
-  ```
-**Step 2.3: Provide Credentials as Module Parameters for ansible**
-(refer the gce_cluster folder )
-- Edit `gce/gce_cluster/cluster_roles/gke/cluster_vars/main.yml`  file and specify your Project ID in the project_id variable, Service Account email address in the service_account_email variable, and the location of your JSON key. (downloaded earlier) 
+-  Navigate to Clusters under the Kubernetes Engine in gcloud UI
     
-**Step 2.4: Create a host inventory file**
-- Edit /etc/ansible/hosts.
-  ```
-  [local]
-  <INSTANCE_NAME> ansible_user=<USER> ansible_ssh_private_key_file=<FILE_PATH_TO_SSH_KEY>
-   ```
-**Step 2.5: Testing the playbook**
-- Use the --syntax-check and -list-tasks options to do a full syntax check.(errors will be show up in red)
-   ```
-  ansible-playbook --syntax-check --list-tasks -i <inventory file path>./<playbook yml>
-   ```
-**Step 2.6: Creating the kubernetes cluster by executing the playbook**
-- Execute the `cluster_site.yml`. (gce/gke_cluster/cluster_site.yml)
-  ```
-  ansible-playbook  -i etc/ansible/hosts ./cluster_site.yml
-  ```
- **Step 3: Deploy WSO2 API Manager**
-- Clone the Kubernetes Resources for WSO2 API Manager Git repository.
-   ```
-   git clone https://github.com/wso2/kubernetes-apim.git
-   ```
-- Update the Kubernetes Persistent Volume resource with the corresponding NFS server IP (NFS_SERVER_IP) and exported, NFS server directory path (NFS_LOCATION_PATH) in
-
-    `kubernetes-apim-2.6x/pattern-1/extras/rdbms/volumes/persistent-volumes.yaml`
+-   Select the specific cluster and Click on Connect and copy the Command-line access command and paste it in your local machine (Configure [kubectl](http://kubernetes.io/docs/user-guide/kubectl-overview/) command line access by running the following command: gcloud container clusters get-credentials <CLUSTER_NAME> --zone <ZONE> --project <PROJECT_NAME>)
     
-    `kubernetes-apim-2.6x/pattern-1/volumes/persistent-volumes.yaml`
 
-- Execute `deploy.sh` in `kubernetes-apim-2.6.x/pattern-1/scripts` with *Kubernetes cluster admin password*.
-  ```
-  ./deploy.sh --wu=<wso2 username> --wp=<wso2 password> --cap=<Kubernetes cluster admin password>
-  ```
+-   Export your WSO2 Username and password as an environmental variable
+    
+	```
+	export username="< username >"
+	export password="< password >"
+	```
+-   Execute deploy. sh  script in kubernetes-apim-2.6.x/pattern-1/scripts with Kubernetes cluster admin password(visit to your cluster in kubernetes Engine and click Show credentials )
+	 ```
+	./deploy.sh --wu=$username--wp=$password--cap=<Kubernetes cluster admin password>
+	```
+-   Check the status of the pod
+	```
+	kubect get pods -n wso2
+	```
+**D.  Deploying NGINX Ingress**
+   
+-   Execute nginx-deploy. sh in with Kubernetes cluster admin password
+    
+-   This will create NGINX Ingress Controller
+    
+	```
+	./nginx-deploy.sh --cap=<Kubernetes cluster admin password>
+	```
+**E.  Access Management Consoles.**
+    
+
+-   Obtain the external IP (EXTERNAL-IP) of the Ingress resources by listing down the Kubernetes Ingresses.
+	```
+	 kubectl get ing
+	```
+-   Add the above host as an entry in /etc/hosts file as follows:
+< EXTERNAL-IP > wso2apim
+< EXTERNAL-IP > wso2apim-gateway
+-   navigate to [https://wso2apim/carbon](https://wso2apim/carbon) , [https://wso2apim/publisher](https://wso2apim/publisher) and [https://wso2apim/store](https://wso2apim/store) from your browser.
+    
+
   
-  
-## **2.Deploying vehicle service**
-
-- Execute `ingress-deploy.sh` with Kubernetes cluster admin password.
-(Update the <PATH_FOR_THE_SERVICE_YML_FILE> with the backend service’s service file yml and <PATH_FOR_THE_SERICE_DEPLOYMENT_YML_FILE> with the backend service deployment file
-  ```
-  ./service-deploy.sh --cap=<Kubernetes cluster admin password>
-  ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## **1.3 Deploying Sample Backend Service**
+-   Execute service-deploy. sh
+    This will create service and the deployment of the sample backend service.
+	```
+	./service-deploy.sh
+	```
+-   Check the status of the pod
+	```
+	kubect get pods -n wso2
+	```

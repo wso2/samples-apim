@@ -1,0 +1,62 @@
+{
+   "name": "VehicleManagementAPI",
+   "description": "This document describe a RESTFul API for vehicle Management.",
+   "context": "/vehicleManager",
+   "version": "1.0.0",
+   "provider": "admin",
+   "apiDefinition":"{\"swagger\":\"2.0\",\"paths\":{\"\/record\":{\"post\":{\"parameters\":[{\"name\":\"Payload\",\"description\":\"Vehicle  object that needs to be added\",\"required\":false,\"in\":\"body\",\"schema\":{\"type\":\"object\",\"properties\":{\"payload\":{\"type\":\"string\"}}}}],\"responses\":{\"200\":{\"description\":\"\"}},\"x-auth-type\":\"Application & Application User\",\"x-throttling-tier\":\"Unlimited\",\"description\":\"records vehicle details\"}},\"\/getRecords\/{recordId}\":{\"get\":{\"parameters\":[{\"name\":\"recordId\",\"in\":\"path\",\"required\":true,\"type\":\"string\",\"description\":\"recordId\"}],\"responses\":{\"200\":{\"description\":\"\"}},\"description\":\"get vehicle Records\",\"x-auth-type\":\"Application & Application User\",\"x-throttling-tier\":\"Unlimited\"}},\"\/deleteRecords\/{recordId}\":{\"delete\":{\"parameters\":[{\"name\":\"recordId\",\"in\":\"path\",\"required\":true,\"type\":\"string\",\"description\":\"recordId\"}],\"responses\":{\"200\":{\"description\":\"\"}},\"description\":\"Delete a vehicle record\",\"x-auth-type\":\"Application & Application User\",\"x-throttling-tier\":\"Unlimited\"}},\"\/deleteAllRecords\":{\"delete\":{\"responses\":{\"200\":{\"description\":\"\"}},\"description\":\"Delete all vehicle records\",\"x-auth-type\":\"Application & Application User\",\"x-throttling-tier\":\"Unlimited\"}}},\"info\":{\"title\":\"VehicleManagementAPI\",\"version\":\"1.0.0\",\"description\":\"This document describe a RESTFul API for Vehicle Management.\\n\"},\"host\":\"10.56.0.40:8243\",\"basePath\":\"\/vehicleManager\/1.0.0\",\"schemes\":[\"https\",\"http\"],\"securityDefinitions\":{\"default\":{\"type\":\"oauth2\",\"authorizationUrl\":\"https:\/\/10.56.0.40:8243\/authorize\",\"flow\":\"implicit\",\"scopes\":{}}}}",
+   "wsdlUri": null,
+   "status": "CREATED",
+   "responseCaching": "Disabled",
+   "cacheTimeout": 300,
+   "destinationStatsEnabled": false,
+   "isDefaultVersion": false,
+   "type": "HTTP",
+   "transport":    [
+      "http",
+      "https"
+   ],
+   "tags": ["vehicle"],
+   "tiers": ["Unlimited"],
+   "maxTps":    {
+      "sandbox": 5000,
+      "production": 1000
+   },
+   "visibility": "PUBLIC",
+   "visibleRoles": [],
+   "endpointConfig": "{\"production_endpoints\":{\"url\":\"http://k8s-demo-service-v3:9090/vehicleManager\",\"config\":null},\"sandbox_endpoints\":{\"url\":\"http://k8s-demo-service-v3:9090/vehicleManager\",\"config\":null},\"endpoint_type\":\"http\"}",
+   "endpointSecurity":    {
+      "username": "user",
+      "type": "basic",
+      "password": "pass"
+   },
+   "gatewayEnvironments": "Production and Sandbox",
+   "sequences": [{"name":"json_validator","type": "in"},{"name":"log_out_message","type": "out"}],
+   "subscriptionAvailability": null,
+   "subscriptionAvailableTenants": [],
+   "businessInformation":    {
+      "businessOwnerEmail": "marketing@vehicleManagement.com",
+      "technicalOwnerEmail": "architecture@vehicleManagement.com",
+      "technicalOwner": "John Doe",
+      "businessOwner": "Jane Roe"
+   },
+   "corsConfiguration":    {
+      "accessControlAllowOrigins": ["*"],
+      "accessControlAllowHeaders":       [
+         "authorization",
+         "Access-Control-Allow-Origin",
+         "Content-Type",
+         "SOAPAction"
+      ],
+      "accessControlAllowMethods":       [
+         "GET",
+         "PUT",
+         "POST",
+         "DELETE",
+         "PATCH",
+         "OPTIONS"
+      ],
+      "accessControlAllowCredentials": false,
+      "corsConfigurationEnabled": false
+   }
+}

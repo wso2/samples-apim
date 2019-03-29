@@ -1,0 +1,13 @@
+#  cat roles/gce/tasks/instance_main.yml
+---
+- name: create a instance
+  gce_instance:
+      instance_names: "{{instance_name}}"
+      zone: "{{zone}}"
+      machine_type: "{{ machine_type }}"
+      image: debian-8
+      state: present
+      service_account_email: "{{service_account_email}}"
+      credentials_file: "{{ service_account_file }}"
+      project_id: "{{project}}"
+      disk_size: 100
