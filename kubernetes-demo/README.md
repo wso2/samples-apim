@@ -122,7 +122,7 @@ Steps to create a kubernetes Cluster
 	-   Machine type: Compute Engine [machine type](https://cloud.google.com/compute/docs/machine-types) to use for the instances. Each machine type is billed differently. The default machine type is n1-standard-1. This should change to **n1-standard-4 15GB memory**.
 	
 **C.  Deploying WSO2 API Manager and Analytics**
-    Clone the .... for Kubernetes Resources.
+    Clone the [wso2/samples-apim](https://github.com/wso2/samples-apim) master Branch for Kubernetes Resources.
 -   Update the Kubernetes Persistent Volume resource with the corresponding Single node file server IP (NFS_SERVER_IP) and exported, NFS server directory path (NFS_LOCATION_PATH) in
 
 	 ```
@@ -131,32 +131,31 @@ Steps to create a kubernetes Cluster
 	 ```
 	(to get the IP address of Single node file server visit VM Instance under the Compute Engine)
   
-Next connect to the Kubernetes cluster by Command-line access,follow the steps below to connect to the Kubernetes Cluster
+Next connect to the Kubernetes cluster by Command-line access,follow the steps below to connect to the Kubernetes Cluster.
    
 -  Navigate to Clusters under the Kubernetes Engine in gcloud UI
     
 -   Select the specific cluster and Click on Connect and copy the Command-line access command and paste it in your local machine (Configure [kubectl](http://kubernetes.io/docs/user-guide/kubectl-overview/) command line access by running the following command: gcloud container clusters get-credentials <CLUSTER_NAME> --zone <ZONE> --project <PROJECT_NAME>)
     
 
--   Export your WSO2 Username and password as an environmental variable
+-   Export your WSO2 Username and password as an environmental variable.
     
 	```
 	export username="< username >"
 	export password="< password >"
 	```
--   Execute deploy. sh  script in kubernetes-apim-2.6.x/pattern-1/scripts with Kubernetes cluster admin password(visit to your cluster in kubernetes Engine and click Show credentials )
+-   Execute deploy. sh  script in kubernetes-apim-2.6.x/pattern-1/scripts with Kubernetes cluster admin password(visit to your cluster in kubernetes Engine and click Show credentials ).
 	 ```
 	./deploy.sh --wu=$username--wp=$password--cap=<Kubernetes cluster admin password>
 	```
--   Check the status of the pod
+-   Check the status of the pod.
 	```
 	kubect get pods -n wso2
 	```
 **D.  Deploying NGINX Ingress**
    
--   Execute nginx-deploy. sh in with Kubernetes cluster admin password
-    
--   This will create NGINX Ingress Controller
+-   Execute nginx-deploy. sh in kubernetes-demo/niginx with Kubernetes cluster admin password.
+This will create NGINX Ingress Controller.
     
 	```
 	./nginx-deploy.sh --cap=<Kubernetes cluster admin password>
@@ -169,19 +168,21 @@ Next connect to the Kubernetes cluster by Command-line access,follow the steps b
 	 kubectl get ing
 	```
 -   Add the above host as an entry in /etc/hosts file as follows:
-< EXTERNAL-IP > wso2apim
-< EXTERNAL-IP > wso2apim-gateway
+	```
+	< EXTERNAL-IP > wso2apim
+	< EXTERNAL-IP > wso2apim-gateway
+	```
 -   navigate to [https://wso2apim/carbon](https://wso2apim/carbon) , [https://wso2apim/publisher](https://wso2apim/publisher) and [https://wso2apim/store](https://wso2apim/store) from your browser.
     
 
   
 ## **1.3 Deploying Sample Backend Service**
--   Execute service-deploy. sh
+-   Execute service-deploy. sh in kubernetes-demo/sample_service_kubernetes.
     This will create service and the deployment of the sample backend service.
 	```
 	./service-deploy.sh
 	```
--   Check the status of the pod
+-   Check the status of the pod.
 	```
 	kubect get pods -n wso2
-	```
+	``
