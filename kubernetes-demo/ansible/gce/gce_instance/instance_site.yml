@@ -1,0 +1,7 @@
+---
+- name: gce_instance - Creates a GCE instance
+  hosts: all
+  connection: local
+  gather_facts: false
+  roles:
+   - gce

@@ -1,0 +1,9 @@
+HOST_NAME="wso2apim"
+PORT=""
+PUBLISHER_BASE_PATH="api/am/publisher/v0.14"
+password="YWRtaW46YWRtaW4="
+PUBLISHER_SCOPE="apim:api_view apim:api_create apim:api_publish"
+DATA_FILE="vehicledata.json"
+IMAGE="vehicle.jpeg"
+TIER="Unlimited"
+

@@ -1,0 +1,6 @@
+HOST_NAME="wso2apim"
+PORT=""
+ADMIN_BASE_PATH="api/am/admin/v0.14"
+ADMIN_SCOPE="apim:api_view apim:tier_view apim:tier_manage"
+DATA_FILE="throttling_policy_data.json"
+

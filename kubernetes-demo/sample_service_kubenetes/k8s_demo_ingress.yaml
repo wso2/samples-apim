@@ -1,0 +1,22 @@
+---
+apiVersion: "extensions/v1beta1"
+kind: "Ingress"
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-passthrough: "false"
+    kubernetes.io/ingress.class: "nginx"
+  finalizers: []
+  labels:
+    app: "k8s_demo_service"
+  name: "k8s-demo-service-v1"
+  ownerReferences: []
+spec:
+  rules:
+  - host: "internal-k8s-demo-service-v1"
+    http:
+      paths:
+      - backend:
+          serviceName: "k8s-demo-service-v1"
+          servicePort: 9090
+        path: "/"
+  tls: []
