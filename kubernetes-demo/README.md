@@ -66,13 +66,12 @@ This development would require main steps ,please follow the each step in detail
 **A.  Creating a Single node file server in gcloud**
     Steps to create a Single node file server
 1.  Login to Google Cloud Console using your Google Account.    
-2.  Visit GCP Marketplace
-    https://console.cloud.google.com/marketplace/details/click-to-deploy-images/singlefs
+2.  Visit GCP [Marketplace]( https://console.cloud.google.com/marketplace/details/click-to-deploy-images/singlefs)
 3.  Click LAUNCH ON COMPUTE ENGINE and select your specific project  
 4.  Choose the default configurations ,provide a unique name and the corresponding Zone.
 (Name: It must be unique within the project and the zone.
-Zone and Region : choosing according to region)
-https://cloud.google.com/compute/docs/regions-zones/#available
+[Zone and Region](https://cloud.google.com/compute/docs/regions-zones/#available) : choosing according to region)
+
 5.  Click Deploy
 - A pre-configured [Single node file server](https://cloud.google.com/marketplace/docs/single-node-fileserver) to be used as the persistent volume for artifact sharing and persistence.
 
@@ -115,8 +114,7 @@ Steps to create a kubernetes Cluster
 
 	-   Name: It must be unique within the project and the zone.
     
-	-   Zone and Region : choosing according to region
-	  https://cloud.google.com/compute/docs/regions-zones/#available
+	-   [Zone and Region](https://cloud.google.com/compute/docs/regions-zones/#available) : choosing according to region
 	-   node pool:choose the default nood pool and customized with necessary fields
 	-   Cluster size: The number of nodes to create in the cluster. For this use case **number of nodes are 2.**
 	-   Machine type: Compute Engine [machine type](https://cloud.google.com/compute/docs/machine-types) to use for the instances. Each machine type is billed differently. The default machine type is n1-standard-1. This should change to **n1-standard-4 15GB memory**.
