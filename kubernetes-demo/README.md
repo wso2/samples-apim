@@ -1,15 +1,20 @@
-# Deploying API Manager In Kubernetes in gcloud
-*This documentation is to deploy of WSO2 API Manager deployment pattern 1 in gcloud Kubernetes Engine and automating a sample backend service.
-This is the simplest deployment pattern consists of a scalable deployment of WSO2 API Manager with WSO2 API Manager Analytics support.*
-![WSO2 API Manager deployment with WSO2 API Manager Analytics support](pattern01.jpg)
+# Kubernetes Demo
+*This documentation is to deploy* 
 
+*1. WSO2 API Manager deployment pattern 1 in gcloud Kubernetes Engine and automating a sample backend service.*
+*2.Pod auto-scaling in Kubernetes*
+*3.Rolling updates on API Manager*
+
+*This is the simplest deployment pattern consists of a scalable deployment of WSO2 API Manager with WSO2 API Manager Analytics support.*
+![WSO2 API Manager deployment with WSO2 API Manager Analytics support](pattern01.jpg)
+  ## 1. Deploying API Manager In Kubernetes in gcloud
 **Overview**
 
 This development would require main steps ,please follow the each step in details.
 
 1.1 Install Prerequisites
 
-1.2 Deploying WSO2 API Manager
+1.2 Deploying WSO2 API Manager in Kubernetes
 
            
 		      A. Creating a Single node file server in gcloud
@@ -21,9 +26,10 @@ This development would require main steps ,please follow the each step in detail
 1.3 Deploying Sample Back end service.
 
 *In order to use WSO2 Kubernetes resources, you need an active WSO2 subscription. If you do not possess an active WSO2 subscription already, you can sign up for a WSO2 Free Trial Subscription from [here](https://wso2.com/free-trial-subscription).*
+
 ### Getting Started
 
-## **1.1 Install Prerequisites**
+### ***1.1 Install Prerequisites***
 
 
 -   Install Docker v17.09.0 or above
@@ -61,7 +67,7 @@ This development would require main steps ,please follow the each step in detail
 	-   [https://cloud.google.com/resource-manager/docs/creating-managing-projects?visit_id=636882414440593811-4047135311&rd=1#identifying_projects](https://cloud.google.com/resource-manager/docs/creating-managing-projects?visit_id=636882414440593811-4047135311&rd=1#identifying_projects)
 
 
-## **1.2 Deploying WSO2 API Manager pattern-1**
+### ***1.2 Deploying WSO2 API Manager pattern-1***
 
 **A.  Creating a Single node file server in gcloud**
     Steps to create a Single node file server
@@ -116,7 +122,7 @@ Steps to create a kubernetes Cluster
     
 	-   [Zone and Region](https://cloud.google.com/compute/docs/regions-zones/#available) : choosing according to region
 	-   node pool:choose the default nood pool and customized with necessary fields
-	-   Cluster size: The number of nodes to create in the cluster. For this use case **number of nodes are 2.**
+	-   Cluster size: The number of nodes to create in the cluster. For this use case **number of nodes are 3.**
 	-   Machine type: Compute Engine [machine type](https://cloud.google.com/compute/docs/machine-types) to use for the instances. Each machine type is billed differently. The default machine type is n1-standard-1. This should change to **n1-standard-4 15GB memory**.
 	
 **C.  Deploying WSO2 API Manager and Analytics**
@@ -175,7 +181,7 @@ This will create NGINX Ingress Controller.
     
 
   
-## **1.3 Deploying Sample Backend Service**
+### ***1.3 Deploying Sample Backend Service***
 -   Execute service-deploy. sh in kubernetes-demo/sample_service_kubernetes.
     This will create service and the deployment of the sample backend service.
 	```
@@ -185,3 +191,42 @@ This will create NGINX Ingress Controller.
 	```
 	kubect get pods -n wso2
 	```
+ ## 2.Pod Auto-scaling
+ Horizontal Pod autoscaler will scales the number of pod replicas based on observed CPU utilization provided metrics.
+ [https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
+ -   Provide CPU limit and CPU request for the Container by including **resources:limits,resources:requests** in kubernetes-apim-2.6x/pattern-1/apim/wso2apim-deployment.yml
+	 ```
+	 - resources:
+	       requests:
+	           memory: "2Gi"
+	           cpu: "2000m"
+	       limits:
+	           memory: "3Gi"
+	           cpu: "3000m"
+	           
+	  ```
+  -   Create a Horizontal Pod Autoscaler that maintains between 1 and 2 replicas of the Pods controlled by wso2apim-with-analytics-apim deployment.
+HPA will increase and decrease the number of replicas (via the deployment) to maintain an average CPU utilization across all Pods of 10%
+		```
+		kubectl autoscale deployment wso2apim-with-analytics-apim --cpu-percent=10 --min=1 --max=2 -n wso2
+		```
+
+-   check the current status of autoscaler
+	```
+	kubectl get hpa wso2apim-with-analytics-apim -n wso2
+	```
+ ## 3.Rolling updates on API Manager
+ 
+-   Change the Docker Image of kubernetes-apim-2.6x/pattern-1/apim/wso2apim-deployment.yml
+	 ```  
+		spec:
+		       containers:
+		        - name: wso2apim-with-analytics-apim-worker
+			   image: docker.wso2.com/wso2am:2.6.0 **
+	 ``` 
+  
+
+-   Redeploy the deployment.
+	 ```  
+	kubectl apply -f wso2apim-update-deployment.yaml -n wso2
+	 ```  

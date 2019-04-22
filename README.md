@@ -11,9 +11,13 @@ https://wso2.com/library/tutorials/2016/02/tutorial-how-to-enable-role-based-acc
 
 ---
 ### Kubernetes Demo
-*This 'Kubernetes Demo' repository contains scource code of automating the deployment environment for deployment pattern 1,deployment of WSO2 API Manager deployment pattern 1,automating sample backend service.*
+*This 'Kubernetes Demo' repository contains scource code of*
 
-1.Deploying [WSO2 API Manager pattern-1]((https://github.com/wso2/kubernetes-apim/blob/master/pattern-1/README.md))
+1.Deploying API Manager pattern-1 and automating a sample backend service in gcloud Kubernetes Engine
 
-2.Deploying Backend service
+2.Pod autoscaling in Kubernetes
+
+3.Rolling updates on API Manager in Kubernetes
+
+
 

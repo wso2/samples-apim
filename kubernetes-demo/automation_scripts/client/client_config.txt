@@ -1,0 +1,4 @@
+HOST_NAME="wso2apim-gateway"
+PORT=""
+APPLICATION_NAME=""
+Authorization="Bearer "

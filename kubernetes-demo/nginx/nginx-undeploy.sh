@@ -57,7 +57,7 @@ while [ "$1" != "" ]; do
     esac
     shift
 done
-echoBold 'Deploying NGINX Ingress Controller...'
+echoBold 'Deleting NGINX Ingress Controller...'
 ${KUBECTL} delete --username=admin --password=${ADMIN_PASSWORD} -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml
 ${KUBECTL} delete -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/provider/cloud-generic.yaml
 

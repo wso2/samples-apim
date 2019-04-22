@@ -38,19 +38,33 @@ echo $apllication_id
 sleep 2s
 
 #getting details of an specific API
-API_Details_json="$(curl -k GET https://wso2apim/$STORE_BASE_PATH/apis/?query="context:vehiclemgt")"
+API_Details_json="$(curl -k https://wso2apim/api/am/store/v0.14/apis/?query="name:$API_NAME")"
 echo $API_Details_json
-API_Ids=$(echo $API_Details_json | sed -e 's/[{}]/''/g' | sed s/\"//g | awk -v RS=',' -F: '$1=="list"{print $2}')
-echo $API_Ids
-api_id=$(echo $API_Ids | awk '{print $1}')
 
-#echoBold 'Subscription'
+SOURCE_ENV="$API_NAME"
+lines=`echo ${API_Details_json} | cut -d "[" -f2 | cut -d "]" -f1 | awk -v RS='},{}' -F: '{print $0}' `
+while read -r line
+do
+	TMPNAME=`echo $line | sed -e 's/[{}]/''/g' | sed s/\"//g | awk -v RS=',' -F: '$1=="name"{print $2}' `
+	
+	if [[ "${TMPNAME}" == "${SOURCE_ENV}" ]]
+	then
+		echo $line | sed -e 's/[{}]/''/g' | sed s/\"//g | awk -v RS=',' -F: '$1=="id"{print $2}'
+		API_ID=`echo $line | sed -e 's/[{}]/''/g' | sed s/\"//g | awk -v RS=',' -F: '$1=="id"{print $2}' `
+		break
+	fi
+done <<< "$(echo -e "$lines")" 
+
+sleep 2s
+
+echoBold 'Subscription'
 #json data for new subcription
-#json=$(echo "{"tier": "Gold","apiIdentifier": "$API_Id","applicationId": "$apllication_id"}")
-#echo $json
-#subcription_json="$(curl -k -H "Authorization: Bearer $access_token" -H "Content-Type: application/json" -X POST  -d $json "https://$HOST_NAME/$STORE_BASE_PATH/subscriptions")"
-#echo $subcription_json
-echoBold 'Generating keys for application '
+json='{"tier": "Unlimited","apiIdentifier":"'"$API_ID"'","applicationId":"'"$apllication_id"'"}'
+echo $json
+subcription_json="$(curl -k -H "Authorization: Bearer $access_token" -H "Content-Type: application/json" -X POST  -d "$json" "https://$HOST_NAME/$STORE_BASE_PATH/subscriptions")"
+echo $subcription_json
+
+#echoBold 'Generating keys for application '
 application_keys_json="$(curl -k -H "Authorization: Bearer $access_token" -H "Content-Type: application/json" -X POST -d @application_key_data.json "https://$HOST_NAME/api/am/store/v0.14/applications/generate-keys?applicationId=$apllication_id")"
 echo $application_keys_json
 
