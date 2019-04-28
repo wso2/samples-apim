@@ -1,0 +1,22 @@
+---
+apiVersion: "extensions/v1beta1"
+kind: "Ingress"
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-passthrough: "false"
+    kubernetes.io/ingress.class: "nginx"
+  finalizers: []
+  labels:
+    app: "helloService"
+  name: "hello-world-ballerina-v1"
+  ownerReferences: []
+spec:
+  rules:
+  - host: "hello-world-ballerina-v1"
+    http:
+      paths:
+      - backend:
+          serviceName: "hello-world-ballerina-v1"
+          servicePort: 9091
+        path: "/"
+  tls: []

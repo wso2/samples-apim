@@ -64,8 +64,8 @@ while [ "$1" != "" ]; do
 done
 echoBold 'Deploying BACK END SERVICE...'
 #update <PATH_FOR_THE_SERVICE_DEPLOYMENT_YML_FILE> with your backend service yml file
-${KUBECTL} delete -f HelloBallerina⁩/target⁩/kubernetes⁩/⁨helloService⁩/helloService_svc.yml -n wso2
+${KUBECTL} delete -f HelloBallerina⁩/kubernetes⁩/⁨helloService⁩/helloService_svc.yml -n wso2
 #update <PATH_FOR_THE_SERVICE_DEPLOYMENT_YML_FILE> with your backend service deployment yml file
-${KUBECTL} delete -f HelloBallerina⁩/target⁩/kubernetes⁩/⁨helloService⁩/helloService_svc.yml -n wso2
+${KUBECTL} delete -f HelloBallerina⁩/kubernetes⁩/⁨helloService⁩/helloService_svc.yml -n wso2
 sleep 10s
 echoBold 'Finished'

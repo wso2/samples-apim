@@ -9,10 +9,7 @@
 *This is the simplest deployment pattern consists of a scalable deployment of WSO2 API Manager with WSO2 API Manager Analytics support.*
 
 
-
 ![WSO2 API Manager deployment with WSO2 API Manager Analytics support](pattern01.jpg)
-
-
 
   ## 1. Deploying API Manager In Kubernetes in gcloud
 **Overview**
@@ -176,7 +173,7 @@ Create Kubernetes Services and Deployments for WSO2 API Manager and Analytics.*
 	```
 **D.  Deploying NGINX Ingress**
    ##### Deploy Kubernetes Ingress resource.
--   Execute nginx-deploy. sh in kubernetes-demo/nginx with Kubernetes cluster admin password.
+-   Execute nginx-deploy. sh in kubernetes-demo/niginx with Kubernetes cluster admin password.
 This will create NGINX Ingress Controller.
     
 	```
@@ -202,6 +199,15 @@ deployment will expose `wso2apim` and `wso2apim-gateway` hosts.
 
   
 ### ***1.3 Deploying Sample Backend Service***
+
+Use the following command to build a Ballerina executable archive (.balx) of the service in sample_service/helloBallerina.
+	```
+	$ ballerina build helloService
+	```
+	
+This creates the corresponding Docker image and the Kubernetes artifacts using the Kubernetes annotations that have configured.
+	**Note:** Sample Kubernetes artifacts are in sample_service/helloBallerina/kubernetes/helloService.
+	
  -   Execute service-deploy. sh in kubernetes-demo/sample_service.
     This will create a Kubernetes service and the deployment of the sample backend service under wso2 namespace.
     
