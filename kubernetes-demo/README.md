@@ -3,14 +3,22 @@
 
 *1. WSO2 API Manager deployment pattern 1 in gcloud Kubernetes Engine and automating a sample backend service.*
 *2.Pod auto-scaling in Kubernetes*
+
 *3.Rolling updates on API Manager*
 
 *This is the simplest deployment pattern consists of a scalable deployment of WSO2 API Manager with WSO2 API Manager Analytics support.*
+
+
+
 ![WSO2 API Manager deployment with WSO2 API Manager Analytics support](pattern01.jpg)
+
+
+
   ## 1. Deploying API Manager In Kubernetes in gcloud
 **Overview**
 
-This development would require main steps ,please follow the each step in details.
+This development would require main steps ,
+please follow the each step in details.
 
 1.1 Install Prerequisites
 
@@ -24,6 +32,7 @@ This development would require main steps ,please follow the each step in detail
 	   	      E. Access Management Consoles
 
 1.3 Deploying Sample Back end service.
+
 
 *In order to use WSO2 Kubernetes resources, you need an active WSO2 subscription. If you do not possess an active WSO2 subscription already, you can sign up for a WSO2 Free Trial Subscription from [here](https://wso2.com/free-trial-subscription).*
 
@@ -51,7 +60,7 @@ This development would require main steps ,please follow the each step in detail
 	-   [https://kubernetes.io/docs/tasks/tools/install-kubectl/](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 
 		 ```
-		curl -LO https://storage.googleapis.com/kubernetes-	release/release/v1.10.0/bin/linux/amd64/kubectl
+		curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.10.0/bin/linux/amd64/kubectl
 		 ```
     
 
@@ -60,9 +69,6 @@ This development would require main steps ,please follow the each step in detail
 
 	-   [https://git-scm.com/book/en/v2/Getting-Started-Installing-Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
     
-
--   [Kubernetes client](https://kubernetes.io/docs/tasks/tools/install-kubectl/) 
-
 -   Create a Google Cloud Platform [](https://console.cloud.google.com/projectselector/compute/instances) Project
     
 
@@ -170,7 +176,7 @@ Create Kubernetes Services and Deployments for WSO2 API Manager and Analytics.*
 	```
 **D.  Deploying NGINX Ingress**
    ##### Deploy Kubernetes Ingress resource.
--   Execute nginx-deploy. sh in kubernetes-demo/niginx with Kubernetes cluster admin password.
+-   Execute nginx-deploy. sh in kubernetes-demo/nginx with Kubernetes cluster admin password.
 This will create NGINX Ingress Controller.
     
 	```
@@ -302,7 +308,7 @@ HPA will increase and decrease the number of replicas (via the deployment) to ma
 		spec:
 		       containers:
 		        - name: wso2apim-with-analytics-apim-worker
-			   image: docker.wso2.com/wso2am:2.6.0 **
+			   image: docker.wso2.com/wso2am:2.6.0 
 	 ``` 
   
 
