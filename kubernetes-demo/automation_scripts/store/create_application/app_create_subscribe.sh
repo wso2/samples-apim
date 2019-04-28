@@ -1,5 +1,5 @@
 #!/bin/bash
-# this scripts automates the subscription
+# this scripts automates creating an Application the subscription
 ECHO=`which echo`
 function echoBold () {
     ${ECHO} -e $'\e[1m'"${1}"$'\e[0m'
@@ -7,7 +7,7 @@ function echoBold () {
 source store_config.txt
 
 echoBold ' Obtaining the consumer key/secret key pair...... '
-consumes_secret_key_json="$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://$HOST_NAME/client-registration/v0.14/register)"
+consumes_secret_key_json="$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://$HOST_NAME_APIM/client-registration/v0.14/register)"
 sleep 2s
 
 #getting the client Id
@@ -21,24 +21,27 @@ echoBold ' encoding clientId and ClientSecrect..... '
 #Base64 encoded in the format consumer-key:consumer-secret
 encode_key="$clientId:$clientSecret"
 #echo "encode key:$encode_key"
-encoded_key=$(base64 <<< $encode_key)
+encoded_key=$(echo -n $encode_key | base64)
 echoBold "encoded key:$encoded_key"
+#encoded_key=$(base64 <<< $encode_key)
+#echoBold "encoded key:$encoded_key"
 
 echoBold ' Generating the access token..... '
-access_token_json="$(curl -k -d "grant_type=password&username=admin&password=admin&scope=$STORE_SCOPE" -H "Authorization: Basic $encoded_key" https://wso2apim-gateway/token)"
+access_token_json=$(curl -k -d "grant_type=password&username=$USERNAME&password=$PASSWORD&scope=$STORE_SCOPE" -H "Authorization: Basic $encoded_key" https://$HOST_NAME_GATEWAY/token)
 echo $access_token_json
 access_token=$(echo $access_token_json | sed -e 's/[{}]/''/g' | sed s/\"//g | awk -v RS=',' -F: '$1=="access_token"{print $2}')
 echo "access token:$access_token"
 
 echoBold ' Creating an Apptication'
-application_json="$(curl -k -H "Authorization: Bearer $access_token" -H "Content-Type: application/json" -X POST -d @$APPLICATION_DATA_FILE "https://$HOST_NAME/$STORE_BASE_PATH/applications")"
+application_json="$(curl -k -H "Authorization: Bearer $access_token" -H "Content-Type: application/json" -X POST -d @$APPLICATION_DATA_FILE "https://$HOST_NAME_APIM/$STORE_BASE_PATH/applications")"
 echo $application_json
+# retrieving the application Id
 apllication_id=$(echo $application_json | sed -e 's/[{}]/''/g' | sed s/\"//g | awk -v RS=',' -F: '$1=="applicationId"{print $2}')
 echo $apllication_id
 sleep 2s
 
 #getting details of an specific API
-API_Details_json="$(curl -k https://wso2apim/api/am/store/v0.14/apis/?query="name:$API_NAME")"
+API_Details_json="$(curl -k https://$HOST_NAME_APIM/$STORE_BASE_PATH/apis/?query="name:$API_NAME")"
 echo $API_Details_json
 
 SOURCE_ENV="$API_NAME"
@@ -61,10 +64,10 @@ echoBold 'Subscription'
 #json data for new subcription
 json='{"tier": "Unlimited","apiIdentifier":"'"$API_ID"'","applicationId":"'"$apllication_id"'"}'
 echo $json
-subcription_json="$(curl -k -H "Authorization: Bearer $access_token" -H "Content-Type: application/json" -X POST  -d "$json" "https://$HOST_NAME/$STORE_BASE_PATH/subscriptions")"
+subcription_json=$(curl -k -H "Authorization: Bearer $access_token" -H "Content-Type: application/json" -X POST  -d "$json" "https://$HOST_NAME_APIM/$STORE_BASE_PATH/subscriptions")
 echo $subcription_json
 
-#echoBold 'Generating keys for application '
-application_keys_json="$(curl -k -H "Authorization: Bearer $access_token" -H "Content-Type: application/json" -X POST -d @application_key_data.json "https://$HOST_NAME/api/am/store/v0.14/applications/generate-keys?applicationId=$apllication_id")"
+echoBold 'Generating keys for application '
+application_keys_json="$(curl -k -H "Authorization: Bearer $access_token" -H "Content-Type: application/json" -X POST -d @application_key_data.json "https://$HOST_NAME_APIM/api/am/store/v0.14/applications/generate-keys?applicationId=$apllication_id")"
 echo $application_keys_json
 

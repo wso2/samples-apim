@@ -43,13 +43,16 @@ This development would require main steps ,please follow the each step in detail
 
 	-   [https://cloud.google.com/sdk/install](https://cloud.google.com/sdk/install)
     
-
--   Install kubectl
     
 
--   gcloud components install kubectl
+-   gcloud components install kubectl (compatible with v1.10.0)
+    
     
 	-   [https://kubernetes.io/docs/tasks/tools/install-kubectl/](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+
+		 ```
+		curl -LO https://storage.googleapis.com/kubernetes-	release/release/v1.10.0/bin/linux/amd64/kubectl
+		 ```
     
 
 -   Install [](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) Git
@@ -58,8 +61,7 @@ This development would require main steps ,please follow the each step in detail
 	-   [https://git-scm.com/book/en/v2/Getting-Started-Installing-Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
     
 
--   [Kubernetes client](https://kubernetes.io/docs/tasks/tools/install-kubectl/) (compatible with v1.10)
-    
+-   [Kubernetes client](https://kubernetes.io/docs/tasks/tools/install-kubectl/) 
 
 -   Create a Google Cloud Platform [](https://console.cloud.google.com/projectselector/compute/instances) Project
     
@@ -150,15 +152,24 @@ Next connect to the Kubernetes cluster by Command-line access,follow the steps b
 	export password="< password >"
 	```
 -   Execute deploy. sh  script in kubernetes-apim-2.6.x/pattern-1/scripts with Kubernetes cluster admin password(visit to your cluster in kubernetes Engine and click Show credentials ).
+
 	 ```
 	./deploy.sh --wu=$username--wp=$password--cap=<Kubernetes cluster admin password>
 	```
+	**Note:** this deploy.sh script will ,
+	*create a namespace named  `wso2`  and a service account named  `wso2svc-account`, within the namespace  `wso2`.Then, switch the context to new `wso2` namespace.
+Create a Kubernetes Secret to pull the required Docker images from  [`WSO2 Docker Registry`](https://docker.wso2.com/),
+Create a Kubernetes ConfigMap for passing database script(s) to the deployment.
+Deploy the persistent volume resource and volume claim
+Create a Kubernetes service only within the Kubernetes cluster followed by the MySQL Kubernetes deployment.
+Create Kubernetes ConfigMaps for passing WSO2 product configurations into the Kubernetes cluster.
+Create Kubernetes Services and Deployments for WSO2 API Manager and Analytics.*
 -   Check the status of the pod.
 	```
 	kubect get pods -n wso2
 	```
 **D.  Deploying NGINX Ingress**
-   
+   ##### Deploy Kubernetes Ingress resource.
 -   Execute nginx-deploy. sh in kubernetes-demo/niginx with Kubernetes cluster admin password.
 This will create NGINX Ingress Controller.
     
@@ -167,6 +178,7 @@ This will create NGINX Ingress Controller.
 	```
 **E.  Access Management Consoles.**
     
+deployment will expose `wso2apim` and `wso2apim-gateway` hosts.
 
 -   Obtain the external IP (EXTERNAL-IP) of the Ingress resources by listing down the Kubernetes Ingresses.
 	```
@@ -178,20 +190,88 @@ This will create NGINX Ingress Controller.
 	< EXTERNAL-IP > wso2apim-gateway
 	```
 -   navigate to [https://wso2apim/carbon](https://wso2apim/carbon) , [https://wso2apim/publisher](https://wso2apim/publisher) and [https://wso2apim/store](https://wso2apim/store) from your browser.
+
+	 **Note:**  sign in with **`admin/admin`** credentials.
     
 
   
 ### ***1.3 Deploying Sample Backend Service***
--   Execute service-deploy. sh in kubernetes-demo/sample_service_kubernetes.
-    This will create service and the deployment of the sample backend service.
+ -   Execute service-deploy. sh in kubernetes-demo/sample_service.
+    This will create a Kubernetes service and the deployment of the sample backend service under wso2 namespace.
+    
+		```
+		./service-deploy.sh
+		```
+		
+ -   Check the status of the pod.
+		```
+		kubect get pods -n wso2
+		```
+		
+		
+ - Check the services.
+	 ```
+	 kubectl get services -n wso2
+	 ```
+
+		
+### Deploying a sample API.
+**Creating and publishing An API**
+	
+	
+ - update DATA_FILE and IMAGE in  /automation_scripts/publisher/creat_publish_api/publisher_config.txt.
+ 
+	 ```
+	HOST_NAME_APIM="wso2apim"
+	PORT=""
+	HOST_NAME_GATWAY="wso2apim-gateway"
+	PUBLISHER_BASE_PATH="api/am/publisher/v0.14"
+	USERNAME="admin"
+	PASSWORD="admin"
+	PUBLISHER_SCOPE="apim:api_view apim:api_create apim:api_publish"
+	DATA_FILE="../create_publish_api/HelloBallerinaAPI/helloballerinadata.json"
+	IMAGE="../create_publish_api/HelloBallerinaAPI/hello.jpeg"
+	TIER="Unlimited"
 	```
-	./service-deploy.sh
+
+	(DATA_FILE:path for the json payload file which specifying the details of the API with API definition
+	USERNAME and PASSWORD will be **`admin/admin`** as default.
+	IMAGE:thumbnail image  file path of an API) 
+	
+	Please  refer [RESTful API for WSO2 API Manager - Publisher](https://docs.wso2.com/display/AM260/apidocs/publisher/index.html) for further details.
+
+ - Execute create_publish_aip.sh in /automation_scripts/publisher/publisher_create_publish_api/.
+ This will create a **HelloBallerinaAPI** in API Manager Publisher  API and Publish it.
+	 ```
+	 ./create_publish_aip.sh
 	```
--   Check the status of the pod.
+	
+### Creating a Sample Application.
+
+ - Update API_NAME,APPLICATION_DATA_FILE in
+   /automation_scripts/store/create_application/store_config.txt
+   
+   ```
+    HOST_NAME_APIM="wso2apim"
+	HOST_NAME_GATEWAY="wso2apim-gateway"
+	PORT=""
+	STORE_BASE_PATH="api/am/store/v0.14"
+	STORE_SCOPE="apim:subscribe"
+	USERNAME="admin"
+	PASSWORD="admin"
+	API_NAME="HelloBallerinaAPI"
+	APPLICATION_DATA_FILE="../create_application/HelloBallerinaApp/helloballerina_application_data.json"
 	```
-	kubect get pods -n wso2
-	```
- ## 2.Pod Auto-scaling
+	
+ - Execute app_create_sub subscribe .sh in
+   /automation_scripts/publishercreat_publish_api/.
+	 This will create a **HelloBallerinaApplication**  Applicaction in API Manager Store and get a subscription.
+	 ```
+	 ./app_create_subscribe.sh
+	 ```
+	 
+	 Please  refer [RESTful API for WSO2 API Manager - Store](https://docs.wso2.com/display/AM260/apidocs/store/index.html) for further details.
+  ## 2.Pod Auto-scaling
  Horizontal Pod autoscaler will scales the number of pod replicas based on observed CPU utilization provided metrics.
  [https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
  -   Provide CPU limit and CPU request for the Container by including **resources:limits,resources:requests** in kubernetes-apim-2.6x/pattern-1/apim/wso2apim-deployment.yml

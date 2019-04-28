@@ -18,10 +18,6 @@
    ],
    "tags": ["Hello"],
    "tiers": ["Unlimited"],
-   "maxTps":    {
-      "sandbox": 5000,
-      "production": 1000
-   },
    "visibility": "PUBLIC",
    "visibleRoles": [],
    "endpointConfig": "{\"production_endpoints\":{\"url\":\"http://hello-world-ballerina-v1:9091/hello\",\"config\":null},\"sandbox_endpoints\":{\"url\":\"http://hello-world-ballerina-v1:9091/hello \",\"config\":null},\"endpoint_type\":\"http\"}",
@@ -31,7 +27,6 @@
       "password": "pass"
    },
    "gatewayEnvironments": "Production and Sandbox",
-   "sequences": [{"name":"json_validator","type": "in"},{"name":"log_out_message","type": "out"}],
    "subscriptionAvailability": null,
    "subscriptionAvailableTenants": [],
    "businessInformation":    {

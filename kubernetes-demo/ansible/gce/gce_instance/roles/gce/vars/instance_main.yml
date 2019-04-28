@@ -1,8 +1,0 @@
-# cat roles/gce/vars/instance_main.yml
-# gce
-instance_name: test-instance1
-zone: us-central1-f 
-machine_type: n1-standard-1
-service_account_email: apim-dogfooding-sa@apim-dogfooding-221708.iam.gserviceaccount.com
-service_account_file: /home/andrea/apim-dogfooding-221708-e90776321ecd.json
-project: apim-dogfooding-221708

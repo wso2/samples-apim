@@ -1,4 +1,5 @@
-HOST_NAME="wso2apim"
+HOST_NAME_APIM="wso2apim"
+HOST_NAME_GATEWAY="wso2apim-gateway"
 PORT=""
 ADMIN_BASE_PATH="api/am/admin/v0.14"
 ADMIN_SCOPE="apim:api_view apim:tier_view apim:tier_manage"
