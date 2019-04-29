@@ -8,7 +8,6 @@ import ballerina/log;
 import ballerina/http;
 import ballerina/mime;
 
-
 int randSpeed = 0;
 int randOil = 0;
 int randMileage = 0;
@@ -17,12 +16,10 @@ int count;
 task:Timer? timer;
 string currentDate = "";
 string vehicleID = "";
-
 string randLocation;
 string currentTime = "";
-
-
 int i = 1;
+
 http:ClientEndpointConfig clientEPConfig = {
     secureSocket: {
         trustStore: {
@@ -51,6 +48,7 @@ public function main() {
     //sleep after 10 minutes
     runtime:sleep(config:getAsInt("sleep"));
 }
+
 //function to generate random vehicleId
 function randomVehicleId() {
     string[] b = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t",
@@ -64,10 +62,11 @@ function randomVehicleId() {
     int randNumber2 = math:randomInRange(0, 10);
     int randNumber3 = math:randomInRange(0, 10);
     int randNumber4 = math:randomInRange(0, 10);
-    vehicleID = char1 + char2 + sperate + <string>randNumber1 + <string>randNumber2 + <string>randNumber3 + <string>
+    vehicleID = char1andreanimi + char2 + sperate + <string>randNumber1 + <string>randNumber2 + <string>randNumber3 + <string>
                     randNumber4;
     log:printInfo("vehicle id :" + vehicleID);
 }
+
 //function to generate random Location
 function randomLocation() {
     string sperate = "-";
@@ -90,6 +89,7 @@ function scheduleTimer(int delay, int interval) {
     // Start the timer.
     timer.start();
 }
+
 // Define the ‘onError’ function for the task timer.
 function onError(error e) {
     io:print("[ERROR] failed to execute timed task");
@@ -98,7 +98,6 @@ function onError(error e) {
 }
 
 function onTrigger() returns error? {
-
 
     time:Time time = time:currentTime();
     currentDate = time.format("yyyy-MM-dd");
@@ -116,15 +115,11 @@ function onTrigger() returns error? {
     randomLocation();
     resourceRecord();
     resourceGetRecords();
-    resourceDeleteRecords();
-    resourceDeleteAllRecords();
+    // resourceDeleteRecords();
+    //resourceDeleteAllRecords();
 
     return ();
 }
-
-
-
-
 
 // Function to POST resource 'record vehicle details'.
 function resourceRecord() {
@@ -146,16 +141,14 @@ function resourceRecord() {
         if (msg is string) {
 
             log:printInfo(msg);
-
         }
-
     }
     else {
 
         log:printError(<string>response.detail().message);
     }
-
 }
+
 // Function to GET resource 'get record vehicle details'.
 function resourceGetRecords() {
     http:Request req = new;
@@ -167,7 +160,6 @@ function resourceGetRecords() {
     io:println(resp);
     if (resp is http:Response) {
 
-
         var message = resp.getJsonPayload();
 
         if (message is json) {
@@ -176,16 +168,14 @@ function resourceGetRecords() {
 
         } else {
             io:println("it not a json");
-
-
             log:printError(<string>message.detail().message);
         }
     } else {
         io:println("it's not a http res");
         log:printError(<string>resp.detail().message);
     }
-
 }
+
 // Function to DELETE resource 'detele a vehicle record '.
 function resourceDeleteRecords() {
     http:Request req = new;
@@ -199,7 +189,6 @@ function resourceDeleteRecords() {
 
         if (message is json) {
             io:println(message);
-
         } else {
             io:println("response is not a json");
             log:printError(<string>message.detail().message);
@@ -210,12 +199,12 @@ function resourceDeleteRecords() {
     }
 
 }
+
 // Function to DELETE resource 'delete all the vehicle records '.
 function resourceDeleteAllRecords() {
     http:Request req = new;
     req.addHeader("Authorization", config:getAsString("AuthorizationToken"));
     req.addHeader("Content-Type", "application/json");
-
 
     var resp = clientEP->delete("/deleteAllRecords", req);
     io:println(resp);

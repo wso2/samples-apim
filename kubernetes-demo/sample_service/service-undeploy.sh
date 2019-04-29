@@ -30,6 +30,7 @@ function usage () {
     echoBold "This script automates the backend service resources\n"
     echoBold "Allowed arguments:\n"
     echoBold "-h | --help"
+    echoBold "--u | --username\t\t username"
     echoBold "--cap | --cluster-admin-password\tKubernetes cluster admin password\n\n"
 }
 
@@ -45,6 +46,10 @@ while [ "$1" != "" ]; do
         -h | --help)
             usage
             exit 1
+
+            ;;
+        --u | --username)
+            USERNAME=${VALUE}
             ;;
         --cap | --cluster-admin-password)
             ADMIN_PASSWORD=${VALUE}
@@ -57,9 +62,10 @@ while [ "$1" != "" ]; do
     esac
     shift
 done
-echoBold 'Deleting NGINX Ingress Controller...'
-${KUBECTL} delete --username=admin --password=${ADMIN_PASSWORD} -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml
-${KUBECTL} delete -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/provider/cloud-generic.yaml
-
+echoBold 'Deploying BACK END SERVICE...'
+#update <PATH_FOR_THE_SERVICE_DEPLOYMENT_YML_FILE> with your backend service yml file
+${KUBECTL} delete -f HelloBallerina⁩/kubernetes⁩/⁨helloService⁩/helloService_svc.yml -n wso2
+#update <PATH_FOR_THE_SERVICE_DEPLOYMENT_YML_FILE> with your backend service deployment yml file
+${KUBECTL} delete -f HelloBallerina⁩/kubernetes⁩/⁨helloService⁩/helloService_svc.yml -n wso2
 sleep 10s
 echoBold 'Finished'

@@ -1,0 +1,6 @@
+{
+    "throttlingTier": "Unlimited",
+    "description": "Vehicle Manager",
+    "name": "VehicleManagerApplication",
+    "callbackUrl": "http://my.server.com/callback"
+}

@@ -1,0 +1,57 @@
+{
+   "name": "HelloBallerinaAPI",
+   "description": "This document describe a RESTFul API for HelloBallerinaAPI.",
+   "context": "/hello",
+   "version": "1.0.0",
+   "provider": "admin",
+   "apiDefinition":"{\"swagger\":\"2.0\",\"paths\":{\"\/\":{\"get\":{\"responses\":{\"200\":{\"description\":\"\"}},\"x-auth-type\":\"Application & Application User\",\"x-throttling-tier\":\"Unlimited\"}}},\"info\":{\"title\":\"HelloBallerinaAPI\",\"version\":\"1.0.0\",\"description\":\"This document describe a RESTFul API for HelloBallerinaAPI. \"},\"host\":\"10.48.2.15:8243\",\"basePath\":\"\/hello\/1.0.0\",\"schemes\":[\"https\",\"http\"],\"securityDefinitions\":{\"default\":{\"type\":\"oauth2\",\"authorizationUrl\":\"https:\/\/10.48.2.15:8243\/authorize\",\"flow\":\"implicit\",\"scopes\":{}}}}",
+   "wsdlUri": null,
+   "status": "CREATED",
+   "responseCaching": "Disabled",
+   "cacheTimeout": 300,
+   "destinationStatsEnabled": false,
+   "isDefaultVersion": false,
+   "type": "HTTP",
+   "transport":    [
+      "http",
+      "https"
+   ],
+   "tags": ["Hello"],
+   "tiers": ["Unlimited"],
+   "visibility": "PUBLIC",
+   "visibleRoles": [],
+   "endpointConfig": "{\"production_endpoints\":{\"url\":\"http://hello-world-ballerina-v1:9091/hello\",\"config\":null},\"sandbox_endpoints\":{\"url\":\"http://hello-world-ballerina-v1:9091/hello \",\"config\":null},\"endpoint_type\":\"http\"}",
+   "endpointSecurity":    {
+      "username": "user",
+      "type": "basic",
+      "password": "pass"
+   },
+   "gatewayEnvironments": "Production and Sandbox",
+   "subscriptionAvailability": null,
+   "subscriptionAvailableTenants": [],
+   "businessInformation":    {
+      "businessOwnerEmail": "marketing@helloBallerina.com",
+      "technicalOwnerEmail": "architecture@helloBallerina.com",
+      "technicalOwner": "John Doe",
+      "businessOwner": "Jane Roe"
+   },
+   "corsConfiguration":    {
+      "accessControlAllowOrigins": ["*"],
+      "accessControlAllowHeaders":       [
+         "authorization",
+         "Access-Control-Allow-Origin",
+         "Content-Type",
+         "SOAPAction"
+      ],
+      "accessControlAllowMethods":       [
+         "GET",
+         "PUT",
+         "POST",
+         "DELETE",
+         "PATCH",
+         "OPTIONS"
+      ],
+      "accessControlAllowCredentials": false,
+      "corsConfigurationEnabled": false
+   }
+}

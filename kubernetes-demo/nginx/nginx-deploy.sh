@@ -58,7 +58,7 @@ while [ "$1" != "" ]; do
 done
 echoBold 'Deploying NGINX Ingress Controller...'
 ${KUBECTL} apply --username=admin --password=${ADMIN_PASSWORD} -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.22.0/deploy/mandatory.yaml
-${KUBECTL} apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.22.0/deploy/provider/cloud-generic.yaml -n wso2 
+${KUBECTL} apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.22.0/deploy/provider/cloud-generic.yaml  
 
 sleep 10s
 echoBold 'Finished'
