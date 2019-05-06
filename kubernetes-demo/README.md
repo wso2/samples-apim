@@ -287,8 +287,10 @@ This creates the corresponding Docker image and the Kubernetes artifacts using t
 	 
 ### Invoking an API
 - Generating an access token.
+
   Execute token.sh  in  /automation_scripts/client.
 - Invoking an API
+
   Execute helloclient.sh in  /automation_scripts/client.
 
   ## 2.Pod Auto-scaling
