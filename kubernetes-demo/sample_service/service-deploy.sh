@@ -64,8 +64,8 @@ while [ "$1" != "" ]; do
 done
 echoBold 'Deploying BACK END SERVICE...'
 #update <PATH_FOR_THE_SERVICE_DEPLOYMENT_YML_FILE> with your backend service yml file
-${KUBECTL} create -f HelloBallerina⁩/kubernetes⁩/⁨helloService⁩/helloService_svc.yml -n wso2
+${KUBECTL} create -f  HelloBallerina/kubernetes/helloService/helloService_svc.yaml -n wso2
 #update <PATH_FOR_THE_SERICE_DEPLOYMENT_YML_FILE> with your backend service deployment yml file
-${KUBECTL} create -f HelloBallerina⁩/kubernetes⁩/⁨helloService⁩/hello_service_deployment.yaml -n wso2
+${KUBECTL} create -f HelloBallerina/kubernetes/helloService/helloService_deployment.yaml -n wso2
 sleep 10s
 echoBold 'Finished'
