@@ -9,7 +9,7 @@
 *This is the simplest deployment pattern consists of a scalable deployment of WSO2 API Manager with WSO2 API Manager Analytics support.*
 
 
-![WSO2 API Manager deployment with WSO2 API Manager Analytics support](pattern01.jpg)
+![WSO2 API Manager deployment with WSO2 API Manager Analytics support](k8sdemo.jpg)
 
   ## 1. Deploying API Manager In Kubernetes in gcloud
 **Overview**
@@ -276,13 +276,20 @@ This creates the corresponding Docker image and the Kubernetes artifacts using t
 	```
 	
  - Execute app_create_sub subscribe .sh in
-   /automation_scripts/publishercreat_publish_api/.
+   /automation_scripts/publisher/create_publish_api.
 	 This will create a **HelloBallerinaApplication**  Applicaction in API Manager Store and get a subscription.
 	 ```
 	 ./app_create_subscribe.sh
 	 ```
 	 
 	 Please  refer [RESTful API for WSO2 API Manager - Store](https://docs.wso2.com/display/AM260/apidocs/store/index.html) for further details.
+	 
+### Invoking an API
+- Generating an access token.
+Execute token.sh  in  /automation_scripts/client.
+- Invoking an API
+ Execute helloclient.sh in  /automation_scripts/client.
+
   ## 2.Pod Auto-scaling
  Horizontal Pod autoscaler will scales the number of pod replicas based on observed CPU utilization provided metrics.
  [https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
@@ -322,3 +329,4 @@ HPA will increase and decrease the number of replicas (via the deployment) to ma
 	 ```  
 	kubectl apply -f wso2apim-update-deployment.yaml -n wso2
 	 ```  
+
