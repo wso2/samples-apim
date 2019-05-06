@@ -2,6 +2,7 @@
 *This documentation is to deploy* 
 
 *1. WSO2 API Manager deployment pattern 1 in gcloud Kubernetes Engine and automating a sample backend service.*
+
 *2.Pod auto-scaling in Kubernetes*
 
 *3.Rolling updates on API Manager*
@@ -286,9 +287,9 @@ This creates the corresponding Docker image and the Kubernetes artifacts using t
 	 
 ### Invoking an API
 - Generating an access token.
-Execute token.sh  in  /automation_scripts/client.
+  Execute token.sh  in  /automation_scripts/client.
 - Invoking an API
- Execute helloclient.sh in  /automation_scripts/client.
+  Execute helloclient.sh in  /automation_scripts/client.
 
   ## 2.Pod Auto-scaling
  Horizontal Pod autoscaler will scales the number of pod replicas based on observed CPU utilization provided metrics.
