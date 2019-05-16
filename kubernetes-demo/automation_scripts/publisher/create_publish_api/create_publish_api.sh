@@ -7,7 +7,7 @@ function echoBold () {
 }
 
 function StatusCheck(){
-
+	
 if [ $status_code == "201" ]
 	then
 	echo "statuscode:$status_code"
