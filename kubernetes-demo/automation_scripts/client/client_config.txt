@@ -3,5 +3,5 @@ PORT=""
 HOST_NAME_GATEWAY="wso2apim-gateway"
 STORE_BASE_PATH="api/am/store/v0.14"
 STORE_SCOPE="apim:subscribe"
-APPLICATION_NAME="HelloBallerinaApplication"
+APPLICATION_NAME="HelloKubernetesApplication"
 

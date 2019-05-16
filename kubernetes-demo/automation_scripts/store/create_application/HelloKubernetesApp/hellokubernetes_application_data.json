@@ -1,0 +1,6 @@
+{
+    "throttlingTier": "Unlimited",
+    "description": "Hello Kubernetes",
+    "name": "HelloKubernetesApplication",
+    "callbackUrl": "http://my.server.com/callback"
+}
