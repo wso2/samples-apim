@@ -1,0 +1,22 @@
+---
+apiVersion: "extensions/v1beta1"
+kind: "Ingress"
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-passthrough: "false"
+    kubernetes.io/ingress.class: "nginx"
+  finalizers: []
+  labels:
+    app: "helloKubernetesService"
+  name: "kubernetes-hello-v1"
+  ownerReferences: []
+spec:
+  rules:
+  - host: "kubernetes-hellov1"
+    http:
+      paths:
+      - backend:
+          serviceName: "kubernetes-hello-v1"
+          servicePort: 9090
+        path: "/"
+  tls: []

@@ -1,0 +1,23 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  creationTimestamp: 2019-04-10T05:59:12Z
+  name: wso2apim-with-analytics-apim
+  namespace: wso2
+  resourceVersion: "11546677"
+  selfLink: /apis/autoscaling/v1/namespaces/wso2/horizontalpodautoscalers/wso2apim-with-analytics-apim
+  uid: c3714b90-5b55-11e9-a15f-42010aa000b7
+spec:
+  maxReplicas: 2
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    name: wso2apim-with-analytics-apim
+  targetCPUUtilizationPercentage: 5
+status:
+  currentCPUUtilizationPercentage: 4
+  currentReplicas: 1
+  desiredReplicas: 1
+  
+

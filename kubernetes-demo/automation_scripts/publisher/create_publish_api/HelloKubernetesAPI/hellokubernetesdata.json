@@ -1,10 +1,10 @@
 {
-   "name": "HelloBallerinaAPI",
-   "description": "This document describe a RESTFul API for HelloBallerinaAPI.",
-   "context": "/hello",
+   "name": "HelloKubernetesAPI",
+   "description": "This document describes a RESTFul API for HelloKubernetesAPI.",
+   "context": "/kuberneteshello",
    "version": "1.0.0",
    "provider": "admin",
-   "apiDefinition":"{\"swagger\":\"2.0\",\"paths\":{\"\/\":{\"get\":{\"responses\":{\"200\":{\"description\":\"\"}},\"x-auth-type\":\"Application & Application User\",\"x-throttling-tier\":\"Unlimited\"}}},\"info\":{\"title\":\"HelloBallerinaAPI\",\"version\":\"1.0.0\",\"description\":\"This document describe a RESTFul API for HelloBallerinaAPI. \"},\"host\":\"10.48.2.15:8243\",\"basePath\":\"\/hello\/1.0.0\",\"schemes\":[\"https\",\"http\"],\"securityDefinitions\":{\"default\":{\"type\":\"oauth2\",\"authorizationUrl\":\"https:\/\/10.48.2.15:8243\/authorize\",\"flow\":\"implicit\",\"scopes\":{}}}}",
+   "apiDefinition":"{\"swagger\":\"2.0\",\"paths\":{\"\/\":{\"get\":{\"responses\":{\"200\":{\"description\":\"\"}},\"x-auth-type\":\"Application & Application User\",\"x-throttling-tier\":\"Unlimited\"}}},\"info\":{\"title\":\"HelloKubernetes\",\"version\":\"1.0.0\",\"description\":\"This document describes a RESTFul API for HelloKubernetesAPI.\"},\"host\":\"10.48.2.43:8243\",\"basePath\":\"\/kuberneteshello\/1.0.0\",\"schemes\":[\"https\",\"http\"],\"securityDefinitions\":{\"default\":{\"type\":\"oauth2\",\"authorizationUrl\":\"https:\/\/10.48.2.43:8243\/authorize\",\"flow\":\"implicit\",\"scopes\":{}}}}",
    "wsdlUri": null,
    "status": "CREATED",
    "responseCaching": "Disabled",
@@ -16,11 +16,11 @@
       "http",
       "https"
    ],
-   "tags": ["Hello"],
+   "tags": ["Kubernetes"],
    "tiers": ["Unlimited"],
    "visibility": "PUBLIC",
    "visibleRoles": [],
-   "endpointConfig": "{\"production_endpoints\":{\"url\":\"http://hello-world-ballerina-v1:9091/hello\",\"config\":null},\"sandbox_endpoints\":{\"url\":\"http://hello-world-ballerina-v1:9091/hello \",\"config\":null},\"endpoint_type\":\"http\"}",
+   "endpointConfig": "{\"production_endpoints\":{\"url\":\"http://kubernetes-hello-v1:9090/kuberneteshello\",\"config\":null},\"sandbox_endpoints\":{\"url\":\"http://kubernetes-hello-v1:9090/kuberneteshello\",\"config\":null},\"endpoint_type\":\"http\"}",
    "endpointSecurity":    {
       "username": "user",
       "type": "basic",
@@ -30,8 +30,8 @@
    "subscriptionAvailability": null,
    "subscriptionAvailableTenants": [],
    "businessInformation":    {
-      "businessOwnerEmail": "marketing@helloBallerina.com",
-      "technicalOwnerEmail": "architecture@helloBallerina.com",
+      "businessOwnerEmail": "marketing@helloKubernetes.com",
+      "technicalOwnerEmail": "architecture@helloKubernetes.com",
       "technicalOwner": "John Doe",
       "businessOwner": "Jane Roe"
    },

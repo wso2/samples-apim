@@ -3,16 +3,16 @@
 
 *1. WSO2 API Manager deployment pattern 1 in gcloud Kubernetes Engine and automating a sample backend service.*
 
-*2.Pod auto-scaling in Kubernetes*
+*2.Zero downtime Rolling updates on WSO2 API Manager*
 
-*3.Rolling updates on API Manager*
+*3.Autoscaling WSO2 API Manager based on the production load*
 
 *This is the simplest deployment pattern consists of a scalable deployment of WSO2 API Manager with WSO2 API Manager Analytics support.*
 
 
 ![WSO2 API Manager deployment with WSO2 API Manager Analytics support](k8sdemo.jpg)
 
-  ## 1. Deploying API Manager In Kubernetes in gcloud
+  ## 1. Deploying API Manager In Kubernetes 
 **Overview**
 
 This development would require main steps ,
@@ -32,12 +32,13 @@ please follow the each step in details.
 1.3 Deploying Sample Back end service.
 
 
-*In order to use WSO2 Kubernetes resources, you need an active WSO2 subscription. If you do not possess an active WSO2 subscription already, you can sign up for a WSO2 Free Trial Subscription from [here](https://wso2.com/free-trial-subscription).*
+
 
 ### Getting Started
 
 ### ***1.1 Install Prerequisites***
 
+*In order to use WSO2 Kubernetes resources, you need an active WSO2 subscription. If you do not possess an active WSO2 subscription already, you can sign up for a WSO2 Free Trial Subscription from [here](https://wso2.com/free-trial-subscription).*
 
 -   Install Docker v17.09.0 or above
     
@@ -109,7 +110,7 @@ please follow the each step in details.
 -   Grant read-write-execute permissions to the wso2carbon user, for each of the previously created directories.
     
 	 ```
-	sudo chmod -R 700 <directory_name_apim>
+	sudo chmod -R 757 <directory_name_apim>
 	sudo chmod -R 757 <directory_name_database>
 	 ```
   
@@ -133,7 +134,8 @@ Steps to create a kubernetes Cluster
 	
 **C.  Deploying WSO2 API Manager and Analytics**
  
-   Clone the [wso2/samples-apim](https://github.com/wso2/samples-apim) master Branch for Kubernetes Resources.
+ Clone [wso2/samples-apim](https://github.com/wso2/samples-apim/tree/master/kubernetes-demo) master Branch for the Kubernetes Resources.
+ 
 -   Update the Kubernetes Persistent Volume resource with the corresponding Single node file server IP (NFS_SERVER_IP) and exported, NFS server directory path (NFS_LOCATION_PATH) in
 
 	 ```
@@ -160,7 +162,7 @@ Next connect to the Kubernetes cluster by Command-line access,follow the steps b
 	 ```
 	./deploy.sh --wu=$username--wp=$password--cap=<Kubernetes cluster admin password>
 	```
-	**Note:** this deploy.sh script will ,
+	**Note:** this deploy .sh script will ,
 	*create a namespace named  `wso2`  and a service account named  `wso2svc-account`, within the namespace  `wso2`.Then, switch the context to new `wso2` namespace.
 Create a Kubernetes Secret to pull the required Docker images from  [`WSO2 Docker Registry`](https://docker.wso2.com/),
 Create a Kubernetes ConfigMap for passing database script(s) to the deployment.
@@ -170,7 +172,7 @@ Create Kubernetes ConfigMaps for passing WSO2 product configurations into the Ku
 Create Kubernetes Services and Deployments for WSO2 API Manager and Analytics.*
 -   Check the status of the pod.
 	```
-	kubect get pods -n wso2
+	kubectl get pods -n wso2
 	```
 **D.  Deploying NGINX Ingress**
    ##### Deploy Kubernetes Ingress resource.
@@ -186,7 +188,7 @@ deployment will expose `wso2apim` and `wso2apim-gateway` hosts.
 
 -   Obtain the external IP (EXTERNAL-IP) of the Ingress resources by listing down the Kubernetes Ingresses.
 	```
-	 kubectl get ing
+	 kubectl get ing -n wso2
 	```
 -   Add the above host as an entry in /etc/hosts file as follows:
 	```
@@ -201,13 +203,7 @@ deployment will expose `wso2apim` and `wso2apim-gateway` hosts.
   
 ### ***1.3 Deploying Sample Backend Service***
 
-Use the following command to build a Ballerina executable archive (.balx) of the service in sample_service/helloBallerina.
-	```
-	$ ballerina build helloService
-	```
-	
-This creates the corresponding Docker image and the Kubernetes artifacts using the Kubernetes annotations that have configured.
-	**Note:** Sample Kubernetes artifacts are in sample_service/helloBallerina/kubernetes/helloService.
+Sample Kubernetes artifacts are in sample_service/HelloKubernetes/kubernetes/HelloKubernetesService.
 	
  -   Execute service-deploy. sh in kubernetes-demo/sample_service.
     This will create a Kubernetes service and the deployment of the sample backend service under wso2 namespace.
@@ -227,6 +223,11 @@ This creates the corresponding Docker image and the Kubernetes artifacts using t
 	 kubectl get services -n wso2
 	 ```
 
+**Note:** Use the following command to build a Ballerina executable archive (.balx) of the service in sample_service/HelloKubernetes.
+	```
+	$ ballerina build hellokubernetesService
+	```
+This creates the corresponding Docker image and the Kubernetes artifacts using the Kubernetes annotations that have configured.
 		
 ### Deploying a sample API.
 **Creating and publishing An API**
@@ -242,8 +243,8 @@ This creates the corresponding Docker image and the Kubernetes artifacts using t
 	USERNAME="admin"
 	PASSWORD="admin"
 	PUBLISHER_SCOPE="apim:api_view apim:api_create apim:api_publish"
-	DATA_FILE="../create_publish_api/HelloBallerinaAPI/helloballerinadata.json"
-	IMAGE="../create_publish_api/HelloBallerinaAPI/hello.jpeg"
+	DATA_FILE="../create_publish_api/HelloKubernetesAPI/hellokubernetesdata.json"
+	IMAGE="../create_publish_api/HelloKubernetesAPI/kubernetes.png"
 	TIER="Unlimited"
 	```
 
@@ -254,7 +255,7 @@ This creates the corresponding Docker image and the Kubernetes artifacts using t
 	Please  refer [RESTful API for WSO2 API Manager - Publisher](https://docs.wso2.com/display/AM260/apidocs/publisher/index.html) for further details.
 
  - Execute create_publish_aip.sh in /automation_scripts/publisher/publisher_create_publish_api/.
- This will create a **HelloBallerinaAPI** in API Manager Publisher  API and Publish it.
+ This will create a **HelloKubernetesAPI** in API Manager Publisher  API and Publish it.
 	 ```
 	 ./create_publish_aip.sh
 	```
@@ -272,13 +273,13 @@ This creates the corresponding Docker image and the Kubernetes artifacts using t
 	STORE_SCOPE="apim:subscribe"
 	USERNAME="admin"
 	PASSWORD="admin"
-	API_NAME="HelloBallerinaAPI"
-	APPLICATION_DATA_FILE="../create_application/HelloBallerinaApp/helloballerina_application_data.json"
+	API_NAME="HelloKubernetesAPI"
+	APPLICATION_DATA_FILE="../create_application/HelloKubernetesApp/hellokybernetes_application_data.json"
 	```
 	
  - Execute app_create_sub subscribe .sh in
    /automation_scripts/publisher/create_publish_api.
-	 This will create a **HelloBallerinaApplication**  Applicaction in API Manager Store and get a subscription.
+	 This will create a **HelloKubernetesApplication**  Applicaction in API Manager Store and get a subscription.
 	 ```
 	 ./app_create_subscribe.sh
 	 ```
@@ -289,35 +290,16 @@ This creates the corresponding Docker image and the Kubernetes artifacts using t
 - Generating an access token.
 
   Execute token.sh  in  /automation_scripts/client.
+  
 - Invoking an API
 
   Execute helloclient.sh in  /automation_scripts/client.
-
-  ## 2.Pod Auto-scaling
- Horizontal Pod autoscaler will scales the number of pod replicas based on observed CPU utilization provided metrics.
- [https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
- -   Provide CPU limit and CPU request for the Container by including **resources:limits,resources:requests** in kubernetes-apim-2.6x/pattern-1/apim/wso2apim-deployment.yml
-	 ```
-	 - resources:
-	       requests:
-	           memory: "2Gi"
-	           cpu: "2000m"
-	       limits:
-	           memory: "3Gi"
-	           cpu: "3000m"
-	           
-	  ```
-  -   Create a Horizontal Pod Autoscaler that maintains between 1 and 2 replicas of the Pods controlled by wso2apim-with-analytics-apim deployment.
-HPA will increase and decrease the number of replicas (via the deployment) to maintain an average CPU utilization across all Pods of 10%
-		```
-		kubectl autoscale deployment wso2apim-with-analytics-apim --cpu-percent=10 --min=1 --max=2 -n wso2
-		```
-
--   check the current status of autoscaler
+  
 	```
-	kubectl get hpa wso2apim-with-analytics-apim -n wso2
+	curl -k -X GET "https://wso2apim-gateway/kuberneteshello/1.0.0" -H "accept: application/json" -H "Authorization: Bearer $token"
 	```
- ## 3.Rolling updates on API Manager
+	
+ ## 2.Zero downtime Rolling updates on WSO2 API Manager
  
 -   Change the Docker Image of kubernetes-apim-2.6x/pattern-1/apim/wso2apim-deployment.yml
 	 ```  
@@ -332,4 +314,38 @@ HPA will increase and decrease the number of replicas (via the deployment) to ma
 	 ```  
 	kubectl apply -f wso2apim-update-deployment.yaml -n wso2
 	 ```  
+
+  ## 3.Autoscaling WSO2 API Manager based on the production load
+  
+ Horizontal Pod autoscaler will scales the number of pod replicas based on observed CPU utilization provided metrics.
+ [https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
+ -   Provide CPU limit and CPU request for the Container by including **resources:limits,resources:requests** in kubernetes-apim-2.6x/pattern-1/apim/wso2apim-deployment.yml
+	 ```
+	 - resources:
+	       requests:
+	           memory: "2Gi"
+	           cpu: "2000m"
+	       limits:
+	           memory: "3Gi"
+	           cpu: "3000m"
+	           
+	  ```
+  -   Create a Horizontal Pod Autoscaler that maintains between 1 and 2 replicas of the Pods controlled by wso2apim-with-analytics-apim deployment.
+HPA will increase and decrease the number of replicas (via the deployment) to maintain an average CPU utilization across all Pods of 5%
+		```
+		kubectl autoscale deployment wso2apim-with-analytics-apim --cpu-percent=5 --min=1 --max=2 -n wso2
+		```
+		or
+		
+		```
+		Kubectl apply -f wso2apim-hpa.yaml -n wso2
+		```
+
+-   check the current status of autoscaler
+	```
+	kubectl get hpa wso2apim-with-analytics-apim -n wso2
+	```
+
+
+
 
