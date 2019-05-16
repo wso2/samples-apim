@@ -15,9 +15,10 @@ https://wso2.com/library/tutorials/2016/02/tutorial-how-to-enable-role-based-acc
 
 1.Deploying API Manager pattern-1 and automating a sample backend service in gcloud Kubernetes Engine
 
-2.Pod autoscaling in Kubernetes
+2.Rolling updates on WSO2 API Manager
 
-3.Rolling updates on API Manager in Kubernetes
+3.Autoscaling WSO2 API Manager based on the production load
+
 
 
 
