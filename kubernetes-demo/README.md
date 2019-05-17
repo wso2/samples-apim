@@ -301,7 +301,7 @@ This creates the corresponding Docker image and the Kubernetes artifacts using t
 	
  ## 2.Zero downtime Rolling updates on WSO2 API Manager
  
--   Change the Docker Image of kubernetes-apim-2.6x/pattern-1/apim/wso2apim-deployment.yml
+-   Change the Docker Image of kubernetes-apim-2.6x/pattern-1/apim/wso2apim-update-deployment.yml
 	 ```  
 		spec:
 		       containers:
