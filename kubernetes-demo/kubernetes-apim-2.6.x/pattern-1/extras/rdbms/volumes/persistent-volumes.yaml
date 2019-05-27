@@ -25,5 +25,5 @@ spec:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    server: 10.160.0.7 
+    server: 10.142.0.2
     path: "/data/database"

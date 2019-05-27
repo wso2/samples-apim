@@ -40,10 +40,6 @@ please follow the each step in details.
 
 *In order to use WSO2 Kubernetes resources, you need an active WSO2 subscription. If you do not possess an active WSO2 subscription already, you can sign up for a WSO2 Free Trial Subscription from [here](https://wso2.com/free-trial-subscription).*
 
--   Install Docker v17.09.0 or above
-    
-
-	-   [https://docs.docker.com/install/](https://docs.docker.com/install/)
     
 
 -   Install gcloud-sdk
@@ -99,11 +95,11 @@ please follow the each step in details.
 -   Create unique directories within the Single node file server instance for each Kubernetes Persistent Volume
     
 	   ```
-	   mkdir /data/<directory_name>
+	   mkdir /data/<directory_name_apim>
 	   mkdir /data/<directory_name_database>
 	   ```
   
--   Grant ownership to wso2carbon user and wso2 group, for each of the previously created directories.
+-   Grant ownership to wso2carbon user and wso2 group, for previously created directories.
 	```
 	sudo chown -R wso2carbon:wso2 <directory_name_apim>
 	 ```
@@ -293,7 +289,7 @@ This creates the corresponding Docker image and the Kubernetes artifacts using t
   
 - Invoking an API
 
-  Execute helloclient.sh in  /automation_scripts/client.
+  Execute helloclient.sh in  /automation_scripts/client.add the access token we previously generated to $token. 
   
 	```
 	curl -k -X GET "https://wso2apim-gateway/kuberneteshello/1.0.0" -H "accept: application/json" -H "Authorization: Bearer $token"
@@ -301,12 +297,12 @@ This creates the corresponding Docker image and the Kubernetes artifacts using t
 	
  ## 2.Zero downtime Rolling updates on WSO2 API Manager
  
--   Change the Docker Image of kubernetes-apim-2.6x/pattern-1/apim/wso2apim-deployment.yml
+-   Change the Docker Image of kubernetes-apim-2.6x/pattern-1/apim/wso2apim-update-deployment.yml
 	 ```  
 		spec:
 		       containers:
 		        - name: wso2apim-with-analytics-apim-worker
-			   image: docker.wso2.com/wso2am:2.6.0 
+			   image: docker.wso2.com/wso2am:latest
 	 ``` 
   
 
@@ -314,6 +310,12 @@ This creates the corresponding Docker image and the Kubernetes artifacts using t
 	 ```  
 	kubectl apply -f wso2apim-update-deployment.yaml -n wso2
 	 ```  
+-   check the status of all
+
+    ```
+    kubect get all -n wso2 -o wide
+    ```
+
 
   ## 3.Autoscaling WSO2 API Manager based on the production load
   
