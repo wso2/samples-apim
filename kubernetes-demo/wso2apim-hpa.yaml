@@ -1,7 +1,6 @@
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  creationTimestamp: 2019-04-10T05:59:12Z
   name: wso2apim-with-analytics-apim
   namespace: wso2
   resourceVersion: "11546677"

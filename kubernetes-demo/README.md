@@ -7,10 +7,10 @@
 
 *3.Autoscaling WSO2 API Manager based on the production load*
 
-*This is the simplest deployment pattern consists of a scalable deployment of WSO2 API Manager with WSO2 API Manager Analytics support.*
 
 
-![WSO2 API Manager deployment with WSO2 API Manager Analytics support](k8sdemo.jpg)
+
+![WSO2 API Manager deployment with WSO2 API Manager Analytics support](k8sdemo.png)
 
   ## 1. Deploying API Manager In Kubernetes 
 **Overview**
@@ -26,7 +26,7 @@ please follow the each step in details.
 		      A. Creating a Single node file server in gcloud
 	              B. Creating a kubernetes Cluster in gcloud
 	              C. Deploying WSO2 API Manager and Analytics
-	              D. Deploying NGINX Ingress
+	              D. Deploying NGINX Ingress 
 	   	      E. Access Management Consoles
 
 1.3 Deploying Sample Back end service.
@@ -67,7 +67,7 @@ please follow the each step in details.
 -   Create a Google Cloud Platform [](https://console.cloud.google.com/projectselector/compute/instances) Project
     
 
-	-   [https://cloud.google.com/resource-manager/docs/creating-managing-projects?visit_id=636882414440593811-4047135311&rd=1#identifying_projects](https://cloud.google.com/resource-manager/docs/creating-managing-projects?visit_id=636882414440593811-4047135311&rd=1#identifying_projects)
+	-   [https://cloud.google.com/resource-manager/docs/creating-managing-projects](https://cloud.google.com/resource-manager/docs/creating-managing-projects)
 
 
 ### ***1.2 Deploying WSO2 API Manager pattern-1***
@@ -75,7 +75,7 @@ please follow the each step in details.
 **A.  Creating a Single node file server in gcloud**
     Steps to create a Single node file server
 1.  Login to Google Cloud Console using your Google Account.    
-2.  Visit GCP [Marketplace]( https://console.cloud.google.com/marketplace/details/click-to-deploy-images/singlefs)
+2.  Visit GCP [Marketplace]( https://console.cloud.google.com/marketplace/details/click-to-deploy-images/singlefs) and search for Single file node server
 3.  Click LAUNCH ON COMPUTE ENGINE and select your specific project  
 4.  Choose the default configurations ,provide a unique name and the corresponding Zone.
 (Name: It must be unique within the project and the zone.
@@ -210,7 +210,7 @@ Sample Kubernetes artifacts are in sample_service/HelloKubernetes/kubernetes/Hel
 		
  -   Check the status of the pod.
 		```
-		kubect get pods -n wso2
+		kubectl get pods -n wso2
 		```
 		
 		
@@ -313,7 +313,7 @@ This creates the corresponding Docker image and the Kubernetes artifacts using t
 -   check the status of all
 
     ```
-    kubect get all -n wso2 -o wide
+    kubectl get all -n wso2 -o wide
     ```
 
 
@@ -333,7 +333,7 @@ This creates the corresponding Docker image and the Kubernetes artifacts using t
 	           
 	  ```
   -   Create a Horizontal Pod Autoscaler that maintains between 1 and 2 replicas of the Pods controlled by wso2apim-with-analytics-apim deployment.
-HPA will increase and decrease the number of replicas (via the deployment) to maintain an average CPU utilization across all Pods of 5%
+HPA will increase and decrease the number of replicas (via the deployment) to maintain an target CPU utilization across all Pods of 5%(you can update the target CPU utilization)
 		```
 		kubectl autoscale deployment wso2apim-with-analytics-apim --cpu-percent=5 --min=1 --max=2 -n wso2
 		```
