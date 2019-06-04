@@ -102,7 +102,7 @@ ${KUBECTL} create -f ../volumes/persistent-volumes.yaml
 echoBold 'Deploying WSO2 API Manager Analytics...'
 ${KUBECTL} create -f ../apim-analytics/wso2apim-analytics-deployment.yaml
 ${KUBECTL} create -f ../apim-analytics/wso2apim-analytics-service.yaml
-sleep 200s
+sleep 20s
 
 echoBold 'Deploying WSO2 API Manager...'
 ${KUBECTL} create -f ../apim/wso2apim-volume-claim.yaml
