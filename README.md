@@ -19,6 +19,12 @@ https://wso2.com/library/tutorials/2016/02/tutorial-how-to-enable-role-based-acc
 
 3.Autoscaling WSO2 API Manager based on the production load
 
+---
+### CustomJWTGenerator
+This repo contains the source code of the Custom JWT Token Generator that is used as sample in the following article:
+
+https://docs.wso2.com/display/AM260/Passing+Enduser+Attributes+to+the+Backend+Using+JWT
+
 
 
 
