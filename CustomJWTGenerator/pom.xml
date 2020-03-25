@@ -28,6 +28,12 @@
 			<version>6.1.66</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.wso2.carbon.apimgt</groupId>
+			<artifactId>org.wso2.carbon.apimgt.impl</artifactId>
+			<version>6.1.66</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 	<repositories>
