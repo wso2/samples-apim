@@ -1,0 +1,13 @@
+.gitignore# Ignore everything in this directory
+target
+.classpath
+.settings
+.project
+*.iml
+*.iws
+*.ipr
+.idea
+*.swp
+derby.log
+.DS_Store
+
