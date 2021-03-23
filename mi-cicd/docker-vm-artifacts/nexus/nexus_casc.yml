@@ -47,7 +47,7 @@ repository:
         lastDownloadBefore: 10
   pruneRepositories: false # true
   repositories:
-    - name: development
+    - name: integration
       online: true
       recipeName: maven2-hosted
       attributes:
@@ -58,26 +58,3 @@ repository:
           writePolicy: ALLOW_ONCE
           strictContentTypeValidation: false
           blobStoreName: maven
-    - name: staging
-      online: true
-      recipeName: maven2-hosted
-      attributes:
-        maven:
-          versionPolicy: RELEASE
-          layoutPolicy: PERMISSIVE
-        storage:
-          writePolicy: ALLOW_ONCE
-          strictContentTypeValidation: false
-          blobStoreName: maven
-    - name: production
-      online: true
-      recipeName: maven2-hosted
-      attributes:
-        maven:
-          versionPolicy: RELEASE
-          layoutPolicy: PERMISSIVE
-        storage:
-          writePolicy: ALLOW_ONCE
-          strictContentTypeValidation: false
-          blobStoreName: maven
-

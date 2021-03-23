@@ -12,14 +12,15 @@ jenkins:
 unclassified:
   location:
     url: ${JENKINS_URL}
+    adminAddress: ${JENKINS_ADMIN_EMAIL_ADDRESS}
   gitscm:
     globalConfigName: ${GIT_SCM_CONFIG_USERNAME}
     globalConfigEmail: ${GIT_SCM_CONFIG_EMAIL}
     createAccountBasedOnEmail: false  
   email-ext:
     mailAccount:
-      smtpHost: smtp.gmail.com
-      smtpPort: 465
+      smtpHost: ${SMTP_HOST}
+      smtpPort: ${SMTP_PORT}
       smtpUsername: ${SMTP_USERNAME}
       smtpPassword: ${SMTP_APP_PASSWORD}
       useSsl: true  
@@ -30,7 +31,7 @@ unclassified:
        - mavenSettings:
           id: maven-settings
           name: Settings File
-          comment: dummy settings
+          comment: settings
           isReplaceAll: false
           serverCredentialMappings:
             - serverId: ${GIT_SCM_PROJECT_ID}
@@ -49,31 +50,32 @@ unclassified:
             </settings>
     
 jobs:
+  # Build Job for the Integration project
   - script: >
-      mavenJob('${PROJECT_NAME}-dev') {
-          description('Job for Development environment')
+      mavenJob('${PROJECT_NAME}') {
+          description('Build Job for ${PROJECT_NAME}')
           triggers {
               githubPush()
           }
           scm {
               git {
                 remote { 
-                  url('${PROJECT_GIT_URL}') 
+                  url('${SOURCE_GIT_RESPOSITORY}') 
                   credentials('github-credentials')
                 }
                 branch '*/master'
                 extensions {localBranch('master')}
               }
           }
-          goals('clean install ${SYNAPSE_TEST_FRAMEOWRK_CONFIGS}')
+          goals('clean install ${SYNAPSE_TEST_FRAMEWORK_CONFIGS}')
           providedSettings('maven-settings')
           wrappers {
             mavenRelease {
                 scmUserEnvVar()
                 scmPasswordEnvVar()
                 releaseEnvVar('IS_M2RELEASEBUILD')
-                releaseGoals("-Dresume=false -Darguments='-Dmaven.test.skip=true' release:prepare")
-                dryRunGoals("-Dresume=false -Darguments='-Dmaven.test.skip=true' -DdryRun=true release:prepare")
+                releaseGoals("-Dresume=false -Darguments='${SYNAPSE_TEST_FRAMEWORK_CONFIGS}' release:prepare")
+                dryRunGoals("-Dresume=false -Darguments='${SYNAPSE_TEST_FRAMEWORK_CONFIGS}' -DdryRun=true release:prepare")
                 selectCustomScmCommentPrefix(false)
                 selectAppendJenkinsUsername(false)
                 selectScmCredentials(false)
@@ -92,51 +94,15 @@ jobs:
                   nexusUrl('${NEXUS_URL}')
                   groupId('${PROJECT_GROUPID}')
                   version('$MVN_RELEASE_VERSION')
-                  repository('development')
+                  repository('integration')
                   credentialsId('nexus-credentials')
                   artifact {
                     artifactId('${PROJECT_CAPP_ARTIFACTID}')
                     type('car')
                     classifier('')
-                    file('${PROJECT_CAPP_ARTIFACTID}/target/${PROJECT_CAPP_ARTIFACTID}-$MVN_RELEASE_VERSION.car')
+                    file('${PROJECT_CAPP_ARTIFACTID}/target/${PROJECT_CAPP_ARTIFACTID}_$MVN_RELEASE_VERSION.car')
                   }
                 }
-                shell("""
-                  if [ "\$IS_M2RELEASEBUILD" = true ] ; then
-                    if curl -u \$NEXUS_USERNAME:\$NEXUS_PASSWORD -O --silent --head --fail "\$NEXUS_PROTOCOL://\$NEXUS_URL/repository/development/\$PROJECT_GROUPID_PATH/\$PROJECT_CAPP_ARTIFACTID/\$MVN_RELEASE_VERSION/\$PROJECT_CAPP_ARTIFACTID-\$MVN_RELEASE_VERSION.car"; then
-                      AUTH_RESPONSE=\$( curl -silent --write-out "HTTPSTATUS:%{http_code}" --connect-timeout 10 -X GET "https://\$DEV_ENVIRONMENT_IP/management/login" -H "accept: application/json" -H "Authorization: Basic \$DEV_ENVIRONMENT_BASIC_AUTH_TOKEN" -k )
-                      CLIENT_TOKEN=\$(awk  'BEGIN{FS="\""}{print \$4}' <<< "\${AUTH_RESPONSE}")
-                      HTTP_STATUS=\$(echo \$HTTP_RESPONSE | tr -d '\\n' | sed -e 's/.*HTTPSTATUS://')
-                      if [[ ! \$HTTP_STATUS -eq 200 || -z \$CLIENT_TOKEN ]]; then
-                          rm \$PROJECT_CAPP_ARTIFACTID-\$MVN_RELEASE_VERSION.car
-                          echo "Can not get the AccessToken from the development environment."
-                          exit 1
-                      fi    
-
-                      HTTP_RESPONSE=\$(curl --silent --write-out "HTTPSTATUS:%{http_code}" --connect-timeout 10 -X POST "https://\$DEV_ENVIRONMENT_IP/management/capp-undeployer" -H "Content-Type: application/json" -H "Authorization: Bearer \$CLIENT_TOKEN" -d "{ \\"cAppNamePattern\\" : \\"\$PROJECT_CAPP_ARTIFACTID\\"}" -k -i)
-                      HTTP_STATUS=\$(echo \$HTTP_RESPONSE | tr -d '\\n' | sed -e 's/.*HTTPSTATUS://')
-                      if [[ ! \$HTTP_STATUS -eq 200 ]]; then
-                          echo "CApp Undeployer invocation failed with status code: \$HTTP_STATUS"
-                          rm \$PROJECT_CAPP_ARTIFACTID-\$MVN_RELEASE_VERSION.car
-                          exit 1
-                      fi
-
-                      HTTP_RESPONSE=\$(curl  --silent --write-out "HTTPSTATUS:%{http_code}" --connect-timeout 10 -X POST "https://\$DEV_ENVIRONMENT_IP/management/capp-deployer" -H "Authorization: Bearer \$CLIENT_TOKEN" --form "file=@\$PROJECT_CAPP_ARTIFACTID-\$MVN_RELEASE_VERSION.car" -k -i)
-                      HTTP_STATUS=\$(echo \$HTTP_RESPONSE | tr -d '\\n' | sed -e 's/.*HTTPSTATUS://')
-                      if [[ ! \$HTTP_STATUS -eq 200 ]]; then
-                          echo "CApp Deployer invocation failed with status code: \$HTTP_STATUS"
-                          rm \$PROJECT_CAPP_ARTIFACTID-\$MVN_RELEASE_VERSION.car
-                          exit 1
-                      fi
-
-                      rm \$PROJECT_CAPP_ARTIFACTID-\$MVN_RELEASE_VERSION.car
-                      echo "\$MVN_RELEASE_VERSION version deployed to the development environment successfully."
-                    else
-                      echo "\$PROJECT_CAPP_ARTIFACTID-\$MVN_RELEASE_VERSION.car file does not exist in the given Nexus development repository."
-                      exit 1
-                    fi
-                  fi    
-                """)
               }
             }
           }
@@ -160,92 +126,78 @@ jobs:
                   booleanCondition('$IS_M2RELEASEBUILD')
                 }
                 publishers {
-                  downstream('${PROJECT_NAME}-dev', 'SUCCESS')
+                  downstream('${PROJECT_NAME}', 'SUCCESS')
                 }
               }
             }
           }
       }
+  # Build Job for the Dev Deployment descriptors    
   - script: >
-      freeStyleJob('${PROJECT_NAME}-staging') {
-        description('Job for Staging environment')
-        parameters {
-          stringParam('RELEASE_VERSION', '', 'Please define the CApp released version to deploy the solution in the staging environment. (Ex: 1.0.0)')
+      freeStyleJob('deployment-dev') {
+        description('Deployment job for Dev environment')
+        triggers {
+            githubPush()
         }
-        steps {
-            shell("""
-                  RELEASE_REPOSITORY=dev
-                  if curl -u \$NEXUS_USERNAME:\$NEXUS_PASSWORD -O --silent --head --fail "\$NEXUS_PROTOCOL://\$NEXUS_URL/repository/staging/\$PROJECT_GROUPID_PATH/\$PROJECT_CAPP_ARTIFACTID/\$RELEASE_VERSION/\$PROJECT_CAPP_ARTIFACTID-\$RELEASE_VERSION.car"; then
-                    echo "\$RELEASE_VERSION is already stored in the Nexus staging repository. Therefore, downloading from staging repository."
-                    RELEASE_REPOSITORY=staging
-                    mkdir \$RELEASE_REPOSITORY
-                    mv \$PROJECT_CAPP_ARTIFACTID-\$RELEASE_VERSION.car \$RELEASE_REPOSITORY/
-                  else
-                    if curl -u \$NEXUS_USERNAME:\$NEXUS_PASSWORD -O --silent --head --fail "\$NEXUS_PROTOCOL://\$NEXUS_URL/repository/development/\$PROJECT_GROUPID_PATH/\$PROJECT_CAPP_ARTIFACTID/\$RELEASE_VERSION/\$PROJECT_CAPP_ARTIFACTID-\$RELEASE_VERSION.car"; then
-                      echo "\$RELEASE_VERSION is released in the Nexus development repository. downloading from development repository."
-                      mkdir \$RELEASE_REPOSITORY
-                      mv \$PROJECT_CAPP_ARTIFACTID-\$RELEASE_VERSION.car \$RELEASE_REPOSITORY/
-                    else
-                      echo "\$RELEASE_VERSION can not be found in Nexus development repository."
-                      exit 1
-                    fi
-                  fi
-
-                  AUTH_RESPONSE=\$( curl -silent --write-out "HTTPSTATUS:%{http_code}" --connect-timeout 10 -X GET "https://\$STAGING_ENVIRONMENT_IP/management/login" -H "accept: application/json" -H "Authorization: Basic \$STAGING_ENVIRONMENT_BASIC_AUTH_TOKEN" -k )
-                  CLIENT_TOKEN=\$(awk  'BEGIN{FS="\""}{print \$4}' <<< "\${AUTH_RESPONSE}")
-                  HTTP_STATUS=\$(echo \$HTTP_RESPONSE | tr -d '\\n' | sed -e 's/.*HTTPSTATUS://')
-                  if [[ ! \$HTTP_STATUS -eq 200 || -z \$CLIENT_TOKEN ]]; then
-                      rm -rf \$RELEASE_REPOSITORY
-                      echo "Can not get the AccessToken from the staging environment."
-                      exit 1
-                  fi    
-
-                  HTTP_RESPONSE=\$(curl --silent --write-out "HTTPSTATUS:%{http_code}" --connect-timeout 10 -X POST "https://\$STAGING_ENVIRONMENT_IP/management/capp-undeployer" -H "Content-Type: application/json" -H "Authorization: Bearer \$CLIENT_TOKEN" -d "{ \\"cAppNamePattern\\" : \\"\$PROJECT_CAPP_ARTIFACTID\\"}" -k -i)
-                  HTTP_STATUS=\$(echo \$HTTP_RESPONSE | tr -d '\\n' | sed -e 's/.*HTTPSTATUS://')
-                  if [[ ! \$HTTP_STATUS -eq 200 ]]; then
-                      echo "CApp Undeployer invocation failed with status code: \$HTTP_STATUS"
-                      rm -rf \$RELEASE_REPOSITORY                      
-                      exit 1
-                  fi
-
-                  HTTP_RESPONSE=\$(curl --silent --write-out "HTTPSTATUS:%{http_code}" --connect-timeout 10 -X POST "https://\$STAGING_ENVIRONMENT_IP/management/capp-deployer" -H "Authorization: Bearer \$CLIENT_TOKEN" --form "file=@\$RELEASE_REPOSITORY/\$PROJECT_CAPP_ARTIFACTID-\$RELEASE_VERSION.car" -k -i)
-                  HTTP_STATUS=\$(echo \$HTTP_RESPONSE | tr -d '\\n' | sed -e 's/.*HTTPSTATUS://')
-                  if [[ ! \$HTTP_STATUS -eq 200 ]]; then
-                      echo "CApp Deployer invocation failed with status code: \$HTTP_STATUS"
-                      rm -rf \$RELEASE_REPOSITORY                       
-                      exit 1
-                  fi
-
-                  if [[ \$RELEASE_REPOSITORY == "staging" ]]; then
-                    rm -rf staging
-                  fi  
-                  echo "\$RELEASE_VERSION version deployed to the staging environment successfully."
-                """)
-            conditionalSteps {
-              condition {
-                fileExists('dev', BaseDir.WORKSPACE)
-              }
-              steps {
-                nexusArtifactUploader {
-                  nexusVersion('${NEXUS_VERSION}')
-                  protocol('${NEXUS_PROTOCOL}')
-                  nexusUrl('${NEXUS_URL}')
-                  groupId('${PROJECT_GROUPID}')                
-                  version('$RELEASE_VERSION')
-                  repository('staging')
-                  credentialsId('nexus-credentials')
-                  artifact {
-                    artifactId('${PROJECT_CAPP_ARTIFACTID}')                  
-                    type('car')
-                    classifier('')
-                    file('dev/${PROJECT_CAPP_ARTIFACTID}-$RELEASE_VERSION.car')
-                  }
+        scm {
+              git {
+                remote { 
+                  url('${DEPLOYMENT_GIT_RESPOSITORY}') 
+                  credentials('github-credentials')
                 }
-                shell("""
-                  rm -rf dev
-                """)
+                branch '*/${DEPLOYMENT_DEV_BRANCH}'
+                extensions {localBranch('${DEPLOYMENT_DEV_BRANCH}')}
               }
-            }    
+          }
+        steps {
+            shell('''#!/bin/bash
+                          ADD_CAPPS_LIST=\$(for file in ./**/*.yaml; do cat "$file" | grep ^-[[:space:]]; done)
+                          
+                          # Checking whether all the CApps that are defined can be fetched from Nexus
+                          IFS=$'\\n'
+                          for OUTPUT in $ADD_CAPPS_LIST
+                          do  
+                              IFS=$' '
+                              CAPP_ENTRY=($OUTPUT)
+                              GROUP_ID_PATH=(^${CAPP_ENTRY[1]})
+                              ARTIFACT_ID=(^${CAPP_ENTRY[2]})
+                              VERSION=(^${CAPP_ENTRY[3]})
+                              NEXUS_RESPONSE=\$(curl -u $NEXUS_USERNAME:$NEXUS_PASSWORD -O --silent --write-out "HTTPSTATUS:%{http_code}" --connect-timeout 20 --fail "$NEXUS_PROTOCOL://$NEXUS_URL/repository/integration/$GROUP_ID_PATH/$ARTIFACT_ID/$VERSION/$ARTIFACT_ID-$VERSION.car")
+                              HTTP_STATUS=\$(echo \$NEXUS_RESPONSE | tr -d '\\n' | sed -e 's/.*HTTPSTATUS://')
+                              if [[ ! \$HTTP_STATUS -eq 200 ]]; then
+                                echo "Cannot fetch $ARTIFACT_ID-$VERSION.cars from Nexus Integration repository. Hence exiting without changing the deployment"
+                                rm *.car
+                                exit 1 
+                              fi
+                          done
+
+                          ssh -o StrictHostKeyChecking=no -q $DEV_REMOTE_ROOT_USER@$DEV_ENVIRONMENT_IP exit
+                          SSH_RESPONSE=\$(echo $?)
+                          if [[ ! \$SSH_RESPONSE -eq 0 ]]; then
+                            echo "Cannot access dev environment. Please make sure you have configured ssh access."
+                            rm *.car
+                            exit 1 
+                          fi
+                          
+                          # Removing all CApps from the MI instance
+                          echo "Removing all existing CAR files"
+                          ssh -o StrictHostKeyChecking=no $DEV_REMOTE_ROOT_USER@$DEV_ENVIRONMENT_IP "rm $DEV_MICRO_INTEGRATOR_CAPPS_PATH/*.car"
+                          
+                          # Adding the new CApps to the MI instance
+                          IFS=$'\\n'
+                          for OUTPUT in $ADD_CAPPS_LIST
+                          do
+                              IFS=$' '
+                              CAPP_ENTRY=($OUTPUT)
+                              GROUP_ID_PATH=(^${CAPP_ENTRY[1]})
+                              ARTIFACT_ID=(^${CAPP_ENTRY[2]})
+                              VERSION=(^${CAPP_ENTRY[3]})
+                              scp -o StrictHostKeyChecking=no $ARTIFACT_ID-$VERSION.car $DEV_REMOTE_ROOT_USER@$DEV_ENVIRONMENT_IP:$DEV_MICRO_INTEGRATOR_CAPPS_PATH/
+                              echo "$ARTIFACT_ID-$VERSION.car deployed to the development environment successfully."
+                              rm \$ARTIFACT_ID-\$VERSION.car
+                          done    
+
+                ''')   
         }
         publishers {
             extendedEmail {
@@ -263,86 +215,73 @@ jobs:
             } 
         }
       }
+
+  # Build Job for the Staging Deployment descriptors    
   - script: >
-      freeStyleJob('${PROJECT_NAME}-prod') {
-        description('Job for Production environment')
-        parameters {
-          stringParam('RELEASE_VERSION', '', 'Please define the CApp released version to deploy the solution in the production environment. (Ex: 1.0.0)')
+      freeStyleJob('deployment-staging') {
+        description('Deployment job for Staging environment')
+        triggers {
+            githubPush()
         }
-        steps {
-            shell("""
-                  RELEASE_REPOSITORY=staging
-                  if curl -u \$NEXUS_USERNAME:\$NEXUS_PASSWORD -O --silent --head --fail "\$NEXUS_PROTOCOL://\$NEXUS_URL/repository/production/\$PROJECT_GROUPID_PATH/\$PROJECT_CAPP_ARTIFACTID/\$RELEASE_VERSION/\$PROJECT_CAPP_ARTIFACTID-\$RELEASE_VERSION.car"; then
-                    echo "\$RELEASE_VERSION is already stored in the Nexus production repository. Therefore, downloading from production repository."
-                    RELEASE_REPOSITORY=production
-                    mkdir \$RELEASE_REPOSITORY
-                    mv \$PROJECT_CAPP_ARTIFACTID-\$RELEASE_VERSION.car \$RELEASE_REPOSITORY/
-                  else
-                    if curl -u \$NEXUS_USERNAME:\$NEXUS_PASSWORD -O --silent --head --fail "\$NEXUS_PROTOCOL://\$NEXUS_URL/repository/staging/\$PROJECT_GROUPID_PATH/\$PROJECT_CAPP_ARTIFACTID/\$RELEASE_VERSION/\$PROJECT_CAPP_ARTIFACTID-\$RELEASE_VERSION.car"; then
-                      echo "\$RELEASE_VERSION is released in the Nexus development repository. downloading from development repository."
-                      mkdir \$RELEASE_REPOSITORY
-                      mv \$PROJECT_CAPP_ARTIFACTID-\$RELEASE_VERSION.car \$RELEASE_REPOSITORY/
-                    else
-                      echo "\$RELEASE_VERSION can not be found in Nexus development repository."
-                      exit 1
-                    fi
-                  fi
-
-                  AUTH_RESPONSE=\$( curl -silent --write-out "HTTPSTATUS:%{http_code}" --connect-timeout 10 -X GET "https://\$PRODUCTION_ENVIRONMENT_IP/management/login" -H "accept: application/json" -H "Authorization: Basic \$PRODUCTION_ENVIRONMENT_BASIC_AUTH_TOKEN" -k )
-                  CLIENT_TOKEN=\$(awk  'BEGIN{FS="\""}{print \$4}' <<< "\${AUTH_RESPONSE}")
-                  HTTP_STATUS=\$(echo \$HTTP_RESPONSE | tr -d '\\n' | sed -e 's/.*HTTPSTATUS://')
-                  if [[ ! \$HTTP_STATUS -eq 200 || -z \$CLIENT_TOKEN ]]; then
-                      rm -rf \$RELEASE_REPOSITORY
-                      echo "Can not get the AccessToken from the production environment."
-                      exit 1
-                  fi    
-
-                  HTTP_RESPONSE=\$(curl --silent --write-out "HTTPSTATUS:%{http_code}" --connect-timeout 10 -X POST "https://\$PRODUCTION_ENVIRONMENT_IP/management/capp-undeployer" -H "Content-Type: application/json" -H "Authorization: Bearer \$CLIENT_TOKEN" -d "{ \\"cAppNamePattern\\" : \\"\$PROJECT_CAPP_ARTIFACTID\\"}" -k -i)
-                  HTTP_STATUS=\$(echo \$HTTP_RESPONSE | tr -d '\\n' | sed -e 's/.*HTTPSTATUS://')
-                  if [[ ! \$HTTP_STATUS -eq 200 ]]; then
-                      echo "CApp Undeployer invocation failed with status code: \$HTTP_STATUS"
-                      rm -rf \$RELEASE_REPOSITORY                      
-                      exit 1
-                  fi
-
-                  HTTP_RESPONSE=\$(curl --silent --write-out "HTTPSTATUS:%{http_code}" --connect-timeout 10 -X POST "https://\$PRODUCTION_ENVIRONMENT_IP/management/capp-deployer" -H "Authorization: Bearer \$CLIENT_TOKEN" --form "file=@\$RELEASE_REPOSITORY/\$PROJECT_CAPP_ARTIFACTID-\$RELEASE_VERSION.car" -k -i)
-                  HTTP_STATUS=\$(echo \$HTTP_RESPONSE | tr -d '\\n' | sed -e 's/.*HTTPSTATUS://')
-                  if [[ ! \$HTTP_STATUS -eq 200 ]]; then
-                      echo "CApp Deployer invocation failed with status code: \$HTTP_STATUS"
-                      rm -rf \$RELEASE_REPOSITORY                       
-                      exit 1
-                  fi
-
-                  if [[ \$RELEASE_REPOSITORY == "production" ]]; then
-                    rm -rf production
-                  fi  
-                  echo "\$RELEASE_VERSION version deployed to the production environment successfully."
-                """)
-            conditionalSteps {
-              condition {
-                fileExists('staging', BaseDir.WORKSPACE)
-              }
-              steps {
-                nexusArtifactUploader {
-                  nexusVersion('${NEXUS_VERSION}')
-                  protocol('${NEXUS_PROTOCOL}')
-                  nexusUrl('${NEXUS_URL}')
-                  groupId('${PROJECT_GROUPID}')                
-                  version('$RELEASE_VERSION')
-                  repository('production')
-                  credentialsId('nexus-credentials')
-                  artifact {
-                    artifactId('${PROJECT_CAPP_ARTIFACTID}')                  
-                    type('car')
-                    classifier('')
-                    file('staging/${PROJECT_CAPP_ARTIFACTID}-$RELEASE_VERSION.car')
-                  }
+        scm {
+              git {
+                remote { 
+                  url('${DEPLOYMENT_GIT_RESPOSITORY}') 
+                  credentials('github-credentials')
                 }
-                shell("""
-                  rm -rf staging
-                """)
+                branch '*/${DEPLOYMENT_STAGING_BRANCH}'
+                extensions {localBranch('${DEPLOYMENT_STAGING_BRANCH}')}
               }
-            }    
+          }
+        steps {
+            shell('''#!/bin/bash
+                          ADD_CAPPS_LIST=\$(for file in ./**/*.yaml; do cat "$file" | grep ^-[[:space:]]; done)
+                          
+                          # Checking whether all the CApps that are defined can be fetched from Nexus
+                          IFS=$'\\n'
+                          for OUTPUT in $ADD_CAPPS_LIST
+                          do  
+                              IFS=$' '
+                              CAPP_ENTRY=($OUTPUT)
+                              GROUP_ID_PATH=(^${CAPP_ENTRY[1]})
+                              ARTIFACT_ID=(^${CAPP_ENTRY[2]})
+                              VERSION=(^${CAPP_ENTRY[3]})
+                              NEXUS_RESPONSE=\$(curl -u $NEXUS_USERNAME:$NEXUS_PASSWORD -O --silent --write-out "HTTPSTATUS:%{http_code}" --connect-timeout 20 --fail "$NEXUS_PROTOCOL://$NEXUS_URL/repository/integration/$GROUP_ID_PATH/$ARTIFACT_ID/$VERSION/$ARTIFACT_ID-$VERSION.car")
+                              HTTP_STATUS=\$(echo \$NEXUS_RESPONSE | tr -d '\\n' | sed -e 's/.*HTTPSTATUS://')
+                              if [[ ! \$HTTP_STATUS -eq 200 ]]; then
+                                echo "Cannot fetch $ARTIFACT_ID-$VERSION.cars from Nexus Integration repository. Hence exiting without changing the deployment"
+                                rm *.car
+                                exit 1 
+                              fi
+                          done
+
+                          ssh -o StrictHostKeyChecking=no -q $STAGING_REMOTE_ROOT_USER@$STAGING_ENVIRONMENT_IP exit
+                          SSH_RESPONSE=\$(echo $?)
+                          if [[ ! \$SSH_RESPONSE -eq 0 ]]; then
+                            echo "Cannot access staging environment. Please make sure you have configured ssh access."
+                            rm *.car
+                            exit 1 
+                          fi
+                          
+                          # Removing all CApps from the MI instance
+                          echo "Removing all existing CAR files"
+                          ssh -o StrictHostKeyChecking=no $STAGING_REMOTE_ROOT_USER@$STAGING_ENVIRONMENT_IP "rm $STAGING_MICRO_INTEGRATOR_CAPPS_PATH/*.car"
+                          
+                          # Adding the new CApps to the MI instance
+                          IFS=$'\\n'
+                          for OUTPUT in $ADD_CAPPS_LIST
+                          do
+                              IFS=$' '
+                              CAPP_ENTRY=($OUTPUT)
+                              GROUP_ID_PATH=(^${CAPP_ENTRY[1]})
+                              ARTIFACT_ID=(^${CAPP_ENTRY[2]})
+                              VERSION=(^${CAPP_ENTRY[3]})
+                              scp -o StrictHostKeyChecking=no $ARTIFACT_ID-$VERSION.car $STAGING_REMOTE_ROOT_USER@$STAGING_ENVIRONMENT_IP:$STAGING_MICRO_INTEGRATOR_CAPPS_PATH/
+                              echo "$ARTIFACT_ID-$VERSION.car deployed to the staging environment successfully."
+                              rm \$ARTIFACT_ID-\$VERSION.car
+                          done  
+
+                ''')   
         }
         publishers {
             extendedEmail {
@@ -360,6 +299,91 @@ jobs:
             } 
         }
       }
+
+  # Build Job for the Prod Deployment descriptors    
+  - script: >
+      freeStyleJob('deployment-prod') {
+        description('Deployment job for Prod environment')
+        triggers {
+            githubPush()
+        }
+        scm {
+              git {
+                remote { 
+                  url('${DEPLOYMENT_GIT_RESPOSITORY}') 
+                  credentials('github-credentials')
+                }
+                branch '*/${DEPLOYMENT_PROD_BRANCH}'
+                extensions {localBranch('${DEPLOYMENT_PROD_BRANCH}')}
+              }
+          }
+        steps {
+            shell('''#!/bin/bash
+                          ADD_CAPPS_LIST=\$(for file in ./**/*.yaml; do cat "$file" | grep ^-[[:space:]]; done)
+                          
+                          # Checking whether all the CApps that are defined can be fetched from Nexus
+                          IFS=$'\\n'
+                          for OUTPUT in $ADD_CAPPS_LIST
+                          do  
+                              IFS=$' '
+                              CAPP_ENTRY=($OUTPUT)
+                              GROUP_ID_PATH=(^${CAPP_ENTRY[1]})
+                              ARTIFACT_ID=(^${CAPP_ENTRY[2]})
+                              VERSION=(^${CAPP_ENTRY[3]})
+                              NEXUS_RESPONSE=\$(curl -u $NEXUS_USERNAME:$NEXUS_PASSWORD -O --silent --write-out "HTTPSTATUS:%{http_code}" --connect-timeout 20 --fail "$NEXUS_PROTOCOL://$NEXUS_URL/repository/integration/$GROUP_ID_PATH/$ARTIFACT_ID/$VERSION/$ARTIFACT_ID-$VERSION.car")
+                              HTTP_STATUS=\$(echo \$NEXUS_RESPONSE | tr -d '\\n' | sed -e 's/.*HTTPSTATUS://')
+                              if [[ ! \$HTTP_STATUS -eq 200 ]]; then
+                                echo "Cannot fetch $ARTIFACT_ID-$VERSION.cars from Nexus Integration repository. Hence exiting without changing the deployment"
+                                rm *.car
+                                exit 1 
+                              fi
+                          done
+
+                          ssh -o StrictHostKeyChecking=no -q $PROD_REMOTE_ROOT_USER@$PROD_ENVIRONMENT_IP exit
+                          SSH_RESPONSE=\$(echo $?)
+                          if [[ ! \$SSH_RESPONSE -eq 0 ]]; then
+                            echo "Cannot access prod environment. Please make sure you have configured ssh access."
+                            rm *.car
+                            exit 1 
+                          fi
+                          
+                          # Removing all CApps from the MI instance
+                          echo "Removing all existing CAR files"
+                          ssh -o StrictHostKeyChecking=no $PROD_REMOTE_ROOT_USER@$PROD_ENVIRONMENT_IP "rm $PROD_MICRO_INTEGRATOR_CAPPS_PATH/*.car"
+                          
+                          # Adding the new CApps to the MI instance
+                          IFS=$'\\n'
+                          for OUTPUT in $ADD_CAPPS_LIST
+                          do
+                              IFS=$' '
+                              CAPP_ENTRY=($OUTPUT)
+                              GROUP_ID_PATH=(^${CAPP_ENTRY[1]})
+                              ARTIFACT_ID=(^${CAPP_ENTRY[2]})
+                              VERSION=(^${CAPP_ENTRY[3]})
+                              scp -o StrictHostKeyChecking=no $ARTIFACT_ID-$VERSION.car $PROD_REMOTE_ROOT_USER@$PROD_ENVIRONMENT_IP:$PROD_MICRO_INTEGRATOR_CAPPS_PATH/
+                              echo "$ARTIFACT_ID-$VERSION.car deployed to the production environment successfully."
+                              rm \$ARTIFACT_ID-\$VERSION.car
+                          done    
+
+                ''')   
+        }
+        publishers {
+            extendedEmail {
+                recipientList('${EMAIL_NOTIFICATION_RECEIVERS}')
+                defaultSubject('$PROJECT_NAME - Build #$BUILD_NUMBER - $BUILD_STATUS!')
+                defaultContent('Check console output at $BUILD_URL to view the results.')
+                contentType('text/html')
+                triggers {
+                    failure {
+                        sendTo {
+                            recipientList()
+                        }
+                    }
+                }
+            } 
+        }
+      }
+  
 
 tool:
   git:
@@ -373,7 +397,7 @@ tool:
           - installSource:
               installers:
                 - adoptOpenJdkInstaller:
-                    id: "jdk8u172-b11"
+                    id: "jdk8u275-b01"
   maven:
     installations:
       - name: "Maven 3"
