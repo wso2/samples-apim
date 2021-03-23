@@ -1,0 +1,60 @@
+core:
+  baseUrl: ${BASE_URL:""}
+  httpProxy: ${HTTP_PROXY:""}
+  httpsProxy: ${HTTPS_PROXY:""}
+  nonProxyHosts: ${NO_PROXY:""}
+capabilities:
+  - type: rutauth
+    enabled: true
+    notes: "Nexus CasC"
+    attributes:
+      httpHeader: REMOTE_USER
+  - type: OutreachManagementCapability
+    enabled: false
+security:
+  anonymousAccess: false
+  pruneUsers: true
+  realms:
+    - name: rutauth-realm
+      enabled: true
+  users:
+    - username: ${NEXUS_ADMIN_ID}
+      firstName: Nexus
+      lastName: Administrator
+      password: ${NEXUS_ADMIN_PASSWORD}
+      updateExistingPassword: false
+      email: ${NEXUS_ADMIN_EMAIL}
+      roles:
+        - source: ""
+          role: nx-admin
+repository:
+  pruneBlobStores: true
+  blobStores:
+    - name: maven
+      type: File
+      attributes:
+        file:
+          path: maven
+        blobStoreQuotaConfig:
+          quotaLimitBytes: 10240000000
+          quotaType: spaceUsedQuota
+  pruneCleanupPolicies: true
+  cleanupPolicies:
+    - name: cleanup-maven-proxy
+      format: maven2
+      notes: ''
+      criteria:
+        lastDownloadBefore: 10
+  pruneRepositories: false # true
+  repositories:
+    - name: integration
+      online: true
+      recipeName: maven2-hosted
+      attributes:
+        maven:
+          versionPolicy: RELEASE
+          layoutPolicy: PERMISSIVE
+        storage:
+          writePolicy: ALLOW_ONCE
+          strictContentTypeValidation: false
+          blobStoreName: maven
