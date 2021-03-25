@@ -1,0 +1,276 @@
+# Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+jenkins:
+  systemMessage: "Jenkins configured automatically for CICD flow of the WSO2 Micro Integrator\n\n"               
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+       - id: ${JENKINS_ADMIN_ID}
+         password: ${JENKINS_ADMIN_PASSWORD}
+  authorizationStrategy: loggedInUsersCanDoAnything
+  remotingSecurity:
+    enabled: true
+unclassified:
+  location:
+    url: ${JENKINS_URL}
+    adminAddress: ${JENKINS_ADMIN_EMAIL_ADDRESS}
+  gitscm:
+    globalConfigName: ${GIT_SCM_CONFIG_USERNAME}
+    globalConfigEmail: ${GIT_SCM_CONFIG_EMAIL}
+    createAccountBasedOnEmail: false  
+  email-ext:
+    mailAccount:
+      smtpHost: ${SMTP_HOST}
+      smtpPort: ${SMTP_PORT}
+      smtpUsername: ${SMTP_USERNAME}
+      smtpPassword: ${SMTP_APP_PASSWORD}
+      useSsl: true  
+    charset: "UTF-8"
+    defaultContentType: "text/html"
+  globalConfigFiles:
+    configs:
+       - mavenSettings:
+          id: maven-settings
+          name: Settings File
+          comment: settings
+          isReplaceAll: false
+          serverCredentialMappings:
+            - serverId: ${GIT_SCM_PROJECT_ID}
+              credentialsId: github-credentials  
+          content: |
+            <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" 
+                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+                      xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+              <servers>
+                <server>
+                  <id>${GIT_SCM_PROJECT_ID}</id>
+                  <username>${GIT_SCM_CONFIG_USERNAME}</username>
+                  <password>${GIT_SCM_CONFIG_PASSWORD_TOKEN}</password>
+                </server>
+              </servers>
+            </settings>
+
+# Build Job for the Integration project   
+jobs:
+  - script: >
+      mavenJob('${PROJECT_NAME}') {
+          description('Build Job for ${PROJECT_NAME}')
+          triggers {
+              githubPush()
+          }
+          scm {
+              git {
+                remote { 
+                  url('${SOURCE_GIT_RESPOSITORY}') 
+                  credentials('github-credentials')
+                }
+                branch '*/master'
+                extensions {localBranch('master')}
+              }
+          }
+          goals('clean install -P Solution ${SYNAPSE_TEST_FRAMEOWRK_CONFIGS}')
+          providedSettings('maven-settings')
+          wrappers {
+            mavenRelease {
+                scmUserEnvVar()
+                scmPasswordEnvVar()
+                releaseEnvVar('IS_M2RELEASEBUILD')
+                releaseGoals("-Dresume=false -Darguments='-P Kubernetes -Ddockerfile.username=${DOCKER_REGISTRY_USERNAME} -Ddockerfile.password=${DOCKER_REGISTRY_PASSWORD} ${SYNAPSE_TEST_FRAMEOWRK_CONFIGS}' release:prepare")
+                dryRunGoals("-Dresume=false -Darguments='-P Solution ${SYNAPSE_TEST_FRAMEOWRK_CONFIGS}' -DdryRun=true release:prepare")
+                selectCustomScmCommentPrefix(false)
+                selectAppendJenkinsUsername(false)
+                selectScmCredentials(false)
+                numberOfReleaseBuildsToKeep(10)
+            }
+          }
+          publishers {
+            extendedEmail {
+                recipientList('${EMAIL_NOTIFICATION_RECEIVERS}')
+                defaultSubject('$PROJECT_NAME - Build #$BUILD_NUMBER - $BUILD_STATUS!')
+                defaultContent('Check console output at $BUILD_URL to view the results.')
+                contentType('text/html')
+                triggers {
+                    failure {
+                        sendTo {
+                            recipientList()
+                        }
+                    }
+                }
+            }
+            flexiblePublish {
+              conditionalAction {
+                condition {
+                  booleanCondition('$IS_M2RELEASEBUILD')
+                }
+                publishers {
+                  downstream('${PROJECT_NAME}', 'SUCCESS')
+                }
+              }
+            }
+          }
+      }
+
+  # Build Job for the Dev Deployment descriptors  
+  - script: >
+      freeStyleJob('deployment-dev') {
+        description('Descriptor job for Dev environment')
+        triggers {
+            githubPush()
+        }
+        scm {
+              git {
+                remote { 
+                  url('${DEPLOYMENT_GIT_REPOSITORY}') 
+                  credentials('github-credentials')
+                }
+                branch '*/${DEPLOYMENT_DEV_BRANCH}'
+                extensions {localBranch('${DEPLOYMENT_DEV_BRANCH}')}
+              }
+          }
+        steps {
+            shell('''#!/bin/bash			
+                          kubectl apply --recursive -n $DEV_NAMESPACE -f ./   
+
+                ''')
+        }
+        publishers {
+            extendedEmail {
+                recipientList('${EMAIL_NOTIFICATION_RECEIVERS}')
+                defaultSubject('$PROJECT_NAME - Build #$BUILD_NUMBER - $BUILD_STATUS!')
+                defaultContent('Check console output at $BUILD_URL to view the results.')
+                contentType('text/html')
+                triggers {
+                    failure {
+                        sendTo {
+                            recipientList()
+                        }
+                    }
+                }
+            } 
+        }
+      }
+
+  # Build Job for the Staging Deployment descriptors  
+  - script: >
+      freeStyleJob('deployment-staging') {
+        description('Descriptor job for staging environment')
+        triggers {
+            githubPush()
+        }
+        scm {
+              git {
+                remote { 
+                  url('${DEPLOYMENT_GIT_REPOSITORY}') 
+                  credentials('github-credentials')
+                }
+                branch '*/${DEPLOYMENT_STAGING_BRANCH}'
+                extensions {localBranch('${DEPLOYMENT_STAGING_BRANCH}')}
+              }
+          }
+        steps {
+            shell('''#!/bin/bash			
+                          kubectl apply --recursive -n $STAGING_NAMESPACE -f ./      
+
+                ''')   
+        }
+        publishers {
+            extendedEmail {
+                recipientList('${EMAIL_NOTIFICATION_RECEIVERS}')
+                defaultSubject('$PROJECT_NAME - Build #$BUILD_NUMBER - $BUILD_STATUS!')
+                defaultContent('Check console output at $BUILD_URL to view the results.')
+                contentType('text/html')
+                triggers {
+                    failure {
+                        sendTo {
+                            recipientList()
+                        }
+                    }
+                }
+            } 
+        }
+      }
+  
+  # Build Job for the Prod Deployment descriptors  
+  - script: >
+      freeStyleJob('deployment-prod') {
+        description('Descriptor job for Prod environment')
+        triggers {
+            githubPush()
+        }
+        scm {
+              git {
+                remote { 
+                  url('${DEPLOYMENT_GIT_REPOSITORY}') 
+                  credentials('github-credentials')
+                }
+                branch '*/${DEPLOYMENT_PROD_BRANCH}'
+                extensions {localBranch('${DEPLOYMENT_PROD_BRANCH}')}
+              }
+          }
+        steps {
+            shell('''#!/bin/bash	
+                          kubectl apply --recursive -n $PROD_NAMESPACE  -f ./
+
+                ''')   
+        }
+        publishers {
+            extendedEmail {
+                recipientList('${EMAIL_NOTIFICATION_RECEIVERS}')
+                defaultSubject('$PROJECT_NAME - Build #$BUILD_NUMBER - $BUILD_STATUS!')
+                defaultContent('Check console output at $BUILD_URL to view the results.')
+                contentType('text/html')
+                triggers {
+                    failure {
+                        sendTo {
+                            recipientList()
+                        }
+                    }
+                }
+            } 
+        }
+      }
+
+tool:
+  git:
+    installations:
+      - name: Default
+        home: "/usr/bin/git"
+  jdk:
+    installations:
+      - name: "open-jdk8"
+        properties:
+          - installSource:
+              installers:
+                - adoptOpenJdkInstaller:
+                    id: "jdk8u275-b01"
+  maven:
+    installations:
+      - name: "Maven 3"
+        properties:
+          - installSource:
+              installers:
+                - maven:
+                    id: "3.6.3"
+credentials:
+  system:
+    domainCredentials:
+    - credentials:
+      - usernamePassword:
+          id: "github-credentials"
+          username: ${GIT_SCM_CONFIG_USERNAME}
+          password: ${GIT_SCM_CONFIG_PASSWORD_TOKEN}
+          description: "Username/Token Credentials for GitHub"
+          scope: GLOBAL   

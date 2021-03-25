@@ -1,0 +1,74 @@
+# Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+core:
+  baseUrl: ${BASE_URL:""}
+  httpProxy: ${HTTP_PROXY:""}
+  httpsProxy: ${HTTPS_PROXY:""}
+  nonProxyHosts: ${NO_PROXY:""}
+capabilities:
+  - type: rutauth
+    enabled: true
+    notes: "Nexus CasC"
+    attributes:
+      httpHeader: REMOTE_USER
+  - type: OutreachManagementCapability
+    enabled: false
+security:
+  anonymousAccess: false
+  pruneUsers: true
+  realms:
+    - name: rutauth-realm
+      enabled: true
+  users:
+    - username: ${NEXUS_ADMIN_ID}
+      firstName: Nexus
+      lastName: Administrator
+      password: ${NEXUS_ADMIN_PASSWORD}
+      updateExistingPassword: false
+      email: ${NEXUS_ADMIN_EMAIL}
+      roles:
+        - source: ""
+          role: nx-admin
+repository:
+  pruneBlobStores: true
+  blobStores:
+    - name: maven
+      type: File
+      attributes:
+        file:
+          path: maven
+        blobStoreQuotaConfig:
+          quotaLimitBytes: 10240000000
+          quotaType: spaceUsedQuota
+  pruneCleanupPolicies: true
+  cleanupPolicies:
+    - name: cleanup-maven-proxy
+      format: maven2
+      notes: ''
+      criteria:
+        lastDownloadBefore: 10
+  pruneRepositories: false # true
+  repositories:
+    - name: integration
+      online: true
+      recipeName: maven2-hosted
+      attributes:
+        maven:
+          versionPolicy: RELEASE
+          layoutPolicy: PERMISSIVE
+        storage:
+          writePolicy: ALLOW_ONCE
+          strictContentTypeValidation: false
+          blobStoreName: maven

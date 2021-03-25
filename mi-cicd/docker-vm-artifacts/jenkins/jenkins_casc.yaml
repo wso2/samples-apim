@@ -1,0 +1,438 @@
+# Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+jenkins:
+  systemMessage: "Jenkins configured automatically for CICD flow of the WSO2 Micro Integrator\n\n"               
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+       - id: ${JENKINS_ADMIN_ID}
+         password: ${JENKINS_ADMIN_PASSWORD}
+  authorizationStrategy: loggedInUsersCanDoAnything
+  remotingSecurity:
+    enabled: true
+unclassified:
+  location:
+    url: ${JENKINS_URL}
+    adminAddress: ${JENKINS_ADMIN_EMAIL_ADDRESS}
+  gitscm:
+    globalConfigName: ${GIT_SCM_CONFIG_USERNAME}
+    globalConfigEmail: ${GIT_SCM_CONFIG_EMAIL}
+    createAccountBasedOnEmail: false  
+  email-ext:
+    mailAccount:
+      smtpHost: ${SMTP_HOST}
+      smtpPort: ${SMTP_PORT}
+      smtpUsername: ${SMTP_USERNAME}
+      smtpPassword: ${SMTP_APP_PASSWORD}
+      useSsl: true  
+    charset: "UTF-8"
+    defaultContentType: "text/html"
+  globalConfigFiles:
+    configs:
+       - mavenSettings:
+          id: maven-settings
+          name: Settings File
+          comment: settings
+          isReplaceAll: false
+          serverCredentialMappings:
+            - serverId: ${GIT_SCM_PROJECT_ID}
+              credentialsId: github-credentials  
+          content: |
+            <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" 
+                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+                      xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+              <servers>
+                <server>
+                  <id>${GIT_SCM_PROJECT_ID}</id>
+                  <username>${GIT_SCM_CONFIG_USERNAME}</username>
+                  <password>${GIT_SCM_CONFIG_PASSWORD_TOKEN}</password>
+                </server>
+              </servers>
+            </settings>
+    
+jobs:
+  # Build Job for the Integration project
+  - script: >
+      mavenJob('${PROJECT_NAME}') {
+          description('Build Job for ${PROJECT_NAME}')
+          triggers {
+              githubPush()
+          }
+          scm {
+              git {
+                remote { 
+                  url('${SOURCE_GIT_RESPOSITORY}') 
+                  credentials('github-credentials')
+                }
+                branch '*/master'
+                extensions {localBranch('master')}
+              }
+          }
+          goals('clean install ${SYNAPSE_TEST_FRAMEWORK_CONFIGS}')
+          providedSettings('maven-settings')
+          wrappers {
+            mavenRelease {
+                scmUserEnvVar()
+                scmPasswordEnvVar()
+                releaseEnvVar('IS_M2RELEASEBUILD')
+                releaseGoals("-Dresume=false -Darguments='${SYNAPSE_TEST_FRAMEWORK_CONFIGS}' release:prepare")
+                dryRunGoals("-Dresume=false -Darguments='${SYNAPSE_TEST_FRAMEWORK_CONFIGS}' -DdryRun=true release:prepare")
+                selectCustomScmCommentPrefix(false)
+                selectAppendJenkinsUsername(false)
+                selectScmCredentials(false)
+                numberOfReleaseBuildsToKeep(10)
+            }
+          }
+          postBuildSteps('SUCCESS') {
+            conditionalSteps {
+              condition {
+                booleanCondition('$IS_M2RELEASEBUILD')
+              }
+              steps {
+                nexusArtifactUploader {
+                  nexusVersion('${NEXUS_VERSION}')
+                  protocol('${NEXUS_PROTOCOL}')
+                  nexusUrl('${NEXUS_URL}')
+                  groupId('${PROJECT_GROUPID}')
+                  version('$MVN_RELEASE_VERSION')
+                  repository('integration')
+                  credentialsId('nexus-credentials')
+                  artifact {
+                    artifactId('${PROJECT_CAPP_ARTIFACTID}')
+                    type('car')
+                    classifier('')
+                    file('${PROJECT_CAPP_ARTIFACTID}/target/${PROJECT_CAPP_ARTIFACTID}_$MVN_RELEASE_VERSION.car')
+                  }
+                }
+              }
+            }
+          }
+          publishers {
+            extendedEmail {
+                recipientList('${EMAIL_NOTIFICATION_RECEIVERS}')
+                defaultSubject('$PROJECT_NAME - Build #$BUILD_NUMBER - $BUILD_STATUS!')
+                defaultContent('Check console output at $BUILD_URL to view the results.')
+                contentType('text/html')
+                triggers {
+                    failure {
+                        sendTo {
+                            recipientList()
+                        }
+                    }
+                }
+            }
+            flexiblePublish {
+              conditionalAction {
+                condition {
+                  booleanCondition('$IS_M2RELEASEBUILD')
+                }
+                publishers {
+                  downstream('${PROJECT_NAME}', 'SUCCESS')
+                }
+              }
+            }
+          }
+      }
+  # Build Job for the Dev Deployment descriptors    
+  - script: >
+      freeStyleJob('deployment-dev') {
+        description('Deployment job for Dev environment')
+        triggers {
+            githubPush()
+        }
+        scm {
+              git {
+                remote { 
+                  url('${DEPLOYMENT_GIT_RESPOSITORY}') 
+                  credentials('github-credentials')
+                }
+                branch '*/${DEPLOYMENT_DEV_BRANCH}'
+                extensions {localBranch('${DEPLOYMENT_DEV_BRANCH}')}
+              }
+          }
+        steps {
+            shell('''#!/bin/bash
+                          ADD_CAPPS_LIST=\$(for file in ./**/*.yaml; do cat "$file" | grep ^-[[:space:]]; done)
+                          
+                          # Checking whether all the CApps that are defined can be fetched from Nexus
+                          IFS=$'\\n'
+                          for OUTPUT in $ADD_CAPPS_LIST
+                          do  
+                              IFS=$' '
+                              CAPP_ENTRY=($OUTPUT)
+                              GROUP_ID_PATH=(^${CAPP_ENTRY[1]})
+                              ARTIFACT_ID=(^${CAPP_ENTRY[2]})
+                              VERSION=(^${CAPP_ENTRY[3]})
+                              NEXUS_RESPONSE=\$(curl -u $NEXUS_USERNAME:$NEXUS_PASSWORD -O --silent --write-out "HTTPSTATUS:%{http_code}" --connect-timeout 20 --fail "$NEXUS_PROTOCOL://$NEXUS_URL/repository/integration/$GROUP_ID_PATH/$ARTIFACT_ID/$VERSION/$ARTIFACT_ID-$VERSION.car")
+                              HTTP_STATUS=\$(echo \$NEXUS_RESPONSE | tr -d '\\n' | sed -e 's/.*HTTPSTATUS://')
+                              if [[ ! \$HTTP_STATUS -eq 200 ]]; then
+                                echo "Cannot fetch $ARTIFACT_ID-$VERSION.cars from Nexus Integration repository. Hence exiting without changing the deployment"
+                                rm *.car
+                                exit 1 
+                              fi
+                          done
+
+                          ssh -o StrictHostKeyChecking=no -q $DEV_REMOTE_ROOT_USER@$DEV_ENVIRONMENT_IP exit
+                          SSH_RESPONSE=\$(echo $?)
+                          if [[ ! \$SSH_RESPONSE -eq 0 ]]; then
+                            echo "Cannot access dev environment. Please make sure you have configured ssh access."
+                            rm *.car
+                            exit 1 
+                          fi
+                          
+                          # Removing all CApps from the MI instance
+                          echo "Removing all existing CAR files"
+                          ssh -o StrictHostKeyChecking=no $DEV_REMOTE_ROOT_USER@$DEV_ENVIRONMENT_IP "rm $DEV_MICRO_INTEGRATOR_CAPPS_PATH/*.car"
+                          
+                          # Adding the new CApps to the MI instance
+                          IFS=$'\\n'
+                          for OUTPUT in $ADD_CAPPS_LIST
+                          do
+                              IFS=$' '
+                              CAPP_ENTRY=($OUTPUT)
+                              GROUP_ID_PATH=(^${CAPP_ENTRY[1]})
+                              ARTIFACT_ID=(^${CAPP_ENTRY[2]})
+                              VERSION=(^${CAPP_ENTRY[3]})
+                              scp -o StrictHostKeyChecking=no $ARTIFACT_ID-$VERSION.car $DEV_REMOTE_ROOT_USER@$DEV_ENVIRONMENT_IP:$DEV_MICRO_INTEGRATOR_CAPPS_PATH/
+                              echo "$ARTIFACT_ID-$VERSION.car deployed to the development environment successfully."
+                              rm \$ARTIFACT_ID-\$VERSION.car
+                          done    
+
+                ''')   
+        }
+        publishers {
+            extendedEmail {
+                recipientList('${EMAIL_NOTIFICATION_RECEIVERS}')
+                defaultSubject('$PROJECT_NAME - Build #$BUILD_NUMBER - $BUILD_STATUS!')
+                defaultContent('Check console output at $BUILD_URL to view the results.')
+                contentType('text/html')
+                triggers {
+                    failure {
+                        sendTo {
+                            recipientList()
+                        }
+                    }
+                }
+            } 
+        }
+      }
+
+  # Build Job for the Staging Deployment descriptors    
+  - script: >
+      freeStyleJob('deployment-staging') {
+        description('Deployment job for Staging environment')
+        triggers {
+            githubPush()
+        }
+        scm {
+              git {
+                remote { 
+                  url('${DEPLOYMENT_GIT_RESPOSITORY}') 
+                  credentials('github-credentials')
+                }
+                branch '*/${DEPLOYMENT_STAGING_BRANCH}'
+                extensions {localBranch('${DEPLOYMENT_STAGING_BRANCH}')}
+              }
+          }
+        steps {
+            shell('''#!/bin/bash
+                          ADD_CAPPS_LIST=\$(for file in ./**/*.yaml; do cat "$file" | grep ^-[[:space:]]; done)
+                          
+                          # Checking whether all the CApps that are defined can be fetched from Nexus
+                          IFS=$'\\n'
+                          for OUTPUT in $ADD_CAPPS_LIST
+                          do  
+                              IFS=$' '
+                              CAPP_ENTRY=($OUTPUT)
+                              GROUP_ID_PATH=(^${CAPP_ENTRY[1]})
+                              ARTIFACT_ID=(^${CAPP_ENTRY[2]})
+                              VERSION=(^${CAPP_ENTRY[3]})
+                              NEXUS_RESPONSE=\$(curl -u $NEXUS_USERNAME:$NEXUS_PASSWORD -O --silent --write-out "HTTPSTATUS:%{http_code}" --connect-timeout 20 --fail "$NEXUS_PROTOCOL://$NEXUS_URL/repository/integration/$GROUP_ID_PATH/$ARTIFACT_ID/$VERSION/$ARTIFACT_ID-$VERSION.car")
+                              HTTP_STATUS=\$(echo \$NEXUS_RESPONSE | tr -d '\\n' | sed -e 's/.*HTTPSTATUS://')
+                              if [[ ! \$HTTP_STATUS -eq 200 ]]; then
+                                echo "Cannot fetch $ARTIFACT_ID-$VERSION.cars from Nexus Integration repository. Hence exiting without changing the deployment"
+                                rm *.car
+                                exit 1 
+                              fi
+                          done
+
+                          ssh -o StrictHostKeyChecking=no -q $STAGING_REMOTE_ROOT_USER@$STAGING_ENVIRONMENT_IP exit
+                          SSH_RESPONSE=\$(echo $?)
+                          if [[ ! \$SSH_RESPONSE -eq 0 ]]; then
+                            echo "Cannot access staging environment. Please make sure you have configured ssh access."
+                            rm *.car
+                            exit 1 
+                          fi
+                          
+                          # Removing all CApps from the MI instance
+                          echo "Removing all existing CAR files"
+                          ssh -o StrictHostKeyChecking=no $STAGING_REMOTE_ROOT_USER@$STAGING_ENVIRONMENT_IP "rm $STAGING_MICRO_INTEGRATOR_CAPPS_PATH/*.car"
+                          
+                          # Adding the new CApps to the MI instance
+                          IFS=$'\\n'
+                          for OUTPUT in $ADD_CAPPS_LIST
+                          do
+                              IFS=$' '
+                              CAPP_ENTRY=($OUTPUT)
+                              GROUP_ID_PATH=(^${CAPP_ENTRY[1]})
+                              ARTIFACT_ID=(^${CAPP_ENTRY[2]})
+                              VERSION=(^${CAPP_ENTRY[3]})
+                              scp -o StrictHostKeyChecking=no $ARTIFACT_ID-$VERSION.car $STAGING_REMOTE_ROOT_USER@$STAGING_ENVIRONMENT_IP:$STAGING_MICRO_INTEGRATOR_CAPPS_PATH/
+                              echo "$ARTIFACT_ID-$VERSION.car deployed to the staging environment successfully."
+                              rm \$ARTIFACT_ID-\$VERSION.car
+                          done  
+
+                ''')   
+        }
+        publishers {
+            extendedEmail {
+                recipientList('${EMAIL_NOTIFICATION_RECEIVERS}')
+                defaultSubject('$PROJECT_NAME - Build #$BUILD_NUMBER - $BUILD_STATUS!')
+                defaultContent('Check console output at $BUILD_URL to view the results.')
+                contentType('text/html')
+                triggers {
+                    failure {
+                        sendTo {
+                            recipientList()
+                        }
+                    }
+                }
+            } 
+        }
+      }
+
+  # Build Job for the Prod Deployment descriptors    
+  - script: >
+      freeStyleJob('deployment-prod') {
+        description('Deployment job for Prod environment')
+        triggers {
+            githubPush()
+        }
+        scm {
+              git {
+                remote { 
+                  url('${DEPLOYMENT_GIT_RESPOSITORY}') 
+                  credentials('github-credentials')
+                }
+                branch '*/${DEPLOYMENT_PROD_BRANCH}'
+                extensions {localBranch('${DEPLOYMENT_PROD_BRANCH}')}
+              }
+          }
+        steps {
+            shell('''#!/bin/bash
+                          ADD_CAPPS_LIST=\$(for file in ./**/*.yaml; do cat "$file" | grep ^-[[:space:]]; done)
+                          
+                          # Checking whether all the CApps that are defined can be fetched from Nexus
+                          IFS=$'\\n'
+                          for OUTPUT in $ADD_CAPPS_LIST
+                          do  
+                              IFS=$' '
+                              CAPP_ENTRY=($OUTPUT)
+                              GROUP_ID_PATH=(^${CAPP_ENTRY[1]})
+                              ARTIFACT_ID=(^${CAPP_ENTRY[2]})
+                              VERSION=(^${CAPP_ENTRY[3]})
+                              NEXUS_RESPONSE=\$(curl -u $NEXUS_USERNAME:$NEXUS_PASSWORD -O --silent --write-out "HTTPSTATUS:%{http_code}" --connect-timeout 20 --fail "$NEXUS_PROTOCOL://$NEXUS_URL/repository/integration/$GROUP_ID_PATH/$ARTIFACT_ID/$VERSION/$ARTIFACT_ID-$VERSION.car")
+                              HTTP_STATUS=\$(echo \$NEXUS_RESPONSE | tr -d '\\n' | sed -e 's/.*HTTPSTATUS://')
+                              if [[ ! \$HTTP_STATUS -eq 200 ]]; then
+                                echo "Cannot fetch $ARTIFACT_ID-$VERSION.cars from Nexus Integration repository. Hence exiting without changing the deployment"
+                                rm *.car
+                                exit 1 
+                              fi
+                          done
+
+                          ssh -o StrictHostKeyChecking=no -q $PROD_REMOTE_ROOT_USER@$PROD_ENVIRONMENT_IP exit
+                          SSH_RESPONSE=\$(echo $?)
+                          if [[ ! \$SSH_RESPONSE -eq 0 ]]; then
+                            echo "Cannot access prod environment. Please make sure you have configured ssh access."
+                            rm *.car
+                            exit 1 
+                          fi
+                          
+                          # Removing all CApps from the MI instance
+                          echo "Removing all existing CAR files"
+                          ssh -o StrictHostKeyChecking=no $PROD_REMOTE_ROOT_USER@$PROD_ENVIRONMENT_IP "rm $PROD_MICRO_INTEGRATOR_CAPPS_PATH/*.car"
+                          
+                          # Adding the new CApps to the MI instance
+                          IFS=$'\\n'
+                          for OUTPUT in $ADD_CAPPS_LIST
+                          do
+                              IFS=$' '
+                              CAPP_ENTRY=($OUTPUT)
+                              GROUP_ID_PATH=(^${CAPP_ENTRY[1]})
+                              ARTIFACT_ID=(^${CAPP_ENTRY[2]})
+                              VERSION=(^${CAPP_ENTRY[3]})
+                              scp -o StrictHostKeyChecking=no $ARTIFACT_ID-$VERSION.car $PROD_REMOTE_ROOT_USER@$PROD_ENVIRONMENT_IP:$PROD_MICRO_INTEGRATOR_CAPPS_PATH/
+                              echo "$ARTIFACT_ID-$VERSION.car deployed to the production environment successfully."
+                              rm \$ARTIFACT_ID-\$VERSION.car
+                          done    
+
+                ''')   
+        }
+        publishers {
+            extendedEmail {
+                recipientList('${EMAIL_NOTIFICATION_RECEIVERS}')
+                defaultSubject('$PROJECT_NAME - Build #$BUILD_NUMBER - $BUILD_STATUS!')
+                defaultContent('Check console output at $BUILD_URL to view the results.')
+                contentType('text/html')
+                triggers {
+                    failure {
+                        sendTo {
+                            recipientList()
+                        }
+                    }
+                }
+            } 
+        }
+      }
+  
+
+tool:
+  git:
+    installations:
+      - name: Default
+        home: "/usr/bin/git"
+  jdk:
+    installations:
+      - name: "open-jdk8"
+        properties:
+          - installSource:
+              installers:
+                - adoptOpenJdkInstaller:
+                    id: "jdk8u275-b01"
+  maven:
+    installations:
+      - name: "Maven 3"
+        properties:
+          - installSource:
+              installers:
+                - maven:
+                    id: "3.6.3"
+credentials:
+  system:
+    domainCredentials:
+    - credentials:
+      - usernamePassword:
+          id: "github-credentials"
+          username: ${GIT_SCM_CONFIG_USERNAME}
+          password: ${GIT_SCM_CONFIG_PASSWORD_TOKEN}
+          description: "Username/Token Credentials for GitHub"
+          scope: GLOBAL
+      - usernamePassword:
+          id: "nexus-credentials"
+          username: ${NEXUS_USERNAME}
+          password: ${NEXUS_PASSWORD}
+          description: "Username/Token Credentials for Nexus"
+          scope: GLOBAL    
