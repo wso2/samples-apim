@@ -1,0 +1,160 @@
+{
+    "name": "QuantisTrainAPI",
+    "description": "API to get Quantis train schedules",
+    "context": "/quantis-schedule",
+    "version": "1.0.0",
+    "provider": "andy@quantis.com",
+    "responseCachingEnabled": false,
+    "cacheTimeout": 300,
+    "hasThumbnail": null,
+    "isDefaultVersion": false,
+    "isRevision": false,
+    "revisionedApiId": null,
+    "revisionId": 0,
+    "enableSchemaValidation": false,
+    "type": "HTTP",
+    "transport": [
+        "http",
+        "https"
+    ],
+    "tags": [
+        "schedule",
+        "time-table",
+        "train"
+    ],
+    "policies": [
+        "Bronze",
+        "Gold",
+        "Silver",
+        "Unlimited"
+    ],
+    "additionalProperties":[
+        {
+           "name":"slack_url",
+           "value":"https://wso2-apim.slack.com",
+           "display":true
+        },
+        {
+           "name":"github_repo",
+           "value":"https://github.com/wso2/product-apim",
+           "display":true
+        }
+     ],
+    "apiThrottlingPolicy": null,
+    "authorizationHeader": "Authorization",
+    "securityScheme": [
+        "oauth2",
+        "oauth_basic_auth_api_key_mandatory"
+    ],
+    "maxTps": {
+        "production": 500,
+        "sandbox": 500
+    },
+    "visibility": "PUBLIC",
+    "visibleRoles": [],
+    "visibleTenants": [],
+    "mediationPolicies": [],
+    "subscriptionAvailability": "CURRENT_TENANT",
+    "subscriptionAvailableTenants": [],
+    "monetization": null,
+    "accessControl": "NONE",
+    "accessControlRoles": [],
+    "businessInformation": {
+        "businessOwner": "Andy ",
+        "businessOwnerEmail": "andy@quantis.com",
+        "technicalOwner": "Mary",
+        "technicalOwnerEmail": "mary@quantis.com"
+    },
+    "websubSubscriptionConfiguration": {
+        "secret": "",
+        "signingAlgorithm": "SHA-256",
+        "signatureHeader": "x-hub-signature"
+    },
+    "workflowStatus": null,
+    "createdTime": "2021-02-22 16:27:50.067",
+    "lastUpdatedTime": "2021-02-22 16:27:50.38",
+    "endpointConfig": {
+        "endpoint_type": "http",
+        "sandbox_endpoints": {
+            "url": "http://backend-service:8080/train-operations/v1"
+        },
+        "production_endpoints": {
+            "url": "http://backend-service:8080/train-operations/v1"
+        }
+    },
+    "endpointImplementationType": "ENDPOINT",
+    "scopes": [],
+    "operations": [
+        {
+            "id": "",
+            "target": "/schedules",
+            "verb": "GET",
+            "authType": "Application & Application User",
+            "throttlingPolicy": "Unlimited",
+            "scopes": [],
+            "usedProductIds": [],
+            "amznResourceName": null,
+            "amznResourceTimeout": null,
+            "payloadSchema": null,
+            "uriMapping": null
+        },
+        {
+            "id": "",
+            "target": "/schedules",
+            "verb": "POST",
+            "authType": "Application & Application User",
+            "throttlingPolicy": "Unlimited",
+            "scopes": [],
+            "usedProductIds": [],
+            "amznResourceName": null,
+            "amznResourceTimeout": null,
+            "payloadSchema": null,
+            "uriMapping": null
+        },
+        {
+            "id": "",
+            "target": "/schedules/{id}",
+            "verb": "GET",
+            "authType": "Application & Application User",
+            "throttlingPolicy": "Unlimited",
+            "scopes": [],
+            "usedProductIds": [],
+            "amznResourceName": null,
+            "amznResourceTimeout": null,
+            "payloadSchema": null,
+            "uriMapping": null
+        },
+        {
+            "id": "",
+            "target": "/schedules/{id}",
+            "verb": "PUT",
+            "authType": "Application & Application User",
+            "throttlingPolicy": "Unlimited",
+            "scopes": [],
+            "usedProductIds": [],
+            "amznResourceName": null,
+            "amznResourceTimeout": null,
+            "payloadSchema": null,
+            "uriMapping": null
+        },
+        {
+            "id": "",
+            "target": "/schedules/{id}",
+            "verb": "DELETE",
+            "authType": "Application & Application User",
+            "throttlingPolicy": "Unlimited",
+            "scopes": [],
+            "usedProductIds": [],
+            "amznResourceName": null,
+            "amznResourceTimeout": null,
+            "payloadSchema": null,
+            "uriMapping": null
+        }
+    ],
+    "threatProtectionPolicies": null,
+    "categories": [],
+    "keyManagers": [
+        "all"
+    ],
+    "serviceInfo": null
+}

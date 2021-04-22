@@ -1,0 +1,94 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://tutorial.apimgt.carbon.wso2.org"
+           targetNamespace="http://tutorial.apimgt.carbon.wso2.org" elementFormDefault="qualified">
+    <xs:element name="getAllMovies">
+        <xs:complexType>
+            <xs:sequence>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="getAllMoviesResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="movieItems" type="tns:movieItem" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="movieItem">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="rating" type="xs:double"/>
+            <xs:element name="genre" type="xs:string"/>
+            <xs:element name="director" type="xs:string"/>
+            <xs:element name="starring" type="xs:string"/>
+            <xs:element name="releasedOn" type="xs:string"/>
+            <xs:element name="movieId" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+        <xs:element name="getAllTVSeries">
+        <xs:complexType>
+            <xs:sequence>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="getAllTVSeriesResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="tvItems" type="tns:tvItem" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="tvItem">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="rating" type="xs:double"/>
+            <xs:element name="genres" type="xs:string"/>
+            <xs:element name="creator" type="xs:string"/>
+            <xs:element name="starring" type="xs:string"/>
+            <xs:element name="seasons" type="xs:string"/>
+            <xs:element name="tvSeriesId" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="getAllSongAlbums">
+        <xs:complexType>
+            <xs:sequence>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="getAllSongAlbumsResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="albumItems" type="tns:albumItem" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="albumItem">
+        <xs:sequence>
+            <xs:element name="albumName" type="xs:string"/>
+            <xs:element name="artist" type="xs:string"/>
+            <xs:element name="genre" type="xs:string"/>
+            <xs:element name="albumId" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+        <xs:element name="listSongsByAlbumRequest">
+        <xs:complexType>
+            <xs:sequence>
+            	<xs:element minOccurs="0" name="albumName" nillable="true" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="listSongsByAlbumResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="songItems" type="tns:songItem" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="songItem">
+        <xs:sequence>
+            <xs:element name="title" type="xs:string"/>
+            <xs:element name="writer" type="xs:string"/>
+            <xs:element name="length" type="xs:string"/>
+            <xs:element name="songId" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

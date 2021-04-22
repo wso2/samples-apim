@@ -1,0 +1,23 @@
+@App:asyncAPI
+@App:name("TrainLocationHTTP2Websocket")
+@App:description('Receive data events from a Location Simulator and expose them as Websocket server')
+
+@Source(type = 'http',
+        receiver.url='http://0.0.0.0:8006/location-source',
+        basic.auth.enabled='false',
+        @map(type='json'))
+define stream TrainLocationStream (lat double, lon double);
+
+@sink(type='websocket-server', host='0.0.0.0', port='8025',
+@map(type='json'))
+define stream TrainLocationAlertStream (lat double, lon double);
+
+@info(name='query1') 
+from TrainLocationStream
+select *
+insert into TrainLocationAlertStream;
+
+/*
+from TrainLocationAlertStream#log('event')
+insert into LogStream;
+*/
