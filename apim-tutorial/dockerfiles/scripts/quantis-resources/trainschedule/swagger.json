@@ -1,0 +1,261 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "ColTrainTimeTableAPI",
+        "description": "This is the API definition for the Train operations supported by the backend\n",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://backend-service:8080/train-operations/v1"
+        }
+    ],
+    "security": [
+        {
+            "default": []
+        }
+    ],
+    "paths": {
+        "/schedules": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ScheduleItemList"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "default": []
+                    }
+                ],
+                "x-auth-type": "Application & Application User",
+                "x-throttling-tier": "Unlimited",
+                "x-wso2-application-security": {
+                    "security-types": [
+                        "oauth2"
+                    ],
+                    "optional": false
+                }
+            },
+            "post": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ScheduleItem"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    }
+                },
+                "security": [
+                    {
+                        "default": []
+                    }
+                ],
+                "x-auth-type": "Application & Application User",
+                "x-throttling-tier": "Unlimited",
+                "x-wso2-application-security": {
+                    "security-types": [
+                        "oauth2"
+                    ],
+                    "optional": false
+                }
+            }
+        },
+        "/schedules/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "style": "simple",
+                        "explode": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ScheduleItem"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "default": []
+                    }
+                ],
+                "x-auth-type": "Application & Application User",
+                "x-throttling-tier": "Unlimited",
+                "x-wso2-application-security": {
+                    "security-types": [
+                        "oauth2"
+                    ],
+                    "optional": false
+                }
+            },
+            "put": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "style": "simple",
+                        "explode": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    }
+                },
+                "security": [
+                    {
+                        "default": []
+                    }
+                ],
+                "x-auth-type": "Application & Application User",
+                "x-throttling-tier": "Unlimited",
+                "x-wso2-application-security": {
+                    "security-types": [
+                        "oauth2"
+                    ],
+                    "optional": false
+                }
+            },
+            "delete": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "style": "simple",
+                        "explode": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    }
+                },
+                "security": [
+                    {
+                        "default": []
+                    }
+                ],
+                "x-auth-type": "Application & Application User",
+                "x-throttling-tier": "Unlimited",
+                "x-wso2-application-security": {
+                    "security-types": [
+                        "oauth2"
+                    ],
+                    "optional": false
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ScheduleItem": {
+                "title": "Schedule information",
+                "type": "object",
+                "properties": {
+                    "entryId": {
+                        "type": "string",
+                        "description": "Id of the schedule item."
+                    },
+                    "startTime": {
+                        "type": "string",
+                        "description": "Train starting time."
+                    },
+                    "endTime": {
+                        "type": "string",
+                        "description": "Train destination arrival time."
+                    },
+                    "from": {
+                        "type": "string",
+                        "description": "Train starting station."
+                    },
+                    "to": {
+                        "type": "string",
+                        "description": "Train destination station."
+                    },
+                    "trainType": {
+                        "type": "string",
+                        "description": "Train category."
+                    }
+                }
+            },
+            "ScheduleItemList": {
+                "title": "List of schedule items information",
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/ScheduleItem"
+                }
+            }
+        },
+        "securitySchemes": {
+            "default": {
+                "type": "oauth2",
+                "flows": {
+                    "implicit": {
+                        "authorizationUrl": "https://test.com",
+                        "scopes": {}
+                    }
+                }
+            }
+        }
+    },
+    "x-wso2-auth-header": "Authorization",
+    "x-wso2-production-endpoints": {
+        "urls": [
+            "http://backend-service:8080/train-operations/v1"
+        ],
+        "type": "http"
+    },
+    "x-wso2-sandbox-endpoints": {
+        "urls": [
+            "http://backend-service:8080/train-operations/v1"
+        ],
+        "type": "http"
+    },
+    "x-wso2-basePath": "/t/quantis.com/quantis-schedule/1.0.0",
+    "x-wso2-transports": [
+        "http",
+        "https"
+    ],
+    "x-wso2-response-cache": {
+        "enabled": false,
+        "cacheTimeoutInSeconds": 300
+    }
+}

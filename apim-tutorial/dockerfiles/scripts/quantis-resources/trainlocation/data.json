@@ -1,0 +1,88 @@
+{
+    "name": "TrainRealLocationAPI",
+    "description": null,
+    "context": "/train/location",
+    "version": "1.0.0",
+    "provider": "andy@quantis.com",
+    "lifeCycleStatus": "PUBLISHED",
+    "wsdlInfo": null,
+    "wsdlUrl": null,
+    "responseCachingEnabled": false,
+    "cacheTimeout": 300,
+    "hasThumbnail": null,
+    "isDefaultVersion": false,
+    "isRevision": false,
+    "revisionedApiId": null,
+    "revisionId": 0,
+    "enableSchemaValidation": false,
+    "type": "WS",
+    "transport": [],
+    "tags": [],
+    "policies": [
+      "AsyncGold",
+      "AsyncSilver",
+      "AsyncBronze"
+    ],
+    "apiThrottlingPolicy": null,
+    "authorizationHeader": "Authorization",
+    "securityScheme": [
+      "oauth2",
+      "oauth_basic_auth_api_key_mandatory"
+    ],
+    "maxTps": null,
+    "visibility": "PUBLIC",
+    "visibleRoles": [],
+    "visibleTenants": [],
+    "mediationPolicies": [],
+    "subscriptionAvailability": "CURRENT_TENANT",
+    "subscriptionAvailableTenants": [],
+    "monetization": null,
+    "accessControl": "NONE",
+    "accessControlRoles": [],
+    "businessInformation": {
+      "businessOwner": "Quantis",
+      "businessOwnerEmail": "admin@quantis.com",
+      "technicalOwner": null,
+      "technicalOwnerEmail": null
+    },
+    "websubSubscriptionConfiguration": {
+      "secret": "",
+      "signingAlgorithm": "SHA-256",
+      "signatureHeader": "x-hub-signature"
+    },
+    "workflowStatus": null,
+    "createdTime": "2021-03-10 11:27:17.867",
+    "lastUpdatedTime": "2021-03-10 13:10:36.496",
+    "endpointConfig": {
+      "endpoint_type": "ws",
+      "sandbox_endpoints": {
+        "url": "ws://si-runtime:8025/"
+      },
+      "production_endpoints": {
+        "url": "ws://si-runtime:8025/"
+      }
+    },
+    "endpointImplementationType": "ENDPOINT",
+    "scopes": [],
+    "operations": [
+      {
+        "id": "",
+        "target": "/loc-train-qnt-456",
+        "verb": "SUBSCRIBE",
+        "authType": "Application & Application User",
+        "throttlingPolicy": "Unlimited",
+        "scopes": [],
+        "usedProductIds": [],
+        "amznResourceName": null,
+        "amznResourceTimeout": null,
+        "payloadSchema": null,
+        "uriMapping": null
+      }
+    ],
+    "threatProtectionPolicies": null,
+    "categories": [],
+    "keyManagers": [
+      "all"
+    ],
+    "serviceInfo": null
+  }
