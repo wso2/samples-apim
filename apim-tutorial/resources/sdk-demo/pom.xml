@@ -26,11 +26,6 @@
       <artifactId>org.wso2.client.QuantisTrainAPI</artifactId>
       <version>1.0.0</version>
     </dependency>
-    <dependency>
-      <groupId>org.wso2</groupId>
-      <artifactId>org.wso2.client.PizzaShackAPI</artifactId>
-      <version>1.0.0</version>
-    </dependency>
   </dependencies>
   <build>
     <pluginManagement>
