@@ -14,7 +14,7 @@ public class App {
 		apiClient.addDefaultHeader("Accept", "application/json");
 		String accessToken = args[0];
 		apiClient.addDefaultHeader("Authorization", "Bearer " + accessToken);
-		apiClient.setBasePath("http://localhost:8280/t/quantis.com/t/quantis.com/quantis-schedule/1.0.0");
+		apiClient.setBasePath("http://localhost:8280/t/quantis.com/quantis-schedule/1.0.0");
 		defaultApi.setApiClient(apiClient);
 
 		List<ScheduleItem> schedules = defaultApi.schedulesGet();
