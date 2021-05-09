@@ -21,10 +21,7 @@ services:
         si-runtime:
           condition: service_healthy
     mi-runtime:
-      build: 
-        context: ./dockerfiles/micro-integrator/
-        args:
-          - BASE_IMAGE=wso2/wso2mi:4.0.0
+      image: wso2/wso2mi:4.0.0
       healthcheck:
         test: ["CMD", "nc", "-z","localhost", "8290"]
         interval: 10s
@@ -37,8 +34,9 @@ services:
       depends_on:
         db:
           condition: service_healthy
-      # volumes:
-      #   - <SourceLocation>:/home/wso2carbon/sample
+      volumes:
+        - ./dockerfiles/conf/mi:/home/wso2carbon/wso2-config-volume
+        # - <SourceLocation>:/home/wso2carbon/sample
       environment:
         CATERING_SERVICE_EP : http://www.urldoesnotexist.com
       #   SMTP_HOST: <SMTP_Host>
@@ -48,15 +46,14 @@ services:
       #   EMAIL_TO: <To_Address>
       #   EMAIL_FROM: <From_Address>
     si-runtime:
-      build: 
-        context: ./dockerfiles/streaming-integrator/
-        args:
-          - BASE_IMAGE=wso2/wso2si:4.0.0
+      image: wso2/wso2si:4.0.0
       healthcheck:
         test: ["CMD", "nc", "-z","localhost", "9443"]
         interval: 10s
         start_period: 30s
         retries: 20
+      volumes:
+        - ./dockerfiles/conf/si:/home/wso2carbon/wso2-config-volume
       ports:
       - "8025:8025"
       - "9090:9090"
