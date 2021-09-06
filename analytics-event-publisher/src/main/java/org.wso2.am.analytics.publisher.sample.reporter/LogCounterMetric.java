@@ -6,6 +6,7 @@ import org.wso2.am.analytics.publisher.exception.MetricReportingException;
 import org.wso2.am.analytics.publisher.reporter.CounterMetric;
 import org.wso2.am.analytics.publisher.reporter.MetricEventBuilder;
 import org.wso2.am.analytics.publisher.reporter.MetricSchema;
+import org.wso2.am.analytics.publisher.reporter.cloud.DefaultFaultMetricEventBuilder;
 import org.wso2.am.analytics.publisher.reporter.cloud.DefaultResponseMetricEventBuilder;
 
 import java.util.Map;
@@ -41,6 +42,14 @@ public class LogCounterMetric implements CounterMetric {
 
     @Override
     public MetricEventBuilder getEventBuilder() {
-        return new DefaultResponseMetricEventBuilder();
+        switch (schema) {
+            case RESPONSE:
+                return new DefaultResponseMetricEventBuilder();
+            case ERROR:
+                return new DefaultFaultMetricEventBuilder();
+            default:
+                // will not happen
+                return null;
+        }
     }
 }
