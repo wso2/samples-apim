@@ -15,13 +15,18 @@
 <dependencies>
     <dependency>
         <groupId>org.wso2.carbon.apimgt</groupId>
-        <artifactId>org.wso2.carbon.apimgt.gateway</artifactId>
+        <artifactId>org.wso2.carbon.apimgt.common.gateway</artifactId>
         <version>${carbon.apimgt.version}</version>
     </dependency>
     <dependency>
         <groupId>org.wso2.orbit.com.nimbusds</groupId>
         <artifactId>nimbus-jose-jwt</artifactId>
         <version>7.3.0.wso2v1</version>
+    </dependency>
+    <dependency>
+        <groupId>org.wso2.eclipse.osgi</groupId>
+        <artifactId>org.eclipse.osgi.services</artifactId>
+        <version>3.5.100.v20160504-1419</version>
     </dependency>
 </dependencies>
     <build>
@@ -39,7 +44,7 @@
                             org.wso2.carbon.test.*
                         </Export-Package>
                         <Import-Package>
-                            org.wo2.carbon.apimgt.gateway.*,
+                            org.wo2.carbon.apimgt.common.gateway.*,
                             org.wso2.carbon.apimgt.impl.*
                             com.nimbusds.jwt.*,
                             *;resolution:=optional
@@ -50,6 +55,6 @@
         </plugins>
     </build>
     <properties>
-        <carbon.apimgt.version>6.6.163</carbon.apimgt.version>
+        <carbon.apimgt.version>9.0.174</carbon.apimgt.version>
     </properties>
 </project>
