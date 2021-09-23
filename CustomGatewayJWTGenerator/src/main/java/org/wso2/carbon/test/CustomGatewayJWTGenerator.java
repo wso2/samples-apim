@@ -1,9 +1,9 @@
 package org.wso2.carbon.test;
 
 import org.osgi.service.component.annotations.Component;
-import org.wso2.carbon.apimgt.gateway.dto.JWTInfoDto;
-import org.wso2.carbon.apimgt.gateway.handlers.security.jwt.generator.APIMgtGatewayJWTGeneratorImpl;
-import org.wso2.carbon.apimgt.gateway.handlers.security.jwt.generator.AbstractAPIMgtGatewayJWTGenerator;
+import org.wso2.carbon.apimgt.common.gateway.dto.JWTInfoDto;
+import org.wso2.carbon.apimgt.common.gateway.jwtgenerator.APIMgtGatewayJWTGeneratorImpl;
+import org.wso2.carbon.apimgt.common.gateway.jwtgenerator.AbstractAPIMgtGatewayJWTGenerator;
 
 import java.util.Map;
 import java.util.UUID;
