@@ -22,10 +22,11 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.wso2</groupId>
-      <artifactId>org.wso2.client.QuantisTrainAPI</artifactId>
-      <version>1.0.0</version>
-    </dependency>
+    <groupId>org.wso2</groupId>
+    <artifactId>org.wso2.client.QuantisTrainAPI</artifactId>
+    <version>1.0.0</version>
+</dependency>
+    
   </dependencies>
     <build>
         <finalName>sdk-demo-${project.version}</finalName>
