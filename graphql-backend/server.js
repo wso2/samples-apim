@@ -13,7 +13,7 @@ app.use('*', cors());
 
 const server = new ApolloServer({ 
   schema, 
-  subscriptions: { path: "/websocket" }
+  subscriptions: { path: "/graphql" }
 });
 
 server.applyMiddleware({ app });

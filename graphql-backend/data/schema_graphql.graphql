@@ -25,7 +25,7 @@ type Mutation {
 
 # The subscription type, represents all subscriptions we can make to our data
 type Subscription {
-  reviewAdded(episode: Episode): Review
+  reviewAdded(episode: Episode): Review!
 }
 
 # The episodes in the Star Wars trilogy
