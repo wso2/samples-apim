@@ -1,0 +1,162 @@
+{
+    "info": {
+        "_postman_id": "5d61574b-b9c0-41a8-8006-18d092145385",
+        "name": "Access Control Demo",
+        "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Jenny Access Token Request",
+            "request": {
+                "auth": {
+                    "type": "basic",
+                    "basic": {
+                        "password": "{{client_secret}}",
+                        "username": "{{client_id}}"
+                    }
+                },
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                    }
+                ],
+                "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                        {
+                            "key": "grant_type",
+                            "value": "password",
+                            "type": "text"
+                        },
+                        {
+                            "key": "username",
+                            "value": "jenny@coltrain.com",
+                            "type": "text"
+                        },
+                        {
+                            "key": "password",
+                            "value": "user123",
+                            "type": "text"
+                        },
+                        {
+                            "key": "scope",
+                            "value": "schedule_admin",
+                            "type": "text"
+                        }
+                    ]
+                },
+                "url": "https://{{host}}:9443/oauth2/token"
+            },
+            "response": []
+        },
+        {
+            "name": "George Access Token Request",
+            "request": {
+                "auth": {
+                    "type": "basic",
+                    "basic": {
+                        "password": "{{client_secret}}",
+                        "username": "{{client_id}}"
+                    }
+                },
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                    }
+                ],
+                "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                        {
+                            "key": "grant_type",
+                            "value": "password",
+                            "type": "text"
+                        },
+                        {
+                            "key": "username",
+                            "value": "george@coltrain.com",
+                            "type": "text"
+                        },
+                        {
+                            "key": "password",
+                            "value": "user123",
+                            "type": "text"
+                        },
+                        {
+                            "key": "scope",
+                            "value": "schedule_admin",
+                            "type": "text"
+                        }
+                    ]
+                },
+                "url": "https://{{host}}:9443/oauth2/token"
+            },
+            "response": []
+        },
+        {
+            "name": "Invoke API",
+            "request": {
+                "auth": {
+                    "type": "bearer",
+                    "bearer": {
+                        "token": "eyJ4NXQiOiJZems0WkRZMk5XTTRNVGN5TlRZMU1URTFZemMyWlRZeVlURmtZemt5WTJZMlpERTBNbU5pTjJaaFlUVTFNalEyT1RBd00yUXlNV05qWkdVeFpUTXdZdyIsImtpZCI6Ill6azRaRFkyTldNNE1UY3lOVFkxTVRFMVl6YzJaVFl5WVRGa1l6a3lZMlkyWkRFME1tTmlOMlpoWVRVMU1qUTJPVEF3TTJReU1XTmpaR1V4WlRNd1l3X1JTMjU2IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJqZW5ueSIsImF1dCI6IkFQUExJQ0FUSU9OX1VTRVIiLCJhdWQiOiJma0pvUkhQRDdPblRkZm5qaldGTWw4MGhkMDhhIiwibmJmIjoxNjE4OTk2NjgwLCJhenAiOiJma0pvUkhQRDdPblRkZm5qaldGTWw4MGhkMDhhIiwic2NvcGUiOiJzY2hlZHVsZV9hZG1pbiIsImlzcyI6Imh0dHBzOlwvXC8zNS4yMzEuNzkuMzo5NDQzXC9vYXV0aDJcL3Rva2VuIiwiZXhwIjoxNjE5MDAwMjgwLCJpYXQiOjE2MTg5OTY2ODAsImp0aSI6IjY2YjQzMzc1LWU5MmUtNDVlMy1hNmM2LTcwMjRhNTExZjVjZiJ9.JywJ9KzQLrHdE-cuu4opS6xZLcNOkP8-8mLKMZO_uUDkIzmfu1T4qM5bJEWEd5cDrldbRs0m4mo1Gb7AkHkk4YcnTLCqK6Vp0BAs4QeHwa_l0eAluEEW8RTKD5o8Cye2_9TggBU67MqdJL5K7QUTlJI4_05bMdc_gThXBTmYsi-yWmomPyWnmlVXRF1saF2K5mes3Sg5HhMcWO6PKqwoPCSLyDjf-4WARbybLqBn6KUpnzs2_bqwNE5KMtIyVAEUpdPvYutkO-U9MIYLeR7jXH9teKrEwkVyHvAeMwfVK0U5fSFjt3avnrxQlPbzFzW9irnwaE3Vv0e7pdRh7XtfQw"
+                    }
+                },
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n   \"entryId\":\"10\",\n   \"startTime\":\"18:30\",\n   \"endTime\":\"20.30\",\n   \"from\":\"London\",\n   \"to\":\"Oxford\",\n   \"trainType\":\"Standard\"\n}\n"
+                },
+                "url": "https://{{host}}:8243/t/coltrain.com/coltrain-schedule/1.0.0/schedules"
+            },
+            "response": []
+        }
+    ],
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    ""
+                ]
+            }
+        },
+        {
+            "listen": "test",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    ""
+                ]
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "host",
+            "value": "35.231.79.3",
+            "type": "string"
+        },
+        {
+            "key": "client_id",
+            "value": "fkJoRHPD7OnTdfnjjWFMl80hd08a",
+            "type": "string"
+        },
+        {
+            "key": "client_secret",
+            "value": "e5rhfTwykc0EQmsQStf1lSRqHw4a",
+            "type": "string"
+        }
+    ]
+}

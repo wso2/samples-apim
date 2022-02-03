@@ -78,7 +78,7 @@ services:
     db:
       image: mysql:8.0.23
       ports:
-        - 8083:3306
+        - 8083:3306  #out/in
       command: --init-file /data/application/init.sql
       volumes:
         - ./dockerfiles/database/init.sql:/data/application/init.sql
