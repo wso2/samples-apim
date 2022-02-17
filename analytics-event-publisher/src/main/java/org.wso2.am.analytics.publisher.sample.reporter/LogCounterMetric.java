@@ -1,5 +1,6 @@
 package org.wso2.am.analytics.publisher.sample.reporter;
 
+import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.am.analytics.publisher.exception.MetricReportingException;
@@ -16,17 +17,20 @@ public class LogCounterMetric implements CounterMetric {
     private static final Logger log = LoggerFactory.getLogger(LogCounterMetric.class);
     private String name;
     private MetricSchema schema;
+    private final Gson gson;
 
     public LogCounterMetric(String name, MetricSchema schema) {
         this.name = name;
         this.schema = schema;
+        this.gson = new Gson();
     }
 
     @Override
     public int incrementCount(MetricEventBuilder metricEventBuilder) throws MetricReportingException {
-        Map<String, Object> properties = metricEventBuilder.build();
-        log.info("Metric Name: " + name.replaceAll("[\r\n]", "") + " Metric Value: "
-                + properties.toString().replaceAll("[\r\n]", ""));
+        Map<String, Object> event = metricEventBuilder.build();
+        String jsonString = gson.toJson(event);
+        log.info("Metric Name: " + name.replaceAll("[\r\n]", "") + ", Metric Value: " +
+                jsonString.replaceAll("[\r\n]", ""));
         return 0;
     }
 
