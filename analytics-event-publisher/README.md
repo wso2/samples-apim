@@ -33,15 +33,16 @@ Add bellow configurations after the loggers
 
 Once this is successfully deployed a sample log will look like bellow,
 
-        INFO - LogCounterMetric Metric Name: apim:response Metric Value: {apiName=PizzaShackAPI, proxyResponseCode=200, 
-        errorType=null, destination=https://localhost:9443/am/sample/pizzashack/v1/api/, 
-        apiCreatorTenantDomain=carbon.super, platform=Linux, apiMethod=GET, apiVersion=1.0.0, gatewayType=SYNAPSE, 
-        apiCreator=admin, responseCacheHit=false, backendLatency=700, 
-        correlationId=f2566443-04f9-4865-9612-40a4d8bd6318, requestMediationLatency=102, keyType=PRODUCTION, 
-        apiId=3076a598-65f0-4b8e-a36e-50ecd797aa1b, applicationName=internal-key-app, targetResponseCode=200, 
-        requestTimestamp=2021-07-13T09:23:35.311Z, applicationOwner=internal-key-app, userAgent=Chrome, 
-        eventType=response, apiResourceTemplate=/menu, responseLatency=804, regionId=default, 
-        responseMediationLatency=2, userIp=127.0.0.1, applicationId=118fd1a4-73aa-3969-8c72-4f5cc06b1b0a, apiType=HTTP}
+        INFO - LogCounterMetric apimMetrics: apim:response, properties :{"apiName":"PizzaShackAPI",
+        "proxyResponseCode":200,"destination":"https://localhost:9443/am/sample/pizzashack/v1/api/",
+        "apiCreatorTenantDomain":"carbon.super","platform":"Linux","apiMethod":"GET","apiVersion":"1.0.0",
+        "gatewayType":"SYNAPSE","apiCreator":"admin","responseCacheHit":false,"backendLatency":335,
+        "correlationId":"70a30874-1e19-41e2-ad44-0ec1957fc740","requestMediationLatency":55,"keyType":"PRODUCTION",
+        "apiId":"dd4423d0-769a-4515-8b5e-8994daaad3ff","applicationName":"internal-key-app","targetResponseCode":200,
+        "requestTimestamp":"2022-02-17T09:47:48.913Z","applicationOwner":"internal-key-app","userAgent":"Chrome",
+        "eventType":"response","apiResourceTemplate":"/menu","responseLatency":392,"regionId":"default",
+        "responseMediationLatency":2,"userIp":"127.0.0.1","applicationId":"118fd1a4-73aa-3969-8c72-4f5cc06b1b0a",
+        "apiType":"HTTP"}
 
 
 
