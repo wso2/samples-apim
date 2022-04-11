@@ -1,0 +1,10 @@
+target
+.classpath
+.settings
+.project
+*.i??
+.idea
+.factorypath
+*.DS_Store
+*.mvn
+dockerfiles/scripts/lock

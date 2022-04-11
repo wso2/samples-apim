@@ -1,0 +1,105 @@
+openapi: 3.0.1
+info:
+  title: RailCoEmployeeAPI
+  description: | 
+    This is the API definition for the Employee database operations supported by the Micro Integrator backend
+  version: 1.0.0
+servers:
+  - url: http://backend-service:8290/services/EmployeeDataService/
+paths:
+  /employees:
+    get:
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeList'
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeeEntry'
+        required: true
+      responses:
+        '200':
+          description: ok
+  /employees/{id}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeEntry'
+    put:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: ok
+    delete:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: ok
+components:
+  schemas:
+    EmployeeEntry:
+      title: Employee information
+      type: object
+      properties:
+        employee:
+          type: object
+          properties:
+            id:
+              type: number
+              description: Id of the Employee entry.
+            firstname:
+              type: string
+              description: First name of the employee.
+            lastname:
+              type: string
+              description: Last name of the employee.
+            email:
+              type: string
+              description: Email of the employee.
+            title:
+              type: string
+              description: Title of the employee.
+    EmployeeList:
+        title: List of employee information 
+        type: object
+        properties:
+          employees:
+            type: array
+            items:
+              $ref: '#/components/schemas/EmployeeEntry'
+            
