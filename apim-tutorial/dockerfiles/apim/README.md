@@ -1,2 +1,2 @@
 #Build    
-    docker build -t wso2am:4.0.0 .
+    docker build -t wso2am:4.1.0 .
