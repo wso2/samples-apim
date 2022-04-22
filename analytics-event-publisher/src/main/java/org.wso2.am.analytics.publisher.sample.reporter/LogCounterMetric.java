@@ -29,7 +29,7 @@ public class LogCounterMetric implements CounterMetric {
     public int incrementCount(MetricEventBuilder metricEventBuilder) throws MetricReportingException {
         Map<String, Object> event = metricEventBuilder.build();
         String jsonString = gson.toJson(event);
-        log.info("Metric Name: " + name.replaceAll("[\r\n]", "") + ", Metric Value: " +
+        log.info("apimMetrics: " + name.replaceAll("[\r\n]", "") + ", properties :" +
                 jsonString.replaceAll("[\r\n]", ""));
         return 0;
     }
