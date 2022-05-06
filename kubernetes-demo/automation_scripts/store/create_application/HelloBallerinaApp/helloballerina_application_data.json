@@ -1,6 +1,0 @@
-{
-    "throttlingTier": "Unlimited",
-    "description": "Hello Ballerina",
-    "name": "HelloBallerinaApplication",
-    "callbackUrl": "http://my.server.com/callback"
-}
