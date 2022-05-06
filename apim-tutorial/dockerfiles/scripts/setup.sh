@@ -24,7 +24,7 @@ echo "WSO2 API Manager started"
 ## check if already created
 
 FILE=lock
-if ! test -f "$FILE"; then
+#if ! test -f "$FILE"; then
     
 echo "Creating tenants"
 
@@ -41,7 +41,7 @@ sh deploy-api.sh
 # back to home
 cd ../ 
 # create a file to prevent re-run
-echo "created" >> lock
+#echo "created" >> lock
 
 fi
 
