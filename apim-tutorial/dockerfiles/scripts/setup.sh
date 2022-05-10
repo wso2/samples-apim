@@ -43,6 +43,6 @@ cd ../
 # create a file to prevent re-run
 #echo "created" >> lock
 
-#fi
+fi
 
 echo "=================================Data population completed======================================================"
