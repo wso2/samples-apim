@@ -32,14 +32,14 @@ get_vhost() {
 }
 vhost=$(get_vhost)
 rate_and_comment(){
-    local rating_id=$(curl -k -H "Authorization: Bearer $1" -H "Content-Type: application/json" -X PUT -d '{"rating":'$3'}' https://$apim:9443/api/am/devportal/v3/apis/$2/user-rating | jq -r '.ratingId')
-    local comment_id=$(curl -k -H "Authorization: Bearer $1" -H "Content-Type: application/json" -X POST -d @$4.json https://$apim:9443/api/am/devportal/v3/apis/$2/comments | jq -r '.id')
+    local rating_id=$(curl -k -H "Authorization: Bearer $1" -H "Content-Type: application/json" -X PUT -d '{"rating":'$3'}' https://$apim:9443/api/am/devportal/v2/apis/$2/user-rating | jq -r '.ratingId')
+    local comment_id=$(curl -k -H "Authorization: Bearer $1" -H "Content-Type: application/json" -X POST -d @$4.json https://$apim:9443/api/am/devportal/v2/apis/$2/comments | jq -r '.id')
     
 }
 rate_and_comment_and_reply(){
-    local rating_id=$(curl -k -H "Authorization: Bearer $1" -H "Content-Type: application/json" -X PUT -d '{"rating":'$3'}' https://$apim:9443/api/am/devportal/v3/apis/$2/user-rating | jq -r '.ratingId')
-    local comment_id=$(curl -k -H "Authorization: Bearer $1" -H "Content-Type: application/json" -X POST -d @$4.json https://$apim:9443/api/am/devportal/v3/apis/$2/comments | jq -r '.id')
-    local reply=$(curl -k -H "Authorization: Bearer $5" -H "Content-Type: application/json" -X POST -d'{"content":"Thanks 😊","category":"general"}' https://$apim:9443/api/am/devportal/v3/apis/$2/comments?replyTo=$comment_id | jq -r '.id')
+    local rating_id=$(curl -k -H "Authorization: Bearer $1" -H "Content-Type: application/json" -X PUT -d '{"rating":'$3'}' https://$apim:9443/api/am/devportal/v2/apis/$2/user-rating | jq -r '.ratingId')
+    local comment_id=$(curl -k -H "Authorization: Bearer $1" -H "Content-Type: application/json" -X POST -d @$4.json https://$apim:9443/api/am/devportal/v2/apis/$2/comments | jq -r '.id')
+    local reply=$(curl -k -H "Authorization: Bearer $5" -H "Content-Type: application/json" -X POST -d'{"content":"Thanks 😊","category":"general"}' https://$apim:9443/api/am/devportal/v2/apis/$2/comments?replyTo=$comment_id | jq -r '.id')
 
 }
 ## create and publish
@@ -58,7 +58,7 @@ create_and_publish_train_schedule_api() {
 
 
     local revisionUuid=$( curl -k -H "Authorization: Bearer $pub_access_token" -H "Content-Type: application/json" -X POST -d '[{"name": "Default","vhost" : "'$vhost'", "displayOnDevportal": true}]' https://$apim:9443/api/am/publisher/v3/apis/${api_id}/deploy-revision?revisionId=${rev_id} | jq -r '.[0].revisionUuid')
-    local publish_api_status=$(curl -k -H "Authorization: Bearer $pub_access_token" -X POST "https://$apim:9443/api/am/publisher/v3/apis/change-lifecycle?apiId=${api_id}&action=Publish")
+    local publish_api_status="$(curl -k -H "Authorization: Bearer $pub_access_token" -X POST "https://$apim:9443/api/am/publisher/v3/apis/change-lifecycle?apiId=${api_id}&action=Publish")"
     sleep 2
     echo $api_id
 }
@@ -74,7 +74,7 @@ create_and_publish_train_location_api() {
     local image_id=$(curl -k -H "Authorization: Bearer $pub_access_token" -H "multipart/form-data" -X PUT -F file=@icon.png https://$apim:9443/api/am/publisher/v3/apis/${api_id}/thumbnail | jq -r '.id')
 
     local revisionUuid=$( curl -k -H "Authorization: Bearer $pub_access_token" -H "Content-Type: application/json" -X POST -d '[{"name": "Default", "vhost" : "'$vhost'", "displayOnDevportal": true}]' https://$apim:9443/api/am/publisher/v3/apis/${api_id}/deploy-revision?revisionId=${rev_id} | jq -r '.[0].revisionUuid')
-    local publish_api_status=$(curl -k -H "Authorization: Bearer $pub_access_token" -X POST "https://$apim:9443/api/am/publisher/v3/apis/change-lifecycle?apiId=${api_id}&action=Publish")
+    local publish_api_status="$(curl -k -H "Authorization: Bearer $pub_access_token" -X POST "https://$apim:9443/api/am/publisher/v3/apis/change-lifecycle?apiId=${api_id}&action=Publish")"
     sleep 2
     echo $api_id
 }
