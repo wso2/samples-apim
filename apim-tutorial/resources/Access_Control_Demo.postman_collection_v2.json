@@ -117,7 +117,7 @@
                     "mode": "raw",
                     "raw": "{\n   \"entryId\":\"10\",\n   \"startTime\":\"18:30\",\n   \"endTime\":\"20.30\",\n   \"from\":\"London\",\n   \"to\":\"Oxford\",\n   \"trainType\":\"Standard\"\n}\n"
                 },
-                "url": "https://{{host}}:8243/t/coltrain.com/coltrain-schedule/1.0.0/schedules"
+                "url": "https://{{host}}:8243/t/coltrain.com/coltraininternaltimetableapi/1.0.0/schedules"
             },
             "response": []
         }
@@ -145,7 +145,7 @@
     "variable": [
         {
             "key": "host",
-            "value": "35.231.79.3",
+            "value": "20.197.56.160",
             "type": "string"
         },
         {
