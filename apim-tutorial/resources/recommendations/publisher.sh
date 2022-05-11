@@ -9,6 +9,6 @@ n=1
 while read line; do
 # reading each line
 echo "API $n : $line"
-apictl import api --file "$PWD/apis/$line" --environment dev --preserve-provider=false  --params "$PWD/params.yaml" -k
+./apictl import api --file "$PWD/apis/$line" --environment dev --preserve-provider=false  --params "$PWD/params.yaml" -k
 n=$((n+1))
 done < $filename
