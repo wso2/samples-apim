@@ -1,0 +1,7 @@
+environments:
+    - name: dev
+      configs:
+        deploymentEnvironments:
+            - displayOnDevportal: true
+              deploymentEnvironment: Default
+              deploymentVhost : localhost
