@@ -1,11 +1,11 @@
 openapi: 3.0.1
 info:
-  title: ColTrainInternalTimeTableAPI
+  title: ColTrainScheduleCommunityAPI
   description: | 
-    This is the API definition for the Train operations supported by the backend
+    This is the API definition for Coltrain's schedule listing API
   version: 1.0.0
 servers:
-  - url: http://20.235.64.197:8080/train-operations/v1
+  - url: http://backend-service:8080/train-operations/v1
 paths:
   /schedules:
     get:
@@ -37,16 +37,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ScheduleItemList'
-    post:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ScheduleItem'
-        required: true
-      responses:
-        '200':
-          description: ok
   /schedules/{id}:
     get:
       parameters:
@@ -65,32 +55,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ScheduleItem'
-    put:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: string
-      responses:
-        '200':
-          description: ok
-    delete:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: string
-      responses:
-        '200':
-          description: ok
 components:
   schemas:
     ScheduleItem:
