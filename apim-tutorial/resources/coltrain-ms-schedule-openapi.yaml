@@ -1,11 +1,11 @@
 openapi: 3.0.1
 info:
-  title: ColTrainScheduleCommunityAPI
+  title: ColTrainMsInternalTimeTableAPI
   description: | 
-    This is the API definition for Coltrain's schedule listing API
+    This is the API definition for the Train operations supported by the backend
   version: 1.0.0
 servers:
-  - url: http://backend-service:8080/train-operations/v1
+  - url: http://train-schedule:8080/train-operations/v1
 paths:
   /schedules:
     get:
@@ -37,6 +37,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ScheduleItemList'
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleItem'
+        required: true
+      responses:
+        '200':
+          description: ok
   /schedules/{id}:
     get:
       parameters:
@@ -55,8 +65,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ScheduleItem'
-  /trains/{id}:
-    get:
+    put:
       parameters:
         - name: id
           in: path
@@ -69,10 +78,19 @@ paths:
       responses:
         '200':
           description: ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Train'
+    delete:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: ok
 components:
   schemas:
     ScheduleItem:
@@ -97,27 +115,11 @@ components:
         trainType:
           type: string
           description: Train category.
+        trainId:
+          type: string
+          description: Train ID.
     ScheduleItemList:
         title: List of schedule items information 
         type: array
         items:
           $ref: '#/components/schemas/ScheduleItem'
-    Train:
-      title: Train information 
-      type: object
-      properties:
-        trainId:
-          type: string
-          description: Id of the schedule item.
-        numberOfCarriage:
-          type: integer
-          description: Number of train carriages.
-        imageURL:
-          type: string
-          description: Image URL of the train.
-        engineModel:
-          type: string
-          description: Engine model.
-        facilities:
-          type: string
-          description: facilities provided in the train.

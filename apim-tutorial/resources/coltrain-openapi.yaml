@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: ColTrainInternalTimeTableAPICC
+  title: ColTrainInternalTimeTableAPI
   description: | 
     This is the API definition for the Train operations supported by the backend
   version: 1.0.0
@@ -8,10 +8,6 @@ servers:
   - url: http://20.235.64.197:8080/train-operations/v1
 paths:
   /schedules:
-    x-wso2-production-endpoints:
-      urls:
-          - 'http://train-schedule:8080/train-operations/v1'
-      type: http
     get:
       parameters:
        - in: query
@@ -52,9 +48,6 @@ paths:
         '200':
           description: ok
   /schedules/{id}:
-    x-wso2-production-endpoints:
-      urls:
-          - 'http://train-schedule:8080/train-operations/v1'
     get:
       parameters:
         - name: id
@@ -98,10 +91,26 @@ paths:
       responses:
         '200':
           description: ok
+  /trains:
+    get:
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainList'
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Train'
+        required: true
+      responses:
+        '200':
+          description: ok
   /trains/{id}:
-    x-wso2-production-endpoints:
-      urls:
-          - 'http://train-service:8080/train-service/v1'
     get:
       parameters:
         - name: id
@@ -119,6 +128,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Train'
+    put:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: ok
+    delete:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: ok
 components:
   schemas:
     ScheduleItem:
@@ -143,6 +178,9 @@ components:
         trainType:
           type: string
           description: Train category.
+        trainId:
+          type: string
+          description: Train ID.
     ScheduleItemList:
         title: List of schedule items information 
         type: array
@@ -167,3 +205,8 @@ components:
         facilities:
           type: string
           description: facilities provided in the train.
+    TrainList:
+      title: List of trains
+      type: array
+      items:
+        $ref: '#/components/schemas/Train'

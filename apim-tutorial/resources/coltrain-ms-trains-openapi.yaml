@@ -1,60 +1,31 @@
 openapi: 3.0.1
 info:
-  title: ColTrainScheduleCommunityAPI
+  title: ColTrainMsInternalTimeTableAPI
   description: | 
-    This is the API definition for Coltrain's schedule listing API
+    This is the API definition for the Train service supported by the backend
   version: 1.0.0
 servers:
-  - url: http://backend-service:8080/train-operations/v1
+  - url: http://train-service:8080/train-service/v1
 paths:
-  /schedules:
+  /trains:
     get:
-      parameters:
-       - in: query
-         name: from
-         schema:
-           type: string
-           description: Train starting station
-       - in: query
-         name: to
-         schema:
-           type: string
-           description: Train starting station
-       - in: query
-         name: startTime
-         schema:
-           type: string
-           description: Train starting station
-       - in: query
-         name: endTime
-         schema:
-           type: string
-           description: Train starting station
       responses:
         '200':
           description: ok
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ScheduleItemList'
-  /schedules/{id}:
-    get:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: string
+                $ref: '#/components/schemas/TrainList'
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Train'
+        required: true
       responses:
         '200':
           description: ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ScheduleItem'
   /trains/{id}:
     get:
       parameters:
@@ -73,6 +44,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Train'
+    put:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: ok
+    delete:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: ok
 components:
   schemas:
     ScheduleItem:
@@ -121,3 +118,8 @@ components:
         facilities:
           type: string
           description: facilities provided in the train.
+    TrainList:
+      title: List of trains
+      type: array
+      items:
+        $ref: '#/components/schemas/Train'
