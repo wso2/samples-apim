@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: ColTrainInternalTimeTableAPI
+  title: ColTrainInternalTimeTableAPICC
   description: | 
     This is the API definition for the Train operations supported by the backend
   version: 1.0.0
@@ -8,6 +8,10 @@ servers:
   - url: http://20.235.64.197:8080/train-operations/v1
 paths:
   /schedules:
+    x-wso2-production-endpoints:
+      urls:
+          - 'http://train-schedule:8080/train-operations/v1'
+      type: http
     get:
       parameters:
        - in: query
@@ -48,6 +52,9 @@ paths:
         '200':
           description: ok
   /schedules/{id}:
+    x-wso2-production-endpoints:
+      urls:
+          - 'http://train-schedule:8080/train-operations/v1'
     get:
       parameters:
         - name: id
@@ -91,6 +98,27 @@ paths:
       responses:
         '200':
           description: ok
+  /trains/{id}:
+    x-wso2-production-endpoints:
+      urls:
+          - 'http://train-service:8080/train-service/v1'
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Train'
 components:
   schemas:
     ScheduleItem:
@@ -120,4 +148,22 @@ components:
         type: array
         items:
           $ref: '#/components/schemas/ScheduleItem'
-            
+    Train:
+      title: Train information 
+      type: object
+      properties:
+        trainId:
+          type: string
+          description: Id of the schedule item.
+        numberOfCarriage:
+          type: integer
+          description: Number of train carriages.
+        imageURL:
+          type: string
+          description: Image URL of the train.
+        engineModel:
+          type: string
+          description: Engine model.
+        facilities:
+          type: string
+          description: facilities provided in the train.
