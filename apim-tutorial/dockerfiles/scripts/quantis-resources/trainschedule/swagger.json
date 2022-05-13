@@ -7,7 +7,7 @@
     },
     "servers": [
         {
-            "url": "http://backend-service:8080/train-operations/v1"
+            "url": "http://20.235.64.197:8080/train-operations/v1"
         }
     ],
     "security": [
@@ -239,13 +239,13 @@
     "x-wso2-auth-header": "Authorization",
     "x-wso2-production-endpoints": {
         "urls": [
-            "http://backend-service:8080/train-operations/v1"
+            "http://20.235.64.197:8080/train-operations/v1"
         ],
         "type": "http"
     },
     "x-wso2-sandbox-endpoints": {
         "urls": [
-            "http://backend-service:8080/train-operations/v1"
+            "http://20.235.64.197:8080/train-operations/v1"
         ],
         "type": "http"
     },
