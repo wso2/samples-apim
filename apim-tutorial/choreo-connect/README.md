@@ -5,7 +5,7 @@
 1. Build microservices.
    1. [Train Schedules](../backends/train-schedule)
    2. [Train Services](../backends/train-service)
-2. [Build Docker images.](../dockerfiles/backends/README.md)
+2. [Build Docker images.](../dockerfiles/backends/README.md#build-microservices)
 
 ## 2. Istio
 
@@ -50,7 +50,7 @@
    kubectl apply -f microservice/
    ```
 
-## 5. Istio Ingress IP
+## 5. Istio Ingress external IP
 
 1. Get the EXTERNAL-IP of istio-ingressgateway
    ```sh

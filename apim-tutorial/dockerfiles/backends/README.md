@@ -1,8 +1,10 @@
-## Build Microservices
+## Build Monolith - All service in one Docker image
 
 ```sh
 docker build -t <imageName> .
 ```
+
+## Build Microservices
 
 -   Train Schedule Service
     ```sh
