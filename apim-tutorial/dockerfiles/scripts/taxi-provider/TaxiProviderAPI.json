@@ -1,0 +1,351 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "TaxiProvider",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/providers": {
+      "get": {
+        "tags": [
+          "providers"
+        ],
+        "summary": "Get available taxi providers",
+        "description": "Get available taxi providers",
+        "parameters": [
+          {
+            "$ref": "https://dev.apim.com/registry/resource/_system/config/parameters.json#/limit"
+          },
+          {
+            "$ref": "https://dev.apim.com/registry/resource/_system/config/parameters.json#/taxiType"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The list of taxi provider",
+            "headers": {
+              "x-next": {
+                "description": "A link to the next page of responses",
+                "style": "simple",
+                "explode": false,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaxiProviders"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "providers"
+        ],
+        "summary": "Add new taxi provider to the system",
+        "requestBody": {
+          "description": "Taxi Provider to add to the list",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "https://dev.apim.com/registry/resource/_system/config/schemas/NewProvider.json"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Taxi Provider add response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaxiProvider"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/providers/{id}": {
+      "get": {
+        "tags": [
+          "providers"
+        ],
+        "summary": "Retrieve taxi provider details",
+        "parameters": [
+          {
+            "$ref": "https://dev.apim.com/registry/resource/_system/config/parameters.json#/taxiID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The taxi provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaxiProvider"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "providers"
+        ],
+        "summary": "Update taxi provider details",
+        "parameters": [
+          {
+            "$ref": "https://dev.apim.com/registry/resource/_system/config/parameters.json#/taxiID"
+          }
+        ],
+        "requestBody": {
+          "description": "Taxi Provider to update",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "https://dev.apim.com/registry/resource/_system/config/schemas/NewProvider.json"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Updated taxi provider details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaxiProvider"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "providers"
+        ],
+        "summary": "Remove a taxi provider from the system",
+        "parameters": [
+          {
+            "$ref": "https://dev.apim.com/registry/resource/_system/config/parameters.json#/taxiID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        }
+      }
+    },
+    "/bookings": {
+      "get": {
+        "tags": [
+          "bookings"
+        ],
+        "summary": "Get all the available taxy bookings",
+        "parameters": [
+          {
+            "$ref": "https://dev.apim.com/registry/resource/_system/config/parameters.json#/taxiType"
+          },
+          {
+            "$ref": "https://dev.apim.com/registry/resource/_system/config/parameters.json#/bookingDate"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The list of taxi bookings",
+            "headers": {
+              "x-next": {
+                "description": "A link to the next page of responses",
+                "style": "simple",
+                "explode": false,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaxiBookings"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "bookings"
+        ],
+        "summary": "Add a new booking",
+        "requestBody": {
+          "description": "Taxi Provider to add to the list",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "https://dev.apim.com/registry/resource/_system/config/schemas/TaxiBooking.json"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Taxi Booking add response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaxiBooking"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/booking/{booking-id}": {
+      "get": {
+        "tags": [
+          "bookings"
+        ],
+        "summary": "Retrieve booking details",
+        "parameters": [
+          {
+            "$ref": "https://dev.apim.com/registry/resource/_system/config/parameters.json#/bookingID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The taxi booking details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaxiBooking"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "bookings"
+        ],
+        "summary": "Cancel booking",
+        "parameters": [
+          {
+            "$ref": "https://dev.apim.com/registry/resource/_system/config/parameters.json#/bookingID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TaxiProvider": {
+        "allOf": [
+          {
+            "$ref": "https://dev.apim.com/registry/resource/_system/config/schemas/NewProvider.json"
+          },
+          {
+            "required": [
+              "taxi-id"
+            ],
+            "type": "object",
+            "properties": {
+              "taxi-id": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          }
+        ]
+      },
+      "TaxiProviders": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/TaxiProvider"
+        }
+      },
+      "TaxiBooking": {
+        "allOf": [
+          {
+            "$ref": "https://dev.apim.com/registry/resource/_system/config/schemas/TaxiBooking.json"
+          },
+          {
+            "required": [
+              "booking-id"
+            ],
+            "type": "object",
+            "properties": {
+              "booking-id": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          }
+        ]
+      },
+      "TaxiBookings": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/TaxiBooking"
+        }
+      },
+      "Error": {
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "default": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "https://test.com",
+            "scopes": {}
+          }
+        }
+      }
+    }
+  }
+}
