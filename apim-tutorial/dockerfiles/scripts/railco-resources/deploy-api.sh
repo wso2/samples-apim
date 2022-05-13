@@ -43,14 +43,14 @@ create_and_publish_api() {
     local image_id=$(curl -k -H "Authorization: Bearer $pub_access_token" -H "multipart/form-data" -X PUT -F file=@icon.png https://$apim:9443/api/am/publisher/v3/apis/${api_id}/thumbnail | jq -r '.id')
 
     local revisionUuid=$( curl -k -H "Authorization: Bearer $pub_access_token" -H "Content-Type: application/json" -X POST -d '[{"name": "Default","vhost" : "'$vhost'",  "displayOnDevportal": true}]' https://$apim:9443/api/am/publisher/v3/apis/${api_id}/deploy-revision?revisionId=${rev_id} | jq -r '.[0].revisionUuid')
-    local publish_api_status=$(curl -k -H "Authorization: Bearer $pub_access_token" -X POST "https://$apim:9443/api/am/publisher/v3/apis/change-lifecycle?apiId=${api_id}&action=Publish")
+    local publish_api_status="$(curl -k -H "Authorization: Bearer $pub_access_token" -X POST "https://$apim:9443/api/am/publisher/v3/apis/change-lifecycle?apiId=${api_id}&action=Publish")"
     sleep 2
     echo $api_id
 }
 
 create_app_and_subscribe(){
-    local application_id=$(curl -k -H "Authorization: Bearer $tom_access_token" -H "Content-Type: application/json" -X POST -d '{"name":"KeyCloakAPP","throttlingPolicy":"Unlimited","description":"","tokenType":"JWT","groups":null,"attributes":{}}' https://$apim:9443/api/am/devportal/v3/applications | jq -r '.applicationId')
-    local sub_id=$(curl -k -H "Authorization: Bearer $tom_access_token" -H "Content-Type: application/json" -X POST -d '{"apiId":"'$api_id'","applicationId":"'$application_id'","throttlingPolicy":"Unlimited"}' https://$apim:9443/api/am/devportal/v3/subscriptions)
+    local application_id=$(curl -k -H "Authorization: Bearer $tom_access_token" -H "Content-Type: application/json" -X POST -d '{"name":"KeyCloakAPP","throttlingPolicy":"Unlimited","description":"","tokenType":"JWT","groups":null,"attributes":{}}' https://$apim:9443/api/am/devportal/v2/applications | jq -r '.applicationId')
+    local sub_id="$(curl -k -H "Authorization: Bearer $tom_access_token" -H "Content-Type: application/json" -X POST -d '{"apiId":"'$api_id'","applicationId":"'$application_id'","throttlingPolicy":"Unlimited"}' https://$apim:9443/api/am/devportal/v2/subscriptions)"
 }
 
 cd train/
