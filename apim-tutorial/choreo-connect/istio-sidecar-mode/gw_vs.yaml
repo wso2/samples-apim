@@ -1,0 +1,48 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: apim-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      tls:
+        mode: PASSTHROUGH
+      hosts:
+        - "internal.gw.apim.com"
+        - "gw.wso2.com"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: apim-virtualservice
+spec:
+  hosts:
+    - "internal.gw.apim.com"
+    - "gw.wso2.com"
+  gateways:
+    - apim-gateway
+  tls:
+    - match:
+        - port: 443
+          sniHosts:
+            - internal.gw.apim.com
+      route:
+        - destination:
+            host: router
+            port:
+              number: 9095
+    - match:
+        - port: 443
+          sniHosts:
+            - gw.wso2.com
+      route:
+        - destination:
+            host: router
+            port:
+              number: 9095
+

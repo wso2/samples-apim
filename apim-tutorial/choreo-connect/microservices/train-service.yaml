@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: train-service
+  name: train-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: train-service
+  template:
+    metadata:
+      labels:
+        app: train-service
+    spec:
+      containers:
+      - image: renukafernando/train-service:0.1.3
+        imagePullPolicy: IfNotPresent
+        name: train-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: train-service
+  name: train-service
+spec:
+  ports:
+    - name: http-bin
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: train-service
+  type: ClusterIP

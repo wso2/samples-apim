@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: train-schedule
+  name: train-schedule
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: train-schedule
+  template:
+    metadata:
+      labels:
+        app: train-schedule
+    spec:
+      containers:
+      - image: renukafernando/train-schedule:0.1.0
+        imagePullPolicy: IfNotPresent
+        name: train-schedule
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: train-schedule
+  name: train-schedule
+spec:
+  ports:
+    - name: http-bin
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: train-schedule
+  type: ClusterIP

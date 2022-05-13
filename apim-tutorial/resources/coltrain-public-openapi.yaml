@@ -55,6 +55,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ScheduleItem'
+  /trains:
+    get:
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainList'
   /trains/{id}:
     get:
       parameters:
@@ -121,3 +130,8 @@ components:
         facilities:
           type: string
           description: facilities provided in the train.
+    TrainList:
+      title: List of trains
+      type: array
+      items:
+        $ref: '#/components/schemas/Train'
