@@ -7,16 +7,14 @@ public class ScheduleEntry {
 	private String from;
 	private String to;
 	private String trainType;
-	private String trainId;
 
-	public ScheduleEntry(String entryId, String startTime, String endTime, String from, String to, String trainType, String trainId) {
+	public ScheduleEntry(String entryId, String startTime, String endTime, String from, String to, String trainType) {
 		this.entryId = entryId;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.from = from;
 		this.to = to;
 		this.trainType = trainType;
-		this.trainId = trainId;
 	}
 
 	public String getStartTime() {
@@ -57,14 +55,6 @@ public class ScheduleEntry {
 
 	public void setTrainType(String trainType) {
 		this.trainType = trainType;
-	}
-
-	public String getTrainId() {
-		return trainId;
-	}
-
-	public void setTrainId(String trainId) {
-		this.trainId = trainId;
 	}
 
 	public String getEntryId() {

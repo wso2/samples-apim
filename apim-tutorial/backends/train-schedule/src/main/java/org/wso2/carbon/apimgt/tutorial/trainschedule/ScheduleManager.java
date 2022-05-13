@@ -21,13 +21,13 @@ public class ScheduleManager {
 
 	private ScheduleManager() {
 		String id = Long.toString(this.counter.incrementAndGet());
-		this.map.put(id, new ScheduleEntry(id, "14:50", "19:59", "London", "Glasgow", "Standard", "1"));
+		this.map.put(id, new ScheduleEntry(id, "14:50", "19:59", "London", "Glasgow", "Standard"));
 		id = Long.toString(this.counter.incrementAndGet());
-		this.map.put(id, new ScheduleEntry(id, "14:30", "19:20", "London", "Edinburgh", "1st class", "3"));
+		this.map.put(id, new ScheduleEntry(id, "14:30", "19:20", "London", "Edinburgh", "1st class"));
 		id = Long.toString(this.counter.incrementAndGet());
-		this.map.put(id, new ScheduleEntry(id, "11:10", "12:59", "London", "Cardiff", "Standard", "1"));
+		this.map.put(id, new ScheduleEntry(id, "11:10", "12:59", "London", "Cardiff", "Standard"));
 		id = Long.toString(this.counter.incrementAndGet());
-		this.map.put(id, new ScheduleEntry(id, "08:30", "10:50", "London", "Manchester", "1st class", "4"));
+		this.map.put(id, new ScheduleEntry(id, "08:30", "10:50", "London", "Manchester", "1st class"));
 	}
 
 	public List<ScheduleEntry> getAllSchedules() {

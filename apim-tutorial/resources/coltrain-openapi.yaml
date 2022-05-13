@@ -115,9 +115,6 @@ components:
         trainType:
           type: string
           description: Train category.
-        trainId:
-          type: string
-          description: Train ID.
     ScheduleItemList:
         title: List of schedule items information 
         type: array
