@@ -1,0 +1,12 @@
+In rail transport, a train is a series of connected vehicles that run along a railway track and transport people or
+freight. The word train comes from the Old French trahiner, derived from the Latin trahere meaning "to pull, to draw".
+Trains are typically pulled or pushed by locomotives (often known simply as "engines"), though some are self-propelled,
+such as multiple units. Passengers and cargo are carried in railroad cars, also known as wagons. Trains are designed to
+a certain gauge, or distance between rails. Most trains operate on steel tracks with steel wheels, the low friction of
+which makes them more efficient than other forms of transport.
+
+A railway platform is an area alongside a railway track providing convenient access to trains. Almost all stations have
+some form of platform, with larger stations having multiple platforms.
+
+A train shed is a building adjacent to a station building where the tracks and platforms of a railway station are
+covered by a roof. It is also known as an overall roof. Its primary purpose is to store and protect from the elements train cars not in use
