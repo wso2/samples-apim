@@ -38,4 +38,16 @@ public class EmployeeInfoController {
         String value = "Request Successful";
         return new EmployeeInfo(value);
     }
+
+    @PostMapping({ "/employee/register" })
+    public EmployeeInfo getEmployeeRegisteredResponse() {
+        String value = "Request Successful";
+        return new EmployeeInfo(value);
+    }
+
+    @PostMapping({ "/employee/{employee-id}" })
+    public EmployeeInfo updateEmployeeDetailsResponse() {
+        String value = "Request Successful";
+        return new EmployeeInfo(value);
+    }
 }
