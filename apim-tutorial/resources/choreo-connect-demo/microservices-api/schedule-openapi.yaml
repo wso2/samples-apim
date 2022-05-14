@@ -1,11 +1,11 @@
 openapi: 3.0.1
 info:
-  title: ColTrainScheduleCommunityAPI
+  title: ScheduleCommunityAPI
   description: | 
     This is the API definition for Coltrain's schedule listing API
   version: 1.0.0
 servers:
-  - url: http://20.235.64.197:8080/train-operations/v1
+  - url: http://train-schedule:8080/train-operations/v1
 paths:
   /schedules:
     get:
@@ -55,24 +55,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ScheduleItem'
-  /trains/{id}:
-    get:
-      parameters:
-        - name: id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            format: string
-      responses:
-        '200':
-          description: ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Train'
 components:
   schemas:
     ScheduleItem:
@@ -102,22 +84,3 @@ components:
         type: array
         items:
           $ref: '#/components/schemas/ScheduleItem'
-    Train:
-      title: Train information
-      type: object
-      properties:
-        trainId:
-          type: string
-          description: Id of the schedule item.
-        numberOfCarriage:
-          type: integer
-          description: Number of train carriages.
-        imageURL:
-          type: string
-          description: Image URL of the train.
-        engineModel:
-          type: string
-          description: Engine model.
-        facilities:
-          type: string
-          description: facilities provided in the train.

@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: ColTrainScheduleCommunityAPI
+  title: TrainsCommunityAPI
   description: | 
     This is the API definition for Coltrain's schedule listing API
   version: 1.0.0
@@ -55,6 +55,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ScheduleItem'
+  /trains:
+    get:
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainList'
   /trains/{id}:
     get:
       parameters:
@@ -121,3 +130,8 @@ components:
         facilities:
           type: string
           description: facilities provided in the train.
+    TrainList:
+      title: List of trains
+      type: array
+      items:
+        $ref: '#/components/schemas/Train'

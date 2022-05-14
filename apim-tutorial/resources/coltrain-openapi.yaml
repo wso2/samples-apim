@@ -120,4 +120,3 @@ components:
         type: array
         items:
           $ref: '#/components/schemas/ScheduleItem'
-            
