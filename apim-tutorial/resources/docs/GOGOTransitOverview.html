@@ -1,0 +1,34 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="website_style.css">
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript">
+function scrollto(div)
+{
+ $('html,body').animate(
+ {
+  scrollTop: $("#"+div).offset().top
+ },'slow');
+}
+</script>
+</head>
+<body>
+
+<div id="home">
+ <h1>An overview of GOGO transit</h1>
+ <p>Union Station is a major multimodal railway transportation hub. It is one of the busiest stations in the country and serves thousands of passengers daily. The train shed, platforms, and tracks are owned by GOGO transit, and they operate the station. Trains are owned by the companies named Quantis, ColTrain, and RailCo. </p>
+</div>
+
+<div id="about">
+ <p>This API is created to retrieve the information about available resources in GOGO transit eco system. A new rail link between Botswana and Zambia, bypassing Zimbabwe, was mooted in 2005 by Botswana Railways (BR) general manager Andrew Lunga. The line was envisaged as running south-westwards from Livingstone, crossing the Zambezi, then continuing to a junction with the existing BR tracks at Mosetse. Lunga's proposal arose following the serious loss of traffic suffered by BR following the opening of the Beitbridge-Bulawayo line, after which annual BR freight tonnage fell from 1.1m per annum to about 150,000. Zimbabwe's economic problems had worsened the situation, prejudicing free traffic flow. The suggested line, Lunga pointed out, would provide important alternative routes linking South Africa, Zambia and the Democratic Republic of Congo.</p>
+</div>
+
+<div id="contact">
+<h3>If you have any question or query you can contact us at gogotransit@gmail.com or you can fill the form below</h1>
+<input type="text" placeholder="Name">
+<input type="text" placeholder="Message">
+<input type="submit" value="SEND">
+</div>
+
+</body>
+</html>
