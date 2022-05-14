@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.1",
     "info": {
-     "title": "PassengerInfoAPI",
+     "title": "Passengers",
      "description": "This is the API definition for Passenger information backend\n",
      "version": "1.0.0"
     },

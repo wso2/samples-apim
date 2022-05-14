@@ -1,6 +1,6 @@
 {
-    "name": "TrainRealLocationAPI",
-    "description": null,
+    "name": "Locations",
+    "description": "This API provides real time locations of the trains",
     "context": "/train/location",
     "version": "1.0.0",
     "provider": "andy@quantis.com",

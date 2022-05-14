@@ -1,6 +1,6 @@
 {
-    "name": "PassengerInfoAPI",
-    "description": "Passenger Info API",
+    "name": "Passengers",
+    "description": "This API provides the information of passengers registered in the system. The API can be used to retrieve on-boarded passenger count, passenger pre-bookings, annual/monthly passes, payment status etc",
     "context": "/info",
     "version": "1.0.0",
     "provider": "admin",

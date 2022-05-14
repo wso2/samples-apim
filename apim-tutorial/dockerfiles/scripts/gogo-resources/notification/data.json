@@ -1,6 +1,6 @@
 {
-    "name": "NotificationAPI",
-    "description": null,
+    "name": "Notifications",
+    "description": "This API provides notifications on train schedule updates, cancellations, and reminders for passengers",
     "context": "/notification",
     "version": "1.0.0",
     "provider": "admin",
