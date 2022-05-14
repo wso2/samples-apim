@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: ColTrainInternalTimeTableAPI
+  title: Train-Schedule
   description: | 
     This is the API definition for the Train operations supported by the backend
   version: 1.0.0

@@ -40,6 +40,7 @@
 
 3. Deploy Istio-Ingress gateway and Virtual Services.
    ```sh
+   kubectl create -n istio-system secret tls ing-gateway-credential --key=istio-sidecar-mode/server.key --cert=istio-sidecar-mode/server.crt
    kubectl apply -f istio-sidecar-mode/gw_vs.yaml
    ```
 

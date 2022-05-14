@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: ScheduleCommunityAPI
+  title: Schedules
   description: | 
     This is the API definition for Coltrain's schedule listing API
   version: 1.0.0
