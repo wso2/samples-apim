@@ -87,7 +87,7 @@ data:
       name = "APIM Publisher"
       issuer = "https://dev.apim.com:443/publisher"
       validateSubscription = true
-      certificateFilePath = "/home/wso2/security/truststore/wso2carbon.pem"
+      certificateFilePath = "/home/wso2/security/truststore/apim-api-key.pem"
 
     [controlPlane]
       enabled = true
