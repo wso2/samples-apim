@@ -5,8 +5,11 @@
     <!--ProductionApplicationRegistration executor="org.wso2.carbon.apimgt.impl.workflow.ApplicationRegistrationApprovalWorkflowExecutor"/-->
     <SandboxApplicationRegistration executor="org.wso2.carbon.apimgt.impl.workflow.ApplicationRegistrationSimpleWorkflowExecutor"/>
     <!--SandboxApplicationRegistration executor="org.wso2.carbon.apimgt.impl.workflow.ApplicationRegistrationApprovalWorkflowExecutor"/-->
-    <SubscriptionCreation executor="org.wso2.carbon.apimgt.impl.workflow.SubscriptionCreationSimpleWorkflowExecutor"/>
+    <!--SubscriptionCreation executor="org.wso2.carbon.apimgt.impl.workflow.SubscriptionCreationSimpleWorkflowExecutor"/-->
     <!--SubscriptionCreation executor="org.wso2.carbon.apimgt.impl.workflow.SubscriptionCreationApprovalWorkflowExecutor"/-->
+
+<SubscriptionCreation executor="org.wso2.apim.monetization.impl.workflow.StripeSubscriptionCreationWorkflowExecutor"/>
+<SubscriptionDeletion executor="org.wso2.apim.monetization.impl.workflow.StripeSubscriptionDeletionWorkflowExecutor"/>
 
     <SubscriptionUpdate executor="org.wso2.carbon.apimgt.impl.workflow.SubscriptionUpdateSimpleWorkflowExecutor"/>
     <!--SubscriptionUpdate executor="org.wso2.carbon.apimgt.impl.workflow.SubscriptionUpdateApprovalWorkflowExecutor"/-->
@@ -16,13 +19,13 @@
          <Property name="password">admin</Property>
          <Property name="callbackURL">https://localhost:8243/services/WorkflowCallbackService</Property>
     </SubscriptionUpdate-->
-        <UserSignUp executor="com.sample.signup.workflowexecutor.UserSignUpWorkflow">
+            <UserSignUp executor="com.sample.signup.workflowexecutor.UserSignUpWorkflow">
          <Property name="username">admin</Property>
          <Property name="password">admin</Property>
-         <Property name="callbackURL">https://localhost:8243/services/WorkflowCallbackService</Property>
+         <Property name="callbackURL">https://20.197.56.160:8243/services/WorkflowCallbackService</Property>
          <Property name="processDefinitionKey">UserSignupApprovalProcess</Property>
          <Property name="stateList">Created:Publish,Published:Block</Property>
-         <Property name="authManagerUrl">https://localhost:9445/services/</Property>
+         <Property name="authManagerUrl">https://20.235.64.197:9445/services/</Property>
          <Property name="subscriberRole">SubscriberRole</Property>
          <Property name="fullUserRole">FullUserRole</Property>
     </UserSignUp>
@@ -36,7 +39,7 @@
         distribution.
     -->
 
-    <SubscriptionDeletion executor="org.wso2.carbon.apimgt.impl.workflow.SubscriptionDeletionSimpleWorkflowExecutor"/>
+    <!--SubscriptionDeletion executor="org.wso2.carbon.apimgt.impl.workflow.SubscriptionDeletionSimpleWorkflowExecutor"/-->
     <!--SubscriptionDeletion executor="org.wso2.carbon.apimgt.impl.workflow.SubscriptionDeletionSimpleWorkflowExecutor">
          <Property name="serviceEndpoint">http://localhost:9765/services/SubscriptionApprovalWorkFlowProcess/</Property>
          <Property name="username">admin</Property>
