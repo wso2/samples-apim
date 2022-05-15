@@ -1,6 +1,6 @@
 {
-    "name": "RailCoEmployeeAPI",
-    "description": null,
+    "name": "Employees",
+    "description": "This API provides the details of employees in Railco railway company",
     "context": "/operations/data/employees",
     "version": "1.0.0",
     "provider": "admin@railco.com",
