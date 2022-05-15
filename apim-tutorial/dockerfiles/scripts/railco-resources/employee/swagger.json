@@ -1,7 +1,7 @@
 {
  "openapi": "3.0.1",
  "info": {
-  "title": "RailCoEmployeeAPI",
+  "title": "Employees",
   "description": "This is the API definition for the Employee database operations supported by the Micro Integrator backend\n",
   "version": "1.0.0"
  },
