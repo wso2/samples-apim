@@ -31,10 +31,10 @@ spec:
         app: choreo-connect-deployment
     spec:
       hostAliases:
-        - ip: "20.204.15.129"
+        - ip: "40.80.95.139"
           hostnames:
-          - "dev.apim.com"
-        - ip: "20.197.56.160"
+          - "dev.apim.com" # (load balanced one - Prod in the demo)
+        - ip: "40.80.91.236"
           hostnames:
           - "dev-original.apim.com"
       containers:

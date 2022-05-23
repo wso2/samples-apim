@@ -39,6 +39,18 @@
    ```
 
 3. Deploy Istio-Ingress gateway and Virtual Services.
+
+   Optionally create new certs. Get EXTERNAL-IP
+   ```sh
+   kubectl get svc -n istio-system istio-ingressgateway
+   ```
+   Update SAN_IP with istio gateay EXTERNAL-IP
+   ```sh
+   cd istio-sidecar-mode
+   ./create-gateway-cert.sh
+   cd -
+   ```
+   
    ```sh
    kubectl create -n istio-system secret tls ing-gateway-credential --key=istio-sidecar-mode/server.key --cert=istio-sidecar-mode/server.crt
    kubectl apply -f istio-sidecar-mode/gw_vs.yaml
@@ -48,14 +60,14 @@
 
 1. Deploy microservice
    ```sh
-   kubectl apply -f microservice/
+   kubectl apply -f microservices/
    ```
 
 ## 5. Istio Ingress external IP
 
 1. Get the EXTERNAL-IP of istio-ingressgateway
    ```sh
-    kubectl get svc -n istio-ingressgateway
+    kubectl get svc -n istio-system istio-ingressgateway
    ```
 2. Add following as a host entry (in /etc/hosts of local machine)
    ```
