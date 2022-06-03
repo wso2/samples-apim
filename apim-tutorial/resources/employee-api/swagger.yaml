@@ -1,0 +1,180 @@
+openapi: 3.0.1
+info:
+  title: Employees
+  version: 1.0.0
+servers:
+  - url: http://20.204.144.195:8080/train-operations/v1
+security:
+  - default: []
+paths:
+  '/employees/contract/{employee-name}':
+    get:
+      parameters:
+        - name: employee-name
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: ok
+      security:
+        - default: []
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+        optional: false
+  /employee/register:
+    post:
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '200':
+          description: ok
+      security:
+        - default: []
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+        optional: false
+  '/employee/{employee-id}':
+    post:
+      parameters:
+        - name: employee-id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Employee'
+      responses:
+        '200':
+          description: ok
+      security:
+        - default: []
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+        optional: false
+components:
+  schemas:
+    User:
+      required:
+        - dob
+        - email
+        - id
+        - name
+      properties:
+        id:
+          pattern: '^[A-Za-z]*-\d{3}-\d{2}-\d{4}$'
+          type: string
+          example: empID-234-34-7382
+        name:
+          type: string
+          example: john
+        email:
+          type: string
+          format: email
+        dob:
+          type: string
+          format: date
+    Employee:
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        age:
+          type: integer
+        email:
+          type: string
+          format: email
+        dob:
+          type: string
+          format: date
+        roles:
+          type: array
+          items:
+            type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        phoneNumbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumber'
+    Address:
+      properties:
+        streetAddress:
+          type: string
+        city:
+          type: string
+        postalCode:
+          type: string
+    PhoneNumber:
+      properties:
+        phoneType:
+          type: string
+        number:
+          type: string
+  securitySchemes:
+    default:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: 'https://test.com'
+          scopes: {}
+x-wso2-auth-header: Authorization
+x-wso2-cors:
+  corsConfigurationEnabled: false
+  accessControlAllowOrigins:
+    - '*'
+  accessControlAllowCredentials: false
+  accessControlAllowHeaders:
+    - authorization
+    - Access-Control-Allow-Origin
+    - Content-Type
+    - SOAPAction
+    - apikey
+    - Internal-Key
+  accessControlAllowMethods:
+    - GET
+    - PUT
+    - POST
+    - DELETE
+    - PATCH
+    - OPTIONS
+x-wso2-production-endpoints:
+  urls:
+    - 'http://20.204.144.195:8080/train-operations/v1'
+  type: http
+x-wso2-sandbox-endpoints:
+  urls:
+    - 'http://20.204.144.195:8080/train-operations/v1'
+  type: http
+x-wso2-basePath: /t/quantis.com/employees/1.0.0
+x-wso2-transports:
+  - http
+  - https
+x-wso2-response-cache:
+  enabled: false
+  cacheTimeoutInSeconds: 300

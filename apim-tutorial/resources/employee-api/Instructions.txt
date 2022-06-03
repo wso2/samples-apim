@@ -1,0 +1,8 @@
+
+visibility Roles : gogo
+Scope Role: employee
+
+OPA: 
+    server : http://localhost:8181/v1/data
+    policy: employees
+    Rule: allow
