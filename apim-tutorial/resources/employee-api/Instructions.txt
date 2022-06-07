@@ -1,8 +1,30 @@
 
-visibility Roles : gogo
-Scope Role: employee
+visibility Roles : hr_department
+
+Description
+API to get employee related contracts and do modifications to employee data. 
+
+https://github.com/gogo/employee-api
+https://gogo.com/community/slack/ 
+employee HR
+
+HowToDoc
+How to use Employee API 
+
+Scope Role: 
+hr_admin
+hr_admin
+Scope to access and modify employee related details
 
 OPA: 
     server : http://localhost:8181/v1/data
     policy: employees
     Rule: allow
+
+
+
+Comment
+This is the first version of the employee api. please feel free to provide feedback to improve this API
+
+
+
