@@ -37,8 +37,7 @@ server.on('upgrade', function upgrade(request, socket, head) {
 });
 
 notifications.on('connection', function connection(ws) {
-// ws.send('Subscribed to notifications!');
-    ws.send('{"type" : "ka"}');
+    ws.send('Subscribed to notifications!');
 
     ws.on('message', function message(msg) {
         broadcastToAllSubscribers(ws, notifications, msg)
