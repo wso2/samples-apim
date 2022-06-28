@@ -1,9 +1,9 @@
-package wso2.booksservice;
+package org.wso2.carbon.apimgt.certifications.booksservice;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import wso2.booksservice.model.Book;
+import org.wso2.carbon.apimgt.certifications.booksservice.model.Book;
 
 @RestController public class BooksController {
     String sampleBookList = "    {\"books\":[   \n"

@@ -1,11 +1,9 @@
-package org.wso2.reservationsservice;
+package org.wso2.carbon.apimgt.certifications.reservationsservice;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.wso2.reservationsservice.model.Reservation;
-
-import java.util.Random;
+import org.wso2.carbon.apimgt.certifications.reservationsservice.model.Reservation;
 
 @RestController public class ReservationsController {
 
