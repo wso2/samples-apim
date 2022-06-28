@@ -1,4 +1,4 @@
-package org.wso2.reservationsservice.model;
+package org.wso2.carbon.apimgt.certifications.reservationsservice.model;
 
 public class Reservation {
     int reservationId;

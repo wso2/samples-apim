@@ -1,4 +1,4 @@
-package wso2.booksservice;
+package org.wso2.carbon.apimgt.certifications.booksservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

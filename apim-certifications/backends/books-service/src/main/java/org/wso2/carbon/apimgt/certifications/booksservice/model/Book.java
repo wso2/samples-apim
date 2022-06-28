@@ -1,4 +1,4 @@
-package wso2.booksservice.model;
+package org.wso2.carbon.apimgt.certifications.booksservice.model;
 
 public class Book {
     String name;
