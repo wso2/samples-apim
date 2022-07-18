@@ -53,26 +53,6 @@
                 <checksumPolicy>ignore</checksumPolicy>
             </releases>
         </repository>
-        <repository>
-            <id>wso2-nexus-sup</id>
-            <name>WSO2 internal Repository</name>
-            <url>https://support-maven.wso2.org/nexus/content/repositories/releases/</url>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>daily</updatePolicy>
-                <checksumPolicy>ignore</checksumPolicy>
-            </releases>
-        </repository>
-        <repository>
-            <id>updates2-nexus</id>
-            <name>Support Nexus Repository of WSO2</name>
-            <url>https://support-maven.wso2.org/nexus/content/repositories/updates-2.0/</url>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>daily</updatePolicy>
-                <checksumPolicy>fail</checksumPolicy>
-            </releases>
-        </repository>
     </repositories>
 
     <build>
