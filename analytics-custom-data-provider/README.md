@@ -3,7 +3,7 @@
 This sample will allow you to add custom analytics data to the existing event schema.
 
 ### Important Notice:
-From the update level, 127 onwards event object will include `apiContext` and `userName` by default under a new property introduced from the above update level named: `customProperties` as below.
+From the update level, 127 onwards event object will include `apiContext` and `userName` by default under a new property named: `customProperties` introduced from the above update level as below.
 
         "customProperties":{
             "apiContext":"/api/1.0.0",
@@ -44,7 +44,7 @@ Once this is successfully deployed you can check whether this is working by foll
 
         loggers = org-wso2-analytics-publisher, trace-messages, 
    
-1. Now you can trigger an event and check the log to find the event object passed out from API Manager.
+1. Now you can trigger an event and check the` <WSO2AM-4.0.0-HOME>/repository/logs/wso2carbon-trace-messages.log` to find the event object passed out from API Manager.
 
         TRACE {org.wso2.am.analytics.publisher.client.EventHubClient} - [{ Cloud-Analytics-Queue-Worker-pool-2-thread-1 }] - 
         Adding event: 
