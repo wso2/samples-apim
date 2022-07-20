@@ -95,5 +95,4 @@
 <!--        synapse-core version-->
         <synapse.version>2.1.7-wso2v227</synapse.version>
     </properties>
-
 </project>
