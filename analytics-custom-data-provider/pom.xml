@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.wso2.carbon.apimgt</groupId>
+    <artifactId>org.wso2.carbon.apimgt.gateway.sample.publisher</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>bundle</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.wso2.carbon.apimgt</groupId>
+            <artifactId>org.wso2.carbon.apimgt.gateway</artifactId>
+            <version>${carbon.apimgt.gateway.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.apimgt</groupId>
+            <artifactId>org.wso2.carbon.apimgt.common.analytics</artifactId>
+            <version>${carbon.apimgt.ommon.analytics.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.synapse</groupId>
+            <artifactId>synapse-extensions</artifactId>
+            <version>${synapse.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.synapse</groupId>
+            <artifactId>synapse-core</artifactId>
+            <version>${synapse.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.axis2</groupId>
+                    <artifactId>axis2-codegen</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.wso2.orbit.com.github.fge</groupId>
+                    <artifactId>json-schema-validator-all</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>wso2-nexus</id>
+            <name>WSO2 internal Repository</name>
+            <url>https://maven.wso2.org/nexus/content/groups/wso2-public/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+        </repository>
+    </repositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                        <Bundle-Name>${project.artifactId}</Bundle-Name>
+                        <Export-Package>
+                            org.wso2.carbon.apimgt.gateway.sample.publisher.*;version="${project.version}"
+                        </Export-Package>
+                        <Private-Package>
+                        </Private-Package>
+                        <Import-Package>
+                            org.apache.synapse.*,
+                            org.apache.commons.logging.*,
+                            org.wso2.carbon.apimgt.common.analytics.*;version=${carbon.apimgt.ommon.analytics.version},
+                            org.wso2.carbon.apimgt.gateway.*;version=${carbon.apimgt.gateway.version},
+                            *;resolution:=optional
+                        </Import-Package>
+                        <DynamicImport-Package>*</DynamicImport-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+<!--        Below versions can be found by searching the component name in <APIM_HOME>/repository/components/plugins directory.-->
+<!--        org.wso2.carbon.apimgt.gateway component version-->
+        <carbon.apimgt.gateway.version>9.0.174.182</carbon.apimgt.gateway.version>
+<!--        org.wso2.carbon.apimgt.common.analytics component version-->
+        <carbon.apimgt.ommon.analytics.version>9.0.174.182</carbon.apimgt.ommon.analytics.version>
+<!--        synapse-core version-->
+        <synapse.version>2.1.7-wso2v227</synapse.version>
+    </properties>
+
+</project>
