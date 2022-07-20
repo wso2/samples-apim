@@ -3,9 +3,9 @@
 This sample will allow you to add custom analytics data to the existing event schema.
 
 ### Important Notice:
-From the update level, 127 onwards event object will include `apiContext` and `userName` by default under a new property named: `customProperties` introduced from the above update level as below.
+From the update level, 127 onwards event object will include `apiContext` and `userName` by default under a new property named: `properties` introduced from the above update level as below.
 
-        "customProperties":{
+        "properties":{
             "apiContext":"/api/1.0.0",
             "userName":"admin@carbon.super"
         },
@@ -71,7 +71,7 @@ Once this is successfully deployed you can check whether this is working by foll
            "userAgent":"Chrome",
            "eventType":"response",
            "apiResourceTemplate":"/test",
-           "customProperties":{
+           "properties":{
                 "tokenIssuer":"https://localhost:9443/oauth2/token",
                 "apiContext":"/api1/2.0.0",
                 "userName":"admin@carbon.super"
