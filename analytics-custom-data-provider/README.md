@@ -4,6 +4,8 @@ This sample will allow you to add custom analytics data to the existing event sc
 
 ### Important Notice:
 From the update level, 127 onwards event object will include `apiContext` and `userName` by default under a new property named: `properties` introduced from the above update level as below.
+<br>
+This is only used in the ELK implementation. Properties object will be ignored in Choreo implementation.
 
         "properties":{
             "apiContext":"/api/1.0.0",
@@ -25,9 +27,12 @@ Copy the generated JAR file from the target folder and place it in `<WSO2AM-4.0.
 
 Edit apim.analytics configurations in the `deployment.toml` located inside `<WSO2AM-4.0.0-HOME>/repository/conf` with the
 following configuration.
+<br>
+_(Give type as "elk" since this will not visible in cloud trace logs)_
 
         [apim.analytics]
         enable = true
+        type = "elk"
         properties."publisher.custom.data.provider.class" = "org.wso2.carbon.apimgt.gateway.sample.publisher.CustomDataProvider"
 
 
