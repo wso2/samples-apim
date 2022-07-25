@@ -1,9 +1,9 @@
-# Custom Data Provider for API-M 4.0.0
+# Custom Data Provider for API-M 4.1.0
 
 This sample will allow you to add custom analytics data to the existing event schema.
 
 ### Important Notice:
-From the update level, 127 onwards event object will include `apiContext` and `userName` by default under a new property named: `properties` introduced from the above update level as below.
+From the update level, 18 onwards event object will include `apiContext` and `userName` by default under a new property named: `properties` introduced from the above update level as below.
 
         "properties":{
             "apiContext":"/api/1.0.0",
@@ -21,9 +21,9 @@ Build the project using Maven:
         mvn clean install
 
 
-Copy the generated JAR file from the target folder and place it in `<WSO2AM-4.0.0-HOME>/repository/components/lib`.
+Copy the generated JAR file from the target folder and place it in `<WSO2AM-4.1.0-HOME>/repository/components/lib`.
 
-Edit apim.analytics configurations in the `deployment.toml` located inside `<WSO2AM-4.0.0-HOME>/repository/conf` with the
+Edit apim.analytics configurations in the `deployment.toml` located inside `<WSO2AM-4.1.0-HOME>/repository/conf` with the
 following configuration.
 
         [apim.analytics]
@@ -33,7 +33,7 @@ following configuration.
 
 
 Once this is successfully deployed you can check whether this is working by following the below steps:
-1. [Enable trace logs](https://apim.docs.wso2.com/en/4.0.0/administer/logging-and-monitoring/logging/configuring-logging/#enabling-logs-for-a-component) for the component: `org.wso2.am.analytics.publisher`
+1. [Enable trace logs](https://apim.docs.wso2.com/en/4.1.0/administer/logging-and-monitoring/logging/configuring-logging/#enabling-logs-for-a-component) for the component: `org.wso2.am.analytics.publisher`
 1. Follow this sample configurations,
 
         logger.org-wso2-analytics-publisher.name = org.wso2.am.analytics.publisher
@@ -44,7 +44,7 @@ Once this is successfully deployed you can check whether this is working by foll
 
         loggers = org-wso2-analytics-publisher, trace-messages, 
    
-1. Now you can trigger an event and check the` <WSO2AM-4.0.0-HOME>/repository/logs/wso2carbon-trace-messages.log` to find the event object passed out from API Manager.
+1. Now you can trigger an event and check the` <WSO2AM-4.1.0-HOME>/repository/logs/wso2carbon-trace-messages.log` to find the event object passed out from API Manager.
 
         TRACE {org.wso2.am.analytics.publisher.client.EventHubClient} - [{ Cloud-Analytics-Queue-Worker-pool-2-thread-1 }] - 
         Adding event: 
