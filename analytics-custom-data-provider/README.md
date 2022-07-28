@@ -14,7 +14,7 @@ From the update level, 127 onwards event object will include `apiContext` and `u
 
 __Steps to add custom analytics data:__
 
-Add the necessary component versions (not less than the sample values provided in the existing pom file) for `carbon.apimgt.gateway.version`, `synapse.version` and `carbon.apimgt.ommon.analytics.version`in pom file in the root directory.
+Add the necessary component versions (not less than the sample values provided in the existing pom file) for `carbon.apimgt.gateway.version`, `synapse.version` and `carbon.apimgt.common.analytics.version`in pom file in the root directory.
 
 Build the project using Maven:
 
