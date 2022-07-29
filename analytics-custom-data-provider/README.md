@@ -3,6 +3,7 @@
 This sample will allow you to add custom analytics data to the existing event schema.
 
 ### Important Notice:
+
 From the update level, 130 onwards event object will include `apiContext` and `userName` by default under a new property named: `properties` introduced from the above update level as below.
 
         "properties":{
@@ -39,9 +40,12 @@ Follow the URL pattern when providing the repo url
 
 - Edit apim.analytics configurations in the `deployment.toml` located inside `<WSO2AM-4.0.0-HOME>/repository/conf` with the
 following configuration.
+<br>
+_(Give type as "elk" since this will not visible in cloud trace logs)_
 
         [apim.analytics]
         enable = true
+        type = "elk"
         properties."publisher.custom.data.provider.class" = "org.wso2.carbon.apimgt.gateway.sample.publisher.CustomDataProvider"
 
 
