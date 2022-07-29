@@ -18,6 +18,7 @@ Add the necessary component versions (not less than the sample values provided i
 <br>
 Since this feature support available in the latest update levels, you have to follow the below steps to add the required artifacts to the local m2 repository and point it as a repository in pom file.
 
+- Find the `org.wso2.carbon.apimgt.gateway` and `org.wso2.carbon.apimgt.common.analytics` jars inside the <APIM_HOME>/repository/components/plugins directory in latest U2 updated APIM pack.
 - Add `org.wso2.carbon.apimgt.gateway` and `org.wso2.carbon.apimgt.common.analytics` jars to the local m2 manually.
 
       mvn install:install-file -Dfile=<PATH_TO_FILE>/org.wso2.carbon.apimgt.gateway_<COMPONENT_VERSION>.jar -DgroupId=org.wso2.carbon.apimgt -DartifactId=org.wso2.carbon.apimgt.gateway -Dversion=<COMPONENT_VERSION> -Dpackaging=jar
