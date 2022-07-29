@@ -3,29 +3,42 @@
 This sample will allow you to add custom analytics data to the existing event schema.
 
 ### Important Notice:
-From the update level, 127 onwards event object will include `apiContext` and `userName` by default under a new property named: `properties` introduced from the above update level as below.
-<br>
-This is only used in the ELK implementation. Properties object will be ignored in Choreo implementation.
+
+From the update level, 130 onwards event object will include `apiContext` and `userName` by default under a new property named: `properties` introduced from the above update level as below.
 
         "properties":{
             "apiContext":"/api/1.0.0",
             "userName":"admin@carbon.super"
         },
 <br>
-<br>
 
 __Steps to add custom analytics data:__
 
 Add the necessary component versions (not less than the sample values provided in the existing pom file) for `carbon.apimgt.gateway.version`, `synapse.version` and `carbon.apimgt.common.analytics.version`in pom file in the root directory.
+<br>
+Since this feature support available in the latest update levels, you have to follow the below steps to add the required artifacts to the local m2 repository and point it as a repository in pom file.
 
-Build the project using Maven:
+- Add `org.wso2.carbon.apimgt.gateway` and `org.wso2.carbon.apimgt.common.analytics` jars to the local m2 manually.
+
+      mvn install:install-file -Dfile=<PATH_TO_FILE>/org.wso2.carbon.apimgt.gateway_<COMPONENT_VERSION>.jar -DgroupId=org.wso2.carbon.apimgt -DartifactId=org.wso2.carbon.apimgt.gateway -Dversion=<COMPONENT_VERSION> -Dpackaging=jar
+      mvn install:install-file -Dfile=<PATH_TO_FILE>/org.wso2.carbon.apimgt.common.analytics_<COMPONENT_VERSION>.jar -DgroupId=org.wso2.carbon.apimgt -DartifactId=org.wso2.carbon.apimgt.common.analytics -Dversion=<COMPONENT_VERSION> -Dpackaging=jar
+
+- Point local m2 repository in project pom
+
+      <repository>
+            <id>local-maven-repo</id>
+            <url>file://home/user/.m2/repository</url>
+      </repository>
+Follow the URL pattern when providing the repo url
+
+- Build the project using Maven:
 
         mvn clean install
 
 
-Copy the generated JAR file from the target folder and place it in `<WSO2AM-4.0.0-HOME>/repository/components/lib`.
+- Copy the generated JAR file from the target folder and place it in `<WSO2AM-4.0.0-HOME>/repository/components/lib`.
 
-Edit apim.analytics configurations in the `deployment.toml` located inside `<WSO2AM-4.0.0-HOME>/repository/conf` with the
+- Edit apim.analytics configurations in the `deployment.toml` located inside `<WSO2AM-4.0.0-HOME>/repository/conf` with the
 following configuration.
 <br>
 _(Give type as "elk" since this will not visible in cloud trace logs)_
