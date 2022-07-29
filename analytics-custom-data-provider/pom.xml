@@ -65,6 +65,7 @@
 <!--            give local m2 directory path-->
             <url>file://home/user/.m2/repository</url>
         </repository>
+
         <repository>
             <id>wso2-nexus</id>
             <name>WSO2 internal Repository</name>

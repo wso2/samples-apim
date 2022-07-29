@@ -3,7 +3,7 @@
 This sample will allow you to add custom analytics data to the existing event schema.
 
 ### Important Notice:
-From the update level, 127 onwards event object will include `apiContext` and `userName` by default under a new property named: `properties` introduced from the above update level as below.
+From the update level, 130 onwards event object will include `apiContext` and `userName` by default under a new property named: `properties` introduced from the above update level as below.
 
         "properties":{
             "apiContext":"/api/1.0.0",
