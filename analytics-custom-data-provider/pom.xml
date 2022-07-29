@@ -30,12 +30,12 @@
         <dependency>
             <groupId>org.wso2.carbon.apimgt</groupId>
             <artifactId>org.wso2.carbon.apimgt.gateway</artifactId>
-            <version>${carbon.apimgt.gateway.version}</version>
+            <version>${carbon.apimgt.version}</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.carbon.apimgt</groupId>
             <artifactId>org.wso2.carbon.apimgt.common.analytics</artifactId>
-            <version>${carbon.apimgt.common.analytics.version}</version>
+            <version>${carbon.apimgt.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.synapse</groupId>
@@ -60,6 +60,12 @@
     </dependencies>
 
     <repositories>
+        <repository>
+            <id>local-maven-repo</id>
+<!--        give local m2 directory path-->
+            <url>file://home/user/.m2/repository</url>
+        </repository>
+
         <repository>
             <id>wso2-nexus</id>
             <name>WSO2 internal Repository</name>
@@ -90,8 +96,8 @@
                         <Import-Package>
                             org.apache.synapse.*,
                             org.apache.commons.logging.*,
-                            org.wso2.carbon.apimgt.common.analytics.*;version=${carbon.apimgt.common.analytics.version},
-                            org.wso2.carbon.apimgt.gateway.*;version=${carbon.apimgt.gateway.version},
+                            org.wso2.carbon.apimgt.common.analytics.*;version=${carbon.apimgt.version},
+                            org.wso2.carbon.apimgt.gateway.*;version=${carbon.apimgt.version},
                             *;resolution:=optional
                         </Import-Package>
                         <DynamicImport-Package>*</DynamicImport-Package>
@@ -105,10 +111,8 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
 <!--        Below versions can be found by searching the component name in <APIM_HOME>/repository/components/plugins directory.-->
-<!--        org.wso2.carbon.apimgt.gateway component version-->
-        <carbon.apimgt.gateway.version>9.20.74.26</carbon.apimgt.gateway.version>
-<!--        org.wso2.carbon.apimgt.common.analytics component version-->
-        <carbon.apimgt.common.analytics.version>9.20.74</carbon.apimgt.common.analytics.version>
+<!--        org.wso2.carbon.apimgt component version-->
+        <carbon.apimgt.version>9.20.74.26</carbon.apimgt.version>
 <!--        synapse-core version-->
         <synapse.version>2.1.7-wso2v271</synapse.version>
     </properties>
