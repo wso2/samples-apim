@@ -79,7 +79,10 @@ public class ThriftClient {
         event.setPayloadData(payload);
 
         try {
-//            printEventMap(eventMap); // Can be used to print the event for debugging purposes
+            if (log.isDebugEnabled()) {
+                String eventMapPayload = gson.toJson(eventMap);
+                log.debug("eventMap payload: " + eventMapPayload);
+            }
             boolean isPublished = dataPublisher.tryPublish(event);
             if (!isPublished) {
                 log.error("Unable to publish data to stream: {} since the queue is full", streamId);
@@ -87,12 +90,6 @@ public class ThriftClient {
         } catch (Exception e) {
             log.error("Error occurred while publishing data to stream: {}", streamId, e);
         }
-    }
-
-    // This method can be used to print the event for debugging purposes
-    private void printEventMap(Map<String, Object> eventMap) {
-        String jsonString = gson.toJson(eventMap);
-        log.info(">>> eventMap payload: " + jsonString);
     }
 
     private Object[] generatePayload(ThriftStream thriftStream, Map<String, Object> eventMap) {
