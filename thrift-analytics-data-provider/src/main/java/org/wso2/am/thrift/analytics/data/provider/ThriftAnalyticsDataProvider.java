@@ -63,6 +63,7 @@ public class ThriftAnalyticsDataProvider implements AnalyticsCustomDataProvider 
     private static final String API_HOSTNAME_WEBSOCKET_API_PROPERTY = "api.ut.hostName";
     private static final String APIM_ANALYTICS_REQUEST_START_TIME = "apim.analytics.request.start.time";
     private static final String WEBSOCKET_PROTOCOL = "WebSocket";
+    private static final String UNKNOWN_USER_TENANT_DOMAIN = "UNKNOWN";
 
     private boolean shouldBuildMessage = false;
 
@@ -181,7 +182,7 @@ public class ThriftAnalyticsDataProvider implements AnalyticsCustomDataProvider 
         if (authenticationContext != null) {
             return MultitenantUtils.getTenantDomain(authenticationContext.getUsername());
         }
-        return null;
+        return UNKNOWN_USER_TENANT_DOMAIN;
     }
 
     private boolean getThrottledOut(MessageContext messageContext) {
