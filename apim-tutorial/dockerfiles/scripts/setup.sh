@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ###### testing
-# export APIM_HOST=localhost RETRY_SEC=10 RE_RUN=true
+export APIM_HOST=localhost RETRY_SEC=10 RE_RUN=true
 ######
 
 apim=$APIM_HOST
@@ -43,6 +43,6 @@ cd ../
 # create a file to prevent re-run
 #echo "created" >> lock
 
-fi
+#fi
 
 echo "=================================Data population completed======================================================"
