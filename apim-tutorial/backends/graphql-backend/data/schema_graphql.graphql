@@ -1,0 +1,28 @@
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+type Query {
+    schedules:[Schedule]
+}
+
+type Subscription {
+    newSchedule(from: String) : Schedule!
+    scheduleUpdate(from: String) : Schedule!
+}
+
+type Mutation {
+    addSchedule(from: String!, to: String!, trainType: String!, startTime: String!, endTime: String!) : Schedule!
+    updateSchedule(scheduleId: String!, startTime: String!, endTime: String!) : Schedule!
+}
+
+type Schedule {
+    scheduleId: String!
+    startTime: String
+    endTime: String
+    from: String
+    to: String
+    trainType: String
+}
