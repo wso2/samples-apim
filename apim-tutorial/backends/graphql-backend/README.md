@@ -15,6 +15,10 @@ npm start
 
 The server will run on port 8084. You can change this by editing `server.js`.
 
+## Schema Location
+
+/graphql-backend/data/schema_graphql.graphql
+
 ## Sample Operation payloads
 
 Query Operation
