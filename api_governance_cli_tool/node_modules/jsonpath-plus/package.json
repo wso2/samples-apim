@@ -1,0 +1,149 @@
+{
+  "author": "Stefan Goessner",
+  "name": "jsonpath-plus",
+  "version": "7.1.0",
+  "type": "module",
+  "main": "dist/index-node-cjs.cjs",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "browser": "./dist/index-browser-esm.js",
+      "umd": "./dist/index-browser-umd.cjs",
+      "import": "./dist/index-node-esm.js",
+      "require": "./dist/index-node-cjs.cjs",
+      "default": "./dist/index-browser-esm.js"
+    }
+  },
+  "module": "dist/index-node-esm.js",
+  "browser": "dist/index-browser-esm.js",
+  "types": "./src/jsonpath.d.ts",
+  "description": "A JS implementation of JSONPath with some additional operators",
+  "contributors": [
+    {
+      "name": "Prof. Gössner",
+      "email": "stefan.goessner@fh-dortmund.de"
+    },
+    {
+      "name": "Subbu Allamaraju",
+      "email": "subbu@subbu.org"
+    },
+    {
+      "name": "Mike Brevoort",
+      "email": "mike@brevoort.com"
+    },
+    {
+      "name": "Robert Krahn",
+      "email": "robert.krahn@gmail.com"
+    },
+    {
+      "name": "Brett Zamir",
+      "email": "brettz9@yahoo.com"
+    },
+    {
+      "name": "Richard Schneider",
+      "email": "makaretu@gmail.com"
+    }
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/s3u/JSONPath.git"
+  },
+  "bugs": "https://github.com/s3u/JSONPath/issues/",
+  "homepage": "https://github.com/s3u/JSONPath",
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "react-native": {
+    "vm": false
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.18.13",
+    "@babel/preset-env": "^7.18.10",
+    "@brettz9/eslint-plugin": "^1.0.4",
+    "@rollup/plugin-babel": "^5.3.1",
+    "c8": "^7.12.0",
+    "chai": "^4.3.6",
+    "core-js-bundle": "^3.25.0",
+    "coveradge": "^0.8.1",
+    "eslint": "^8.22.0",
+    "eslint-config-ash-nazg": "^34.1.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-array-func": "^3.1.7",
+    "eslint-plugin-chai-expect": "^3.0.0",
+    "eslint-plugin-chai-friendly": "^0.7.2",
+    "eslint-plugin-compat": "^4.0.2",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-html": "^7.1.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsdoc": "^39.3.6",
+    "eslint-plugin-markdown": "^3.0.0",
+    "eslint-plugin-n": "^15.2.5",
+    "eslint-plugin-no-unsanitized": "^4.0.1",
+    "eslint-plugin-no-use-extend-native": "^0.5.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-sonarjs": "^0.15.0",
+    "eslint-plugin-standard": "^4.1.0",
+    "eslint-plugin-unicorn": "^43.0.2",
+    "http-server": "^14.1.1",
+    "license-badger": "^0.19.0",
+    "mocha": "^10.0.0",
+    "mocha-badge-generator": "^0.9.0",
+    "mocha-multi-reporters": "^1.5.1",
+    "open-cli": "^7.0.1",
+    "rollup": "2.78.1",
+    "rollup-plugin-terser": "^7.0.2",
+    "typedoc": "^0.23.10",
+    "typescript": "^4.7.4"
+  },
+  "keywords": [
+    "json",
+    "jsonpath"
+  ],
+  "browserslist": [
+    "cover 100%"
+  ],
+  "c8": {
+    "reporter": [
+      "text",
+      "html",
+      "json-summary"
+    ],
+    "exclude": [
+      ".mocharc.cjs",
+      ".eslintrc.cjs",
+      "src/jsonpath.d.ts",
+      "rollup.config.js",
+      ".idea",
+      "coverage",
+      "dist",
+      "demo",
+      "docs",
+      "ignore",
+      "test",
+      "test-helpers"
+    ]
+  },
+  "scripts": {
+    "license-badge": "license-badger --corrections --uncategorizedLicenseTemplate \"\\${license} (\\${name} (\\${version}))\" --filteredTypes=nonempty --textTemplate \"License types\n(project, deps, and bundled devDeps)\" --packageJson --production badges/licenses-badge.svg",
+    "license-badge-dev": "license-badger --corrections --filteredTypes=nonempty --textTemplate \"License types\n(all devDeps)\" --allDevelopment badges/licenses-badge-dev.svg",
+    "license-badges": "npm run license-badge && npm run license-badge-dev",
+    "build-docs": "typedoc --out docs/ts src --excludeExternals --tsconfig src/tsconfig.json",
+    "open-docs": "open-cli http://localhost:8084/docs/ts/ && npm start",
+    "coverage": "open-cli http://localhost:8084/coverage/ && npm start",
+    "coverage-badge": "coveradge badges/coverage-badge.svg",
+    "node-import-test": "node --experimental-modules demo/node-import-test.mjs",
+    "open": "open-cli http://localhost:8084/demo/ && npm start",
+    "start": "http-server -p 8084",
+    "typescript": "tsc -p src",
+    "mocha": "mocha --require test-helpers/node-env.js --reporter-options configFile=mocha-multi-reporters.json test",
+    "c8": "rm -Rf ./coverage && rm -Rf ./node_modules/.cache && c8 --all npm run mocha && npm run coverage-badge",
+    "rollup": "rollup -c",
+    "eslint": "eslint --ext js,cjs,md,html .",
+    "lint": "npm run eslint",
+    "test": "npm run eslint && npm run rollup && npm run c8 && npm run typescript",
+    "browser-test": "npm run eslint && npm run rollup && open-cli http://localhost:8084/test/ && npm start"
+  },
+  "readme": "[![npm](https://img.shields.io/npm/v/jsonpath-plus.svg)](https://www.npmjs.com/package/jsonpath-plus)\n[![Dependencies](https://img.shields.io/david/s3u/JSONPath.svg)](https://david-dm.org/s3u/JSONPath)\n[![devDependencies](https://img.shields.io/david/dev/s3u/JSONPath.svg)](https://david-dm.org/s3u/JSONPath?type=dev)\n\n[![testing badge](https://raw.githubusercontent.com/s3u/JSONPath/master/badges/tests-badge.svg?sanitize=true)](badges/tests-badge.svg)\n[![coverage badge](https://raw.githubusercontent.com/s3u/JSONPath/master/badges/coverage-badge.svg?sanitize=true)](badges/coverage-badge.svg)\n\n[![Known Vulnerabilities](https://snyk.io/test/github/s3u/JSONPath/badge.svg)](https://snyk.io/test/github/s3u/JSONPath)\n[![Total Alerts](https://img.shields.io/lgtm/alerts/g/s3u/JSONPath.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/s3u/JSONPath/alerts)\n[![Code Quality: Javascript](https://img.shields.io/lgtm/grade/javascript/g/s3u/JSONPath.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/s3u/JSONPath/context:javascript)\n\n<!--[![License](https://img.shields.io/npm/l/JSONPath.svg)](LICENSE-MIT.txt)-->\n[![Licenses badge](https://raw.githubusercontent.com/s3u/JSONPath/master/badges/licenses-badge.svg?sanitize=true)](badges/licenses-badge.svg)\n\n<small>(see also [licenses for dev. deps.](https://raw.githubusercontent.com/s3u/JSONPath/master/badges/licenses-badge-dev.svg?sanitize=true))</small>\n\n# JSONPath Plus [![Node.js CI status](https://github.com/git://github.com/s3u/JSONPath.git/workflows/Node.js%20CI/badge.svg)](https://github.com/git://github.com/s3u/JSONPath.git/actions)\n\nAnalyse, transform, and selectively extract data from JSON\ndocuments (and JavaScript objects).\n\n`jsonpath-plus` expands on the original specification to add some\nadditional operators and makes explicit some behaviors the original\ndid not spell out.\n\nTry the [browser demo](https://jsonpath-plus.github.io/JSONPath/demo/) or\n[Runkit (Node)](https://npm.runkit.com/jsonpath-plus).\n\n***Please note: This project is not currently being actively maintained. We\nmay accept well-documented PRs or some simple updates, but are not looking\nto make fixes or add new features ourselves.***\n\n## Features\n\n* **Compliant** with the original jsonpath spec\n* Convenient **additions or elaborations** not provided in the original spec:\n    * `^` for grabbing the **parent** of a matching item\n    * `~` for grabbing **property names** of matching items (as array)\n    * **Type selectors** for obtaining:\n        * Basic JSON types: `@null()`, `@boolean()`, `@number()`, `@string()`, `@array()`, `@object()`\n        * `@integer()`\n        * The compound type `@scalar()` (which also accepts `undefined` and\n            non-finite numbers when querying JavaScript objects as well as all of the basic non-object/non-function types)\n        * `@other()` usable in conjunction with a user-defined `otherTypeCallback`\n        * Non-JSON types that can nevertheless be used when querying\n            non-JSON JavaScript objects (`@undefined()`, `@function()`, `@nonFinite()`)\n    * `@path`/`@parent`/`@property`/`@parentProperty`/`@root` **shorthand selectors** within filters\n    * **Escaping**\n        * `` ` `` for escaping remaining sequence\n        * `@['...']`/`?@['...']` syntax for escaping special characters within\n        property names in filters\n    * Documents `$..` (**getting all parent components**)\n* **ESM** and **UMD** export formats\n* In addition to queried values, **can return various meta-information**\n    including paths or pointers to the value, as well as the parent\n    object and parent property name (to allow for modification).\n* **Utilities for converting** between paths, arrays, and pointers\n* Option to **prevent evaluations** permitted in the original spec or supply\n    a **sandbox** for evaluated values.\n* Option for **callback to handle results** as they are obtained.\n\n## Benchmarking\n\n`jsonpath-plus` is consistently performant with both large and small datasets compared to other json querying libraries per [json-querying-performance-testing](https://github.com/andykais/json-querying-performance-testing). You can verify these findings by [running the project yourself](https://github.com/andykais/json-querying-performance-testing#how-to-run) and adding more perf cases.\n\n## Install\n\n```shell\nnpm install jsonpath-plus\n```\n\n## Setup\n\n### Node.js\n\n```js\nconst {JSONPath} = require('jsonpath-plus');\n\nconst result = JSONPath({path: '...', json});\n```\n\n### Browser\n\nFor browser usage you can directly include `dist/index-browser-umd.cjs`; no\nBrowserify magic is necessary:\n\n```html\n<!-- Polyfill recommended by Babel for items not covered for older\n      browsers in dist -->\n<script src=\"node_modules/core-js-bundle/minified.js\"></script>\n\n<script src=\"node_modules/jsonpath-plus/dist/index-browser-umd.cjs\"></script>\n\n<script>\n\nconst result = JSONPath.JSONPath({path: '...', json: {}});\n\n</script>\n```\n\n### ESM (Modern browsers)\n\nYou may also use ES6 Module imports (for modern browsers):\n\n```html\n<script type=\"module\">\n\nimport {\n    JSONPath\n} from './node_modules/jsonpath-plus/dist/index-browser-esm.js';\n\nconst result = JSONPath({path: '...', json: {}});\n\n</script>\n```\n\n### ESM (Bundlers)\n\nOr if you are bundling your JavaScript (e.g., with Rollup), just use,\nnoting that [`mainFields`](https://github.com/rollup/plugins/tree/master/packages/node-resolve#mainfields)\nshould include `browser` for browser builds (for Node, the default, which\nchecks `module`, should be fine):\n\n```js\nimport {JSONPath} from 'jsonpath-plus';\n\nconst result = JSONPath({path: '...', json});\n```\n\n## Usage\n\nThe full signature available is:\n\n```\nconst result = JSONPath([options,] path, json, callback, otherTypeCallback);\n```\n\nThe arguments `path`, `json`, `callback`, and `otherTypeCallback`\ncan alternatively be expressed (along with any other of the\navailable properties) on `options`.\n\nNote that `result` will contain all items found (optionally\nwrapped into an array) whereas `callback` can be used if you\nwish to perform some operation as each item is discovered, with\nthe callback function being executed 0 to N times depending\non the number of independent items to be found in the result.\nSee the docs below for more on `JSONPath`'s available arguments.\n\nSee also the [API docs](https://jsonpath-plus.github.io/JSONPath/docs/ts/).\n\n### Properties\n\nThe properties that can be supplied on the options object or\nevaluate method (as the first argument) include:\n\n- ***path*** (**required**) - The JSONPath expression as a (normalized\n  or unnormalized) string or array\n- ***json*** (**required**) - The JSON object to evaluate (whether of\n  null, boolean, number, string, object, or array type).\n- ***autostart*** (**default: true**) - If this is supplied as `false`,\n  one may call the `evaluate` method manually.\n- ***flatten*** (**default: false**) - Whether the returned array of results\n  will be flattened to a single dimension array.\n- ***resultType*** (**default: \"value\"**) - Can be case-insensitive form of\n  \"value\", \"path\", \"pointer\", \"parent\", or \"parentProperty\" to determine\n  respectively whether to return results as the values of the found items,\n  as their absolute paths, as [JSON Pointers](https://tools.ietf.org/html/rfc6901)\n  to the absolute paths, as their parent objects, or as their parent's\n  property name. If set to \"all\", all of these types will be returned on\n  an object with the type as key name.\n- ***sandbox*** (**default: {}**) - Key-value map of variables to be\n  available to code evaluations such as filtering expressions. (Note\n  that the current path and value will also be available to those\n  expressions; see the Syntax section for details.)\n- ***wrap*** (**default: true**) - Whether or not to wrap the results\n  in an array. If `wrap` is set to `false`, and no results are found,\n  `undefined` will be returned (as opposed to an empty array when\n  `wrap` is set to true). If `wrap` is set to `false` and a single\n  non-array result is found, that result will be the only item returned\n  (not within an array). An array will still be returned if multiple\n  results are found, however. To avoid ambiguities (in the case where\n  it is necessary to distinguish between a result which is a failure\n  and one which is an empty array), it is recommended to switch the\n  default to `false`.\n- ***preventEval*** (**default: false**) - Although JavaScript evaluation\n  expressions are allowed by default, for security reasons (if one is\n  operating on untrusted user input, for example), one may wish to\n  set this option to `true` to throw exceptions when these expressions\n  are attempted.\n- ***parent*** (**default: null**) - In the event that a query could be\n  made to return the root node, this allows the parent of that root node\n  to be returned within results.\n- ***parentProperty*** (**default: null**) - In the event that a query\n  could be made to return the root node, this allows the `parentProperty`\n  of that root node to be returned within results.\n- ***callback*** (**default: (none)**) - If supplied, a callback will be\n  called immediately upon retrieval of an end point value. The three arguments\n  supplied will be the value of the payload (according to `resultType`),\n  the type of the payload (whether it is a normal \"value\" or a \"property\"\n  name), and a full payload object (with all `resultType`s).\n- ***otherTypeCallback*** (**default: \\<A function that throws an error**\n  **when @other() is encountered\\>**) - In the current absence of JSON\n  Schema support, one can determine types beyond the built-in types by\n  adding the operator `@other()` at the end of one's query. If such a\n  path is encountered, the `otherTypeCallback` will be invoked with the\n  value of the item, its path, its parent, and its parent's property name,\n  and it should return a boolean indicating whether the supplied value\n  belongs to the \"other\" type or not (or it may handle transformations and\n  return false).\n\n### Instance methods\n\n- ***evaluate(path, json, callback, otherTypeCallback)*** OR\n  ***evaluate({path: \\<path\\>, json: \\<json object\\>, callback:***\n  ***\\<callback function\\>, otherTypeCallback:***\n  ***\\<otherTypeCallback function\\>})*** - This method is only\n  necessary if the `autostart` property is set to `false`. It\n  can be used for repeated evaluations using the same configuration.\n  Besides the listed properties, the latter method pattern can\n  accept any of the other allowed instance properties (except\n  for `autostart` which would have no relevance here).\n\n### Class properties and methods\n\n- ***JSONPath.cache*** - Exposes the cache object for those who wish\n  to preserve and reuse it for optimization purposes.\n- ***JSONPath.toPathArray(pathAsString)*** - Accepts a normalized or\n  unnormalized path as string and converts to an array: for\n  example, `['$', 'aProperty', 'anotherProperty']`.\n- ***JSONPath.toPathString(pathAsArray)*** - Accepts a path array and\n  converts to a normalized path string. The string will be in a form\n  like: `$['aProperty']['anotherProperty][0]`. The JSONPath terminal\n  constructions `~` and `^` and type operators like `@string()` are\n  silently stripped.\n- ***JSONPath.toPointer(pathAsArray)*** - Accepts a path array and\n  converts to a [JSON Pointer](https://tools.ietf.org/html/rfc6901).\n  The string will be in a form like: `/aProperty/anotherProperty/0`\n  (with any `~` and `/` internal characters escaped as per the JSON\n  Pointer spec). The JSONPath terminal constructions `~` and `^` and\n  type operators like `@string()` are silently stripped.\n\n## Syntax through examples\n\nGiven the following JSON, taken from <http://goessner.net/articles/JsonPath/>:\n\n```json\n{\n\"store\": {\n  \"book\": [\n    {\n      \"category\": \"reference\",\n      \"author\": \"Nigel Rees\",\n      \"title\": \"Sayings of the Century\",\n      \"price\": 8.95\n    },\n    {\n      \"category\": \"fiction\",\n      \"author\": \"Evelyn Waugh\",\n      \"title\": \"Sword of Honour\",\n      \"price\": 12.99\n    },\n    {\n      \"category\": \"fiction\",\n      \"author\": \"Herman Melville\",\n      \"title\": \"Moby Dick\",\n      \"isbn\": \"0-553-21311-3\",\n      \"price\": 8.99\n    },\n    {\n      \"category\": \"fiction\",\n      \"author\": \"J. R. R. Tolkien\",\n      \"title\": \"The Lord of the Rings\",\n      \"isbn\": \"0-395-19395-8\",\n      \"price\": 22.99\n    }\n  ],\n  \"bicycle\": {\n    \"color\": \"red\",\n    \"price\": 19.95\n  }\n}\n}\n```\n\nand the following XML representation:\n\n```xml\n<store>\n    <book>\n        <category>reference</category>\n        <author>Nigel Rees</author>\n        <title>Sayings of the Century</title>\n        <price>8.95</price>\n    </book>\n    <book>\n        <category>fiction</category>\n        <author>Evelyn Waugh</author>\n        <title>Sword of Honour</title>\n        <price>12.99</price>\n    </book>\n    <book>\n        <category>fiction</category>\n        <author>Herman Melville</author>\n        <title>Moby Dick</title>\n        <isbn>0-553-21311-3</isbn>\n        <price>8.99</price>\n    </book>\n    <book>\n        <category>fiction</category>\n        <author>J. R. R. Tolkien</author>\n        <title>The Lord of the Rings</title>\n        <isbn>0-395-19395-8</isbn>\n        <price>22.99</price>\n    </book>\n    <bicycle>\n        <color>red</color>\n        <price>19.95</price>\n    </bicycle>\n</store>\n```\n\nPlease note that the XPath examples below do not distinguish between\nretrieving elements and their text content (except where useful for\ncomparisons or to prevent ambiguity). Note: to test the XPath examples\n(including 2.0 ones), [this demo](http://videlibri.sourceforge.net/cgi-bin/xidelcgi)\nmay be helpful (set to `xml` or `xml-strict`).\n\n| XPath             | JSONPath               | Result                                | Notes |\n| ----------------- | ---------------------- | ------------------------------------- | ----- |\n/store/book/author  | $.store.book\\[*].author | The authors of all books in the store | Can also be represented without the `$.` as `store.book[*].author` (though this is not present in the original spec); note that some character literals (`$` and `@`) require escaping, however\n//author            | $..author              | All authors                           |\n/store/*            | $.store.*              | All things in store, which are its books (a book array) and a red bicycle (a bicycle object).|\n/store//price       | $.store..price         | The price of everything in the store. |\n//book\\[3]           | $..book\\[2]             | The third book (book object)          |\n//book\\[last()]      | $..book\\[(@.length-1)]<br>$..book\\[-1:]  | The last book in order.| To access a property with a special character, utilize `[(@['...'])]` for the filter (this particular feature is not present in the original spec)\n//book\\[position()<3]| $..book\\[0,1]<br>$..book\\[:2]| The first two books               |\n//book/*\\[self::category\\|self::author] or //book/(category,author) in XPath 2.0 | $..book\\[0]\\[category,author]| The categories and authors of all books |\n//book\\[isbn]        | $..book\\[?(@.isbn)]     | Filter all books with an ISBN number     | To access a property with a special character, utilize `[?@['...']]` for the filter (this particular feature is not present in the original spec)\n//book\\[price<10]    | $..book\\[?(@.price<10)] | Filter all books cheaper than 10     |\n| //\\*\\[name() = 'price' and . != 8.95] | $..\\*\\[?(@property === 'price' && @ !== 8.95)] | Obtain all property values of objects whose property is price and which does not equal 8.95 | With the bare `@` allowing filtering objects by property value (not necessarily within arrays), you can add `^` after the expression to get at the object possessing the filtered properties\n/                   | $                      | The root of the JSON object (i.e., the whole object itself) | To get a literal `$` (by itself or anywhere in the path), you must use the backtick escape\n//\\*/\\*\\|//\\*/\\*/text()  | $..*                   | All Elements (and text) beneath root in an XML document. All members of a JSON structure beneath the root. |\n//*                 | $..                    | All Elements in an XML document. All parent components of a JSON structure including root. | This behavior was not directly specified in the original spec\n//*\\[price>19]/..    | $..\\[?(@.price>19)]^    | Parent of those specific items with a price greater than 19 (i.e., the store value as the parent of the bicycle and the book array as parent of an individual book) | Parent (caret) not present in the original spec\n/store/*/name() (in XPath 2.0)  | $.store.*~ | The property names of the store sub-object (\"book\" and \"bicycle\"). Useful with wildcard properties. | Property name (tilde) is not present in the original spec\n/store/book\\[not(. is /store/book\\[1\\])\\] (in XPath 2.0) | $.store.book\\[?(@path !== \"$\\[\\'store\\']\\[\\'book\\']\\[0]\")] | All books besides that at the path pointing to the first | @path not present in the original spec\n//book\\[parent::\\*/bicycle/color = \"red\"]/category | $..book\\[?(@parent.bicycle && @parent.bicycle.color === \"red\")].category | Grabs all categories of books where the parent object of the book has a bicycle child whose color is red (i.e., all the books) | @parent is not present in the original spec\n//book/*\\[name() != 'category']     | $..book.*\\[?(@property !== \"category\")] | Grabs all children of \"book\" except for \"category\" ones  | @property is not present in the original spec\n//book\\[position() != 1]    | $..book\\[?(@property !== 0)] | Grabs all books whose property (which, being that we are reaching inside an array, is the numeric index) is not 0 | @property is not present in the original spec\n/store/\\*/\\*\\[name(parent::*) != 'book'] | $.store.*\\[?(@parentProperty !== \"book\")] | Grabs the grandchildren of store whose parent property is not book (i.e., bicycle's children, \"color\" and \"price\") | @parentProperty is not present in the original spec\n//book\\[count(preceding-sibling::\\*) != 0]/\\*/text() | $..book.*\\[?(@parentProperty !== 0)]  | Get the property values of all book instances whereby the parent property of these values (i.e., the array index holding the book item parent object) is not 0 | @parentProperty is not present in the original spec\n//book\\[price = /store/book\\[3]/price] | $..book\\[?(@.price === @root.store.book\\[2].price)] | Filter all books whose price equals the price of the third book | @root is not present in the original spec\n//book/../\\*\\[. instance of element(\\*, xs:decimal)\\] (in XPath 2.0) | $..book..\\*@number() | Get the numeric values within the book array | @number(), the other basic types (@boolean(), @string()), other low-level derived types (@null(), @object(), @array()), the JSONSchema-added type, @integer(), the compound type @scalar() (which also accepts `undefined` and non-finite numbers for JavaScript objects as well as all of the basic non-object/non-function types), the type, @other(), to be used in conjunction with a user-defined callback (see `otherTypeCallback`) and the following non-JSON types that can nevertheless be used with JSONPath when querying non-JSON JavaScript objects (@undefined(), @function(), @nonFinite()) are not present in the original spec\n//book/*[name() = 'category' and matches(., 'tion$')] (XPath 2.0) | $..book.*\\[?(@property === \"category\" && @.match(/TION$/i))] | All categories of books which match the regex (end in 'TION' case insensitive)  | @property is not present in the original spec.\n//book/*[matches(name(), 'bn$')]/parent::* (XPath 2.0) | $..book.*\\[?(@property.match(/bn$/i))]^ | All books which have a property matching the regex (end in 'TION' case insensitive)  | @property is not present in the original spec. Note: Uses the parent selector \\^ at the end of the expression to return to the parent object; without the parent selector, it matches the two `isbn` key values.\n| | `` ` `` (e.g., `` `$`` to match a property literally named `$`) | Escapes the entire sequence following (to be treated as a literal) | `` ` `` is not present in the original spec; to get a literal backtick, use an additional backtick to escape\n\nAny additional variables supplied as properties on the optional \"sandbox\"\nobject option are also available to (parenthetical-based)\nevaluations.\n\n## Potential sources of confusion for XPath users\n\n1. In JSONPath, a filter expression, in addition to its `@` being a\nreference to its children, actually selects the immediate children\nas well, whereas in XPath, filter conditions do not select the children\nbut delimit which of its parent nodes will be obtained in the result.\n1. In JSONPath, array indexes are, as in JavaScript, 0-based (they begin\nfrom 0), whereas in XPath, they are 1-based.\n1. In JSONPath, equality tests utilize (as per JavaScript) multiple equal signs\nwhereas in XPath, they use a single equal sign.\n\n## Ideas\n\n1. Support OR outside of filters (as in XPath `|`) and grouping.\n1. Create syntax to work like XPath filters in not selecting children?\n1. Allow option for parentNode equivalent (maintaining entire chain of\n    parent-and-parentProperty objects up to root)\n\n## Development\n\nRunning the tests on Node:\n\n```shell\nnpm test\n```\n\nFor in-browser tests:\n\n- Serve the js/html files:\n\n```shell\nnpm run browser-test\n```\n\n- Visit [http://localhost:8082/test/](http://localhost:8082/test/).\n\n## License\n\n[MIT License](http://www.opensource.org/licenses/mit-license.php).\n"
+}
