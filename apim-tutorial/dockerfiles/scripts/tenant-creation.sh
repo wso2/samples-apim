@@ -228,6 +228,9 @@ addUserWithRole "admin@railco.com" "admin" "devuser" "Internal/subscriber" "Inte
 sleep 3
 
 echo "Adding sample users to super tenant"
+addRole "admin" "admin" "hr_department"
+addRole "admin" "admin" "hr_admin"
+addRole "admin" "admin" "marketing_department"
 addUserWithRole "admin" "admin" "peter" "Internal/subscriber" "Internal/everyone"
 addUserWithRole "admin" "admin" "apiprovider" "Internal/creator" "Internal/publisher"
 addUserWithRole "admin" "admin" "devuser" "Internal/subscriber" "Internal/everyone"
