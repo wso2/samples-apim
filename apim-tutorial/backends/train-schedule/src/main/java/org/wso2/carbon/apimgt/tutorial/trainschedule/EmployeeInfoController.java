@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @CrossOrigin(origins = { "*" })
 @RequestMapping({ "/v1" })
@@ -33,10 +34,11 @@ public class EmployeeInfoController {
         return new EmployeeInfo(value);
     }
 
-    @GetMapping({ "/employees/contract/{employee-name}" })
-    public EmployeeInfo getContractOfEmployeeResponse() {
-        String value = "Request Successful";
-        return new EmployeeInfo(value);
+    @GetMapping({ "/employees/contract/{employeeName}" })
+    public EmployeeContract getContractOfEmployeeResponse(@PathVariable String employeeName) {
+        ContractManager contractManager = new ContractManager();
+        EmployeeContract employeeContract = contractManager.getContract(employeeName);
+        return employeeContract;
     }
 
     @PostMapping({ "/employee/register" })
