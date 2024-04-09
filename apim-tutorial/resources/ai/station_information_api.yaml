@@ -1,0 +1,214 @@
+openapi: 3.0.3
+info:
+  title: StationInformationAPI
+  version: 1.0.0
+  description: API for retrieving information about train stations
+servers:
+  - url: http://backend-service:8080/train-operations/v1/
+    description: Production server
+paths:
+  /stations:
+    get:
+      summary: Get all stations
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Station'
+    post:
+      summary: Create a new station
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Station'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Station'
+  /stations/{station_id}:
+    parameters:
+      - in: path
+        name: station_id
+        required: true
+        schema:
+          type: string
+        description: ID of the station to retrieve
+    get:
+      summary: Get station by ID
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Station'
+    put:
+      summary: Update station information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Station'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Station'
+  /stations/{station_id}/platforms:
+    parameters:
+      - in: path
+        name: station_id
+        required: true
+        schema:
+          type: string
+        description: ID of the station to retrieve platforms for
+    get:
+      summary: Get platforms for a station
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Platform'
+    post:
+      summary: Create a new platform for the station
+      parameters:
+        - in: path
+          name: station_id
+          required: true
+          schema:
+            type: string
+          description: ID of the station to create a platform for
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Platform'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Platform'
+  /stations/{station_id}/trains:
+    parameters:
+      - in: path
+        name: station_id
+        required: true
+        schema:
+          type: string
+        description: ID of the station to retrieve trains for
+    get:
+      summary: Get trains at a station
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Train'
+    post:
+      summary: Create a new train at the station
+      parameters:
+        - in: path
+          name: station_id
+          required: true
+          schema:
+            type: string
+          description: ID of the station to create a train for
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Train'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Train'
+components:
+  schemas:
+    Station:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the station
+        name:
+          type: string
+          description: The name of the station
+        location:
+          type: object
+          properties:
+            latitude:
+              type: number
+            longitude:
+              type: number
+        address:
+          type: object
+          properties:
+            street:
+              type: string
+            city:
+              type: string
+            state:
+              type: string
+            zip:
+              type: string
+            country:
+              type: string
+    Platform:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the platform
+        name:
+          type: string
+          description: The name or number of the platform
+        capacity:
+          type: integer
+          description: The capacity of the platform
+    Train:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the train
+        name:
+          type: string
+          description: The name of the train
+        arrival_time:
+          type: string
+          format: date-time
+          description: The arrival time of the train at the station
+        departure_time:
+          type: string
+          format: date-time
+          description: The departure time of the train from the station
+        owner_company:
+          type: string
+          description: The company that owns the train
+
