@@ -1,16 +1,19 @@
 #!/bin/bash
 
 ###### testing
-# export APIM_HOST=localhost RETRY_SEC=10 RE_RUN=true
+#export APIM_HOST=localhost RETRY_SEC=10 RE_RUN=true APIM_PORT=9443
 ######
-
+port=$APIM_PORT
 apim=$APIM_HOST
+
+
 export apim
+export port
 retry=$RETRY_SEC
 re_run="${RE_RUN:-false}"
 echo "Waiting for WSO2 API Manager to start..."
 
-while ! nc -z $apim 9443; do   
+while ! nc -z $apim $port; do   
   echo "Retrying after " $retry "s..."
   sleep $retry
 done
@@ -43,6 +46,6 @@ cd ../
 # create a file to prevent re-run
 #echo "created" >> lock
 
-fi
+#fi
 
 echo "=================================Data population completed======================================================"

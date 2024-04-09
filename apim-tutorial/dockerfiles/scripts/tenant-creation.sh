@@ -2,7 +2,7 @@
 #apim="localhost" # local testing uncomment this
 create_tenant(){
 curl -X POST -k \
-  https://$apim:9443/services/TenantMgtAdminService \
+  https://$apim:$port/services/TenantMgtAdminService \
   -H 'Authorization: Basic YWRtaW46YWRtaW4=' \
   -H 'Content-Type: text/xml' \
   -H 'SOAPAction: \"urn:addTenant\"' \
@@ -26,7 +26,7 @@ curl -X POST -k \
 
 function addUserWithRole () {
     curl -k -X POST \
-            https://$apim:9443/services/UserAdmin \
+            https://$apim:$port/services/UserAdmin \
             -u $1:$2 \
             -H 'Content-Type: text/xml' \
             -H 'SOAPAction: "urn:addUser"' \
@@ -45,7 +45,7 @@ function addUserWithRole () {
 
 function addUserWith3Role () {
     curl -k -X POST \
-            https://$apim:9443/services/UserAdmin \
+            https://$apim:$port/services/UserAdmin \
             -u $1:$2 \
             -H 'Content-Type: text/xml' \
             -H 'SOAPAction: "urn:addUser"' \
@@ -64,7 +64,7 @@ function addUserWith3Role () {
 }
 function addRole () {
     curl -k -X POST \
-            https://$apim:9443/services/UserAdmin \
+            https://$apim:$port/services/UserAdmin \
             -u $1:$2 \
             -H 'Content-Type: text/xml' \
             -H 'SOAPAction: "urn:addRole"' \
@@ -81,7 +81,7 @@ function addRole () {
 
 function enableSignup(){
 curl -X POST \
-  https://$apim:9443/services/ResourceAdminService \
+  https://$apim:$port/services/ResourceAdminService \
   -u $1:$2 \
   -H 'Content-Type: application/soap+xml;charset=UTF-8;action=\"urn:updateTextContent\"' \
   -d '<?xml version="1.0" encoding="UTF-8"?>
@@ -117,7 +117,7 @@ curl -X POST \
 
 function enableSingupWorkflow() {
     curl -X POST \
-  https://$apim:9443/services/ResourceAdminService \
+  https://$apim:$port/services/ResourceAdminService \
   -u $1:$2 \
   -H 'Content-Type: application/soap+xml;charset=UTF-8;action=\"urn:updateTextContent\"' \
   -d '<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:ser="http://services.resource.registry.carbon.wso2.org">
@@ -199,7 +199,7 @@ addUserWithRole "admin@quantis.com" "admin" "kate" "Internal/subscriber" "Intern
 addUserWithRole "admin@quantis.com" "admin" "apiprovider" "Internal/creator" "Internal/publisher"
 addUserWithRole "admin@quantis.com" "admin" "devuser" "Internal/subscriber" "Internal/everyone"
 echo "Enable signup and workflow"
-enableSignup "admin@quantis.com" "admin"
+#enableSignup "admin@quantis.com" "admin"
 enableSingupWorkflow "admin@quantis.com" "admin"
 sleep 3
 ###
@@ -228,7 +228,13 @@ addUserWithRole "admin@railco.com" "admin" "devuser" "Internal/subscriber" "Inte
 sleep 3
 
 echo "Adding sample users to super tenant"
+addRole "admin" "admin" "hr_department"
+addRole "admin" "admin" "hr_admin"
+addRole "admin" "admin" "marketing_department"
 addUserWithRole "admin" "admin" "peter" "Internal/subscriber" "Internal/everyone"
 addUserWithRole "admin" "admin" "apiprovider" "Internal/creator" "Internal/publisher"
 addUserWithRole "admin" "admin" "devuser" "Internal/subscriber" "Internal/everyone"
+addUserWith3Role "admin" "admin" "tom" "Internal/subscriber" "Internal/everyone" "hr_department"
+addUserWith3Role "admin" "admin" "suzy" "Internal/subscriber" "hr_admin" "hr_department"
+addUserWith3Role "admin" "admin" "larry" "Internal/subscriber" "Internal/everyone" "marketing_department"
 sleep 3
