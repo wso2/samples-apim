@@ -1,0 +1,126 @@
+API_Rules: 
+#rules to validate using the details given in the api.yaml file
+  rules:
+    api-access-control:
+      description: "APIs must have access control."
+      message: "APIs should not use 'NONE' as the access control option."
+      severity: error
+      given: "$.data"
+      then:
+        field: "accessControl"
+        function: pattern
+        functionOptions:
+          notMatch: "^NONE$"
+    api-name:
+      description: "API names must follow PascalCase naming convention."
+      message: "API name does not follow the PascalCase naming convention."
+      severity: error
+      given: "$.data"
+      then:
+        field: "name"
+        function: pattern
+        functionOptions:
+          match: "^[A-Z][a-z]+(?:[A-Z][a-z]+)*$"
+    api-description:
+      description: "APIs must have a comprehensive description."
+      message: "API description is missing or too short."
+      severity: error
+      given: "$.data"
+      then:
+        field: "description"
+        function: length
+        functionOptions:
+          min: 30
+    api-security:
+      description: "APIs must contain OAuth2 security."
+      message: "APIs should use OAuth2 for security"
+      severity: error
+      given: "$.data.securityScheme"
+      then:
+        function: schema 
+        functionOptions:
+          schema:
+            type: array
+            items:
+              type: string
+            contains:
+              const: "oauth2"
+    api-category:
+      description: "APIs must contain API categories."
+      message: "APIs should contain at leaset one API category"
+      severity: error
+      given: "$.data.categories"
+      then:
+        function: truthy
+    api-tags:
+      description: "APIs must contain tags"
+      message: "APIs should have at leaset one tag"
+      severity: error
+      given: "$.data.tags"
+      then:
+        function: truthy
+
+Swagger_Rules:
+#rules to validate using the details given in the swagger.yaml file
+  rules:
+    swagger-request-schema:
+      description: Every POST, PUT, and PATCH route must have a request body schema.
+      message: "Every Request must have a request body schema."
+      severity: error
+      given: $.paths..[?(@property === "post" || @property === "put" || @property === "patch")].requestBody
+      then:
+        field: content.application/json.schema
+        function: truthy
+    swagger-response-schema:
+      description: Every operation should have a response body schema defined for 200 status code responses.
+      message: "Every operation should have a response body schema defined for 200 status code responses."
+      severity: error
+      given: $.paths[*][*].responses[*].content.application/json.schema
+      then:
+        function: truthy 
+    swagger-response-code:
+      description: Every operation should provide at least two response codes to cover success and error scenarios.
+      message: "Every operation should have at least two response codes."
+      severity: error
+      given: $.paths[*][*].responses
+      then:
+        function: schema
+        functionOptions:
+          schema:
+            minProperties: 2
+    swagger-parameters:
+      description: Parameters must have a name, in and description.
+      message: "Parameters must have a name, in and description."
+      severity: error
+      given: $.paths[*][*].parameters[*]
+      then:
+        function: schema
+        functionOptions:
+          schema:
+            required: [name, in, description]
+            properties:
+              name:
+                type: string
+              in:
+                type: string
+              description:
+                type: string
+
+Docs_Rules:
+#rules to validate using the details given in the docs.yaml file
+  rules:
+    documentation-minimum-count:
+      description: "Ensure there is at least one document."
+      message: "The documentation count must be at least 1."
+      severity: error
+      given: "$.documents"
+      then:
+        function: schema
+        functionOptions:
+          schema:
+            type: object
+            properties:
+              count:
+                type: integer
+                minimum: 1
+    

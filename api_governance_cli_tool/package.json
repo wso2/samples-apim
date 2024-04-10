@@ -1,0 +1,37 @@
+{
+  "name": "api-governance-cli-tool",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@stoplight/spectral-core": "^1.18.3",
+    "@stoplight/spectral-ruleset-bundler": "^1.5.2",
+    "adm-zip": "^0.5.10",
+    "commander": "^12.0.0",
+    "conf": "^12.0.0",
+    "fs": "^0.0.1-security",
+    "inquirer": "^9.2.16",
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "@stoplight/spectral": "^6.5.0"
+  },
+  "bin": {
+    "api-governance-cli-tool": "./cli.js"
+  },
+  "pkg": {
+    "assets": [
+      "exports/**",
+      "extractedAPIs/**",
+      "reports/**",
+      "rules/**",
+      "Readme.md"
+    ]
+  }
+}
