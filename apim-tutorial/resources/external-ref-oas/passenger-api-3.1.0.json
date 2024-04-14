@@ -78,13 +78,13 @@
             "type": "string"
           },
           "address": {
-            "$ref": "https://localhost:9443/registry/resource/_system/config/Address.json"
+            "$ref": "https://dev.apim.com/registry/resource/_system/config/Address.json"
           },
           "preferences": {
-            "$ref": "https://localhost:9443/registry/resource/_system/config/Preferences.json"
+            "$ref": "https://dev.apim.com/registry/resource/_system/config/Preferences.json"
           },
           "frequent_flyer_info": {
-            "$ref": "https://localhost:9443/registry/resource/_system/config/FrequentFlyerInfo.json"
+            "$ref": "https://dev.apim.com/registry/resource/_system/config/FrequentFlyerInfo.json"
           }
         }
       }
