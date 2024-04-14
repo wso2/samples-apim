@@ -1,0 +1,14 @@
+{
+    "type": "object",
+    "properties": {
+      "airline": {
+        "type": "string"
+      },
+      "number": {
+        "type": "string"
+      },
+      "status": {
+        "type": "string"
+      }
+    }
+  }

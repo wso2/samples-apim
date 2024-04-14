@@ -1,0 +1,166 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Passenger API",
+    "version": "1.0.0",
+    "description": "API for managing passenger information"
+  },
+  "servers": [
+    {
+      "url": "http://backend-service:8080/train-operations/v1",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/passenger": {
+      "post": {
+        "summary": "Create a new passenger",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Passenger"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Passenger"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/passenger/{id}": {
+      "get": {
+        "summary": "Get passenger by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the passenger to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Passenger"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a passenger",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the passenger to update"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Passenger"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Passenger"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/passenger-count": {
+      "get": {
+        "summary": "Get passenger count",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "integer"
+                    },
+                    "time": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Passenger": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "age": {
+            "type": "integer"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "address": {
+            "$ref": "https://localhost:9443/registry/resource/_system/config/Address.json"
+          },
+          "preferences": {
+            "$ref": "https://localhost:9443/registry/resource/_system/config/Preferences.json"
+          },
+          "frequent_flyer_info": {
+            "$ref": "https://localhost:9443/registry/resource/_system/config/FrequentFlyerInfo.json"
+          }
+        }
+      }
+    }
+  }
+}
