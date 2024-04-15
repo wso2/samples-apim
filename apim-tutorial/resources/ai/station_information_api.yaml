@@ -1,214 +1,142 @@
-openapi: 3.0.3
+openapi: 3.0.1
 info:
-  title: StationInformation
+  title: Employees
   version: 1.0.0
-  description: API for retrieving information about train stations
 servers:
-  - url: http://backend-service:8080/train-operations/v1/
-    description: Production server
+  - url: http://backend-service:8080/train-operations/v1
+security:
+  - default: []
 paths:
-  /stations:
+  '/employees/contract/{employee-name}':
     get:
-      summary: Get all stations
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Station'
-    post:
-      summary: Create a new station
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Station'
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Station'
-  /stations/{station_id}:
-    parameters:
-      - in: path
-        name: station_id
-        required: true
-        schema:
-          type: string
-        description: ID of the station to retrieve
-    get:
-      summary: Get station by ID
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Station'
-    put:
-      summary: Update station information
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Station'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Station'
-  /stations/{station_id}/platforms:
-    parameters:
-      - in: path
-        name: station_id
-        required: true
-        schema:
-          type: string
-        description: ID of the station to retrieve platforms for
-    get:
-      summary: Get platforms for a station
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Platform'
-    post:
-      summary: Create a new platform for the station
       parameters:
-        - in: path
-          name: station_id
+        - name: employee-name
+          in: path
           required: true
+          style: simple
+          explode: false
           schema:
             type: string
-          description: ID of the station to create a platform for
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Platform'
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Platform'
-  /stations/{station_id}/trains:
-    parameters:
-      - in: path
-        name: station_id
-        required: true
-        schema:
-          type: string
-        description: ID of the station to retrieve trains for
-    get:
-      summary: Get trains at a station
+            format: string
       responses:
         '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Train'
+          description: ok
+      security:
+        - default: []
+  /employee/register:
     post:
-      summary: Create a new train at the station
-      parameters:
-        - in: path
-          name: station_id
-          required: true
-          schema:
-            type: string
-          description: ID of the station to create a train for
+      parameters: []
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Train'
+              $ref: '#/components/schemas/User'
+        required: true
       responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Train'
+        '200':
+          description: ok
+      security:
+        - default: []
+  '/employee/{employee-id}':
+    post:
+      parameters:
+        - name: employee-id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Employee'
+      responses:
+        '200':
+          description: ok
+      security:
+        - default: []
+    delete:
+      parameters:
+        - name: employee-id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: ok
+      security:
+        - default: []
 components:
   schemas:
-    Station:
-      type: object
+    User:
+      required:
+        - dob
+        - email
+        - id
+        - name
       properties:
         id:
+          pattern: '^[A-Za-z]*-\d{3}-\d{2}-\d{4}$'
           type: string
-          description: The unique identifier for the station
+          example: empID-234-34-7382
         name:
           type: string
-          description: The name of the station
-        location:
-          type: object
-          properties:
-            latitude:
-              type: number
-            longitude:
-              type: number
-        address:
-          type: object
-          properties:
-            street:
-              type: string
-            city:
-              type: string
-            state:
-              type: string
-            zip:
-              type: string
-            country:
-              type: string
-    Platform:
-      type: object
+          example: john
+        email:
+          type: string
+          format: email
+        dob:
+          type: string
+          format: date
+    Employee:
       properties:
-        id:
+        firstName:
           type: string
-          description: The unique identifier for the platform
-        name:
+        lastName:
           type: string
-          description: The name or number of the platform
-        capacity:
+        age:
           type: integer
-          description: The capacity of the platform
-    Train:
-      type: object
+        email:
+          type: string
+          format: email
+        dob:
+          type: string
+          format: date
+        roles:
+          type: array
+          items:
+            type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        phoneNumbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumber'
+    Address:
       properties:
-        id:
+        streetAddress:
           type: string
-          description: The unique identifier for the train
-        name:
+        city:
           type: string
-          description: The name of the train
-        arrival_time:
+        postalCode:
           type: string
-          format: date-time
-          description: The arrival time of the train at the station
-        departure_time:
+    PhoneNumber:
+      properties:
+        phoneType:
           type: string
-          format: date-time
-          description: The departure time of the train from the station
-        owner_company:
+        number:
           type: string
-          description: The company that owns the train
-
+  securitySchemes:
+    default:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: 'https://test.com'
+          scopes: {}
