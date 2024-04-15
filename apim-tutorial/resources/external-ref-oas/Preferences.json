@@ -1,0 +1,11 @@
+{
+    "type": "object",
+    "properties": {
+      "meal_preference": {
+        "type": "string"
+      },
+      "seat_preference": {
+        "type": "string"
+      }
+    }
+  }

@@ -26,6 +26,7 @@ import org.wso2.carbon.apimgt.impl.dto.WorkflowDTO;
 import org.wso2.carbon.apimgt.impl.utils.APIUtil;
 import org.wso2.carbon.apimgt.impl.utils.SelfSignUpUtil;
 import org.wso2.carbon.apimgt.impl.workflow.GeneralWorkflowResponse;
+import org.wso2.carbon.apimgt.impl.workflow.UserSignUpApprovalWorkflowExecutor;
 import org.wso2.carbon.apimgt.impl.workflow.UserSignUpWorkflowExecutor;
 import org.wso2.carbon.apimgt.impl.workflow.WorkflowConstants;
 import org.wso2.carbon.apimgt.impl.workflow.WorkflowException;
@@ -33,7 +34,7 @@ import org.wso2.carbon.apimgt.impl.workflow.WorkflowStatus;
 import org.wso2.carbon.apimgt.impl.workflow.WorkflowConstants.PayloadConstants;
 import org.wso2.carbon.utils.multitenancy.MultitenantUtils;
 
-public class ActivitiUserSignupWorkflow extends UserSignUpWorkflowExecutor {
+public class ActivitiUserSignupWorkflow extends UserSignUpApprovalWorkflowExecutor {
 
 	private static final Log log = LogFactory.getLog(ActivitiUserSignupWorkflow.class);
 	private static final String RUNTIME_INSTANCE_RESOURCE_PATH = "/runtime/process-instances";
@@ -94,7 +95,7 @@ public class ActivitiUserSignupWorkflow extends UserSignUpWorkflowExecutor {
 		return new GeneralWorkflowResponse();
 
 	}
-
+/*
 	@Override
 	public WorkflowResponse complete(WorkflowDTO workflowDTO) throws WorkflowException {
 		workflowDTO.setUpdatedTime(System.currentTimeMillis());
@@ -127,7 +128,7 @@ public class ActivitiUserSignupWorkflow extends UserSignUpWorkflowExecutor {
 				}
 			} else {
 				try {
-					/* Remove created user */
+					
 					deleteUser(tenantDomain, tenantAwareUserName);
 				} catch (Exception e) {
 					throw new WorkflowException("Error while deleting the user", e);
@@ -138,7 +139,7 @@ public class ActivitiUserSignupWorkflow extends UserSignUpWorkflowExecutor {
 		}
 		return new GeneralWorkflowResponse();
 	}
-
+*/
 	private String getPayload(WorkflowDTO workflowDTO) {
 
 		JSONArray variables = new JSONArray();

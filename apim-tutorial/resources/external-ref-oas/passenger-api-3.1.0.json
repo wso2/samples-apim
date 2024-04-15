@@ -1,0 +1,237 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Passenger API",
+    "version": "1.0.0",
+    "description": "API for managing passenger information"
+  },
+  "servers": [
+    {
+      "url": "http://backend-service:8080/train-operations/v1",
+      "description": "Production server"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "Address": {
+        "type": "object",
+        "properties": {
+          "street": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "zip": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          }
+        }
+      },
+      "Preferences": {
+        "type": "object",
+        "properties": {
+          "meal_preference": {
+            "type": "string"
+          },
+          "seat_preference": {
+            "type": "string"
+          }
+        }
+      },
+      "FrequentFlyerInfo": {
+        "type": "object",
+        "properties": {
+          "airline": {
+            "type": "string"
+          },
+          "number": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "Passenger": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "age": {
+            "type": "integer"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "address": {
+            "$ref": "https://dev.apim.com/registry/resource/_system/config/Address.json"
+          },
+          "preferences": {
+            "$ref": "https://dev.apim.com/registry/resource/_system/config/Preferences.json"
+          },
+          "frequent_flyer_info": {
+            "$ref": "https://dev.apim.com/registry/resource/_system/config/FrequentFlyerInfo.json"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/passenger": {
+      "post": {
+        "summary": "Create a new passenger",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Passenger"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Passenger"
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "http://backend-service:8080/train-operations/v1"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "http://backend-service:8080/train-operations/v1"
+        }
+      ]
+    },
+    "/passenger/{id}": {
+      "get": {
+        "summary": "Get passenger by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the passenger to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Passenger"
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "http://backend-service:8080/train-operations/v1"
+          }
+        ]
+      },
+      "put": {
+        "summary": "Update a passenger",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the passenger to update"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Passenger"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Passenger"
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "http://backend-service:8080/train-operations/v1"
+          }
+        ]
+      }
+    },
+    "/passenger-count": {
+      "get": {
+        "summary": "Get passenger count",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "integer"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "http://backend-service:8080/train-operations/v1"
+          }
+        ]
+      }
+    }
+  }
+}
