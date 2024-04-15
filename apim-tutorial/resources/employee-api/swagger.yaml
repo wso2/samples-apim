@@ -3,7 +3,7 @@ info:
   title: Employees
   version: 1.0.0
 servers:
-  - url: http://20.204.144.195:8080/train-operations/v1
+  - url: http://backend-service:8080/train-operations/v1
 security:
   - default: []
 paths:
@@ -23,12 +23,6 @@ paths:
           description: ok
       security:
         - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
   /employee/register:
     post:
       parameters: []
@@ -43,12 +37,6 @@ paths:
           description: ok
       security:
         - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
   '/employee/{employee-id}':
     post:
       parameters:
@@ -70,12 +58,6 @@ paths:
           description: ok
       security:
         - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
     delete:
       parameters:
         - name: employee-id
@@ -91,12 +73,6 @@ paths:
           description: ok
       security:
         - default: []
-      x-auth-type: Application & Application User
-      x-throttling-tier: Unlimited
-      x-wso2-application-security:
-        security-types:
-          - oauth2
-        optional: false
 components:
   schemas:
     User:
@@ -164,38 +140,3 @@ components:
         implicit:
           authorizationUrl: 'https://test.com'
           scopes: {}
-x-wso2-auth-header: Authorization
-x-wso2-cors:
-  corsConfigurationEnabled: false
-  accessControlAllowOrigins:
-    - '*'
-  accessControlAllowCredentials: false
-  accessControlAllowHeaders:
-    - authorization
-    - Access-Control-Allow-Origin
-    - Content-Type
-    - SOAPAction
-    - apikey
-    - Internal-Key
-  accessControlAllowMethods:
-    - GET
-    - PUT
-    - POST
-    - DELETE
-    - PATCH
-    - OPTIONS
-x-wso2-production-endpoints:
-  urls:
-    - 'http://20.204.144.195:8080/train-operations/v1'
-  type: http
-x-wso2-sandbox-endpoints:
-  urls:
-    - 'http://20.204.144.195:8080/train-operations/v1'
-  type: http
-x-wso2-basePath: /t/quantis.com/employees/1.0.0
-x-wso2-transports:
-  - http
-  - https
-x-wso2-response-cache:
-  enabled: false
-  cacheTimeoutInSeconds: 300
