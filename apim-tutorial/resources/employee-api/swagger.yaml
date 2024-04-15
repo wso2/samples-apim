@@ -23,7 +23,7 @@ paths:
           description: ok
       security:
         - default: []
-  /employee/register:
+  /employees/register:
     post:
       parameters: []
       requestBody:
@@ -33,12 +33,33 @@ paths:
               $ref: '#/components/schemas/User'
         required: true
       responses:
+        '201':
+          description: ok
+      security:
+        - default: []
+  '/employees':
+    get:
+      parameters:
+        - name: employee-id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Employee'
+      responses:
         '200':
           description: ok
       security:
         - default: []
-  '/employee/{employee-id}':
-    post:
+  '/employees/{employee-id}':
+    put:
       parameters:
         - name: employee-id
           in: path
@@ -80,13 +101,13 @@ components:
         - dob
         - email
         - id
-        - name
+        - username
       properties:
         id:
           pattern: '^[A-Za-z]*-\d{3}-\d{2}-\d{4}$'
           type: string
           example: empID-234-34-7382
-        name:
+        username:
           type: string
           example: john
         email:
@@ -97,6 +118,13 @@ components:
           format: date
     Employee:
       properties:
+        id:
+          pattern: '^[A-Za-z]*-\d{3}-\d{2}-\d{4}$'
+          type: string
+          example: empID-234-34-7382
+        username:
+          type: string
+          example: john
         firstName:
           type: string
         lastName:
