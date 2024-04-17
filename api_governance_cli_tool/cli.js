@@ -39,46 +39,21 @@ const rulesPath = path.join('rules', 'rules.yaml');
 const rules = yaml.load(fs.readFileSync(rulesPath, 'utf8'));
 const readline = require('readline');
 
+// Commands
 program
     .command('validate')
     .description('Validate a specific API by ID or validate all APIs')
     .helpOption()
     .option('--api <apiId>', 'Validate a specific API by ID')
     .option('--all', 'Validate all APIs', false) // default value for --all is false
+    .option('-d, --directory <unzipDirectoryPath>', 'Validate API inside the locally given directory')
     .action(async (options) => {
         await main(options).catch(console.error);
     });
 
 program.parse(process.argv);
 
-async function askQuestion(query) {
-    var rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-    });
-
-    rl.stdoutMuted = false;
-    let promptLength = query.length;
-
-    rl._writeToOutput = function(stringToWrite) {
-        if (!rl.stdoutMuted) {
-            rl.output.write(stringToWrite);
-            if (stringToWrite.substring(0, promptLength) === query) {
-                if (query.includes('password') || query.includes('secret')) {
-                    rl.stdoutMuted = true;
-                }
-            }
-        }
-    }
-
-    return new Promise((resolve) => {
-        rl.question(query, (ans) => {
-            rl.close();
-            resolve(ans);
-        });
-    });
-}
-
+// configurations
 async function loadConfig() {
     try {
         const fileContents = fs.readFileSync('config.yaml', 'utf8');
@@ -139,247 +114,15 @@ function setValueByPath(obj, path, value) {
     }, obj);
 }
 
-
-function requestApiDetails(options) {
-    return new Promise((resolve, reject) => {
-        const req = https.request(options, (response) => {
-            let data = '';
-            response.on('data', (chunk) => (data += chunk));
-            response.on('end', () => resolve(JSON.parse(data)));
-        });
-        req.on('error', (error) => reject(error));
-        req.end();
-    });
-}
-
-function ensureDirectoryExists(directoryPath) {
-    if (!fs.existsSync(directoryPath)) {
-        fs.mkdirSync(directoryPath, {
-            recursive: true
-        });
+function createRuleFiles() {
+    for (const [type, content] of Object.entries(rules)) {
+        const fileName = path.join('rules', `${type.toLowerCase().replace('_', '-')}.yaml`);
+        const contentToWrite = content.rules ? {
+            rules: content.rules
+        } : {};
+        const yamlContent = yaml.dump(contentToWrite);
+        fs.writeFileSync(fileName, yamlContent, 'utf8');
     }
-}
-
-async function getApiDetails(token, apiId) {
-    const limit = 25;
-    let offset = 0;
-    const totalApiList = [];
-    let count = 0;
-
-    do {
-        const listAPI = {
-            hostname: `${config.Server.hostname}`,
-            port: `${config.Server.port}`,
-            path: apiId ? `/api/am/publisher/v4/apis/${apiId}` : `/api/am/publisher/v4/apis?limit=${limit}&offset=${offset}`,
-            method: 'GET',
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-            rejectUnauthorized: false, // Equivalent to -k option in curl
-        };
-        try {
-            const apiResponse = await requestApiDetails(listAPI);
-
-            let apis = [];
-            if (apiResponse.list) {
-                apis = apiResponse.list.map(api => ({
-                    id: api.id,
-                    name: api.name,
-                    version: api.version,
-                    provider: api.provider,
-                    businessOwner: api.businessOwner,
-                    businessOwnerEmail: api.businessOwnerEmail,
-                    technicalOwner: api.technicalOwner,
-                    technicalOwnerEmail: api.technicalOwnerEmail,
-                }));
-            } else {
-                apis = [{
-                    id: apiResponse.id,
-                    name: apiResponse.name,
-                    version: apiResponse.version,
-                    provider: apiResponse.provider,
-                    businessOwner: apiResponse.businessInformation?.businessOwner,
-                    businessOwnerEmail: apiResponse.businessInformation?.businessOwnerEmail,
-                    technicalOwner: apiResponse.businessInformation?.technicalOwner,
-                    technicalOwnerEmail: apiResponse.businessInformation?.technicalOwnerEmail,
-                }, ];
-            }
-            totalApiList.push(...apis);
-            count = apis.length;
-            offset += limit;
-        } catch (error) {
-            console.error('Error fetching APIs:', error);
-            break; // Exit the loop in case of error
-        }
-    } while (count === limit);
-    return totalApiList;
-}
-
-async function exportApis(apiDetails, token) {
-    const date = new Date(Date.now());
-    const timeStamp =
-        date.getDate() + "-" +
-        (date.getMonth() + 1) + "-" +
-        date.getFullYear() + "_" +
-        date.getHours() + "-" +
-        date.getMinutes() + "-" +
-        date.getSeconds();
-    const reports = "reports";
-    ensureDirectoryExists(reports);
-
-    const csvFilePath = path.join(reports, `Violation_Report_${timeStamp}.csv`);
-    let csvHeader =
-        `"Provider","API Name","Version","ID","Business Owner","Business Owner Email","Technical Owner",` +
-        `"Technical Owner Email","Violation Type","Violations"\n`;
-    let csvRows = [];
-    let apiCsvRows = [];
-
-    for (let i = 0; i < apiDetails.length; i++) {
-        const exportAPI = {
-            hostname: `${config.Server.hostname}`,
-            port: `${config.Server.port}`,
-            path: `/api/am/publisher/v4/apis/export?apiId=${apiDetails[i].id}&format=YAML`,
-            method: 'GET',
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-            rejectUnauthorized: false, // -k option
-        };
-
-        const exportApi = await https.request(exportAPI, (response) => {
-            const exportDir = path.join(process.cwd(), 'exports');
-            const filePath = path.join(exportDir, `exportAPI_${i}.zip`);
-            const fileStream = fs.createWriteStream(filePath);
-
-            ensureDirectoryExists(exportDir);
-            response.pipe(fileStream);
-
-            fileStream.on('finish', async function() {
-                fileStream.close();
-
-                try {
-                    const file = path.join('exports', `exportAPI_${i}.zip`);
-
-                    if (path.extname(file) === '.zip') {
-                        const filePathApi = path.join('.', 'api.yaml');
-                        const filePathSwagger = path.join('Definitions', 'swagger.yaml');
-                        const extractedAPIs = 'extracted_APIs';
-                        ensureDirectoryExists(extractedAPIs);
-                        const zip = new AdmZip(file);
-                        zip.extractAllTo(extractedAPIs, true);
-                        const apiExtractFolderName = `${apiDetails[i].name}-${apiDetails[i].version}`;
-                        if (!apiExtractFolderName) {
-                            console.error('No dynamically created folder found.');
-                            process.exit(1);
-                        }
-                        const documentpath = path.join(extractedAPIs, apiExtractFolderName, 'Docs');
-                        let docsCount = 0;
-
-                        if (fs.existsSync(documentpath)) {
-                            const files = fs.readdirSync(documentpath);
-                            docsCount = files.length;
-                        } else {
-                            docsCount = 0;
-                        }
-
-                        const docYaml = yaml.dump({
-                            documents: {
-                                count: docsCount,
-                            },
-                        });
-
-                        // create docs.yaml
-                        const docsYamlPath = path.join(extractedAPIs, apiExtractFolderName, 'docs.yaml');
-                        fs.writeFileSync(docsYamlPath, docYaml);
-
-                        const apiYamlPath = path.join(extractedAPIs, apiExtractFolderName, filePathApi);
-                        const swaggerYamlPath = path.join(extractedAPIs, apiExtractFolderName, filePathSwagger);
-                        const apiRulesetPath = path.join(process.cwd(), 'rules', 'api-rules.yaml');
-                        const swaggerRulesetPath = path.join(process.cwd(), 'rules', 'swagger-rules.yaml');
-                        const docsRulesetPath = path.join(process.cwd(), 'rules', 'docs-rules.yaml');
-                        let validationMessages1 = '';
-                        let validationMessages2 = '';
-                        let validationMessages3 = '';
-
-                        if (fs.existsSync(apiRulesetPath)) {
-                            validationMessages1 = await validateApi(apiYamlPath, apiRulesetPath);
-                        }
-
-                        if (fs.existsSync(swaggerRulesetPath)) {
-                            validationMessages2 = await validateApi(swaggerYamlPath, swaggerRulesetPath);
-                        }
-
-                        if (fs.existsSync(docsRulesetPath)) {
-                            validationMessages3 = await validateApi(docsYamlPath, docsRulesetPath);
-                        }
-
-                        apiCsvRows = validationMessages1
-                            .concat(validationMessages2)
-                            .concat(validationMessages3)
-                            .map(msg => {
-                                const cleanedMsg = msg.replace(/,/g, '');
-                                const firstWord = cleanedMsg.split(' ')[0].split('-')[0].toLowerCase();
-                                let errorType = '';
-                                if (firstWord === 'api') {
-                                    errorType = 'api.yaml';
-                                } else if (firstWord === 'swagger') {
-                                    errorType = 'swagger.yaml';
-                                } else if (firstWord === 'documentation') {
-                                    errorType = 'doc.yaml';
-
-                                }
-                                return [
-                                    `"${apiDetails[i].provider}"`,
-                                    `"${apiDetails[i].name}"`,
-                                    `"${apiDetails[i].version}"`,
-                                    `"${apiDetails[i].id}"`,
-                                    `"${apiDetails[i].businessOwner}"`,
-                                    `"${apiDetails[i].businessOwnerEmail}"`,
-                                    `"${apiDetails[i].technicalOwner}"`,
-                                    `"${apiDetails[i].technicalOwnerEmail}"`,
-                                    `"${errorType}"`,
-                                    `"${cleanedMsg.replace(/"/g, '""')}"`,
-                                ].join(",");
-                            });
-                        csvRows = csvRows.concat(apiCsvRows);
-                        // write to a single csv file
-                        const csvContent = csvHeader + csvRows.join('\n');
-                        await fs.writeFileSync(csvFilePath, csvContent, 'utf8');
-                    }
-                } catch (err) {
-                    console.error('Error:', err);
-                };
-            });
-        });
-
-        exportApi.on('error', (error) => {
-            console.error('Error:', error);
-        });
-
-        exportApi.end();
-    }
-}
-
-async function validateApi(apiFile, rulesetPath) {
-    const spectral = new Spectral();
-
-    spectral.setRuleset(
-        await bundleAndLoadRuleset(rulesetPath, {
-            fs,
-            fetch
-        })
-    );
-
-    const apiSpec = fs.readFileSync(path.resolve(apiFile), 'utf8');
-    const results = await spectral.run(apiSpec);
-
-    const messages = [];
-    if (results.length > 0) {
-        results.forEach((result) => {
-            messages.push(`${result.code}: ${result.message} at ${result.path.join('.')}`);
-        });
-    }
-    return messages;
 }
 
 async function getAccessToken() {
@@ -447,29 +190,348 @@ async function getAccessToken() {
     });
 }
 
-function createRuleFiles() {
-    for (const [type, content] of Object.entries(rules)) {
-        const fileName = path.join('rules', `${type.toLowerCase().replace('_', '-')}.yaml`);
-        const contentToWrite = content.rules ? {
-            rules: content.rules
-        } : {};
-        const yamlContent = yaml.dump(contentToWrite);
-        fs.writeFileSync(fileName, yamlContent, 'utf8');
-    }
-}
-
 async function main(options) {
     console.log("CLI tool to Validate API(s)");
 
     config = await loadConfig();
     const accessToken = await getAccessToken();
 
-    console.log('\nFetching API(s)');
-    const apiDetails = await getApiDetails(accessToken, options.api);
-    console.log(`Retrieved API count: ${apiDetails.length}`);
-
     createRuleFiles();
-    console.log("Validating API(s)");
-    await exportApis(apiDetails, accessToken);
+
+    if (options.api || options.all) {
+        console.log('\nFetching the API(s) ...');
+        const apiDetails = await getApiDetails(accessToken, options.api);
+        console.log(`Retrieved API count: ${apiDetails.length}`);
+        console.log("Validating API(s)");
+        await processApis(apiDetails, accessToken);
+    } else if (options.directory) {
+        console.log('\nValidating an API from the given directory...');
+        await validateFolder(options.directory);
+    } else {
+        console.log("No valid option provided, use --help for command help.");
+    }
+
     console.log("Validation completed. Check the reports folder for the validation report.");
+}
+
+function requestApiDetails(options) {
+    return new Promise((resolve, reject) => {
+        const req = https.request(options, (response) => {
+            let data = '';
+            response.on('data', (chunk) => (data += chunk));
+            response.on('end', () => resolve(JSON.parse(data)));
+        });
+        req.on('error', (error) => reject(error));
+        req.end();
+    });
+}
+
+async function getApiDetails(token, apiId) {
+    const limit = 25;
+    let offset = 0;
+    const totalApiList = [];
+    let count = 0;
+
+    do {
+        const listAPI = {
+            hostname: `${config.Server.hostname}`,
+            port: `${config.Server.port}`,
+            path: apiId ? `/api/am/publisher/v4/apis/${apiId}` : `/api/am/publisher/v4/apis?limit=${limit}&offset=${offset}`,
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            rejectUnauthorized: false, // Equivalent to -k option in curl
+        };
+        try {
+            const apiResponse = await requestApiDetails(listAPI);
+            let apis = [];
+            if (apiResponse.list) {
+                apis = apiResponse.list.map(api => ({
+                    id: api.id,
+                    name: api.name,
+                    version: api.version,
+                    provider: api.provider,
+                    businessOwner: api.businessOwner,
+                    businessOwnerEmail: api.businessOwnerEmail,
+                    technicalOwner: api.technicalOwner,
+                    technicalOwnerEmail: api.technicalOwnerEmail,
+                }));
+            } else {
+                apis = [{
+                    id: apiResponse.id,
+                    name: apiResponse.name,
+                    version: apiResponse.version,
+                    provider: apiResponse.provider,
+                    businessOwner: apiResponse.businessInformation?.businessOwner,
+                    businessOwnerEmail: apiResponse.businessInformation?.businessOwnerEmail,
+                    technicalOwner: apiResponse.businessInformation?.technicalOwner,
+                    technicalOwnerEmail: apiResponse.businessInformation?.technicalOwnerEmail,
+                }, ];
+            }
+            totalApiList.push(...apis);
+            count = apis.length;
+            offset += limit;
+        } catch (error) {
+            console.error('Error fetching APIs:', error);
+            break; // Exit the loop in case of error
+        }
+    } while (count === limit);
+    return totalApiList;
+}
+
+async function downloadApiZipFile(apiDetail, token, index) {
+    const exportDir = path.join(process.cwd(), 'exports');
+    const filePath = path.join(exportDir, `exportAPI_${index}.zip`);
+    ensureDirectoryExists(exportDir);
+
+    const exportAPI = {
+        hostname: config.Server.hostname,
+        port: config.Server.port,
+        path: `/api/am/publisher/v4/apis/export?apiId=${apiDetail.id}&format=YAML`,
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        rejectUnauthorized: false
+    };
+
+    await downloadFile(exportAPI, filePath);
+    return filePath;
+}
+
+async function downloadFile(options, filePath) {
+    ensureDirectoryExists(path.dirname(filePath));
+    return new Promise((resolve, reject) => {
+        const fileStream = fs.createWriteStream(filePath);
+        const req = https.request(options, response => {
+            response.pipe(fileStream);
+            fileStream.on('finish', () => {
+                fileStream.close(resolve);
+            });
+        });
+        req.on('error', (error) => {
+            console.error('Download error:', error);
+            reject(error);
+        });
+        req.end();
+    });
+}
+
+async function extractAndValidateApi(apiDetail,filePath,zippedFile) {
+    let extractedDir = path.join('extracted_APIs');
+    ensureDirectoryExists(extractedDir);
+
+    if(zippedFile){
+        const zip = new AdmZip(filePath);
+        zip.extractAllTo(extractedDir, true);
+    }
+    else{
+        extractedDir = path.dirname(filePath);
+    }
+    const apiExtractFolderName = `${apiDetail.name}-${apiDetail.version}`;
+    const documentpath = path.join(extractedDir, apiExtractFolderName, 'Docs');
+    let docsCount = 0;
+
+    if (fs.existsSync(documentpath)) {
+        const files = fs.readdirSync(documentpath);
+        docsCount = files.length;
+    } else {
+        docsCount = 0;
+    }
+
+    const docYaml = yaml.dump({
+        documents: {
+            count: docsCount,
+        },
+    });
+    const docsYamlPath = path.join(extractedDir, apiExtractFolderName, 'docs.yaml');
+    fs.writeFileSync(docsYamlPath, docYaml);
+
+    const apiData = await validateExtractedApis(apiDetail,extractedDir);
+
+    return apiData;
+    
+}
+
+async function validateExtractedApis(apiDetail,directory) {
+    let apiCsvRows = [];
+    const apiExtractFolderName = `${apiDetail.name}-${apiDetail.version}`;
+    const filePathSwagger = path.join('Definitions', 'swagger.yaml');
+    const apiYamlPath = path.join(directory, apiExtractFolderName, 'api.yaml');
+    const swaggerYamlPath = path.join(directory, apiExtractFolderName, filePathSwagger);
+    const docsYamlPath = path.join(directory, apiExtractFolderName, 'docs.yaml');
+    const apiRulesetPath = path.join(process.cwd(), 'rules', 'api-rules.yaml');
+    const swaggerRulesetPath = path.join(process.cwd(), 'rules', 'swagger-rules.yaml');
+    const docsRulesetPath = path.join(process.cwd(), 'rules', 'docs-rules.yaml');
+    let validationMessages1 = '';
+    let validationMessages2 = '';
+    let validationMessages3 = '';
+
+                if (fs.existsSync(apiRulesetPath)) {
+                    validationMessages1 = await validateApi(apiYamlPath, apiRulesetPath);
+                }
+
+                if (fs.existsSync(swaggerRulesetPath)) {
+                    validationMessages2 = await validateApi(swaggerYamlPath, swaggerRulesetPath);
+                }
+
+                if (fs.existsSync(docsRulesetPath)) {
+                    validationMessages3 = await validateApi(docsYamlPath, docsRulesetPath);
+                }
+                apiCsvRows = validationMessages1
+                .concat(validationMessages2)
+                .concat(validationMessages3)
+                .map(msg => {
+                    const cleanedMsg = msg.replace(/,/g, '');
+                    const firstWord = cleanedMsg.split(' ')[0].split('-')[0].toLowerCase();
+                    let errorType = '';
+                    if (firstWord === 'api') {
+                        errorType = 'api.yaml';
+                    } else if (firstWord === 'swagger') {
+                        errorType = 'swagger.yaml';
+                    } else if (firstWord === 'documentation') {
+                        errorType = 'doc.yaml';
+
+                    }
+                    return [
+                        `"${apiDetail.provider}"`,
+                        `"${apiDetail.name}"`,
+                        `"${apiDetail.version}"`,
+                        `"${apiDetail.id}"`,
+                        `"${apiDetail.businessOwner}"`,
+                        `"${apiDetail.businessOwnerEmail}"`,
+                        `"${apiDetail.technicalOwner}"`,
+                        `"${apiDetail.technicalOwnerEmail}"`,
+                        `"${errorType}"`,
+                        `"${cleanedMsg.replace(/"/g, '""')}"`,
+                    ].join(",");
+                });
+    
+    return apiCsvRows;
+  
+}
+
+async function processApis(apiDetails, token) {
+
+    const csvFilePath = createCsvFilePath();
+    let csvRows = [];
+
+    for (let i = 0; i < apiDetails.length; i++) {
+        const filePath = await downloadApiZipFile(apiDetails[i], token, i);
+        const extractedData = await extractAndValidateApi(apiDetails[i],filePath, 1);
+        csvRows.push(...extractedData);
+    }
+    writeCsv(csvFilePath, csvRows);  
+}
+
+async function validateFolder(folderPath) {
+    const csvFilePath = createCsvFilePath();
+    let csvRows = [];
+    const apiDetailsMapped = mapLocalApiDetails(folderPath);
+    const extractedData = await extractAndValidateApi(apiDetailsMapped,folderPath,0);
+    csvRows.push(...extractedData);
+    writeCsv(csvFilePath, csvRows);  
+}
+
+function mapLocalApiDetails(folderPath) {
+    const filePath = path.join(folderPath, 'api.yaml');
+    try {
+        const fileContents = fs.readFileSync(filePath, 'utf8');
+        const apiYaml = yaml.load(fileContents); 
+
+        return {
+            id: apiYaml.data.id,
+            name: apiYaml.data.name,
+            version: apiYaml.data.version,
+            provider: apiYaml.data.provider,
+            businessOwner: apiYaml.data.businessInformation ? apiYaml.data.businessInformation.businessOwner : '',
+            businessOwnerEmail: apiYaml.data.businessInformation ? apiYaml.data.businessInformation.businessOwnerEmail : '',
+            technicalOwner: apiYaml.data.businessInformation ? apiYaml.data.businessInformation.technicalOwner : '',
+            technicalOwnerEmail: apiYaml.data.businessInformation ? apiYaml.data.businessInformation.technicalOwnerEmail : '',
+        };
+    } catch (error) {
+        console.error('Failed to read or parse the API YAML file:', error);
+        return null; 
+    }
+}
+
+// Validating and Reporting
+async function validateApi(apiFile, rulesetPath) {
+    const spectral = new Spectral();
+
+    spectral.setRuleset(
+        await bundleAndLoadRuleset(rulesetPath, {
+            fs,
+            fetch
+        })
+    );
+
+    const apiSpec = fs.readFileSync(path.resolve(apiFile), 'utf8');
+    const results = await spectral.run(apiSpec);
+
+    const messages = [];
+    if (results.length > 0) {
+        results.forEach((result) => {
+            messages.push(`${result.code}: ${result.message} at ${result.path.join('.')}`);
+        });
+    }
+    return messages;
+}
+
+function writeCsv(filePath, rows) {
+    const header = 
+        `"Provider","API Name","Version","ID","Business Owner","Business Owner Email","Technical Owner",` +
+        `"Technical Owner Email","Violation Type","Violations"\n`;
+    fs.writeFileSync(filePath, header + rows.join('\n'));
+}
+
+
+// Other fucntions
+async function askQuestion(query) {
+    var rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+    });
+
+    rl.stdoutMuted = false;
+    let promptLength = query.length;
+
+    rl._writeToOutput = function(stringToWrite) {
+        if (!rl.stdoutMuted) {
+            rl.output.write(stringToWrite);
+            if (stringToWrite.substring(0, promptLength) === query) {
+                if (query.includes('password') || query.includes('secret')) {
+                    rl.stdoutMuted = true;
+                }
+            }
+        }
+    }
+
+    return new Promise((resolve) => {
+        rl.question(query, (ans) => {
+            rl.close();
+            resolve(ans);
+        });
+    });
+}
+
+function createTimestamp() {
+    const now = new Date();
+    return `${now.getDate()}-${now.getMonth() + 1}-${now.getFullYear()}_${now.getHours()}-${now.getMinutes()}-${now.getSeconds()}`;
+}
+
+function createCsvFilePath() {
+    const timeStamp = createTimestamp();
+    const reportsDir = path.join(process.cwd(), "reports");
+    ensureDirectoryExists(reportsDir);
+    return path.join(reportsDir, `Violation_Report_${timeStamp}.csv`);
+}
+
+function ensureDirectoryExists(directoryPath) {
+    if (!fs.existsSync(directoryPath)) {
+        fs.mkdirSync(directoryPath, {
+            recursive: true
+        });
+    }
 }
