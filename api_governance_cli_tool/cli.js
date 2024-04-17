@@ -206,12 +206,12 @@ async function main(options) {
         await processApis(apiDetails, accessToken);
     } else if (options.directory) {
         console.log('\nValidating an API from the given directory...');
-        await validateFolder(options.directory);
+        await validateDirectory(options.directory);
     } else {
         console.log("No valid option provided, use --help for command help.");
     }
 
-    console.log("Validation completed. Check the reports folder for the validation report.");
+    console.log("Validation completed. Check the reports directory for the validation report.");
 }
 
 function requestApiDetails(options) {
@@ -329,8 +329,8 @@ async function extractAndValidateApi(apiDetail,filePath,zippedFile) {
     else{
         extractedDir = path.dirname(filePath);
     }
-    const apiExtractFolderName = `${apiDetail.name}-${apiDetail.version}`;
-    const documentpath = path.join(extractedDir, apiExtractFolderName, 'Docs');
+    const apiExtractDirectoryName = `${apiDetail.name}-${apiDetail.version}`;
+    const documentpath = path.join(extractedDir, apiExtractDirectoryName, 'Docs');
     let docsCount = 0;
 
     if (fs.existsSync(documentpath)) {
@@ -345,7 +345,7 @@ async function extractAndValidateApi(apiDetail,filePath,zippedFile) {
             count: docsCount,
         },
     });
-    const docsYamlPath = path.join(extractedDir, apiExtractFolderName, 'docs.yaml');
+    const docsYamlPath = path.join(extractedDir, apiExtractDirectoryName, 'docs.yaml');
     fs.writeFileSync(docsYamlPath, docYaml);
 
     const apiData = await validateExtractedApis(apiDetail,extractedDir);
@@ -356,11 +356,11 @@ async function extractAndValidateApi(apiDetail,filePath,zippedFile) {
 
 async function validateExtractedApis(apiDetail,directory) {
     let apiCsvRows = [];
-    const apiExtractFolderName = `${apiDetail.name}-${apiDetail.version}`;
+    const apiExtractDirectoryName = `${apiDetail.name}-${apiDetail.version}`;
     const filePathSwagger = path.join('Definitions', 'swagger.yaml');
-    const apiYamlPath = path.join(directory, apiExtractFolderName, 'api.yaml');
-    const swaggerYamlPath = path.join(directory, apiExtractFolderName, filePathSwagger);
-    const docsYamlPath = path.join(directory, apiExtractFolderName, 'docs.yaml');
+    const apiYamlPath = path.join(directory, apiExtractDirectoryName, 'api.yaml');
+    const swaggerYamlPath = path.join(directory, apiExtractDirectoryName, filePathSwagger);
+    const docsYamlPath = path.join(directory, apiExtractDirectoryName, 'docs.yaml');
     const apiRulesetPath = path.join(process.cwd(), 'rules', 'api-rules.yaml');
     const swaggerRulesetPath = path.join(process.cwd(), 'rules', 'swagger-rules.yaml');
     const docsRulesetPath = path.join(process.cwd(), 'rules', 'docs-rules.yaml');
@@ -425,17 +425,17 @@ async function processApis(apiDetails, token) {
     writeCsv(csvFilePath, csvRows);  
 }
 
-async function validateFolder(folderPath) {
+async function validateDirectory(directoryPath) {
     const csvFilePath = createCsvFilePath();
     let csvRows = [];
-    const apiDetailsMapped = mapLocalApiDetails(folderPath);
-    const extractedData = await extractAndValidateApi(apiDetailsMapped,folderPath,0);
+    const apiDetailsMapped = mapLocalApiDetails(directoryPath);
+    const extractedData = await extractAndValidateApi(apiDetailsMapped,directoryPath,0);
     csvRows.push(...extractedData);
     writeCsv(csvFilePath, csvRows);  
 }
 
-function mapLocalApiDetails(folderPath) {
-    const filePath = path.join(folderPath, 'api.yaml');
+function mapLocalApiDetails(directoryPath) {
+    const filePath = path.join(directoryPath, 'api.yaml');
     try {
         const fileContents = fs.readFileSync(filePath, 'utf8');
         const apiYaml = yaml.load(fileContents); 

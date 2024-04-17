@@ -27,6 +27,9 @@ The below commands can be used to validate API(s)
 
 `./api-governance-cli-tool-linux validate --api <API ID>`
 
+03. Validate one API by giving the path of a local directory
+
+`./api-governance-cli-tool-linux validate -d <path to the local directory>`
 
 ## Customizing the Rules
 
@@ -55,4 +58,4 @@ Here's how you can define a custom rule in API_Rules:
 ```
 ## Violation Report
 
-You can find the violation reports inside `reports` folder with the timestmp and date.
+You can find the violation reports inside `reports` directory with the timestmp and date.
