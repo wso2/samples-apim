@@ -47,6 +47,7 @@ program
     .option('--api <apiId>', 'Validate a specific API by ID')
     .option('--all', 'Validate all APIs', false) // default value for --all is false
     .option('-d, --directory <unzipDirectoryPath>', 'Validate API inside the locally given directory')
+    .option('--verbose', 'Print detailed logs', false)
     .action(async (options) => {
         await main(options).catch(console.error);
     });
@@ -54,13 +55,14 @@ program
 program.parse(process.argv);
 
 // configurations
-async function loadConfig() {
+async function loadConfig(options) {
     try {
         const fileContents = fs.readFileSync('config.yaml', 'utf8');
         config = yaml.load(fileContents);
-
+        const fieldsToCheck = [];
+        if (options.all || options.api){
         // Define the configuration fields to check and prompt if necessary
-        const fieldsToCheck = [{
+        fieldsToCheck = [{
                 key: ['User', 'username'],
                 prompt: 'Enter your username:'
             },
@@ -85,8 +87,7 @@ async function loadConfig() {
                 key: ['Server', 'port'],
                 prompt: 'Enter your server port:'
             },
-        ];
-
+        ];}
         for (const field of fieldsToCheck) {
             if (!getValueByPath(config, field.key)) {
                 const answer = await askQuestion(field.prompt);
@@ -193,20 +194,20 @@ async function getAccessToken() {
 async function main(options) {
     console.log("CLI tool to Validate API(s)");
 
-    config = await loadConfig();
-    const accessToken = await getAccessToken();
+    config = await loadConfig(options);
 
     createRuleFiles();
 
     if (options.api || options.all) {
+        const accessToken = await getAccessToken();
         console.log('\nFetching the API(s) ...');
         const apiDetails = await getApiDetails(accessToken, options.api);
         console.log(`Retrieved API count: ${apiDetails.length}`);
         console.log("Validating API(s)");
-        await processApis(apiDetails, accessToken);
+        await processApis(apiDetails, accessToken,options.verbose);
     } else if (options.directory) {
         console.log('\nValidating an API from the given directory...');
-        await validateDirectory(options.directory);
+        await validateDirectory(options.directory,options.verbose);
     } else {
         console.log("No valid option provided, use --help for command help.");
     }
@@ -412,7 +413,7 @@ async function validateExtractedApis(apiDetail,directory) {
   
 }
 
-async function processApis(apiDetails, token) {
+async function processApis(apiDetails, token, verbose) {
 
     const csvFilePath = createCsvFilePath();
     let csvRows = [];
@@ -422,15 +423,37 @@ async function processApis(apiDetails, token) {
         const extractedData = await extractAndValidateApi(apiDetails[i],filePath, 1);
         csvRows.push(...extractedData);
     }
+    if (verbose) {
+        console.log('==================================================');
+        console.log('             Validation results');
+        console.log('==================================================');
+        for (const row of csvRows) {
+            console.log(row);
+        }
+        console.log('==================================================');
+        console.log('          End of validation results.')
+        console.log('==================================================');
+    }
     writeCsv(csvFilePath, csvRows);  
 }
 
-async function validateDirectory(directoryPath) {
+async function validateDirectory(directoryPath, verbose) {
     const csvFilePath = createCsvFilePath();
     let csvRows = [];
     const apiDetailsMapped = mapLocalApiDetails(directoryPath);
     const extractedData = await extractAndValidateApi(apiDetailsMapped,directoryPath,0);
     csvRows.push(...extractedData);
+    if (verbose) {
+        console.log('==================================================');
+        console.log('             Validation results');
+        console.log('==================================================');
+        for (const row of csvRows) {
+            console.log(row);
+        }
+        console.log('==================================================');
+        console.log('          End of validation results.')
+        console.log('==================================================');
+    }
     writeCsv(csvFilePath, csvRows);  
 }
 
