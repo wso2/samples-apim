@@ -1,0 +1,169 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Train Station InfoDesk API",
+    "description": "API for providing information from the train station's info desk",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.example.com/v1",
+      "description": "Production Server"
+    },
+    {
+      "url": "http://localhost:8080/v1",
+      "description": "Local Development Server"
+    }
+  ],
+  "paths": {
+    "/info": {
+      "get": {
+        "summary": "Get general information",
+        "description": "Retrieve general information from the train station's info desk",
+        "responses": {
+          "200": {
+            "description": "General information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneralInfo"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/info/services": {
+      "get": {
+        "summary": "Get available services",
+        "description": "Retrieve a list of available services at the train station",
+        "responses": {
+          "200": {
+            "description": "List of available services",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Service"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/info/employees": {
+      "get": {
+        "summary": "Get info desk employees",
+        "description": "Retrieve a list of employees working at the train station's info desk",
+        "responses": {
+          "200": {
+            "description": "List of info desk employees",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Employee"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "GeneralInfo": {
+        "type": "object",
+        "properties": {
+          "stationName": {
+            "type": "string",
+            "description": "Name of the train station"
+          },
+          "address": {
+            "type": "string",
+            "description": "Address of the train station"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Phone number of the train station"
+          },
+          "openingHours": {
+            "type": "string",
+            "description": "Opening hours of the train station"
+          }
+        },
+        "required": [
+          "stationName",
+          "address",
+          "phoneNumber",
+          "openingHours"
+        ]
+      },
+      "Service": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the service"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the service"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the service"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description"
+        ]
+      },
+      "Employee": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the employee"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the employee"
+          },
+          "role": {
+            "type": "string",
+            "description": "Role or position of the employee"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Phone number of the employee"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Email address of the employee"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "role",
+          "phoneNumber",
+          "email"
+        ]
+      }
+    }
+  }
+}

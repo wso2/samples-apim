@@ -1,0 +1,141 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+      "title": "Payment API",
+      "description": "API for processing payments",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "https://api.example.com/v1",
+        "description": "Production Server"
+      },
+      {
+        "url": "http://localhost:8080/v1",
+        "description": "Local Development Server"
+      }
+    ],
+    "paths": {
+      "/payments": {
+        "post": {
+          "summary": "Process a new payment",
+          "description": "Endpoint to create a new payment transaction",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Payment processed successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/PaymentResponse"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "summary": "Get payment details by ID",
+          "description": "Retrieve details of a payment transaction by its ID",
+          "parameters": [
+            {
+              "name": "paymentId",
+              "in": "path",
+              "required": true,
+              "description": "ID of the payment transaction",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Payment details retrieved successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/PaymentResponse"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "summary": "Cancel a payment by ID",
+          "description": "Cancel an existing payment transaction by its ID",
+          "parameters": [
+            {
+              "name": "paymentId",
+              "in": "path",
+              "required": true,
+              "description": "ID of the payment transaction to cancel",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Payment canceled successfully"
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "PaymentRequest": {
+          "type": "object",
+          "properties": {
+            "amount": {
+              "type": "number",
+              "format": "float",
+              "minimum": 0
+            },
+            "currency": {
+              "type": "string",
+              "enum": ["USD", "EUR", "GBP"]
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "required": ["amount", "currency"]
+        },
+        "PaymentResponse": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "amount": {
+              "type": "number",
+              "format": "float"
+            },
+            "currency": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string",
+              "enum": ["pending", "completed", "canceled"]
+            }
+          },
+          "required": ["id", "amount", "currency", "status"]
+        }
+      }
+    }
+  }
+  

@@ -39,10 +39,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Station'
-  /stations/{id}:
+  /stations/{station_id}:
     parameters:
       - in: path
-        name: id
+        name: station_id
         required: true
         schema:
           type: string
@@ -75,10 +75,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Station'
-  /stations/{id}/platforms:
+  /stations/{station_id}/platforms:
     parameters:
       - in: path
-        name: id
+        name: station_id
         required: true
         schema:
           type: string
@@ -102,7 +102,7 @@ paths:
         Creates a new platform within a train station with the provided details for the given station id.
       parameters:
         - in: path
-          name: id
+          name: station_id
           required: true
           schema:
             type: string
@@ -120,10 +120,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Platform'
-  /stations/{id}/trains:
+  /stations/{station_id}/trains:
     parameters:
       - in: path
-        name: id
+        name: station_id
         required: true
         schema:
           type: string
@@ -147,7 +147,7 @@ paths:
         Creates a new train arriving or departing from a specific train station with the provided details.
       parameters:
         - in: path
-          name: id
+          name: station_id
           required: true
           schema:
             type: string
