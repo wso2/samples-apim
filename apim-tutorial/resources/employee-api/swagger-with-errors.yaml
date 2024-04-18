@@ -1,0 +1,174 @@
+openapi: 3.0.1
+info:
+  title: Employees
+  version: 1.0.0
+  contact:
+    email: support@example.com
+  license:
+    name: BSD
+servers:
+  - url: http://backend-service:8080/train-operations/v1
+security:
+  - default: []
+paths:
+  '/employees/contract/{employee-name}':
+    get:
+      parameters:
+        - name: employee-name
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: ok
+      security:
+        - default: []
+  /employees/register:
+    post:
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '201':
+          description: ok
+      security:
+        - default: []
+  '/employees':
+    get:
+      parameters:
+        - name: employee-id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Employee'
+      responses:
+        '200':
+          description: ok
+      security:
+        - default: []
+  '/employees/{employee-id}':
+    put:
+      parameters:
+        - name: employee-id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Employee'
+      responses:
+        '200':
+          description: ok
+      security:
+        - default: []
+    delete:
+      parameters:
+        - name: employee-id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: ok
+      security:
+        - default: []
+components:
+  schemas:
+    User:
+      required:
+        - dob
+        - email
+        - id
+        - username
+      properties:
+        id:
+          pattern: '^[A-Za-z]*-\d{3}-\d{2}-\d{4}$'
+          type: string
+          example: empID-234-34-7382
+        username:
+          type: string
+          example: john
+        email:
+          type: string
+          format: email
+        dob:
+          type: string
+          format: date
+    Employee:
+      properties:
+        id:
+          pattern: '^[A-Za-z]*-\d{3}-\d{2}-\d{4}$'
+          type: string
+          example: empID-234-34-7382
+        username:
+          type: string
+          example: john
+        firstName:
+          type: string
+        lastName:
+          type: string
+        age:
+          type: integer
+        email:
+          type: string
+          format: email
+        dob:
+          type: string
+          format: date
+        roles:
+          type: array
+          items:
+            type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        phoneNumbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumber'
+    Address:
+      properties:
+        streetAddress:
+          type: string
+        city:
+          type: string
+        postalCode:
+          type: string
+    PhoneNumber:
+      properties:
+        phoneType:
+          type: string
+        number:
+          type: string
+  securitySchemes:
+    default:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: 'https://test.com'
+          scopes: {}

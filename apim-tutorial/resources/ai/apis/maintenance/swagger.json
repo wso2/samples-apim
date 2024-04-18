@@ -1,0 +1,360 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+     "title": "Maintenance",
+     "description": "API for managing maintenance tasks at a train station",
+     "version": "1.0.0"
+    },
+    "servers": [
+     {
+      "url": "https://api.example.com/v1",
+      "description": "Production Server"
+     },
+     {
+      "url": "http://localhost:8080/v1",
+      "description": "Local Development Server"
+     }
+    ],
+    "security": [
+     {
+      "default": []
+     }
+    ],
+    "paths": {
+     "/maintenance/tasks": {
+      "get": {
+       "summary": "Get all maintenance tasks",
+       "description": "Retrieve a list of all maintenance tasks at the train station",
+       "responses": {
+        "200": {
+         "description": "List of maintenance tasks",
+         "content": {
+          "application/json": {
+           "schema": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/MaintenanceTask"
+            }
+           }
+          }
+         }
+        }
+       },
+       "security": [
+        {
+         "default": []
+        }
+       ],
+       "x-throttling-tier": "Unlimited",
+       "x-wso2-application-security": {
+        "security-types": [
+         "oauth2"
+        ],
+        "optional": false
+       }
+      },
+      "post": {
+       "summary": "Create a new maintenance task",
+       "description": "Create a new maintenance task for the train station",
+       "requestBody": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/MaintenanceTaskInput"
+          }
+         }
+        },
+        "required": true
+       },
+       "responses": {
+        "201": {
+         "description": "Maintenance task created successfully",
+         "content": {
+          "application/json": {
+           "schema": {
+            "$ref": "#/components/schemas/MaintenanceTask"
+           }
+          }
+         }
+        }
+       },
+       "security": [
+        {
+         "default": []
+        }
+       ],
+       "x-throttling-tier": "Unlimited",
+       "x-wso2-application-security": {
+        "security-types": [
+         "oauth2"
+        ],
+        "optional": false
+       }
+      }
+     },
+     "/maintenance/tasks/{taskId}": {
+      "get": {
+       "summary": "Get maintenance task by ID",
+       "description": "Retrieve details of a maintenance task by its ID",
+       "parameters": [
+        {
+         "name": "taskId",
+         "in": "path",
+         "description": "ID of the maintenance task",
+         "required": true,
+         "style": "simple",
+         "explode": false,
+         "schema": {
+          "type": "string"
+         }
+        }
+       ],
+       "responses": {
+        "200": {
+         "description": "Maintenance task details retrieved successfully",
+         "content": {
+          "application/json": {
+           "schema": {
+            "$ref": "#/components/schemas/MaintenanceTask"
+           }
+          }
+         }
+        }
+       },
+       "security": [
+        {
+         "default": []
+        }
+       ],
+       "x-throttling-tier": "Unlimited",
+       "x-wso2-application-security": {
+        "security-types": [
+         "oauth2"
+        ],
+        "optional": false
+       }
+      },
+      "put": {
+       "summary": "Update maintenance task by ID",
+       "description": "Update details of a maintenance task by its ID",
+       "parameters": [
+        {
+         "name": "taskId",
+         "in": "path",
+         "description": "ID of the maintenance task",
+         "required": true,
+         "style": "simple",
+         "explode": false,
+         "schema": {
+          "type": "string"
+         }
+        }
+       ],
+       "requestBody": {
+        "content": {
+         "application/json": {
+          "schema": {
+           "$ref": "#/components/schemas/MaintenanceTaskInput"
+          }
+         }
+        },
+        "required": true
+       },
+       "responses": {
+        "200": {
+         "description": "Maintenance task updated successfully",
+         "content": {
+          "application/json": {
+           "schema": {
+            "$ref": "#/components/schemas/MaintenanceTask"
+           }
+          }
+         }
+        }
+       },
+       "security": [
+        {
+         "default": []
+        }
+       ],
+       "x-throttling-tier": "Unlimited",
+       "x-wso2-application-security": {
+        "security-types": [
+         "oauth2"
+        ],
+        "optional": false
+       }
+      },
+      "delete": {
+       "summary": "Delete maintenance task by ID",
+       "description": "Delete a maintenance task by its ID",
+       "parameters": [
+        {
+         "name": "taskId",
+         "in": "path",
+         "description": "ID of the maintenance task",
+         "required": true,
+         "style": "simple",
+         "explode": false,
+         "schema": {
+          "type": "string"
+         }
+        }
+       ],
+       "responses": {
+        "204": {
+         "description": "Maintenance task deleted successfully"
+        }
+       },
+       "security": [
+        {
+         "default": []
+        }
+       ],
+       "x-throttling-tier": "Unlimited",
+       "x-wso2-application-security": {
+        "security-types": [
+         "oauth2"
+        ],
+        "optional": false
+       }
+      }
+     }
+    },
+    "components": {
+     "schemas": {
+      "MaintenanceTaskInput": {
+       "required": [
+        "status",
+        "title"
+       ],
+       "type": "object",
+       "properties": {
+        "title": {
+         "type": "string",
+         "description": "Title of the maintenance task"
+        },
+        "description": {
+         "type": "string",
+         "description": "Description of the maintenance task"
+        },
+        "status": {
+         "type": "string",
+         "description": "Status of the maintenance task",
+         "enum": [
+          "pending",
+          "in_progress",
+          "completed"
+         ]
+        }
+       }
+      },
+      "MaintenanceTask": {
+       "required": [
+        "createdAt",
+        "id",
+        "status",
+        "title",
+        "updatedAt"
+       ],
+       "type": "object",
+       "properties": {
+        "id": {
+         "type": "string",
+         "description": "Unique identifier for the maintenance task"
+        },
+        "title": {
+         "type": "string",
+         "description": "Title of the maintenance task"
+        },
+        "description": {
+         "type": "string",
+         "description": "Description of the maintenance task"
+        },
+        "status": {
+         "type": "string",
+         "description": "Status of the maintenance task",
+         "enum": [
+          "pending",
+          "in_progress",
+          "completed"
+         ]
+        },
+        "createdAt": {
+         "type": "string",
+         "description": "Date and time when the maintenance task was created",
+         "format": "date-time"
+        },
+        "updatedAt": {
+         "type": "string",
+         "description": "Date and time when the maintenance task was last updated",
+         "format": "date-time"
+        }
+       }
+      }
+     },
+     "securitySchemes": {
+      "default": {
+       "type": "oauth2",
+       "flows": {
+        "implicit": {
+         "authorizationUrl": "https://test.com",
+         "scopes": {}
+        }
+       }
+      }
+     }
+    },
+    "x-wso2-auth-header": "Authorization",
+    "x-wso2-api-key-header": "ApiKey",
+    "x-wso2-cors": {
+     "corsConfigurationEnabled": false,
+     "accessControlAllowOrigins": [
+      "*"
+     ],
+     "accessControlAllowCredentials": false,
+     "accessControlAllowHeaders": [
+      "authorization",
+      "Access-Control-Allow-Origin",
+      "Content-Type",
+      "SOAPAction",
+      "apikey",
+      "Internal-Key"
+     ],
+     "accessControlAllowMethods": [
+      "GET",
+      "PUT",
+      "POST",
+      "DELETE",
+      "PATCH",
+      "OPTIONS"
+     ]
+    },
+    "x-wso2-production-endpoints": {
+     "urls": [
+      "http://backend-service/maintenance/v1"
+     ],
+     "type": "http"
+    },
+    "x-wso2-sandbox-endpoints": {
+     "urls": [
+      "http://backend-service/maintenance/v1"
+     ],
+     "type": "http"
+    },
+    "x-wso2-basePath": "/maintenance/1.0.0",
+    "x-wso2-transports": [
+     "http",
+     "https"
+    ],
+    "x-wso2-application-security": {
+     "security-types": [
+      "oauth2"
+     ],
+     "optional": false
+    },
+    "x-wso2-response-cache": {
+     "enabled": false,
+     "cacheTimeoutInSeconds": 300
+    }
+   }
