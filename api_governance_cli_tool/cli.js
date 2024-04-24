@@ -60,34 +60,35 @@ async function loadConfig(options) {
         const fileContents = fs.readFileSync('config.yaml', 'utf8');
         config = yaml.load(fileContents);
         const fieldsToCheck = [];
-        if (options.all || options.api){
-        // Define the configuration fields to check and prompt if necessary
-        fieldsToCheck = [{
-                key: ['User', 'username'],
-                prompt: 'Enter your username:'
-            },
-            {
-                key: ['User', 'password'],
-                prompt: 'Enter your password:',
-                type: 'password'
-            },
-            {
-                key: ['User', 'clientId'],
-                prompt: 'Enter your client ID:'
-            },
-            {
-                key: ['User', 'clientSecret'],
-                prompt: 'Enter your client secret:'
-            },
-            {
-                key: ['Server', 'hostname'],
-                prompt: 'Enter your server hostname:'
-            },
-            {
-                key: ['Server', 'port'],
-                prompt: 'Enter your server port:'
-            },
-        ];}
+        if (options.all || options.api) {
+            // Define the configuration fields to check and prompt if necessary
+            fieldsToCheck = [{
+                    key: ['User', 'username'],
+                    prompt: 'Enter your username:'
+                },
+                {
+                    key: ['User', 'password'],
+                    prompt: 'Enter your password:',
+                    type: 'password'
+                },
+                {
+                    key: ['User', 'clientId'],
+                    prompt: 'Enter your client ID:'
+                },
+                {
+                    key: ['User', 'clientSecret'],
+                    prompt: 'Enter your client secret:'
+                },
+                {
+                    key: ['Server', 'hostname'],
+                    prompt: 'Enter your server hostname:'
+                },
+                {
+                    key: ['Server', 'port'],
+                    prompt: 'Enter your server port:'
+                },
+            ];
+        }
         for (const field of fieldsToCheck) {
             if (!getValueByPath(config, field.key)) {
                 const answer = await askQuestion(field.prompt);
@@ -208,19 +209,18 @@ async function main(options) {
         const apiDetails = await getApiDetails(accessToken, options.api);
         console.log(`Retrieved API count: ${apiDetails.length}`);
         console.log("Validating API(s)");
-    state = await processApis(apiDetails, accessToken,options.verbose);
+        state = await processApis(apiDetails, accessToken, options.verbose);
     } else if (options.directory) {
         console.log('\nValidating an API from the given directory...');
-    state = await validateDirectory(options.directory,options.verbose);
+        state = await validateDirectory(options.directory, options.verbose);
     } else {
         console.log("No valid option provided, use --help for command help.");
     }
 
     console.log("Validation completed. Check the reports directory for the validation report.");
-    if(state){
+    if (state) {
         process.exit(0);
-    }
-    else{
+    } else {
         process.exit(1);
     }
 }
@@ -242,7 +242,7 @@ async function getApiDetails(token, apiId) {
     let offset = 0;
     const totalApiList = [];
     let count = 0;
-    "admin","TrainStationAPI","1.0.0","2166e768-7940-47cd-9604-4f0ac70fa79f","Emily Johnson","emily.johnson@railco.com","John Doe","john.doe@railco.com","api.yaml","api-name: API name does not follow the PascalCase naming convention. at data.name"
+    "admin", "TrainStationAPI", "1.0.0", "2166e768-7940-47cd-9604-4f0ac70fa79f", "Emily Johnson", "emily.johnson@railco.com", "John Doe", "john.doe@railco.com", "api.yaml", "api-name: API name does not follow the PascalCase naming convention. at data.name"
 
     do {
         const listAPI = {
@@ -330,15 +330,14 @@ async function downloadFile(options, filePath) {
     });
 }
 
-async function extractAndValidateApi(apiDetail,filePath,zippedFile) {
+async function extractAndValidateApi(apiDetail, filePath, zippedFile) {
     let extractedDir = path.join('extracted_APIs');
     ensureDirectoryExists(extractedDir);
 
-    if(zippedFile){
+    if (zippedFile) {
         const zip = new AdmZip(filePath);
         zip.extractAllTo(extractedDir, true);
-    }
-    else{
+    } else {
         extractedDir = path.dirname(filePath);
     }
     const apiExtractDirectoryName = `${apiDetail.name}-${apiDetail.version}`;
@@ -360,13 +359,13 @@ async function extractAndValidateApi(apiDetail,filePath,zippedFile) {
     const docsYamlPath = path.join(extractedDir, apiExtractDirectoryName, 'docs.yaml');
     fs.writeFileSync(docsYamlPath, docYaml);
 
-    const apiData = await validateExtractedApis(apiDetail,extractedDir);
+    const apiData = await validateExtractedApis(apiDetail, extractedDir);
 
     return apiData;
-    
+
 }
 
-async function validateExtractedApis(apiDetail,directory) {
+async function validateExtractedApis(apiDetail, directory) {
     let apiCsvRows = [];
     const apiExtractDirectoryName = `${apiDetail.name}-${apiDetail.version}`;
     const filePathSwagger = path.join('Definitions', 'swagger.yaml');
@@ -380,48 +379,48 @@ async function validateExtractedApis(apiDetail,directory) {
     let validationMessages2 = '';
     let validationMessages3 = '';
 
-                if (fs.existsSync(apiRulesetPath)) {
-                    validationMessages1 = await validateApi(apiYamlPath, apiRulesetPath);
-                }
+    if (fs.existsSync(apiRulesetPath)) {
+        validationMessages1 = await validateApi(apiYamlPath, apiRulesetPath);
+    }
 
-                if (fs.existsSync(swaggerRulesetPath)) {
-                    validationMessages2 = await validateApi(swaggerYamlPath, swaggerRulesetPath);
-                }
+    if (fs.existsSync(swaggerRulesetPath)) {
+        validationMessages2 = await validateApi(swaggerYamlPath, swaggerRulesetPath);
+    }
 
-                if (fs.existsSync(docsRulesetPath)) {
-                    validationMessages3 = await validateApi(docsYamlPath, docsRulesetPath);
-                }
-                apiCsvRows = validationMessages1
-                .concat(validationMessages2)
-                .concat(validationMessages3)
-                .map(msg => {
-                    const cleanedMsg = msg.replace(/,/g, '');
-                    const firstWord = cleanedMsg.split(' ')[0].split('-')[0].toLowerCase();
-                    let errorType = '';
-                    if (firstWord === 'api') {
-                        errorType = 'api.yaml';
-                    } else if (firstWord === 'swagger') {
-                        errorType = 'swagger.yaml';
-                    } else if (firstWord === 'documentation') {
-                        errorType = 'doc.yaml';
+    if (fs.existsSync(docsRulesetPath)) {
+        validationMessages3 = await validateApi(docsYamlPath, docsRulesetPath);
+    }
+    apiCsvRows = validationMessages1
+        .concat(validationMessages2)
+        .concat(validationMessages3)
+        .map(msg => {
+            const cleanedMsg = msg.replace(/,/g, '');
+            const firstWord = cleanedMsg.split(' ')[0].split('-')[0].toLowerCase();
+            let errorType = '';
+            if (firstWord === 'api') {
+                errorType = 'api.yaml';
+            } else if (firstWord === 'swagger') {
+                errorType = 'swagger.yaml';
+            } else if (firstWord === 'documentation') {
+                errorType = 'doc.yaml';
 
-                    }
-                    return [
-                        `"${apiDetail.provider}"`,
-                        `"${apiDetail.name}"`,
-                        `"${apiDetail.version}"`,
-                        `"${apiDetail.id}"`,
-                        `"${apiDetail.businessOwner}"`,
-                        `"${apiDetail.businessOwnerEmail}"`,
-                        `"${apiDetail.technicalOwner}"`,
-                        `"${apiDetail.technicalOwnerEmail}"`,
-                        `"${errorType}"`,
-                        `"${cleanedMsg.replace(/"/g, '""')}"`,
-                    ].join(",");
-                });
-    
+            }
+            return [
+                `"${apiDetail.provider}"`,
+                `"${apiDetail.name}"`,
+                `"${apiDetail.version}"`,
+                `"${apiDetail.id}"`,
+                `"${apiDetail.businessOwner}"`,
+                `"${apiDetail.businessOwnerEmail}"`,
+                `"${apiDetail.technicalOwner}"`,
+                `"${apiDetail.technicalOwnerEmail}"`,
+                `"${errorType}"`,
+                `"${cleanedMsg.replace(/"/g, '""')}"`,
+            ].join(",");
+        });
+
     return apiCsvRows;
-  
+
 }
 
 async function processApis(apiDetails, token, verbose) {
@@ -431,7 +430,7 @@ async function processApis(apiDetails, token, verbose) {
 
     for (let i = 0; i < apiDetails.length; i++) {
         const filePath = await downloadApiZipFile(apiDetails[i], token, i);
-        const extractedData = await extractAndValidateApi(apiDetails[i],filePath, 1);
+        const extractedData = await extractAndValidateApi(apiDetails[i], filePath, 1);
         csvRows.push(...extractedData);
     }
     if (verbose) {
@@ -445,15 +444,15 @@ async function processApis(apiDetails, token, verbose) {
         console.log('          End of validation results.')
         console.log('==================================================');
     }
-    writeCsv(csvFilePath, csvRows);  
-    return csvRows.length==0;
+    writeCsv(csvFilePath, csvRows);
+    return csvRows.length == 0;
 }
 
 async function validateDirectory(directoryPath, verbose) {
     const csvFilePath = createCsvFilePath();
     let csvRows = [];
     const apiDetailsMapped = mapLocalApiDetails(directoryPath);
-    const extractedData = await extractAndValidateApi(apiDetailsMapped,directoryPath,0);
+    const extractedData = await extractAndValidateApi(apiDetailsMapped, directoryPath, 0);
     csvRows.push(...extractedData);
     if (verbose) {
         console.log('==================================================');
@@ -466,15 +465,15 @@ async function validateDirectory(directoryPath, verbose) {
         console.log('          End of validation results.')
         console.log('==================================================');
     }
-    writeCsv(csvFilePath, csvRows);  
-    return csvRows.length==0;
+    writeCsv(csvFilePath, csvRows);
+    return csvRows.length == 0;
 }
 
 function mapLocalApiDetails(directoryPath) {
     const filePath = path.join(directoryPath, 'api.yaml');
     try {
         const fileContents = fs.readFileSync(filePath, 'utf8');
-        const apiYaml = yaml.load(fileContents); 
+        const apiYaml = yaml.load(fileContents);
 
         return {
             id: apiYaml.data.id,
@@ -488,7 +487,7 @@ function mapLocalApiDetails(directoryPath) {
         };
     } catch (error) {
         console.error('Failed to read or parse the API YAML file:', error);
-        return null; 
+        return null;
     }
 }
 
@@ -516,7 +515,7 @@ async function validateApi(apiFile, rulesetPath) {
 }
 
 function writeCsv(filePath, rows) {
-    const header = 
+    const header =
         `"Provider","API Name","Version","ID","Business Owner","Business Owner Email","Technical Owner",` +
         `"Technical Owner Email","Violation Type","Violations"\n`;
     fs.writeFileSync(filePath, header + rows.join('\n'));
