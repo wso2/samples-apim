@@ -15,6 +15,22 @@ Server:
    port: <port>
 ```
 
+When generating the access token using the above provided clinetID and clientSecret, the following scopes are provided.
+    ```
+        apim:api_view
+        apim:api_create
+        apim:app_import_export
+        apim:api_import_export
+        apim:api_product_import_export
+        apim:admin
+        apim:api_publish
+        apim:subscribe
+        apim:app_manage
+        apim:sub_manage
+        apim:api_delete
+        apim:app_owner_change
+    ```
+
 ## Usage
 
 The below commands can be used to validate API(s)
