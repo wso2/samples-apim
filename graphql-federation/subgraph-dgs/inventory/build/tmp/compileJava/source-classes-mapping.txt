@@ -1,0 +1,10 @@
+com/example/inventory/entity/Product.java
+ com.example.inventory.entity.Product
+com/example/inventory/Application.java
+ com.example.inventory.Application
+com/example/inventory/repository/InventoryRepository.java
+ com.example.inventory.repository.InventoryRepository
+com/example/inventory/resolver/Query.java
+ com.example.inventory.resolver.Query
+com/example/inventory/entity/ProductInventory.java
+ com.example.inventory.entity.ProductInventory

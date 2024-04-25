@@ -1,0 +1,1 @@
+{"version":3,"file":"mapGetOrSet.js","sourceRoot":"","sources":["../../src/utilities/mapGetOrSet.ts"],"names":[],"mappings":";;;AAAA,SAAgB,WAAW,CAAO,GAAc,EAAE,GAAM,EAAE,UAAa;IACrE,IAAI,CAAC,GAAG,CAAC,GAAG,CAAC,GAAG,CAAC,EAAE;QACjB,GAAG,CAAC,GAAG,CAAC,GAAG,EAAE,UAAU,CAAC,CAAC;KAC1B;IACD,OAAO,GAAG,CAAC,GAAG,CAAC,GAAG,CAAE,CAAC;AACvB,CAAC;AALD,kCAKC"}
