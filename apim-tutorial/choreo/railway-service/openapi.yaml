@@ -1,0 +1,125 @@
+openapi: 3.0.3
+info:
+  title: Railway Service
+  description: >-
+    This is a sample API specification for a simple railway service
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /book:
+    summary: Create a Train Booking
+    post:
+      summary: Create a train booking
+      operationId: BookTrain
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Reservation"
+        "400":
+          description: Invalid request body
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Booking"
+
+  /trains:
+    summary: Get Train Details
+    get:
+      summary: Get all train details
+      operationId: GetTrains
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Train"
+    
+  /reservations:
+    summary: Get All Reservations
+    get:
+      summary: Get Reservations
+      operationId: GetReservations
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Reservation"
+    delete:
+      summary: Delete Reservation
+      operationId: DeleteReservation
+      parameters:
+        - name: id
+          in: query
+          description: Reservation ID
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+        "400":
+          description: Bad Request
+        "404":
+          description: Reservation not found
+
+components:
+  schemas:
+    Reservation:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "1100-234324-324fg53-354c44c"
+        train:
+          $ref: "#/components/schemas/Train"
+        amount:
+          type: number
+          example: 100
+        cost:
+          type: number
+          example: 1500
+    Train:
+      type: object
+      properties:
+        id:
+          type: number
+          example: "1"
+        name:
+          type: string
+          example: "Something Express"
+        departure:
+          type: string
+          example: "London"
+        destination:
+          type: string
+          example: "Liverpool"
+        capacity:
+          type: number
+          example: 100
+        type:
+          type: string
+          example: "Express"
+        price:
+          type: number
+          example: 750
+    Booking:
+      type: object
+      properties:
+        train:
+          type: string
+          example: "Something Express"
+        amount:
+          type: number
+          example: 100
