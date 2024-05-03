@@ -24,7 +24,7 @@ curl -X POST -k \
 </soapenv:Envelope>'
 }
 
-function addUserWithRole () {
+addUserWithRole() {
     curl -k -X POST \
             https://$apim:$port/services/UserAdmin \
             -u $1:$2 \
@@ -43,7 +43,7 @@ function addUserWithRole () {
             </soapenv:Envelope>' --write-out "%{http_code}\n" --silent --output /dev/null 
 }
 
-function addUserWith3Role () {
+addUserWith3Role() {
     curl -k -X POST \
             https://$apim:$port/services/UserAdmin \
             -u $1:$2 \
@@ -62,7 +62,29 @@ function addUserWith3Role () {
             </soapenv:Body>
             </soapenv:Envelope>' --write-out "%{http_code}\n" --silent --output /dev/null 
 }
-function addRole () {
+
+addUserWith4Roles() {
+    curl -k -X POST \
+            https://$apim:$port/services/UserAdmin \
+            -u $1:$2 \
+            -H 'Content-Type: text/xml' \
+            -H 'SOAPAction: "urn:addUser"' \
+            -d '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://org.apache.axis2/xsd" xmlns:xsd1="http://common.mgt.user.carbon.wso2.org/xsd">
+            <soapenv:Header/>
+            <soapenv:Body>
+                <xsd:addUser>
+                    <xsd:userName>'$3'</xsd:userName>
+                    <xsd:password>user123</xsd:password>
+                    <xsd:roles>'$4'</xsd:roles>
+                    <xsd:roles>'$5'</xsd:roles>
+                    <xsd:roles>'$6'</xsd:roles>
+                    <xsd:roles>'$7'</xsd:roles>
+                </xsd:addUser>
+            </soapenv:Body>
+            </soapenv:Envelope>' --write-out "%{http_code}\n" --silent --output /dev/null 
+}
+
+addRole() {
     curl -k -X POST \
             https://$apim:$port/services/UserAdmin \
             -u $1:$2 \
@@ -79,7 +101,7 @@ function addRole () {
                 </soapenv:Envelope>' --write-out "%{http_code}\n" --silent --output /dev/null 
 }
 
-function enableSignup(){
+enableSignup(){
 curl -X POST \
   https://$apim:$port/services/ResourceAdminService \
   -u $1:$2 \
@@ -115,7 +137,7 @@ curl -X POST \
 </soap:Envelope>' -k
 }
 
-function enableSingupWorkflow() {
+enableSingupWorkflow() {
     curl -X POST \
   https://$apim:$port/services/ResourceAdminService \
   -u $1:$2 \
@@ -231,10 +253,13 @@ echo "Adding sample users to super tenant"
 addRole "admin" "admin" "hr_department"
 addRole "admin" "admin" "hr_admin"
 addRole "admin" "admin" "marketing_department"
+addRole "admin" "admin" "station-manager"
+addRole "admin" "admin" "employee"
 addUserWithRole "admin" "admin" "peter" "Internal/subscriber" "Internal/everyone"
 addUserWithRole "admin" "admin" "apiprovider" "Internal/creator" "Internal/publisher"
 addUserWithRole "admin" "admin" "devuser" "Internal/subscriber" "Internal/everyone"
+addUserWithRole "admin" "admin" "Paul" "Internal/publisher" "Internal/everyone"
 addUserWith3Role "admin" "admin" "tom" "Internal/subscriber" "Internal/everyone" "hr_department"
-addUserWith3Role "admin" "admin" "suzy" "Internal/subscriber" "hr_admin" "hr_department"
 addUserWith3Role "admin" "admin" "larry" "Internal/subscriber" "Internal/everyone" "marketing_department"
+addUserWith4Roles "admin" "admin" "suzy" "Internal/subscriber" "hr_admin" "hr_department" "employee"
 sleep 3
