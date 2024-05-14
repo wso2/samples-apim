@@ -69,3 +69,18 @@ type Product @key(fields: "upc") @extends {
     shippingEstimate: Int @requires(fields: "price weight")
 }
 ```
+
+If you import the project in IntelliJ, you can run all the Spring Boot servers separately under services tab
+Spring Boot Projects started in IntelliJ under Services tab
+
+1. Run the federation gateway with
+
+`node apollo-federation-js/gateway.js`
+
+2. Run spring boot projects in each project folders with
+
+`./gradlew bootRun`
+
+All java project runs on separate ports from 8081 to 8084 and gateway on port 4000.
+
+Once all the servers are running, open localhost:4000 to run graphql playground
