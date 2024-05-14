@@ -1,0 +1,33 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1714628387146
+Bundle-ManifestVersion: 2
+Bundle-Name: org.wso2.carbon.test
+Bundle-SymbolicName: org.wso2.carbon.test
+Bundle-Version: 1.0.0
+Created-By: 11.0.19 (Ubuntu)
+Export-Package: org.wso2.carbon.test;version="1.0.0";uses:="com.faster
+ xml.jackson.databind,com.intuit.graphql.orchestrator,com.intuit.graph
+ ql.orchestrator.batch,graphql,org.apache.http.client,org.apache.synap
+ se,org.apache.synapse.rest"
+Import-Package: com.fasterxml.jackson.core;resolution:=optional;versio
+ n="[2.16,3)",com.fasterxml.jackson.core.type;resolution:=optional;ver
+ sion="[2.16,3)",com.fasterxml.jackson.databind;resolution:=optional;v
+ ersion="[2.16,3)",com.fasterxml.jackson.dataformat.yaml;resolution:=o
+ ptional;version="[2.16,3)",com.google.common.collect;resolution:=opti
+ onal;version="[32.0,33)",com.intuit.graphql.orchestrator;resolution:=
+ optional;version="[1.0,2)",com.intuit.graphql.orchestrator.batch;reso
+ lution:=optional;version="[1.0,2)",com.intuit.graphql.orchestrator.sc
+ hema;resolution:=optional;version="[1.0,2)",com.intuit.graphql.orches
+ trator.stitching;resolution:=optional;version="[1.0,2)",graphql;resol
+ ution:=optional;version="[17.5,18)",graphql.schema;resolution:=option
+ al;version="[17.5,18)",graphql.schema.idl;resolution:=optional;versio
+ n="[17.5,18)",org.apache.http;resolution:=optional;version="[1.0,2)",
+ org.apache.http.client;resolution:=optional;version="[1.0,2)",org.apa
+ che.http.client.methods;resolution:=optional;version="[1.0,2)",org.ap
+ ache.http.entity;resolution:=optional;version="[1.0,2)",org.apache.ht
+ tp.impl.client;resolution:=optional;version="[1.0,2)",org.apache.http
+ .util;resolution:=optional;version="[1.0,2)",org.apache.synapse;resol
+ ution:=optional,org.apache.synapse.rest;resolution:=optional,reactor.
+ core.publisher;resolution:=optional
+Tool: Bnd-5.3.0.202102221516
+
