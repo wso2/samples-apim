@@ -2,7 +2,7 @@
 
 This extracts and populates necessary attributes of API Analytics events from WSO2 APIM 4.2.0, as required by the [Thrift Data Publisher](../thrift-analytics-publisher).
 
-In order to collect the response message size, the `thrift.data.provider.collect.response.message.size` property needs to be explicitly set to `true`, as shown below. The value of this property will be `false` by default.
+In order to collect the response message size, the `build_response_message` property needs to be explicitly set to `true`, as shown below. The value of this property will be `false` by default.
 
 ```toml
 [apim.analytics]
@@ -14,7 +14,7 @@ properties."thrift.endpoint.receiver.url.set" = "tcp://0.0.0.0:7612" # Point thi
 properties."thrift.endpoint.auth.url.set" = "ssl://0.0.0.0:7712" # Point this to a Thrift Server
 properties."thrift.endpoint.username" = "admin"
 properties."thrift.endpoint.password" = "admin"
-properties."thrift.data.provider.collect.response.message.size" = true
+properties.build_response_message = true # Enable this to collect the response message size
 ```
 
 ## Building the Thrift Data Provider
