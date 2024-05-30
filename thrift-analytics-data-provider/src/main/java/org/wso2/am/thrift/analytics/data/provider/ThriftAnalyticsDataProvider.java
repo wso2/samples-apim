@@ -19,16 +19,12 @@ package org.wso2.am.thrift.analytics.data.provider;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.AttributeKey;
-import org.apache.axiom.soap.SOAPBody;
-import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.http.HttpHeaders;
 import org.apache.synapse.MessageContext;
 import org.apache.synapse.SynapseConstants;
 import org.apache.synapse.core.axis2.Axis2MessageContext;
 import org.apache.synapse.rest.RESTConstants;
-import org.apache.synapse.transport.passthru.util.RelayUtils;
 import org.wso2.carbon.apimgt.common.analytics.collectors.AnalyticsCustomDataProvider;
 import org.wso2.carbon.apimgt.gateway.APIMgtGatewayConstants;
 import org.wso2.carbon.apimgt.gateway.handlers.analytics.Constants;
@@ -37,22 +33,16 @@ import org.wso2.carbon.apimgt.gateway.handlers.security.AuthenticationContext;
 import org.wso2.carbon.apimgt.gateway.handlers.streaming.websocket.WebSocketUtils;
 import org.wso2.carbon.apimgt.gateway.utils.GatewayUtils;
 import org.wso2.carbon.apimgt.impl.APIConstants;
-import org.wso2.carbon.apimgt.impl.APIManagerAnalyticsConfiguration;
 import org.wso2.carbon.utils.multitenancy.MultitenantUtils;
 
-import javax.xml.stream.XMLStreamException;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ThriftAnalyticsDataProvider implements AnalyticsCustomDataProvider {
 
     private static final Log log = LogFactory.getLog(ThriftAnalyticsDataProvider.class);
-    private static final String COLLECT_RESPONSE_MESSAGE_SIZE_CONFIG_PROPERTY =
-            "thrift.data.provider.collect.response.message.size";
     private static final String SYNAPSE_GW_LABEL = "Synapse";
     private static final String OTHER_LATENCY_MESSAGE_CONTEXT_PROPERTY = "other_latency";
     private static final String SERVICE_PREFIX_AXIS2_MESSAGE_CONTEXT_PROPERTY = "SERVICE_PREFIX";
@@ -65,17 +55,7 @@ public class ThriftAnalyticsDataProvider implements AnalyticsCustomDataProvider 
     private static final String WEBSOCKET_PROTOCOL = "WebSocket";
     private static final String UNKNOWN_USER_TENANT_DOMAIN = "UNKNOWN";
 
-    private boolean shouldBuildMessage = false;
-
     public ThriftAnalyticsDataProvider() {
-        APIManagerAnalyticsConfiguration config = APIManagerAnalyticsConfiguration.getInstance();
-        if (config != null) {
-            String collectResponseMessageSize = config.getReporterProperties()
-                    .get(COLLECT_RESPONSE_MESSAGE_SIZE_CONFIG_PROPERTY);
-            if (collectResponseMessageSize != null) {
-                shouldBuildMessage = Boolean.parseBoolean(collectResponseMessageSize);
-            }
-        }
         log.info("Successfully initialized ThriftAnalyticsDataProvider");
     }
 
@@ -98,7 +78,6 @@ public class ThriftAnalyticsDataProvider implements AnalyticsCustomDataProvider 
                 customProperties.put(PropertyKeys.RESPONSE_TIME, getResponseTime(messageContext));
                 customProperties.put(PropertyKeys.SERVICE_TIME, getServiceTime(messageContext));
                 customProperties.put(PropertyKeys.BACKEND_TIME, getBackendTime(messageContext));
-                customProperties.put(PropertyKeys.RESPONSE_SIZE, getResponseSize(messageContext));
                 customProperties.put(PropertyKeys.PROTOCOL, getProtocol(messageContext));
                 customProperties.put(PropertyKeys.SECURITY_LATENCY, getSecurityLatency(messageContext));
                 customProperties.put(PropertyKeys.THROTTLING_LATENCY, getThrottlingLatency(messageContext));
@@ -133,7 +112,6 @@ public class ThriftAnalyticsDataProvider implements AnalyticsCustomDataProvider 
                 customProperties.put(PropertyKeys.RESPONSE_TIME, 0L);
                 customProperties.put(PropertyKeys.SERVICE_TIME, 0L);
                 customProperties.put(PropertyKeys.BACKEND_TIME, 0L);
-                customProperties.put(PropertyKeys.RESPONSE_SIZE, 0L);
                 customProperties.put(PropertyKeys.PROTOCOL, WEBSOCKET_PROTOCOL);
                 customProperties.put(PropertyKeys.SECURITY_LATENCY, 0L);
                 customProperties.put(PropertyKeys.THROTTLING_LATENCY, 0L);
@@ -214,41 +192,6 @@ public class ThriftAnalyticsDataProvider implements AnalyticsCustomDataProvider 
             return (long) backendEndTime - (long) backendStartTime;
         }
         return 0;
-    }
-
-    private long getResponseSize(MessageContext messageContext) {
-        long responseSize = 0;
-        if (shouldBuildMessage) {
-            org.apache.axis2.context.MessageContext axis2MessageContext = ((Axis2MessageContext) messageContext).
-                    getAxis2MessageContext();
-            Map headers = (Map) axis2MessageContext.getProperty(
-                    org.apache.axis2.context.MessageContext.TRANSPORT_HEADERS);
-            String contentLength = (String) headers.get(HttpHeaders.CONTENT_LENGTH);
-            if (contentLength != null) {
-                responseSize = Integer.parseInt(contentLength);
-            } else {  //When chunking is enabled
-                try {
-                    RelayUtils.buildMessage(axis2MessageContext);
-                } catch (IOException ex) {
-                    //In case of an exception, it won't be propagated up,and set response size to 0
-                    log.error("Error occurred while building the message to" +
-                            " calculate the response body size", ex);
-                } catch (XMLStreamException ex) {
-                    log.error("Error occurred while building the message to calculate the response" +
-                            " body size", ex);
-                }
-
-                SOAPEnvelope env = messageContext.getEnvelope();
-                if (env != null) {
-                    SOAPBody soapbody = env.getBody();
-                    if (soapbody != null) {
-                        byte[] size = soapbody.toString().getBytes(Charset.defaultCharset());
-                        responseSize = size.length;
-                    }
-                }
-            }
-        }
-        return responseSize;
     }
 
     private String getProtocol(MessageContext messageContext) throws MalformedURLException {
