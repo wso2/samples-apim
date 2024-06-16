@@ -1,0 +1,256 @@
+grammar com.intuit.graphql.GraphQL hidden(WS, ML_COMMENT, SL_COMMENT, COMMENT	)
+
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
+generate graphQL "http://www.intuit.com/graphql/GraphQL"
+
+Document : Query | TypeSystem;
+
+Query : queryDefinition+=QueryDefinition+;
+
+QueryDefinition:
+	desc=StringValue? (op=OperationDefinition |
+	frag=FragmentDefinition);
+
+OperationDefinition:
+	SelectionSet |
+	operationType=OperationType  name=Name? variableDefinitions=VariableDefinitions? directives+=QDirective* selectionSet=SelectionSet;
+
+enum OperationType: QUERY='query' | MUTATION='mutation' | SUBSCRIPTION='subscription';
+
+VariableDefinitions : '(' variableDefinition+=VariableDefinition+ ')';
+
+VariableDefinition :  variable=Variable ':' type=QType ('=' defaultValue=Value)? directives+=QDirective* (',')?;
+
+Variable : '$' name=Name;
+//
+// Operations
+//
+
+SelectionSet :  '{' selection+=Selection+ '}';
+
+Selection : FField | FragmentSpread | InlineFragment;
+
+FField : alias? name=Name Arguments?  directives+=QDirective* selectionSet=SelectionSet?;
+
+alias : id=ID ':';
+
+//
+// Arguments
+//
+fragment Arguments: '(' arguments+=Argument+ ')';
+Argument: name=Name ':' valueWithVariable=ValueWithVariable (',')?;
+
+
+//
+// Fragments
+//
+
+FragmentSpread : '...' fragmentDefinition=[FragmentDefinition|Name] directives+=QDirective*;
+
+InlineFragment : '...' typeCondition=TypeCondition? directives+=QDirective* selectionSet=SelectionSet;
+
+FragmentDefinition : 'fragment' name=Name typeCondition=TypeCondition directives+=QDirective* selectionSet=SelectionSet;
+
+//TypeCondition : 'on' namedType=NamedType;
+TypeCondition : 'on' namedType=Name;
+
+
+//
+// Value
+//
+
+Name: ID | 'type' | 'fragment' | 'query' | 'mutation' | 'subscription' | 'schema' | 'scalar' | 'interface' | 'implements' | 'enum' | 'union' | 'input' | 'extend' | 'directive' 
+	| 'Long' | 'BigInteger' | 'BigDecimal' | 'Short' | 'Char' | 'Byte' | 'ID' | 'String' | 'Int' | 'Float' | 'Boolean'
+; 
+	
+Value:
+	nullValue=NullValue |
+	intValue=IntValue |
+	floatValue=FloatValue |
+	boolValue=BooleanValue |
+	stringValue=StringValue |
+	enumValue=EnumValue |
+	arrayValue=ArrayValue |
+	objectValue=ObjectValue;
+	
+ValueWithVariable:
+	nullValue=NullValue |
+	intValue=IntValue |
+	floatValue=FloatValue |
+	boolValue=BooleanValue |
+	stringValue=StringValue |
+	enumValue=EnumValue |		
+	variable=Variable | 
+	objectValueWithVariable=ObjectValueWithVariable |
+	arrayValueWithVariable=ArrayValueWithVariable;
+
+
+EnumValue : Name ;
+
+
+//
+// Array Value
+//
+
+ArrayValue: {ArrayValue} '[' value+=Value* ']';
+
+ArrayValueWithVariable: {ArrayValueWithVariable} '[' valueWithVariable+=ValueWithVariable* ']';
+
+
+//
+// Object Value
+//
+
+ObjectValue : {ObjectValue} '{' objectField+=ObjectField* '}';
+
+ObjectValueWithVariable : {ObjectValueWithVariable} '{' objectFieldWithVariable+=ObjectFieldWithVariable* '}';
+
+ObjectField : desc=StringValue? name=Name ':' value=Value  (',')?;
+
+ObjectFieldWithVariable : desc=StringValue? name=Name ':' valueWithVariable=ValueWithVariable  (',')?;
+
+
+//
+// Types
+//
+
+
+QType: (QNameType | QListType) (nonNull?='!')?;
+QNameType: type=Name;
+QListType: '[' type=QType ']';
+
+
+NamedType:
+	(PrimitiveType | ObjectType | ListType) (nonNull?='!')?
+;
+
+PrimitiveType: 
+	type=('String' | 'Int' | 'Float' | 'Boolean' | 'ID' | 'Long' | 'BigInteger' | 'BigDecimal' | 'Short' | 'Char' | 'Byte')
+;
+
+ObjectType: 
+	type=[TypeDefinition]
+;
+
+ListType: '[' type=NamedType ']';
+
+
+
+//
+// Type System
+//
+
+TypeSystem : typeSystemDefinition+=TypeSystemDefinition+;
+	
+TypeSystemDefinition:
+    schema=SchemaDefinition |
+	type=TypeDefinition |
+	typeExtension=TypeExtensionDefinition |
+	directive=DirectiveDefinition
+;
+
+SchemaDefinition : desc=StringValue? 'schema' directives+=Directive* '{' operationTypeDefinition+=OperationTypeDefinition+ '}';
+
+OperationTypeDefinition : desc=StringValue? operationType=OperationType ':' namedType=NamedType  (',')?;
+
+TypeDefinition:
+	ScalarTypeDefinition |
+	ObjectTypeDefinition |
+	InterfaceTypeDefinition |
+	UnionTypeDefinition |
+	EnumTypeDefinition |
+	InputObjectTypeDefinition;
+	
+TypeExtensionDefinition : 
+	ScalarTypeExtensionDefinition |
+	ObjectTypeExtensionDefinition |
+	InterfaceTypeExtensionDefinition |
+	UnionTypeExtensionDefinition |
+	EnumTypeExtensionDefinition |
+	InputObjectTypeExtensionDefinition;
+	
+//Scalar
+ScalarTypeDefinition : desc=StringValue? 'scalar' name=Name directives+=Directive*;
+
+ScalarTypeExtensionDefinition : 'extend' 'scalar' name=Name directives+=Directive*;
+
+//Object
+ObjectTypeDefinition : desc=StringValue? 'type' name=Name implementsInterfaces=ImplementsInterfaces? directives+=Directive* ('{' fieldDefinition+=FieldDefinition* '}')?;
+ObjectTypeExtensionDefinition:'extend' 'type' name=Name implementsInterfaces=ImplementsInterfaces? directives+=Directive* ('{' fieldDefinition+=FieldDefinition* '}')? ;
+
+//Interface
+InterfaceTypeDefinition : desc=StringValue? 'interface' name=Name implementsInterfaces=ImplementsInterfaces? directives+=Directive* ('{' fieldDefinition+=FieldDefinition* '}')?;
+
+InterfaceTypeExtensionDefinition: 'extend' 'interface' name=Name implementsInterfaces=ImplementsInterfaces? directives+=Directive* ('{' fieldDefinition+=FieldDefinition* '}')?;
+
+// unions
+UnionTypeDefinition : desc=StringValue? 'union' name=Name directives+=Directive* unionMemberShip=UnionMemberShip?;
+
+UnionMemberShip: "=" unionMembers=UnionMembers;
+
+UnionMembers: namedUnion+=NamedType ('|' namedUnion+=NamedType)*;
+
+UnionTypeExtensionDefinition:  'extend' 'union' name=Name directives+=Directive* unionMemberShip=UnionMemberShip?;
+
+//Enums
+EnumTypeDefinition : desc=StringValue? 'enum' name=Name directives+=Directive* ('{' enumValueDefinition+=EnumValueDefinition* '}')?;
+
+EnumValueDefinition : desc=StringValue? enumValue=EnumValue directives+=Directive* (',')?;
+
+
+EnumTypeExtensionDefinition: 'extend' 'enum' name=Name directives+=Directive* ('{' enumValueDefinition+=EnumValueDefinition* '}')?;
+
+//Input
+InputObjectTypeDefinition : desc=StringValue? 'input' name=Name directives+=Directive*  ('{' inputValueDefinition+=InputValueDefinition* '}')?;
+
+InputObjectTypeExtensionDefinition: 'extend' 'input' name=Name directives+=Directive* ('{' inputValueDefinition+=InputValueDefinition* '}')?;
+
+
+ImplementsInterfaces : 'implements' '&'? namedType+=NamedType ('&' namedType+=NamedType)*;
+
+FieldDefinition : desc=StringValue? name=Name argumentsDefinition=ArgumentsDefinition? ':' namedType=NamedType directives+=Directive* (',')?;
+
+ArgumentsDefinition : '(' inputValueDefinition+=InputValueDefinition+ ')';
+
+InputValueDefinition : desc=StringValue? name=Name ':' namedType=NamedType ('=' defaultValue=Value)? directives+=Directive* (',')?;
+
+
+
+//
+// Directives
+//
+QDirective:'@' name=Name Arguments?;
+Directive:'@' definition=[DirectiveDefinition] Arguments?;
+
+DirectiveDefinition : desc=StringValue? 'directive' '@' name=Name argumentsDefinition=ArgumentsDefinition? (repeatable?='repeatable')? 'on' directiveLocations+=DirectiveLocation ('|' directiveLocations+=DirectiveLocation)*;
+
+DirectiveLocation : namedDirective=Name;
+
+BooleanValue: 'true' | 'false';
+
+NullValue: 'null';
+
+IntValue : SIGN? IntegerPart;
+
+FloatValue : SIGN? ( IntegerPart '.' IntegerPart EXPONENT_PART? | (IntegerPart EXPONENT_PART) );
+
+StringValue: STRING;
+
+IntegerPart : INT;
+
+terminal SIGN : '-';
+terminal EXPONENT_PART : ('e'|'E')SIGN?INT;
+terminal COMMENT : '#'  !('\n'|'\r')* ('\r'? '\n')?;
+terminal ID: '^'?('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*;
+terminal INT returns ecore::EInt: ('0'..'9')+;
+
+terminal STRING:
+			'"' ( '\\' . /* 'b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\' */ | !('\\'|'"') )* '"' |
+			"'" ( '\\' . /* 'b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\' */ | !('\\'|"'") )* "'" |
+			'"""' -> '"""' |
+			"'''" -> "'''"
+;
+terminal ML_COMMENT : '/*' -> '*/';
+terminal SL_COMMENT : '//' !('\n'|'\r')* ('\r'? '\n')?;
+terminal WS         : (' '|'\t'|'\r'|'\n')+;
