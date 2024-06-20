@@ -27,7 +27,7 @@ pub_access_token=$(get_access_token 'andy@quantis.com' 'user123')
 echo $pub_access_token
 
 get_vhost() {
-    local vhost=$(curl -k -H "Authorization: Bearer $admin_access_token" https:///$apim:9443/api/am/publisher/v3/settings | jq -r '.environment[0].vhosts[0].host')
+    local vhost=$(curl -k -H "Authorization: Bearer $admin_access_token" https:///$apim:9443/api/am/publisher/v4/settings | jq -r '.environment[0].vhosts[0].host')
     echo $vhost
 }
 vhost=$(get_vhost)
@@ -45,20 +45,20 @@ rate_and_comment_and_reply(){
 ## create and publish
 create_and_publish_train_schedule_api() {
 
-    local api_id=$(curl -k -H "Authorization: Bearer $pub_access_token" -H "Content-Type: application/json" -X POST -d @data.json https:///$apim:9443/api/am/publisher/v3/apis | jq -r '.id')
-    local swagger=$(curl -k -H "Authorization: Bearer $pub_access_token" -H "multipart/form-data" -X PUT -F apiDefinition=@swagger.json https://$apim:9443/api/am/publisher/v3/apis/${api_id}/swagger | jq -r '.id')
-    local rev_id=$( curl -k -H "Authorization: Bearer $pub_access_token" -H "Content-Type: application/json" -X POST -d '{"description": "first revision"}' https://$apim:9443/api/am/publisher/v3/apis/${api_id}/revisions | jq -r '.id')
+    local api_id=$(curl -k -H "Authorization: Bearer $pub_access_token" -H "Content-Type: application/json" -X POST -d @data.json https:///$apim:9443/api/am/publisher/v4/apis | jq -r '.id')
+    local swagger=$(curl -k -H "Authorization: Bearer $pub_access_token" -H "multipart/form-data" -X PUT -F apiDefinition=@swagger.json https://$apim:9443/api/am/publisher/v4/apis/${api_id}/swagger | jq -r '.id')
+    local rev_id=$( curl -k -H "Authorization: Bearer $pub_access_token" -H "Content-Type: application/json" -X POST -d '{"description": "first revision"}' https://$apim:9443/api/am/publisher/v4/apis/${api_id}/revisions | jq -r '.id')
 
     #add image
-    local image_id=$(curl -k -H "Authorization: Bearer $pub_access_token" -H "multipart/form-data" -X PUT -F file=@icon.png https://$apim:9443/api/am/publisher/v3/apis/${api_id}/thumbnail | jq -r '.id')
+    local image_id=$(curl -k -H "Authorization: Bearer $pub_access_token" -H "multipart/form-data" -X PUT -F file=@icon.png https://$apim:9443/api/am/publisher/v4/apis/${api_id}/thumbnail | jq -r '.id')
 
     #add docs
-    local documentId=$(curl -k -H "Authorization: Bearer $pub_access_token" -H "Content-Type: application/json" -X POST -d '{"name":"HowToUse","type":"HOWTO","summary":"How to Use Quantis Train API","sourceType":"FILE","visibility":"API_LEVEL","sourceUrl":"","otherTypeName":null,"inlineContent":""}' https://$apim:9443/api/am/publisher/v3/apis/${api_id}/documents | jq -r '.documentId')
-    local content_id=$(curl -k -H "Authorization: Bearer $pub_access_token" -H "multipart/form-data" -X POST -F file=@Quantis_Train_API_v1.pdf https://$apim:9443/api/am/publisher/v3/apis/${api_id}/documents/${documentId}/content | jq -r '.id')
+    local documentId=$(curl -k -H "Authorization: Bearer $pub_access_token" -H "Content-Type: application/json" -X POST -d '{"name":"HowToUse","type":"HOWTO","summary":"How to Use Quantis Train API","sourceType":"FILE","visibility":"API_LEVEL","sourceUrl":"","otherTypeName":null,"inlineContent":""}' https://$apim:9443/api/am/publisher/v4/apis/${api_id}/documents | jq -r '.documentId')
+    local content_id=$(curl -k -H "Authorization: Bearer $pub_access_token" -H "multipart/form-data" -X POST -F file=@Quantis_Train_API_v1.pdf https://$apim:9443/api/am/publisher/v4/apis/${api_id}/documents/${documentId}/content | jq -r '.id')
 
 
-    local revisionUuid=$( curl -k -H "Authorization: Bearer $pub_access_token" -H "Content-Type: application/json" -X POST -d '[{"name": "Default","vhost" : "'$vhost'", "displayOnDevportal": true}]' https://$apim:9443/api/am/publisher/v3/apis/${api_id}/deploy-revision?revisionId=${rev_id} | jq -r '.[0].revisionUuid')
-    local publish_api_status=$(curl -k -H "Authorization: Bearer $pub_access_token" -X POST "https://$apim:9443/api/am/publisher/v3/apis/change-lifecycle?apiId=${api_id}&action=Publish")
+    local revisionUuid=$( curl -k -H "Authorization: Bearer $pub_access_token" -H "Content-Type: application/json" -X POST -d '[{"name": "Default","vhost" : "'$vhost'", "displayOnDevportal": true}]' https://$apim:9443/api/am/publisher/v4/apis/${api_id}/deploy-revision?revisionId=${rev_id} | jq -r '.[0].revisionUuid')
+    local publish_api_status=$(curl -k -H "Authorization: Bearer $pub_access_token" -X POST "https://$apim:9443/api/am/publisher/v4/apis/change-lifecycle?apiId=${api_id}&action=Publish")
     sleep 2
     echo $api_id
 }
@@ -66,15 +66,15 @@ create_and_publish_train_schedule_api() {
 ## create and publish
 create_and_publish_train_location_api() {
 
-    local api_id=$(curl -k -H "Authorization: Bearer $pub_access_token" -H "Content-Type: application/json" -X POST -d @data.json https://$apim:9443/api/am/publisher/v3/apis | jq -r '.id')
-    local asyncapidefintion=$(curl -k -H "Authorization: Bearer $pub_access_token" -H "multipart/form-data" -X PUT -F apiDefinition=@asyncapi.json https://$apim:9443/api/am/publisher/v3/apis/${api_id}/asyncapi | jq -r '.id')
-    local rev_id=$( curl -k -H "Authorization: Bearer $pub_access_token" -H "Content-Type: application/json" -X POST -d '{"description": "first revision"}' https://$apim:9443/api/am/publisher/v3/apis/${api_id}/revisions | jq -r '.id')
+    local api_id=$(curl -k -H "Authorization: Bearer $pub_access_token" -H "Content-Type: application/json" -X POST -d @data.json https://$apim:9443/api/am/publisher/v4/apis | jq -r '.id')
+    local asyncapidefintion=$(curl -k -H "Authorization: Bearer $pub_access_token" -H "multipart/form-data" -X PUT -F apiDefinition=@asyncapi.json https://$apim:9443/api/am/publisher/v4/apis/${api_id}/asyncapi | jq -r '.id')
+    local rev_id=$( curl -k -H "Authorization: Bearer $pub_access_token" -H "Content-Type: application/json" -X POST -d '{"description": "first revision"}' https://$apim:9443/api/am/publisher/v4/apis/${api_id}/revisions | jq -r '.id')
 
     #add image
-    local image_id=$(curl -k -H "Authorization: Bearer $pub_access_token" -H "multipart/form-data" -X PUT -F file=@icon.png https://$apim:9443/api/am/publisher/v3/apis/${api_id}/thumbnail | jq -r '.id')
+    local image_id=$(curl -k -H "Authorization: Bearer $pub_access_token" -H "multipart/form-data" -X PUT -F file=@icon.png https://$apim:9443/api/am/publisher/v4/apis/${api_id}/thumbnail | jq -r '.id')
 
-    local revisionUuid=$( curl -k -H "Authorization: Bearer $pub_access_token" -H "Content-Type: application/json" -X POST -d '[{"name": "Default", "vhost" : "'$vhost'", "displayOnDevportal": true}]' https://$apim:9443/api/am/publisher/v3/apis/${api_id}/deploy-revision?revisionId=${rev_id} | jq -r '.[0].revisionUuid')
-    local publish_api_status=$(curl -k -H "Authorization: Bearer $pub_access_token" -X POST "https://$apim:9443/api/am/publisher/v3/apis/change-lifecycle?apiId=${api_id}&action=Publish")
+    local revisionUuid=$( curl -k -H "Authorization: Bearer $pub_access_token" -H "Content-Type: application/json" -X POST -d '[{"name": "Default", "vhost" : "'$vhost'", "displayOnDevportal": true}]' https://$apim:9443/api/am/publisher/v4/apis/${api_id}/deploy-revision?revisionId=${rev_id} | jq -r '.[0].revisionUuid')
+    local publish_api_status=$(curl -k -H "Authorization: Bearer $pub_access_token" -X POST "https://$apim:9443/api/am/publisher/v4/apis/change-lifecycle?apiId=${api_id}&action=Publish")
     sleep 2
     echo $api_id
 }

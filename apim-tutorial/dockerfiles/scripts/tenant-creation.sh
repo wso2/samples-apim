@@ -199,7 +199,7 @@ addUserWithRole "admin@quantis.com" "admin" "kate" "Internal/subscriber" "Intern
 addUserWithRole "admin@quantis.com" "admin" "apiprovider" "Internal/creator" "Internal/publisher"
 addUserWithRole "admin@quantis.com" "admin" "devuser" "Internal/subscriber" "Internal/everyone"
 echo "Enable signup and workflow"
-enableSignup "admin@quantis.com" "admin"
+#enableSignup "admin@quantis.com" "admin"
 enableSingupWorkflow "admin@quantis.com" "admin"
 sleep 3
 ###
