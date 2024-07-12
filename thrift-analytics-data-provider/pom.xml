@@ -90,8 +90,8 @@
                         <Import-Package>
                             org.apache.synapse.*,
                             org.apache.commons.logging.*,
-                            org.wso2.carbon.apimgt.common.analytics.*;version=${carbon.apimgt.version},
-                            org.wso2.carbon.apimgt.gateway.*;version=${carbon.apimgt.version},
+                            org.wso2.carbon.apimgt.common.analytics.*;version="${carbon.apimgt.import.version.range}",
+                            org.wso2.carbon.apimgt.gateway.*;version="${carbon.apimgt.import.version.range}",
                             *;resolution:=optional
                         </Import-Package>
                         <DynamicImport-Package>*</DynamicImport-Package>
@@ -106,6 +106,7 @@
         <maven.compiler.target>8</maven.compiler.target>
         <carbon.apimgt.version>9.28.116</carbon.apimgt.version>
         <synapse.version>4.0.0-wso2v20</synapse.version>
+        <carbon.apimgt.import.version.range>[9.28.0, 9.30.0)</carbon.apimgt.import.version.range>
     </properties>
 
 </project>

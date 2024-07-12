@@ -90,8 +90,8 @@
                         <Import-Package>
                             org.apache.synapse.*,
                             org.apache.commons.logging.*,
-                            org.wso2.carbon.apimgt.common.analytics.*;version=${carbon.apimgt.import.version.range},
-                            org.wso2.carbon.apimgt.gateway.*;version=${carbon.apimgt.import.version.range},
+                            org.wso2.carbon.apimgt.common.analytics.*;version="${carbon.apimgt.import.version.range}",
+                            org.wso2.carbon.apimgt.gateway.*;version="${carbon.apimgt.import.version.range}",
                             *;resolution:=optional
                         </Import-Package>
                         <DynamicImport-Package>*</DynamicImport-Package>
