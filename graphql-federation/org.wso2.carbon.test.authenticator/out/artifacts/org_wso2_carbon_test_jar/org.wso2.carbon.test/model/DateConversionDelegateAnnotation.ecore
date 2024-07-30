@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="annotation" nsURI="http:///org/eclipse/emf/ecore/util/DateConversionDelegateAnnotation"
+    nsPrefix="annotation">
+  <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+    <details key="schemaLocation" value="http:///org/eclipse/emf/ecore/util/DateConversionDelegateAnnotation"/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EDataType" name="WellFormedConversionFormat" instanceClassName="java.lang.String"/>
+  <eClassifiers xsi:type="ecore:EClass" name="DataType">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="format" lowerBound="1"
+        eType="#//WellFormedConversionFormat"/>
+  </eClassifiers>
+</ecore:EPackage>

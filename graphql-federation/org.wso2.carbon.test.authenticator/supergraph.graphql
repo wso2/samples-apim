@@ -1,0 +1,68 @@
+directive @provides(fields: String!) on FIELD_DEFINITION
+
+"Exposes a URL that specifies the behaviour of this scalar."
+directive @specifiedBy(
+    "The URL that specifies the behaviour of this scalar."
+    url: String!
+  ) on SCALAR
+
+directive @extends on OBJECT | INTERFACE
+
+directive @deprecated(reason: String = "No longer supported") on FIELD_DEFINITION | ENUM_VALUE
+
+directive @key(fields: _FieldSet) repeatable on OBJECT | INTERFACE
+
+directive @requires(fields: _FieldSet!) on FIELD_DEFINITION
+
+directive @include(if: Boolean!) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+
+directive @skip(if: Boolean!) on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+
+directive @tag(name: String!) repeatable on SCALAR | OBJECT | FIELD_DEFINITION | ARGUMENT_DEFINITION | INTERFACE | UNION | ENUM | ENUM_VALUE | INPUT_OBJECT | INPUT_FIELD_DEFINITION
+
+directive @external on FIELD_DEFINITION
+
+directive @resolver(field: String!, arguments: [ResolverArgument!]) on FIELD_DEFINITION
+
+"[product]"
+type Product {
+  inStock: Boolean
+  name: String
+  price: Int
+  reviews: [Review]
+  shippingEstimate: Int
+  upc: String!
+  weight: Int
+}
+
+"[]"
+type Query {
+  _namespace: String
+  me: User
+  productB(upc: String!): Product
+  topProducts(first: Int = 5): [Product]
+}
+
+"[review]"
+type Review @key(fields : "id") {
+  body: String
+  id: ID!
+  product: Product @resolver(arguments : [{name : "upc", value : "UPC001"}], field : "productB")
+}
+
+"[user]"
+type User {
+  id: ID!
+  name: String
+  reviews: [Review]
+  username: String
+}
+
+"A selection set"
+scalar _FieldSet
+
+"[review]"
+input ResolverArgument {
+  name: String!
+  value: String!
+}
