@@ -107,7 +107,7 @@
 <!--        org.wso2.carbon.apimgt component version-->
         <carbon.apimgt.version>9.22.27-SNAPSHOT</carbon.apimgt.version>
 <!--        synapse-core version-->
-        <synapse.version>2.1.7-wso2v289</synapse.version>
+        <synapse.version>3.0.1</synapse.version>
     </properties>
 
 </project>
