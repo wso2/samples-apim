@@ -1,0 +1,144 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "Commute",
+      "version": "1.0.0",
+      "description": "API for commute booking"
+    },
+    "servers": [
+      {
+        "url": "http://booking-service.backend:81"
+      }
+    ],
+    "paths": {
+      "/booking": {
+        "get": {
+          "summary": "Get all commute details",
+          "tags": [
+            "Taxi Booking"
+          ],
+          "responses": {
+            "200": {
+              "description": "A list of commute details",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Booking"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "summary": "Create a new commute",
+          "tags": [
+            "Taxi Booking"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Booking"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "default response",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Booking"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/booking/{id}": {
+        "put": {
+          "summary": "Change commute booking",
+          "tags": [
+            "Taxi Booking"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "default response",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Booking"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "summary": "Cancel commute booking",
+          "tags": [
+            "Taxi Booking"
+          ],
+          "operationId": "deleteEmployee",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "default response",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Booking"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "Booking": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "passenger_name": {
+              "type": "string"
+            },
+            "destination": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
