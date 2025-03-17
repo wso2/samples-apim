@@ -147,6 +147,10 @@ public class ThriftMetricEventBuilder extends AbstractMetricEventBuilder {
             Object propertyValue = property.getValue();
 
             switch (propertyKey) {
+                case RESPONSE_SIZE:
+                    // Changing the type from long to int as the responseSize is calculated as an int in newer versions of APIM
+                    eventMap.put(getRenamedKey(propertyKey), Long.parseLong(propertyValue.toString()));
+                    break;
                 case APPLICATION_CONSUMER_KEY:
                 case API_CONTEXT:
                 case API_RESOURCE_PATH:
@@ -159,7 +163,6 @@ public class ThriftMetricEventBuilder extends AbstractMetricEventBuilder {
                 case RESPONSE_TIME:
                 case SERVICE_TIME:
                 case BACKEND_TIME:
-                case RESPONSE_SIZE:
                 case PROTOCOL:
                 case SECURITY_LATENCY:
                 case THROTTLING_LATENCY:
