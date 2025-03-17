@@ -149,15 +149,37 @@ public class ThriftMetricEventBuilder extends AbstractMetricEventBuilder {
             switch (propertyKey) {
                 case RESPONSE_SIZE:
                     // Changing the type from long to int as the responseSize is calculated as an int in newer versions of APIM
-                    eventMap.put(propertyKey,Long.parseLong(propertyValue.toString()));
+                    eventMap.put(getRenamedKey(propertyKey), Long.parseLong(propertyValue.toString()));
                     break;
+                case APPLICATION_CONSUMER_KEY:
+                case API_CONTEXT:
+                case API_RESOURCE_PATH:
+                case API_TIER:
+                case API_HOSTNAME:
+                case HOST_NAME:
+                case HOSTNAME:
+                case USER_TENANT_DOMAIN:
+                case THROTTLED_OUT:
+                case RESPONSE_TIME:
+                case SERVICE_TIME:
+                case BACKEND_TIME:
+                case PROTOCOL:
+                case SECURITY_LATENCY:
+                case THROTTLING_LATENCY:
+                case OTHER_LATENCY:
+                case LABEL:
+                case ERROR_CODE:
+                case ERROR_MESSAGE:
+                case SUBSCRIBER:
+                case THROTTLED_OUT_REASON:
+                case THROTTLED_OUT_TIMESTAMP:
+                case USERNAME:
                 case USER_NAME:
                     // Put to root level
                     eventMap.put(getRenamedKey(propertyKey), propertyValue);
                     break;
                 default:
                     customProperties.put(propertyKey, propertyValue);
-                    eventMap.put(propertyKey, propertyValue);
             }
         }
         eventMap.put(PROPERTIES_KEY, customProperties);
