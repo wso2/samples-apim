@@ -1,0 +1,148 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "Hotel Reservation API",
+      "version": "1.0.0",
+      "description": "API for Hotel Reservation"
+    },
+    "servers": [
+      {
+        "url": "http://hotel-service.backend:82"
+      }
+    ],
+    "paths": {
+      "/reservation": {
+        "get": {
+          "summary": "Get all hotel reservations",
+          "tags": [
+            "Hotel Reservations"
+          ],
+          "responses": {
+            "200": {
+              "description": "A list of taxi bookings",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Reservation"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "summary": "Create a new reservation",
+          "tags": [
+            "Hotel Reservations"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reservation"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "default response",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Reservation"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/reservation/{id}": {
+        "put": {
+          "summary": "Change hotel reservation",
+          "tags": [
+            "Hotel Reservations"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "default response",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Reservation"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "summary": "Cancel hotel reservation",
+          "tags": [
+            "Hotel Reservations"
+          ],
+          "operationId": "deleteEmployee",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "default response",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Reservation"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "Reservation": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "hotel_name": {
+              "type": "string"
+            },
+            "passenger": {
+              "type": "string"
+            },
+            "date": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        }
+      }
+    }
+  }
