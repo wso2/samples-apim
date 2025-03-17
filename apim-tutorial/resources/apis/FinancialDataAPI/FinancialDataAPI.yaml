@@ -1,0 +1,114 @@
+openapi: 3.0.1
+info:
+  title: FinancialDataAPI
+  version: 1.0.0
+servers:
+  - url: 'http://57.155.114.152:3000/redshift'
+security:
+  - default: []
+paths:
+  /query:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: ok
+      security:
+        - default: []
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+        optional: false
+  '/query/status/{queryId}':
+    get:
+      parameters:
+        - name: queryId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: ok
+      security:
+        - default: []
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+        optional: false
+  /insert:
+    post:
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+        required: false
+      responses:
+        '200':
+          description: ok
+      security:
+        - default: []
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+        optional: false
+components:
+  securitySchemes:
+    default:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: 'https://test.com'
+          scopes: {}
+x-wso2-api-key-header: ApiKey
+x-wso2-auth-header: Authorization
+x-wso2-cors:
+  corsConfigurationEnabled: false
+  accessControlAllowOrigins:
+    - '*'
+  accessControlAllowCredentials: false
+  accessControlAllowHeaders:
+    - authorization
+    - Access-Control-Allow-Origin
+    - Content-Type
+    - SOAPAction
+    - apikey
+    - Internal-Key
+  accessControlAllowMethods:
+    - GET
+    - PUT
+    - POST
+    - DELETE
+    - PATCH
+    - OPTIONS
+x-wso2-production-endpoints:
+  urls:
+    - 'http://57.155.114.152:3000/redshift'
+  type: http
+x-wso2-sandbox-endpoints:
+  urls:
+    - 'http://57.155.114.152:3000/redshift'
+  type: http
+x-wso2-basePath: /financialdataapi/1.0.0
+x-wso2-transports:
+  - http
+  - https
+x-wso2-application-security:
+  security-types:
+    - oauth2
+  optional: false
+x-wso2-response-cache:
+  enabled: false
+  cacheTimeoutInSeconds: 300
