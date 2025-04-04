@@ -40,6 +40,7 @@ public class ThriftMetricEventBuilder extends AbstractMetricEventBuilder {
     private static final String APPLICATION_CONSUMER_KEY = "applicationConsumerKey";
     private static final String API_CONTEXT = "apiContext";
     private static final String API_RESOURCE_PATH = "apiResourcePath";
+    private static final String API_RESOURCE_TEMPLATE = "apiResourceTemplate";
     private static final String API_TIER = "apiTier";
     private static final String API_HOSTNAME = "apiHostname";
     private static final String HOST_NAME = "hostName";
@@ -97,6 +98,18 @@ public class ThriftMetricEventBuilder extends AbstractMetricEventBuilder {
     @Override
     public boolean validate() throws MetricReportingException {
         if (!isBuilt) {
+            /*
+            * apiResourceTemplate and apiMethod is set to null in websocket frame throttled out scenario.
+            * Therefore, these two attributes were explicitly set to their default values before the validation process.
+            *
+            * Internal: https://github.com/wso2-enterprise/wso2-apim-internal/issues/8757
+            * */
+            if (!eventMap.containsKey(Constants.API_RESOURCE_TEMPLATE)) {
+                eventMap.put(Constants.API_RESOURCE_TEMPLATE, "/*");
+            }
+            if (!eventMap.containsKey(Constants.API_METHOD)) {
+                eventMap.put(Constants.API_METHOD, "PUBLISH");
+            }
             for (Map.Entry<String, Class> entry : requiredAttributes.entrySet()) {
                 Object attribute = eventMap.get(entry.getKey());
                 if (attribute == null) {
@@ -149,8 +162,12 @@ public class ThriftMetricEventBuilder extends AbstractMetricEventBuilder {
             switch (propertyKey) {
                 case RESPONSE_SIZE:
                     // Changing the type from long to int as the responseSize is calculated as an int in newer versions of APIM
-                    eventMap.put(getRenamedKey(propertyKey), Long.parseLong(propertyValue.toString()));
-                    break;
+                    if (propertyValue != null) {
+                        eventMap.put(getRenamedKey(propertyKey), Long.parseLong(propertyValue.toString()));
+                        break;
+                    } else {
+                        propertyValue = 0L;
+                    }
                 case APPLICATION_CONSUMER_KEY:
                 case API_CONTEXT:
                 case API_RESOURCE_PATH:
