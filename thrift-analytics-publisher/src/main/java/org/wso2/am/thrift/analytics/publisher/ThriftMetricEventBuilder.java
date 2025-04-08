@@ -149,9 +149,8 @@ public class ThriftMetricEventBuilder extends AbstractMetricEventBuilder {
         } else if (key.equals(REQUEST_TIMESTAMP)) {
             String timestampString = (String) value;
             eventMap.put(REQUEST_TIMESTAMP, OffsetDateTime.parse(timestampString).toInstant().toEpochMilli());
-        } else if (APPLICATION_ID.equals(key)) {
+        } else if (!APPLICATION_ID.equals(key)) {
             // Ignore application UUID, as the application ID integer will be added through properties
-        } else {
             eventMap.put(getRenamedKey(key), value);
         }
     }
