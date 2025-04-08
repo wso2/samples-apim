@@ -40,7 +40,7 @@ import java.util.Map;
 public class ThriftClient {
 
     private static final Logger log = LoggerFactory.getLogger(ThriftClient.class);
-    private static final String APIM_420_STREAM_VERSION = "4.2.0";
+    private static final String APIM_4XX_STREAM_VERSION = "4.2.0";
     private final Gson gson;
     private DataPublisher dataPublisher;
 
@@ -72,7 +72,7 @@ public class ThriftClient {
         Object[] payload = generatePayload(thriftStream, eventMap);
 
         Event event = new Event();
-        String streamId = DataBridgeCommonsUtils.generateStreamId(streamName, APIM_420_STREAM_VERSION);
+        String streamId = DataBridgeCommonsUtils.generateStreamId(streamName, APIM_4XX_STREAM_VERSION);
         event.setStreamId(streamId);
         event.setMetaData(null);
         event.setCorrelationData(null);

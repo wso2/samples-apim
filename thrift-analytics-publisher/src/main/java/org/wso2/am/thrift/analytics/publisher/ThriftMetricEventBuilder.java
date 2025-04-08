@@ -37,6 +37,7 @@ public class ThriftMetricEventBuilder extends AbstractMetricEventBuilder {
     private static final String KEY_TYPE = "keyType";
     private static final String CORRELATION_ID = "correlationId";
     private static final String REQUEST_TIMESTAMP = "requestTimestamp";
+    private static final String APPLICATION_ID = "applicationId";
     private static final String APPLICATION_CONSUMER_KEY = "applicationConsumerKey";
     private static final String API_CONTEXT = "apiContext";
     private static final String API_RESOURCE_PATH = "apiResourcePath";
@@ -148,7 +149,8 @@ public class ThriftMetricEventBuilder extends AbstractMetricEventBuilder {
         } else if (key.equals(REQUEST_TIMESTAMP)) {
             String timestampString = (String) value;
             eventMap.put(REQUEST_TIMESTAMP, OffsetDateTime.parse(timestampString).toInstant().toEpochMilli());
-        } else {
+        } else if (!APPLICATION_ID.equals(key)) {
+            // Ignore application UUID, as the application ID integer will be added through properties
             eventMap.put(getRenamedKey(key), value);
         }
     }
@@ -169,6 +171,7 @@ public class ThriftMetricEventBuilder extends AbstractMetricEventBuilder {
                         propertyValue = 0L;
                     }
                 case APPLICATION_CONSUMER_KEY:
+                case APPLICATION_ID:
                 case API_CONTEXT:
                 case API_RESOURCE_PATH:
                 case API_TIER:

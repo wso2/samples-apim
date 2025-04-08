@@ -67,7 +67,8 @@ public class ThriftAnalyticsDataProvider implements AnalyticsCustomDataProvider 
                 MessageContext messageContext = (MessageContext) context;
                 AuthenticationContext authContext = APISecurityUtils.getAuthenticationContext((MessageContext) context);
 
-                customProperties.put(PropertyKeys.APPLICATION_CONSUMER_KEY, getApplicationConsumerKey(authContext)); // TODO: uncomment this
+                customProperties.put(PropertyKeys.APPLICATION_CONSUMER_KEY, getApplicationConsumerKey(authContext));
+                customProperties.put(PropertyKeys.APPLICATION_ID, getApplicationId(authContext));
                 customProperties.put(PropertyKeys.API_RESOURCE_PATH, getApiResourcePath(messageContext));
                 customProperties.put(PropertyKeys.API_TIER, getTier(authContext));
                 String hostName = getApiHostName(messageContext);
@@ -102,6 +103,7 @@ public class ThriftAnalyticsDataProvider implements AnalyticsCustomDataProvider 
 
                 customProperties.put(PropertyKeys.APPLICATION_CONSUMER_KEY,
                         getApplicationConsumerKey(authenticationContext));
+                customProperties.put(PropertyKeys.APPLICATION_ID, getApplicationId(authenticationContext));
                 customProperties.put(PropertyKeys.API_RESOURCE_PATH,
                         wso2Properties.get(API_RESOURCE_PATH_WEBSOCKET_WSO2_PROPERTY));
                 customProperties.put(PropertyKeys.API_TIER, getTier(authenticationContext));
@@ -137,6 +139,13 @@ public class ThriftAnalyticsDataProvider implements AnalyticsCustomDataProvider 
     private String getApplicationConsumerKey(AuthenticationContext authenticationContext) {
         if (authenticationContext != null) {
             return authenticationContext.getConsumerKey();
+        }
+        return null;
+    }
+
+    private String getApplicationId(AuthenticationContext authenticationContext) {
+        if (authenticationContext != null) {
+            return authenticationContext.getApplicationId();
         }
         return null;
     }
@@ -276,6 +285,7 @@ public class ThriftAnalyticsDataProvider implements AnalyticsCustomDataProvider 
 
     private static class PropertyKeys {
         static final String APPLICATION_CONSUMER_KEY = "applicationConsumerKey";
+        static final String APPLICATION_ID = "applicationId";
         static final String API_RESOURCE_PATH = "apiResourcePath";
         static final String API_TIER = "apiTier";
         static final String API_HOSTNAME = "apiHostname";
