@@ -1,0 +1,26 @@
+type Review @key(fields: "id") {
+    id: ID!
+    body: String
+    product: Product @resolver(field:"productB", arguments: [{name : "upc", value: "UPC001"}])
+}
+
+type User @key(fields: "id") @extends {
+    id: ID! @external
+    username: String @external
+    reviews: [Review]
+}
+
+type Product @key(fields: "upc") @extends {
+    upc: String! @external
+    reviews: [Review]
+}
+
+# ================================
+# define this as built-in directive
+directive @resolver(field: String!, arguments: [ResolverArgument!]) on FIELD_DEFINITION
+
+# define this as built-in type
+input ResolverArgument {
+    name : String!
+    value : String!
+}

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="annotation" nsURI="http:///org/eclipse/emf/ecore/util/EcoreAnnotation"
+    nsPrefix="annotation">
+  <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+    <details key="schemaLocation" value="http:///org/eclipse/emf/ecore/util/EcoreAnnotation"/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EDataType" name="JavaIdentifier" instanceClassName="java.lang.String"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="WellFormedURI" instanceClassName="java.lang.String"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Package">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="schemaLocation" eType="#//WellFormedURI"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="settingDelegates" upperBound="-1"
+        eType="#//WellFormedURI"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="validationDelegates" upperBound="-1"
+        eType="#//WellFormedURI"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="invocationDelegates" upperBound="-1"
+        eType="#//WellFormedURI"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="conversionDelegates" upperBound="-1"
+        eType="#//WellFormedURI"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="queryDelegates" upperBound="-1"
+        eType="#//WellFormedURI"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Classifier">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="constraints" upperBound="-1"
+        eType="#//JavaIdentifier"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Operation">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="invariant" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+</ecore:EPackage>
