@@ -246,16 +246,16 @@ jobs:
 tool:
   git:
     installations:
-      - name: Default
-        home: "/usr/bin/git"
+      - name: git
+        home: /usr/local/bin/git
   jdk:
     installations:
-      - name: "open-jdk8"
+      - name: "jdk21"
         properties:
-          - installSource:
-              installers:
-                - adoptOpenJdkInstaller:
-                    id: "jdk8u275-b01"
+        - installSource:
+            installers:
+            - adoptOpenJdkInstaller:
+                id: "jdk-21.0.6+7"
   maven:
     installations:
       - name: "Maven 3"
@@ -263,7 +263,7 @@ tool:
           - installSource:
               installers:
                 - maven:
-                    id: "3.6.3"
+                    id: "3.8.4"
 credentials:
   system:
     domainCredentials:
