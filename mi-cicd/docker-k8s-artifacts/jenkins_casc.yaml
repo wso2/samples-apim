@@ -27,7 +27,7 @@ unclassified:
   location:
     url: ${JENKINS_URL}
     adminAddress: ${JENKINS_ADMIN_EMAIL_ADDRESS}
-  gitscm:
+  scmGit:
     globalConfigName: ${GIT_SCM_CONFIG_USERNAME}
     globalConfigEmail: ${GIT_SCM_CONFIG_EMAIL}
     createAccountBasedOnEmail: false  
@@ -81,15 +81,15 @@ jobs:
                 extensions {localBranch('master')}
               }
           }
-          goals('clean install -P Solution ${SYNAPSE_TEST_FRAMEOWRK_CONFIGS}')
+          goals('clean install ${SYNAPSE_TEST_FRAMEWORK_CONFIGS}')
           providedSettings('maven-settings')
           wrappers {
             mavenRelease {
                 scmUserEnvVar()
                 scmPasswordEnvVar()
                 releaseEnvVar('IS_M2RELEASEBUILD')
-                releaseGoals("-Dresume=false -Darguments='-P Kubernetes -Ddockerfile.username=${DOCKER_REGISTRY_USERNAME} -Ddockerfile.password=${DOCKER_REGISTRY_PASSWORD} ${SYNAPSE_TEST_FRAMEOWRK_CONFIGS}' release:prepare")
-                dryRunGoals("-Dresume=false -Darguments='-P Solution ${SYNAPSE_TEST_FRAMEOWRK_CONFIGS}' -DdryRun=true release:prepare")
+                releaseGoals("-Dresume=false -Darguments='-P docker -Ddocker.username=${DOCKER_REGISTRY_USERNAME} -Ddocker.password=${DOCKER_REGISTRY_PASSWORD} -Ddocker.host=${DOCKER_HOST} ${SYNAPSE_TEST_FRAMEWORK_CONFIGS}' release:prepare release:perform")
+                dryRunGoals("-Dresume=false -Darguments='-P Solution ${SYNAPSE_TEST_FRAMEWORK_CONFIGS}' -DdryRun=true release:prepare")
                 selectCustomScmCommentPrefix(false)
                 selectAppendJenkinsUsername(false)
                 selectScmCredentials(false)
@@ -126,7 +126,7 @@ jobs:
   # Build Job for the Dev Deployment descriptors  
   - script: >
       freeStyleJob('deployment-dev') {
-        description('Descriptor job for Dev environment')
+        description('Deployment job for Dev environment')
         triggers {
             githubPush()
         }
@@ -166,7 +166,7 @@ jobs:
   # Build Job for the Staging Deployment descriptors  
   - script: >
       freeStyleJob('deployment-staging') {
-        description('Descriptor job for staging environment')
+        description('Deployment job for staging environment')
         triggers {
             githubPush()
         }
@@ -206,7 +206,7 @@ jobs:
   # Build Job for the Prod Deployment descriptors  
   - script: >
       freeStyleJob('deployment-prod') {
-        description('Descriptor job for Prod environment')
+        description('Deployment job for Prod environment')
         triggers {
             githubPush()
         }
@@ -246,16 +246,16 @@ jobs:
 tool:
   git:
     installations:
-      - name: Default
-        home: "/usr/bin/git"
+      - name: git
+        home: /usr/bin/git
   jdk:
     installations:
-      - name: "open-jdk8"
+      - name: "jdk21"
         properties:
-          - installSource:
-              installers:
-                - adoptOpenJdkInstaller:
-                    id: "jdk8u275-b01"
+        - installSource:
+            installers:
+            - adoptOpenJdkInstaller:
+                id: "jdk-21.0.6+7"
   maven:
     installations:
       - name: "Maven 3"
@@ -263,7 +263,7 @@ tool:
           - installSource:
               installers:
                 - maven:
-                    id: "3.6.3"
+                    id: "3.8.4"
 credentials:
   system:
     domainCredentials:
