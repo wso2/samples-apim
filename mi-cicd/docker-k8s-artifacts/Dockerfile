@@ -16,13 +16,21 @@
 #
 # ------------------------------------------------------------------------
 
-FROM jenkins/jenkins:2.277.1
-ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false -Dhudson.model.ParametersAction.keepUndefinedParameters=true
+FROM jenkins/jenkins:lts-jdk21
+ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false -Dhudson.model.ParametersAction.keepUndefinedParameters=true"
 ENV CASC_JENKINS_CONFIG /var/jenkins_home/casc.yaml
 COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
-RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
-COPY jenkins_casc.yaml /var/jenkins_home/casc.yaml
 USER 0
+
+RUN apt-get update
+RUN apt-get install -y docker.io
+RUN jenkins-plugin-cli --plugin-file /usr/share/jenkins/ref/plugins.txt
+COPY jenkins_casc.yaml /var/jenkins_home/casc.yaml
+
+RUN apt-get update && \
+    apt-get install -y wget && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 RUN wget https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
 RUN chmod +x ./kubectl
 RUN mv ./kubectl /usr/local/bin
@@ -58,4 +66,5 @@ ENV DOCKER_REGISTRY_USERNAME= \
     DOCKER_REGISTRY_PASSWORD= \
     DEV_NAMESPACE=mi-dev \
     STAGING_NAMESPACE=mi-staging \
-    PROD_NAMESPACE=mi-prod
+    PROD_NAMESPACE=mi-prod \
+    DOCKER_HOST=tcp://docker:2375
