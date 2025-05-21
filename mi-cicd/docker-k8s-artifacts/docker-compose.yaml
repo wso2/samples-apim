@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  jenkins:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jenkins
+    user: root
+    ports:
+      - "8080:8080"
+    depends_on:
+      - docker
+    env_file:
+      - jenkins.env
+  docker:
+    image: docker:28.0-dind
+    container_name: docker-dind
+    privileged: true
+    ports:
+      - "2375:2375"
+    environment:
+      - DOCKER_TLS_CERTDIR=
+    command: ["--host=tcp://0.0.0.0:2375", "--host=unix:///var/run/docker.sock"]
