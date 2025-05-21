@@ -111,6 +111,7 @@ public class ThriftMetricEventBuilder extends AbstractMetricEventBuilder {
             if (!eventMap.containsKey(Constants.API_METHOD)) {
                 eventMap.put(Constants.API_METHOD, "PUBLISH");
             }
+            sanitizeNullableAttributes();
             for (Map.Entry<String, Class> entry : requiredAttributes.entrySet()) {
                 Object attribute = eventMap.get(entry.getKey());
                 if (attribute == null) {
@@ -124,6 +125,23 @@ public class ThriftMetricEventBuilder extends AbstractMetricEventBuilder {
             }
         }
         return true;
+    }
+
+
+    /**
+     * This method sets default values for special attributes that are missing or can be null in the event map.
+     *
+     * For example, the `applicationConsumerKey` may be null in scenarios where not all applications generate keys—
+     * such as APIs that use API keys or unsecured APIs. In such cases,
+     * we explicitly set `applicationConsumerKey` to "UNKNOWN".
+     */
+    private void sanitizeNullableAttributes() {
+        String[] nullableAttributes = {APPLICATION_CONSUMER_KEY};
+        for (String attribute : nullableAttributes) {
+            if (!eventMap.containsKey(attribute) || eventMap.get(attribute) == null) {
+                eventMap.put(attribute, "UNKNOWN");
+            }
+        }
     }
 
     @Override
