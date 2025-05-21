@@ -139,9 +139,7 @@ public class ThriftMetricEventBuilder extends AbstractMetricEventBuilder {
     private void sanitizeNullableAttributes() {
         String[] nullableAttributes = {APPLICATION_CONSUMER_KEY};
         for (String attribute : nullableAttributes) {
-            if (!eventMap.containsKey(attribute) || eventMap.get(attribute) == null) {
-                eventMap.put(attribute, DEFAULT_UNKNOWN_VALUE);
-            }
+            eventMap.putIfAbsent(attribute, DEFAULT_UNKNOWN_VALUE);
         }
     }
 
