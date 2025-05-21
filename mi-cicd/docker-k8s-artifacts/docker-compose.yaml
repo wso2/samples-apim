@@ -11,9 +11,10 @@ services:
       - "8080:8080"
     depends_on:
       - docker
-
+    env_file:
+      - jenkins.env
   docker:
-    image: docker:dind
+    image: docker:28.0-dind
     container_name: docker-dind
     privileged: true
     ports:
