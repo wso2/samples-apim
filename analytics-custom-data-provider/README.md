@@ -18,6 +18,7 @@ following configuration.
 
         [apim.analytics]
         enable = true
+        type = "elk"
         properties."publisher.custom.data.provider.class" = "org.wso2.carbon.apimgt.gateway.sample.publisher.CustomDataProvider"
 
 
