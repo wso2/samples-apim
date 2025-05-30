@@ -1,0 +1,124 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Compliance Report API",
+    "version": "1.0.0",
+    "description": "API to submit, retrieve, and manage compliance reports for audits and regulatory requirements"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3500"
+    }
+  ],
+  "paths": {
+    "/reports": {
+      "get": {
+        "summary": "List all compliance reports",
+        "responses": {
+          "200": {
+            "description": "A list of compliance reports",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Report"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Submit a new compliance report",
+        "requestBody": {
+          "description": "New report submission",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Report"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Report submitted successfully"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/reports/{reportId}": {
+      "get": {
+        "summary": "Get a specific compliance report by ID",
+        "parameters": [
+          {
+            "name": "reportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the compliance report"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Compliance report details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Report"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Report not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Report": {
+        "type": "object",
+        "properties": {
+          "reportId": {
+            "type": "string",
+            "example": "rpt-2024-001"
+          },
+          "title": {
+            "type": "string",
+            "example": "Annual GDPR Compliance Audit"
+          },
+          "submittedBy": {
+            "type": "string",
+            "example": "compliance.officer@example.com"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["Pending", "Approved", "Rejected"],
+            "example": "Pending"
+          },
+          "submissionDate": {
+            "type": "string",
+            "format": "date",
+            "example": "2024-12-31"
+          },
+          "content": {
+            "type": "string",
+            "example": "Details of the audit findings and compliance status..."
+          }
+        },
+        "required": ["reportId", "title", "submittedBy", "submissionDate"]
+      }
+    }
+  }
+}
