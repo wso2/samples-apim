@@ -6,6 +6,35 @@ __Steps to add custom analytics data:__
 
 Add the necessary component versions for `carbon.apimgt.version`, and `synapse.version` in pom file in the root directory.
 
+> **Optional:**  
+> <ins>If you do not have access to the Nexus repository</ins>, prepare the necessary component versions for  
+> `carbon.apimgt.gateway.version`, `synapse.version`, and `carbon.apimgt.common.analytics.version`  
+> to include in the `pom.xml` file in the root directory as follows:  
+> <br>  
+>  
+> Add the required artifacts to the local Maven (`.m2`) repository and configure it as a repository in the `pom.xml` file.  
+>  
+> - Locate the `org.wso2.carbon.apimgt.gateway` and `org.wso2.carbon.apimgt.common.analytics` JAR files inside the `<APIM_HOME>/repository/components/plugins` directory of the latest U2 updated APIM pack.  
+> - Manually install the JAR files to the local Maven repository using the following commands:  
+>  
+> ```
+> mvn install:install-file -Dfile=<PATH_TO_FILE>/org.wso2.carbon.apimgt.gateway_<COMPONENT_VERSION>.jar -DgroupId=org.wso2.carbon.apimgt -DartifactId=org.wso2.carbon.apimgt.gateway -Dversion=<COMPONENT_VERSION> -Dpackaging=jar
+>  
+> mvn install:install-file -Dfile=<PATH_TO_FILE>/org.wso2.carbon.apimgt.common.analytics_<COMPONENT_VERSION>.jar -DgroupId=org.wso2.carbon.apimgt -DartifactId=org.wso2.carbon.apimgt.common.analytics -Dversion=<COMPONENT_VERSION> -Dpackaging=jar
+> ```  
+>  
+> - Configure the local Maven repository in your project’s `pom.xml` by adding:  
+>  
+> ```
+> <repository>
+>     <id>local-maven-repo</id>
+>     <url>file://home/user/.m2/repository</url>
+> </repository>
+> ```  
+>  
+> Follow the URL pattern exactly when specifying the repository URL.
+
+
 Build the project using Maven:
 
         mvn clean install
