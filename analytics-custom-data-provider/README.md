@@ -24,7 +24,10 @@ Add the necessary component versions for `carbon.apimgt.version`, and `synapse.v
 > ```  
 >  
 > - Configure the local Maven repository in your project’s `pom.xml` by adding:  
->  
+>
+> <p><strong>Example:</strong><br>
+> Please follow the URL pattern exactly when specifying the repository URL, as shown below:</p>
+> 
 > ```
 > <repository>
 >     <id>local-maven-repo</id>
@@ -32,7 +35,6 @@ Add the necessary component versions for `carbon.apimgt.version`, and `synapse.v
 > </repository>
 > ```  
 >  
-> Follow the URL pattern exactly when specifying the repository URL.
 
 
 Build the project using Maven:
