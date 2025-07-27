@@ -1,0 +1,51 @@
+openapi: 3.0.1
+info:
+  title: Credit Risk Assessment API
+  version: 1.0.0
+  description: API for credit risk assessment
+servers:
+  - url: http://credit-service.backend:81
+paths:
+  /risk/credit/assessment:
+    get:
+      summary: Get all credit risk assessments
+      tags:
+        - Credit Risk
+      responses:
+        '200':
+          description: A list of credit risk assessments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CreditRiskAssessment'
+    post:
+      summary: Submit a credit risk assessment
+      tags:
+        - Credit Risk
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditRiskAssessment'
+      responses:
+        '200':
+          description: Assessment result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditRiskAssessment'
+components:
+  schemas:
+    CreditRiskAssessment:
+      type: object
+      properties:
+        clientId:
+          type: string
+        creditScore:
+          type: integer
+        riskLevel:
+          type: string
+        recommendation:
+          type: string
