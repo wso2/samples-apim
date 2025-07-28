@@ -3,7 +3,7 @@ info:
   title: FinancialDataAPI
   version: 1.0.0
 servers:
-  - url: 'http://57.155.114.152:3000/redshift'
+  - url: 'http://40.81.24.192/:3000/redshift'
 security:
   - default: []
 paths:
@@ -95,11 +95,11 @@ x-wso2-cors:
     - OPTIONS
 x-wso2-production-endpoints:
   urls:
-    - 'http://57.155.114.152:3000/redshift'
+    - 'http://40.81.24.192/:3000/redshift'
   type: http
 x-wso2-sandbox-endpoints:
   urls:
-    - 'http://57.155.114.152:3000/redshift'
+    - 'http://40.81.24.192/:3000/redshift'
   type: http
 x-wso2-basePath: /financialdataapi/1.0.0
 x-wso2-transports:

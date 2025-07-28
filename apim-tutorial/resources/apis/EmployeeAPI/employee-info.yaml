@@ -1,0 +1,653 @@
+openapi: 3.0.3
+info:
+  title: Employee Data API
+  description: A simple mock backend API for retrieving employee data
+  version: 1.0.0
+  contact:
+    name: Employee Data API Support
+    email: support@company.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://40.81.24.192:8000
+    description: Development server
+
+tags:
+  - name: employees
+    description: Employee management operations
+  - name: departments
+    description: Department-related operations
+  - name: health
+    description: Health check operations
+
+paths:
+  /health:
+    get:
+      tags:
+        - health
+      summary: Health check endpoint
+      description: Check if the API service is running and healthy
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  /api/employees:
+    get:
+      tags:
+        - employees
+      summary: Get all employees
+      description: Retrieve all employees with optional filtering by department
+      parameters:
+        - name: department
+          in: query
+          description: Filter employees by department
+          required: false
+          schema:
+            type: string
+            example: Engineering
+      responses:
+        '200':
+          description: Successfully retrieved employees
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeesResponse'
+    post:
+      tags:
+        - employees
+      summary: Create a new employee
+      description: Create a new employee with the provided information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEmployeeRequest'
+            examples:
+              new_employee:
+                summary: Example new employee
+                value:
+                  name: "Alice Johnson"
+                  email: "alice.johnson@company.com"
+                  department: "Engineering"
+                  position: "Frontend Developer"
+                  salary: 75000
+                  manager_id: 5
+                  skills: ["React", "TypeScript", "CSS"]
+      responses:
+        '201':
+          description: Employee created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeResponse'
+        '400':
+          description: Bad request - missing required fields or invalid data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflict - employee with email already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/employees/{employee_id}:
+    get:
+      tags:
+        - employees
+      summary: Get employee by ID
+      description: Retrieve a specific employee by their ID
+      parameters:
+        - name: employee_id
+          in: path
+          description: Employee ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '200':
+          description: Successfully retrieved employee
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeResponse'
+        '404':
+          description: Employee not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      tags:
+        - employees
+      summary: Update an employee
+      description: Update an existing employee's information
+      parameters:
+        - name: employee_id
+          in: path
+          description: Employee ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateEmployeeRequest'
+            examples:
+              update_employee:
+                summary: Example employee update
+                value:
+                  position: "Senior Frontend Developer"
+                  salary: 85000
+                  skills: ["React", "TypeScript", "CSS", "Node.js"]
+      responses:
+        '200':
+          description: Employee updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeResponse'
+        '400':
+          description: Bad request - invalid data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Employee not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflict - email already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - employees
+      summary: Delete an employee
+      description: Delete an employee by their ID. Cannot delete if employee is a manager of others.
+      parameters:
+        - name: employee_id
+          in: path
+          description: Employee ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '200':
+          description: Employee deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteEmployeeResponse'
+        '404':
+          description: Employee not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflict - cannot delete employee who is a manager
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ManagerDeleteErrorResponse'
+
+  /api/departments/{department}/employees:
+    get:
+      tags:
+        - departments
+      summary: Get employees by department
+      description: Retrieve all employees in a specific department
+      parameters:
+        - name: department
+          in: path
+          description: Department name
+          required: true
+          schema:
+            type: string
+            example: Engineering
+      responses:
+        '200':
+          description: Successfully retrieved employees by department
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentEmployeesResponse'
+        '404':
+          description: Department not found or no employees in department
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/employees/{employee_id}/salary:
+    get:
+      tags:
+        - employees
+      summary: Get employee salary information
+      description: Retrieve salary information for a specific employee
+      parameters:
+        - name: employee_id
+          in: path
+          description: Employee ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '200':
+          description: Successfully retrieved employee salary information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SalaryResponse'
+        '404':
+          description: Employee not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/departments/stats:
+    get:
+      tags:
+        - departments
+      summary: Get department statistics
+      description: Retrieve statistics about all departments including employee count, salary information, and positions
+      responses:
+        '200':
+          description: Successfully retrieved department statistics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentStatsResponse'
+
+components:
+  schemas:
+    Employee:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique employee identifier
+          example: 1
+        name:
+          type: string
+          description: Employee full name
+          example: "John Doe"
+        email:
+          type: string
+          format: email
+          description: Employee email address
+          example: "john.doe@company.com"
+        department:
+          type: string
+          description: Employee department
+          example: "Engineering"
+        position:
+          type: string
+          description: Employee job position
+          example: "Senior Developer"
+        salary:
+          type: integer
+          description: Employee annual salary
+          example: 85000
+        hire_date:
+          type: string
+          format: date
+          description: Employee hire date
+          example: "2020-03-15"
+        manager_id:
+          type: integer
+          format: int64
+          nullable: true
+          description: ID of the employee's manager
+          example: 5
+        skills:
+          type: array
+          items:
+            type: string
+          description: List of employee skills
+          example: ["Python", "JavaScript", "Docker"]
+
+    SalaryInfo:
+      type: object
+      properties:
+        employee_id:
+          type: integer
+          format: int64
+          description: Employee ID
+          example: 1
+        name:
+          type: string
+          description: Employee name
+          example: "John Doe"
+        position:
+          type: string
+          description: Employee position
+          example: "Senior Developer"
+        department:
+          type: string
+          description: Employee department
+          example: "Engineering"
+        salary:
+          type: integer
+          description: Employee salary
+          example: 85000
+        hire_date:
+          type: string
+          format: date
+          description: Employee hire date
+          example: "2020-03-15"
+
+    DepartmentStats:
+      type: object
+      properties:
+        department:
+          type: string
+          description: Department name
+          example: "Engineering"
+        employee_count:
+          type: integer
+          description: Number of employees in department
+          example: 3
+        average_salary:
+          type: number
+          format: float
+          description: Average salary in department
+          example: 95000.0
+        total_salary:
+          type: integer
+          description: Total salary budget for department
+          example: 285000
+        unique_positions:
+          type: array
+          items:
+            type: string
+          description: List of unique positions in department
+          example: ["Senior Developer", "DevOps Engineer", "Engineering Manager"]
+
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "healthy"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2025-07-28T09:34:10.526737"
+        service:
+          type: string
+          example: "Employee Data API"
+
+    EmployeesResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        count:
+          type: integer
+          description: Number of employees returned
+          example: 7
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Employee'
+
+    EmployeeResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        data:
+          $ref: '#/components/schemas/Employee'
+
+    DepartmentEmployeesResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        department:
+          type: string
+          description: Department name
+          example: "Engineering"
+        count:
+          type: integer
+          description: Number of employees in department
+          example: 3
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Employee'
+
+    SalaryResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        data:
+          $ref: '#/components/schemas/SalaryInfo'
+
+    DepartmentStatsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2025-07-28T12:00:00.000000"
+        total_departments:
+          type: integer
+          description: Total number of departments
+          example: 3
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DepartmentStats'
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "error"
+        message:
+          type: string
+          description: Error message describing what went wrong
+          example: "Employee with ID 999 not found"
+
+    CreateEmployeeRequest:
+      type: object
+      required:
+        - name
+        - email
+        - department
+        - position
+        - salary
+      properties:
+        name:
+          type: string
+          description: Employee full name
+          example: "Alice Johnson"
+        email:
+          type: string
+          format: email
+          description: Employee email address (must be unique)
+          example: "alice.johnson@company.com"
+        department:
+          type: string
+          description: Employee department
+          example: "Engineering"
+        position:
+          type: string
+          description: Employee job position
+          example: "Frontend Developer"
+        salary:
+          type: integer
+          description: Employee annual salary
+          example: 75000
+        hire_date:
+          type: string
+          format: date
+          description: Employee hire date (defaults to current date if not provided)
+          example: "2025-07-28"
+        manager_id:
+          type: integer
+          format: int64
+          nullable: true
+          description: ID of the employee's manager
+          example: 5
+        skills:
+          type: array
+          items:
+            type: string
+          description: List of employee skills
+          example: ["React", "TypeScript", "CSS"]
+
+    UpdateEmployeeRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Employee full name
+          example: "Alice Johnson"
+        email:
+          type: string
+          format: email
+          description: Employee email address (must be unique)
+          example: "alice.johnson@company.com"
+        department:
+          type: string
+          description: Employee department
+          example: "Engineering"
+        position:
+          type: string
+          description: Employee job position
+          example: "Senior Frontend Developer"
+        salary:
+          type: integer
+          description: Employee annual salary
+          example: 85000
+        hire_date:
+          type: string
+          format: date
+          description: Employee hire date
+          example: "2025-07-28"
+        manager_id:
+          type: integer
+          format: int64
+          nullable: true
+          description: ID of the employee's manager
+          example: 5
+        skills:
+          type: array
+          items:
+            type: string
+          description: List of employee skills
+          example: ["React", "TypeScript", "CSS", "Node.js"]
+
+    DeleteEmployeeResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "success"
+        message:
+          type: string
+          description: Success message
+          example: "Employee Alice Johnson (ID: 8) deleted successfully"
+        data:
+          type: object
+          properties:
+            deleted_employee_id:
+              type: integer
+              description: ID of the deleted employee
+              example: 8
+            deleted_employee_name:
+              type: string
+              description: Name of the deleted employee
+              example: "Alice Johnson"
+
+    ManagerDeleteErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "error"
+        message:
+          type: string
+          description: Error message explaining why employee cannot be deleted
+          example: "Cannot delete employee 5. Employee is a manager of 2 other employee(s). Please reassign or delete subordinates first."
+        subordinates:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Subordinate employee ID
+                example: 1
+              name:
+                type: string
+                description: Subordinate employee name
+                example: "John Doe"
+
+  examples:
+    SampleEmployee:
+      summary: Sample employee data
+      value:
+        id: 1
+        name: "John Doe"
+        email: "john.doe@company.com"
+        department: "Engineering"
+        position: "Senior Developer"
+        salary: 85000
+        hire_date: "2020-03-15"
+        manager_id: 5
+        skills: ["Python", "JavaScript", "Docker"]
+
+    SampleDepartmentStats:
+      summary: Sample department statistics
+      value:
+        department: "Engineering"
+        employee_count: 3
+        average_salary: 95000.0
+        total_salary: 285000
+        unique_positions: ["Senior Developer", "DevOps Engineer", "Engineering Manager"]
+
+    ErrorNotFound:
+      summary: Resource not found error
+      value:
+        status: "error"
+        message: "Employee with ID 999 not found"
