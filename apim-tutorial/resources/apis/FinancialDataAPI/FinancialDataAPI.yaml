@@ -3,7 +3,7 @@ info:
   title: FinancialDataAPI
   version: 1.0.0
 servers:
-  - url: 'http://40.81.24.192/:3000/redshift'
+  - url: 'http://40.81.24.192:3000/redshift'
 security:
   - default: []
 paths:
