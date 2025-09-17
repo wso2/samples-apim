@@ -1,7 +1,7 @@
 version: '2.4'
 services:
     api-manager:
-      image: wso2/wso2am:4.1.0
+      image: wso2/wso2am:latest
       healthcheck:
         test: ["CMD", "nc", "-z","localhost", "9443"]
         interval: 10s
@@ -24,7 +24,7 @@ services:
       build: 
         context: ./dockerfiles/micro-integrator/
         args:
-          - BASE_IMAGE=wso2/wso2mi:4.1.0
+          - BASE_IMAGE=wso2/wso2mi:latest
       healthcheck:
         test: ["CMD", "nc", "-z","localhost", "8290"]
         interval: 10s
@@ -51,7 +51,7 @@ services:
       build: 
         context: ./dockerfiles/streaming-integrator/
         args:
-          - BASE_IMAGE=wso2/wso2si:4.1.0
+          - BASE_IMAGE=wso2/wso2si:latest
       healthcheck:
         test: ["CMD", "nc", "-z","localhost", "9443"]
         interval: 10s
