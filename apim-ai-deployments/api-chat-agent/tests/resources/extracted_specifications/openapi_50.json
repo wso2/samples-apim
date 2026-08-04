@@ -1,0 +1,1897 @@
+{
+    "serviceUrl": "https://api.capsulecrm.com",
+    "tools": [
+        {
+            "name": "list_opportunities",
+            "description": "https://developer.capsulecrm.com/v2/operations/Opportunity#listOpportunities",
+            "method": "GET",
+            "path": "/api/v2/opportunities",
+            "parameters": {
+                "since": {
+                    "location": "query",
+                    "description": "If set then includes only entities that have been changed after this date. Must in be ISO8601 format.",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "page": {
+                    "location": "query",
+                    "description": "The page of results to return. Default: 1",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "perPage": {
+                    "location": "query",
+                    "description": "The number of entities to return per page. Value must be between 1 and 100. Default: 50",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "embed": {
+                    "location": "query",
+                    "description": "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags (tags), fields (custom fields and fields in DataTags), party (assigned party), milestone (the opportunity milestone), and missingImportantFields (indicates if an opportunity has any Important custom fields that are missing a value).",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "create_opportunity",
+            "description": "https://developer.capsulecrm.com/v2/operations/Opportunity#createOpportunity",
+            "method": "POST",
+            "path": "/api/v2/opportunities",
+            "parameters": {
+                "embed": {
+                    "location": "query",
+                    "description": "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags ( tags), fields (custom fields and fields in DataTags), party (assigned party), opportunity (the associated opportunity), and missingImportantFields (indicates if a case has any Important custom fields that are missing a value). ",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "opportunity": {
+                            "type": "object",
+                            "required": [
+                                "party",
+                                "name",
+                                "milestone"
+                            ],
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "createdAt": {
+                                    "type": "string"
+                                },
+                                "updatedAt": {
+                                    "type": "string"
+                                },
+                                "party": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "firstName": {
+                                            "type": "string"
+                                        },
+                                        "lastName": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "type": {
+                                            "type": "string"
+                                        },
+                                        "pictureURL": {
+                                            "type": "string"
+                                        },
+                                        "isRestricted": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                },
+                                "lostReason": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "owner": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "username": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "team": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "milestone": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "value": {
+                                    "type": "object",
+                                    "required": [
+                                        "amount"
+                                    ],
+                                    "properties": {
+                                        "amount": {
+                                            "type": "number"
+                                        },
+                                        "currency": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "expectedCloseOn": {
+                                    "type": "string"
+                                },
+                                "probability": {
+                                    "type": "integer"
+                                },
+                                "durationBasis": {
+                                    "type": "string"
+                                },
+                                "duration": {
+                                    "type": "integer"
+                                },
+                                "closedOn": {
+                                    "type": "string"
+                                },
+                                "tags": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "name"
+                                        ],
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "fields": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "value",
+                                            "definition"
+                                        ],
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "value": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "type": "boolean"
+                                                    },
+                                                    {
+                                                        "type": "number"
+                                                    }
+                                                ]
+                                            },
+                                            "definition": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "lastContactedAt": {
+                                    "type": "string"
+                                },
+                                "lastStageChangedAt": {
+                                    "type": "string"
+                                },
+                                "lastOpenMilestone": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "missingImportantFields": {
+                                    "type": "boolean"
+                                },
+                                "tracks": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "definition": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "integer"
+                                                    },
+                                                    {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer"
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "search_cases",
+            "description": "https://developer.capsulecrm.com/v2/operations/Case#searchCases",
+            "method": "GET",
+            "path": "/api/v2/kases/search",
+            "parameters": {
+                "q": {
+                    "location": "query",
+                    "description": "The value to search for e.g. a name, a postcode or a phone number.",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "page": {
+                    "location": "query",
+                    "description": "The page of results to return. Default: 1",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "perPage": {
+                    "location": "query",
+                    "description": "The number of entities to return per page. Value must be between 1 and 100. Default: 50",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "embed": {
+                    "location": "query",
+                    "description": "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags ( tags), fields (custom fields and fields in DataTags), party (assigned party), opportunity (the associated opportunity), and missingImportantFields (indicates if a case has any Important custom fields that are missing a value).",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "search_opportunities",
+            "description": "https://developer.capsulecrm.com/v2/operations/Opportunity#searchOpportunities",
+            "method": "GET",
+            "path": "/api/v2/opportunities/search",
+            "parameters": {
+                "q": {
+                    "location": "query",
+                    "description": "The value to search for e.g. a name, a postcode or a phone number.",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "page": {
+                    "location": "query",
+                    "description": "The page of results to return. Default: 1",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "perPage": {
+                    "location": "query",
+                    "description": "The number of entities to return per page. Value must be between 1 and 100. Default: 50",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "embed": {
+                    "location": "query",
+                    "description": "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags ( tags), fields (custom fields and fields in DataTags), party (assigned party), opportunity (the associated opportunity), and missingImportantFields (indicates if a case has any Important custom fields that are missing a value).",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "show_opportunity",
+            "description": "https://developer.capsulecrm.com/v2/operations/Opportunity#showOpportunity",
+            "method": "GET",
+            "path": "/api/v2/opportunities/{opportunityId}",
+            "parameters": {
+                "opportunityId": {
+                    "location": "path",
+                    "description": "The opportunity ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "embed": {
+                    "location": "query",
+                    "description": "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags (tags), fields (custom fields and fields in DataTags), party (assigned party), milestone (the opportunity milestone), and missingImportantFields (indicates if an opportunity has any Important custom fields that are missing a value).",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "update_opportunity",
+            "description": "https://developer.capsulecrm.com/v2/operations/Opportunity#updateOpportunity",
+            "method": "PUT",
+            "path": "/api/v2/opportunities/{opportunityId}",
+            "parameters": {
+                "opportunityId": {
+                    "location": "path",
+                    "description": "The opportunity ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "embed": {
+                    "location": "query",
+                    "description": "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags (tags), fields (custom fields and fields in DataTags), party (assigned party), milestone (the opportunity milestone), and missingImportantFields (indicates if an opportunity has any Important custom fields that are missing a value).",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "opportunity": {
+                            "type": "object",
+                            "required": [
+                                "party",
+                                "name",
+                                "milestone"
+                            ],
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "createdAt": {
+                                    "type": "string"
+                                },
+                                "updatedAt": {
+                                    "type": "string"
+                                },
+                                "party": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "firstName": {
+                                            "type": "string"
+                                        },
+                                        "lastName": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "type": {
+                                            "type": "string"
+                                        },
+                                        "pictureURL": {
+                                            "type": "string"
+                                        },
+                                        "isRestricted": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                },
+                                "lostReason": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "owner": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "username": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "team": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "milestone": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "value": {
+                                    "type": "object",
+                                    "required": [
+                                        "amount"
+                                    ],
+                                    "properties": {
+                                        "amount": {
+                                            "type": "number"
+                                        },
+                                        "currency": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "expectedCloseOn": {
+                                    "type": "string"
+                                },
+                                "probability": {
+                                    "type": "integer"
+                                },
+                                "durationBasis": {
+                                    "type": "string"
+                                },
+                                "duration": {
+                                    "type": "integer"
+                                },
+                                "closedOn": {
+                                    "type": "string"
+                                },
+                                "tags": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "name"
+                                        ],
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "fields": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "value",
+                                            "definition"
+                                        ],
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "value": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "type": "boolean"
+                                                    },
+                                                    {
+                                                        "type": "number"
+                                                    }
+                                                ]
+                                            },
+                                            "definition": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "lastContactedAt": {
+                                    "type": "string"
+                                },
+                                "lastStageChangedAt": {
+                                    "type": "string"
+                                },
+                                "lastOpenMilestone": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "missingImportantFields": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "delete_opportunity",
+            "description": "https://developer.capsulecrm.com/v2/operations/Opportunity#deleteOpportunity",
+            "method": "DELETE",
+            "path": "/api/v2/opportunities/{opportunityId}",
+            "parameters": {
+                "opportunityId": {
+                    "location": "path",
+                    "description": "The opportunity ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "show_case",
+            "description": "https://developer.capsulecrm.com/v2/operations/Case#showCase",
+            "method": "GET",
+            "path": "/api/v2/kases/{caseId}",
+            "parameters": {
+                "caseId": {
+                    "location": "path",
+                    "description": "The case ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "embed": {
+                    "location": "query",
+                    "description": "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags ( tags), fields (custom fields and fields in DataTags), party (assigned party), opportunity (the associated opportunity), and missingImportantFields (indicates if a case has any Important custom fields that are missing a value).",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "list_cases_by_party",
+            "description": "https://developer.capsulecrm.com/v2/operations/Case#listCasesByParty",
+            "method": "GET",
+            "path": "/api/v2/parties/{partyId}/kases",
+            "parameters": {
+                "partyId": {
+                    "location": "path",
+                    "description": "The party ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "page": {
+                    "location": "query",
+                    "description": "The page of results to return. Default: 1",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "perPage": {
+                    "location": "query",
+                    "description": "The number of entities to return per page. Value must be between 1 and 100. Default: 50",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "embed": {
+                    "location": "query",
+                    "description": "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags ( tags), fields (custom fields and fields in DataTags), party (assigned party), opportunity (the associated opportunity), and missingImportantFields (indicates if a case has any Important custom fields that are missing a value).",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "show_party",
+            "description": "https://developer.capsulecrm.com/v2/operations/Party#showParty",
+            "method": "GET",
+            "path": "/api/v2/parties/{partyId}",
+            "parameters": {
+                "partyId": {
+                    "location": "path",
+                    "description": "The party ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "embed": {
+                    "location": "query",
+                    "description": "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags (tags), fields (custom fields and fields in DataTags), organisation (extended organisation details for people), and missingImportantFields (indicates if a party has any Important custom fields that are missing a value).",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "update_party",
+            "description": "https://developer.capsulecrm.com/v2/operations/Party#updateParty",
+            "method": "PUT",
+            "path": "/api/v2/parties/{partyId}",
+            "parameters": {
+                "partyId": {
+                    "location": "path",
+                    "description": "The party ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "embed": {
+                    "location": "query",
+                    "description": "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags (tags), fields (custom fields and fields in DataTags), organisation (extended organisation details for people), and missingImportantFields (indicates if a party has any Important custom fields that are missing a value).",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "party": {
+                            "type": "object",
+                            "required": [
+                                "type"
+                            ],
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "type": {
+                                    "type": "string"
+                                },
+                                "firstName": {
+                                    "type": "string"
+                                },
+                                "lastName": {
+                                    "type": "string"
+                                },
+                                "title": {
+                                    "type": "string"
+                                },
+                                "jobTitle": {
+                                    "type": "string"
+                                },
+                                "organisation": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "firstName": {
+                                            "type": "string"
+                                        },
+                                        "lastName": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "type": {
+                                            "type": "string"
+                                        },
+                                        "pictureURL": {
+                                            "type": "string"
+                                        },
+                                        "isRestricted": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "about": {
+                                    "type": "string"
+                                },
+                                "createdAt": {
+                                    "type": "string"
+                                },
+                                "updatedAt": {
+                                    "type": "string"
+                                },
+                                "lastContactedAt": {
+                                    "type": "string"
+                                },
+                                "addresses": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "type": {
+                                                "type": "string"
+                                            },
+                                            "street": {
+                                                "type": "string"
+                                            },
+                                            "city": {
+                                                "type": "string"
+                                            },
+                                            "state": {
+                                                "type": "string"
+                                            },
+                                            "country": {
+                                                "type": "string"
+                                            },
+                                            "zip": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "phoneNumbers": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "number"
+                                        ],
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "type": {
+                                                "type": "string"
+                                            },
+                                            "number": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "websites": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "service",
+                                            "address"
+                                        ],
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "service": {
+                                                "type": "string"
+                                            },
+                                            "address": {
+                                                "type": "string"
+                                            },
+                                            "type": {
+                                                "type": "string"
+                                            },
+                                            "url": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "emailAddresses": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "address"
+                                        ],
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "type": {
+                                                "type": "string"
+                                            },
+                                            "address": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "pictureURL": {
+                                    "type": "string"
+                                },
+                                "tags": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "name"
+                                        ],
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "fields": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "value",
+                                            "definition"
+                                        ],
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "value": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "type": "boolean"
+                                                    },
+                                                    {
+                                                        "type": "number"
+                                                    }
+                                                ]
+                                            },
+                                            "definition": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "owner": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "username": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "team": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "missingImportantFields": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "delete_party",
+            "description": "https://developer.capsulecrm.com/v2/operations/Party#deleteParty",
+            "method": "DELETE",
+            "path": "/api/v2/parties/{partyId}",
+            "parameters": {
+                "partyId": {
+                    "location": "path",
+                    "description": "The party ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "list_opportunities_by_party",
+            "description": "https://developer.capsulecrm.com/v2/operations/Opportunity#listOpportunitiesByParty",
+            "method": "GET",
+            "path": "/api/v2/parties/{partyId}/opportunities",
+            "parameters": {
+                "partyId": {
+                    "location": "path",
+                    "description": "The party ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "page": {
+                    "location": "query",
+                    "description": "The page of results to return. Default: 1",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "perPage": {
+                    "location": "query",
+                    "description": "The number of entities to return per page. Value must be between 1 and 100. Default: 50",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "embed": {
+                    "location": "query",
+                    "description": "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags ( tags), fields (custom fields and fields in DataTags), party (assigned party), opportunity (the associated opportunity), and missingImportantFields (indicates if a case has any Important custom fields that are missing a value).",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "list_tasks",
+            "description": "https://developer.capsulecrm.com/v2/operations/Task#listTasks",
+            "method": "GET",
+            "path": "/api/v2/tasks",
+            "parameters": {
+                "page": {
+                    "location": "query",
+                    "description": "The page of results to return. Default: 1",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "perPage": {
+                    "location": "query",
+                    "description": "The number of entities to return per page. Value must be between 1 and 100. Default: 50",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "embed": {
+                    "location": "query",
+                    "description": "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are party (the party this task is assigned to), opportunity (opportunity this task is on), kase (the case this task is on), owner (the owner of the task) and nextTask (the next task).",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "status": {
+                    "location": "query",
+                    "description": "Filter the response based on the status of the task. Must be a comma separated list of strings. Accepted values are open, completed and pending.",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "create_task",
+            "description": "https://developer.capsulecrm.com/v2/operations/Task#createTask",
+            "method": "POST",
+            "path": "/api/v2/tasks",
+            "parameters": {
+                "embed": {
+                    "location": "query",
+                    "description": "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are party (the party this task is assigned to), opportunity (opportunity this task is on), kase (the case this task is on), owner (the owner of the task) and nextTask (the next task).",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "task": {
+                            "type": "object",
+                            "required": [
+                                "description",
+                                "dueOn"
+                            ],
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "createdAt": {
+                                    "type": "string"
+                                },
+                                "updatedAt": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "detail": {
+                                    "type": "string"
+                                },
+                                "category": {
+                                    "type": "object",
+                                    "required": [
+                                        "name"
+                                    ],
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "colour": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "dueOn": {
+                                    "type": "string"
+                                },
+                                "dueTime": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "party": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "firstName": {
+                                            "type": "string"
+                                        },
+                                        "lastName": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "type": {
+                                            "type": "string"
+                                        },
+                                        "pictureURL": {
+                                            "type": "string"
+                                        },
+                                        "isRestricted": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                },
+                                "opportunity": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "isRestricted": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                },
+                                "kase": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "isRestricted": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                },
+                                "owner": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "username": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "completedBy": {
+                                    "type": "string"
+                                },
+                                "completedAt": {
+                                    "type": "string"
+                                },
+                                "hasTrack": {
+                                    "type": "boolean"
+                                },
+                                "nextTask": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "description": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "taskDelayRule": {
+                                    "type": "string"
+                                },
+                                "daysAfter": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "search_parties",
+            "description": "https://developer.capsulecrm.com/v2/operations/Party#searchParties",
+            "method": "GET",
+            "path": "/api/v2/parties/search",
+            "parameters": {
+                "q": {
+                    "location": "query",
+                    "description": "The value to search for e.g. a name, a postcode or a phone number.",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "page": {
+                    "location": "query",
+                    "description": "The page of results to return. Default: 1",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "perPage": {
+                    "location": "query",
+                    "description": "The number of entities to return per page. Value must be between 1 and 100. Default: 50",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "embed": {
+                    "location": "query",
+                    "description": "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags (tags), fields (custom fields and fields in DataTags), organisation (extended organisation details for people), and missingImportantFields (indicates if a party has any Important custom fields that are missing a value).",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "list_cases",
+            "description": "https://developer.capsulecrm.com/v2/operations/Case#listCases",
+            "method": "GET",
+            "path": "/api/v2/kases",
+            "parameters": {
+                "since": {
+                    "location": "query",
+                    "description": "If set then includes only entities that have been changed after this date. Must in be ISO8601 format.",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "page": {
+                    "location": "query",
+                    "description": "The page of results to return. Default: 1",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "perPage": {
+                    "location": "query",
+                    "description": "The number of entities to return per page. Value must be between 1 and 100. Default: 50",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "embed": {
+                    "location": "query",
+                    "description": "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags ( tags), fields (custom fields and fields in DataTags), party (assigned party), opportunity (the associated opportunity), and missingImportantFields (indicates if a case has any Important custom fields that are missing a value).",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "create_case",
+            "description": "https://developer.capsulecrm.com/v2/operations/Case#createCase",
+            "method": "POST",
+            "path": "/api/v2/kases",
+            "parameters": {
+                "embed": {
+                    "location": "query",
+                    "description": "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags ( tags), fields (custom fields and fields in DataTags), party (assigned party), opportunity (the associated opportunity), and missingImportantFields (indicates if a case has any Important custom fields that are missing a value). ",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "kase": {
+                            "type": "object",
+                            "required": [
+                                "party",
+                                "name"
+                            ],
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "party": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "firstName": {
+                                            "type": "string"
+                                        },
+                                        "lastName": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "type": {
+                                            "type": "string"
+                                        },
+                                        "pictureURL": {
+                                            "type": "string"
+                                        },
+                                        "isRestricted": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "owner": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "username": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "team": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "opportunity": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "isRestricted": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                },
+                                "createdAt": {
+                                    "type": "string"
+                                },
+                                "updatedAt": {
+                                    "type": "string"
+                                },
+                                "closedOn": {
+                                    "type": "string"
+                                },
+                                "lastContactedAt": {
+                                    "type": "string"
+                                },
+                                "tags": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "name"
+                                        ],
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "fields": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "value",
+                                            "definition"
+                                        ],
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "value": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "type": "boolean"
+                                                    },
+                                                    {
+                                                        "type": "number"
+                                                    }
+                                                ]
+                                            },
+                                            "definition": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "missingImportantFields": {
+                                    "type": "boolean"
+                                },
+                                "tracks": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "definition": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "integer"
+                                                    },
+                                                    {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer"
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "list_parties",
+            "description": "https://developer.capsulecrm.com/v2/operations/Party#listParties",
+            "method": "GET",
+            "path": "/api/v2/parties",
+            "parameters": {
+                "since": {
+                    "location": "query",
+                    "description": "If set then includes only entities that have been changed after this date. Must in be ISO8601 format.",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "page": {
+                    "location": "query",
+                    "description": "The page of results to return. Default: 1",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "perPage": {
+                    "location": "query",
+                    "description": "The number of entities to return per page. Value must be between 1 and 100. Default: 50",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "embed": {
+                    "location": "query",
+                    "description": "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags (tags), fields (custom fields and fields in DataTags), organisation (extended organisation details for people), and missingImportantFields (indicates if a party has any Important custom fields that are missing a value).",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "create_party",
+            "description": "https://developer.capsulecrm.com/v2/operations/Party#createParty",
+            "method": "POST",
+            "path": "/api/v2/parties",
+            "parameters": {
+                "embed": {
+                    "location": "query",
+                    "description": "Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags (tags), fields (custom fields and fields in DataTags), organisation (extended organisation details for people), and missingImportantFields (indicates if a party has any Important custom fields that are missing a value).",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "party": {
+                            "type": "object",
+                            "required": [
+                                "type"
+                            ],
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "type": {
+                                    "type": "string"
+                                },
+                                "firstName": {
+                                    "type": "string"
+                                },
+                                "lastName": {
+                                    "type": "string"
+                                },
+                                "title": {
+                                    "type": "string"
+                                },
+                                "jobTitle": {
+                                    "type": "string"
+                                },
+                                "organisation": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "firstName": {
+                                            "type": "string"
+                                        },
+                                        "lastName": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "type": {
+                                            "type": "string"
+                                        },
+                                        "pictureURL": {
+                                            "type": "string"
+                                        },
+                                        "isRestricted": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "about": {
+                                    "type": "string"
+                                },
+                                "createdAt": {
+                                    "type": "string"
+                                },
+                                "updatedAt": {
+                                    "type": "string"
+                                },
+                                "lastContactedAt": {
+                                    "type": "string"
+                                },
+                                "addresses": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "type": {
+                                                "type": "string"
+                                            },
+                                            "street": {
+                                                "type": "string"
+                                            },
+                                            "city": {
+                                                "type": "string"
+                                            },
+                                            "state": {
+                                                "type": "string"
+                                            },
+                                            "country": {
+                                                "type": "string"
+                                            },
+                                            "zip": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "phoneNumbers": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "number"
+                                        ],
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "type": {
+                                                "type": "string"
+                                            },
+                                            "number": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "websites": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "service",
+                                            "address"
+                                        ],
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "service": {
+                                                "type": "string"
+                                            },
+                                            "address": {
+                                                "type": "string"
+                                            },
+                                            "type": {
+                                                "type": "string"
+                                            },
+                                            "url": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "emailAddresses": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "address"
+                                        ],
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "type": {
+                                                "type": "string"
+                                            },
+                                            "address": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "pictureURL": {
+                                    "type": "string"
+                                },
+                                "tags": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "name"
+                                        ],
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "fields": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "value",
+                                            "definition"
+                                        ],
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "value": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "type": "boolean"
+                                                    },
+                                                    {
+                                                        "type": "number"
+                                                    }
+                                                ]
+                                            },
+                                            "definition": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "owner": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "username": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "team": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "missingImportantFields": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,138 @@
+{
+    "id": "4a5f9a59-20b7-4eff-8c7d-eacb11ac5541",
+    "name": "ServerSentEvents",
+    "description": null,
+    "context": "/events",
+    "version": "1.0.0",
+    "provider": "a78faf9f-558d-4fef-b8bc-f42d3ec05390",
+    "lifeCycleStatus": "CREATED",
+    "wsdlInfo": null,
+    "wsdlUrl": null,
+    "responseCachingEnabled": false,
+    "cacheTimeout": 300,
+    "hasThumbnail": false,
+    "isDefaultVersion": false,
+    "isRevision": false,
+    "revisionedApiId": null,
+    "revisionId": 0,
+    "enableSchemaValidation": false,
+    "enableSubscriberVerification": false,
+    "type": "SSE",
+    "audience": null,
+    "transport": [
+        "http",
+        "https"
+    ],
+    "tags": [],
+    "policies": [
+        "AsyncUnlimited"
+    ],
+    "apiThrottlingPolicy": null,
+    "authorizationHeader": "Authorization",
+    "apiKeyHeader": "ApiKey",
+    "securityScheme": [
+        "oauth_basic_auth_api_key_mandatory",
+        "oauth2"
+    ],
+    "maxTps": null,
+    "visibility": "PUBLIC",
+    "visibleRoles": [],
+    "visibleTenants": [],
+    "mediationPolicies": [],
+    "apiPolicies": null,
+    "subscriptionAvailability": "CURRENT_TENANT",
+    "subscriptionAvailableTenants": [],
+    "additionalProperties": [],
+    "additionalPropertiesMap": {},
+    "monetization": null,
+    "accessControl": "NONE",
+    "accessControlRoles": [],
+    "businessInformation": {
+        "businessOwner": null,
+        "businessOwnerEmail": null,
+        "technicalOwner": null,
+        "technicalOwnerEmail": null
+    },
+    "corsConfiguration": {
+        "corsConfigurationEnabled": false,
+        "accessControlAllowOrigins": [
+            "*"
+        ],
+        "accessControlAllowCredentials": false,
+        "accessControlAllowHeaders": [
+            "authorization",
+            "Access-Control-Allow-Origin",
+            "Content-Type",
+            "SOAPAction",
+            "apikey",
+            "Internal-Key"
+        ],
+        "accessControlAllowMethods": [
+            "GET",
+            "PUT",
+            "POST",
+            "DELETE",
+            "PATCH",
+            "OPTIONS"
+        ]
+    },
+    "websubSubscriptionConfiguration": {
+        "enable": false,
+        "secret": "",
+        "signingAlgorithm": "SHA1",
+        "signatureHeader": "x-hub-signature"
+    },
+    "workflowStatus": null,
+    "createdTime": "1731317636887",
+    "lastUpdatedTimestamp": "1731317637070",
+    "lastUpdatedTime": "2024-11-11 15:03:57.07",
+    "endpointConfig": {
+        "endpoint_type": "http",
+        "sandbox_endpoints": {
+            "url": "http://localhost:8080"
+        },
+        "production_endpoints": {
+            "url": "http://localhost:8080"
+        }
+    },
+    "endpointImplementationType": "ENDPOINT",
+    "scopes": [],
+    "operations": [
+        {
+            "id": "",
+            "target": "/*",
+            "verb": "SUBSCRIBE",
+            "authType": "Application & Application User",
+            "throttlingPolicy": "Unlimited",
+            "scopes": [],
+            "usedProductIds": [],
+            "amznResourceName": null,
+            "amznResourceTimeout": null,
+            "amznResourceContentEncode": null,
+            "payloadSchema": null,
+            "uriMapping": null,
+            "operationPolicies": {
+                "request": [],
+                "response": [],
+                "fault": []
+            }
+        }
+    ],
+    "threatProtectionPolicies": null,
+    "categories": [],
+    "keyManagers": [
+        "all"
+    ],
+    "serviceInfo": null,
+    "advertiseInfo": {
+        "advertised": false,
+        "apiExternalProductionEndpoint": null,
+        "apiExternalSandboxEndpoint": null,
+        "originalDevPortalUrl": null,
+        "apiOwner": "a78faf9f-558d-4fef-b8bc-f42d3ec05390",
+        "vendor": "WSO2"
+    },
+    "gatewayVendor": "wso2",
+    "gatewayType": "wso2/synapse",
+    "asyncTransportProtocols": []
+}

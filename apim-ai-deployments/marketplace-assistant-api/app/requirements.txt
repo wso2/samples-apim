@@ -1,0 +1,10 @@
+fastapi==0.116.1
+langchain==0.3.27
+langchain-azure-ai==0.1.5
+langchain-community==0.3.29
+langchain-core==0.3.76
+langchain-openai==0.3.33
+pydantic==2.11.9
+uvicorn==0.35.0
+pymilvus==2.6.1
+cachetools==5.3.2

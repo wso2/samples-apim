@@ -1,0 +1,3060 @@
+{
+    "serviceUrl": "https://api.avaza.com/",
+    "tools": [
+        {
+            "name": "ScheduleSeries_AddBooking",
+            "description": "Create new Schedule Booking",
+            "method": "POST",
+            "path": "/ScheduleSeries/AddBooking",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "UserIDFK": {
+                            "type": "integer"
+                        },
+                        "HoursPerDay": {
+                            "type": "number"
+                        },
+                        "TotalDuration": {
+                            "type": "number"
+                        },
+                        "DurationType": {
+                            "type": "string"
+                        },
+                        "ScheduleOnDaysOff": {
+                            "type": "boolean"
+                        },
+                        "ProjectIDFK": {
+                            "type": "integer"
+                        },
+                        "CategoryIDFK": {
+                            "type": "integer"
+                        },
+                        "TaskIDFK": {
+                            "type": "integer"
+                        },
+                        "Notes": {
+                            "type": "string"
+                        },
+                        "StartDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "EndDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "CreditNote_Get",
+            "description": "Gets list of CreditNotes",
+            "method": "GET",
+            "path": "/api/CreditNote",
+            "parameters": {
+                "UpdatedAfter": {
+                    "location": "query",
+                    "description": "Limit results to records updated after the specified date",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "pageSize": {
+                    "location": "query",
+                    "description": "Number of items per page (max 1000)",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "pageNumber": {
+                    "location": "query",
+                    "description": "Page to display. Starts from 1.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "TaskType_Get",
+            "description": "Gets list of Task Types",
+            "method": "GET",
+            "path": "/api/TaskType"
+        },
+        {
+            "name": "ExpenseMerchangeLookup",
+            "description": "Gets minimal list of Expense Merchants.",
+            "method": "GET",
+            "path": "/api/ExpenseMerchant/Lookup",
+            "parameters": {
+                "pageSize": {
+                    "location": "query",
+                    "description": "Number of items per page (max 1000)",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "pageNumber": {
+                    "location": "query",
+                    "description": "Page to display. Starts from 1.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "search": {
+                    "location": "query",
+                    "description": "Search string to match against Expense Group Name",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "TaskLookup",
+            "description": "Groups Tasks by Section. Default sort is by Section Title followed by Task Title",
+            "method": "GET",
+            "path": "/api/Task/Lookup",
+            "parameters": {
+                "projectID": {
+                    "location": "query",
+                    "description": "(required) The ProjectID to use when filtering Tasks",
+                    "required": true,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "pageSize": {
+                    "location": "query",
+                    "description": "Number of items per page (max 1000)",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "pageNumber": {
+                    "location": "query",
+                    "description": "Page to display. Starts from 1.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "hideCompleted": {
+                    "location": "query",
+                    "description": "(optional) true/false to hide completed tasks. Defaults false",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                },
+                "search": {
+                    "location": "query",
+                    "description": "(optional) Search string to match against Task title. Performs begins-with match",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "ExpenseSummary_Get",
+            "description": "Gets Basic Summary of Expense Statistics",
+            "method": "GET",
+            "path": "/api/ExpenseSummary",
+            "parameters": {
+                "model.groupBy": {
+                    "location": "query",
+                    "description": "(Optional) Combine one, two or three levels of Grouping. Combine these possible grouping values: \"Category\", \"ChargeableStatus\", \"Merchant\", \"ApprovalStatus\", \"ReimbursementStatus\", \"Customer\", \"Project\", \"User\", \"Task\", \"Year\", \"Month\", \"Day\", \"Week\".",
+                    "style": "form",
+                    "explode": true,
+                    "schema": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "model.expenseDateFrom": {
+                    "location": "query",
+                    "description": "(Required) Filter for expenses with expense dates greater or equal to the specified date. e.g. 2019-01-25.",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "model.expenseDateTo": {
+                    "location": "query",
+                    "description": "(Required) Filter for expenses with an expense date smaller or equal to the specified  date. e.g. 2019-01-25.",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "model.userID": {
+                    "location": "query",
+                    "description": "(Optional) Defaults to the current user. Provide one or more UserIDs of Users whose expenses should be retrieved. If the current user doesn't have impersonation rights, then they will only see their own data.",
+                    "style": "form",
+                    "explode": true,
+                    "schema": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "model.projectID": {
+                    "location": "query",
+                    "description": "(Optional) Filter by Project",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "TimesheetSummary_Get",
+            "description": "Gets Basic Summary of Timesheet Statistics",
+            "method": "GET",
+            "path": "/api/TimesheetSummary",
+            "parameters": {
+                "model.groupBy": {
+                    "location": "query",
+                    "description": "(Optional) Combine one, two or three levels of Grouping. Combine these possible grouping values: \"Customer\", \"Project\", \"Category\", \"User\", \"Task\", \"Year\", \"Month\", \"Day\", \"Week\".",
+                    "style": "form",
+                    "explode": true,
+                    "schema": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "model.entryDateFrom": {
+                    "location": "query",
+                    "description": "(Required) Filter for timesheets greater or equal to the specified date. e.g. 2019-01-25. You can optionally include a time component, otherwise it assumes 00:00",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "model.entryDateTo": {
+                    "location": "query",
+                    "description": "(Required) Filter for timesheets with an entry date smaller or equal to the specified  date. e.g. 2019-01-25. You can optionally include a time component, otherwise it assumes 00:00",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "model.userID": {
+                    "location": "query",
+                    "description": "(Optional) Defaults to the current user. Provide one or more UserIDs of Users whose timesheets should be retrieved. If the current user doesn't have impersonation rights, then they will only see their own data.",
+                    "style": "form",
+                    "explode": true,
+                    "schema": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "model.projectID": {
+                    "location": "query",
+                    "description": "(Optional) Filter by Project",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "model.isBillable": {
+                    "location": "query",
+                    "description": "(Optional) Filter by the billable status of Timesheets.",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                },
+                "model.isInvoiced": {
+                    "location": "query",
+                    "description": "(Optional) Filter for timesheets by whether they have been Invoiced or not.",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Tax_Get",
+            "description": "Get List of Taxes configured in the Avaza account.",
+            "method": "GET",
+            "path": "/api/Tax"
+        },
+        {
+            "name": "CreditNote_GetByID",
+            "description": "Gets Credit Note by CreditNoteID",
+            "method": "GET",
+            "path": "/api/CreditNote/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Credit Note ID Number",
+                    "required": true,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Timesheet_Get",
+            "description": "Gets list of Timsheets",
+            "method": "GET",
+            "path": "/api/Timesheet",
+            "parameters": {
+                "UpdatedAfter": {
+                    "location": "query",
+                    "description": "Limit results to records updated after the specified date",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "EntryDateFrom": {
+                    "location": "query",
+                    "description": "Timesheet start entry date to filter",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "EntryDateTo": {
+                    "location": "query",
+                    "description": "Timesheet end entry date to filter",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "UserID": {
+                    "location": "query",
+                    "description": "The UserID of a timesheet user to filter timesheets for. Only api users with certain higher roles can see timesheets across multiple users.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "UserEmail": {
+                    "location": "query",
+                    "description": "User email address",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "CategoryName": {
+                    "location": "query",
+                    "description": "Category name",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "ProjectID": {
+                    "location": "query",
+                    "description": "Project Id",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "isBillable": {
+                    "location": "query",
+                    "description": "Billable status",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                },
+                "isInvoiced": {
+                    "location": "query",
+                    "description": "Invoiced status",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                },
+                "isTimerRunning": {
+                    "location": "query",
+                    "description": "Timer running status",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                },
+                "pageSize": {
+                    "location": "query",
+                    "description": "Number of items per page (max 1000)",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "pageNumber": {
+                    "location": "query",
+                    "description": "Page to display. Starts from 1.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "Sort": {
+                    "location": "query",
+                    "description": "Optional sorting instruction. Currently possible values: \"DateUpdated\", \"DateCreated\", \"DateUpdated desc\", \"DateCreated desc\",\"EntryDate\", \"EntryDate desc\", \"StartTimeLocal\",\"StartTimeLocal desc\", \"TimeSheetEntryID\", \"TimeSheetEntryID desc\"",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Timesheet_Post",
+            "description": "Create a new Timesheet Entry",
+            "method": "POST",
+            "path": "/api/Timesheet",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "UserIDFK": {
+                            "type": "integer"
+                        },
+                        "ProjectIDFK": {
+                            "type": "integer"
+                        },
+                        "TimesheetCategoryIDFK": {
+                            "type": "integer"
+                        },
+                        "Duration": {
+                            "type": "number"
+                        },
+                        "isInvoiced": {
+                            "type": "boolean"
+                        },
+                        "EntryDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "hasStartEndTime": {
+                            "type": "boolean"
+                        },
+                        "Notes": {
+                            "type": "string"
+                        },
+                        "TaskIDFK": {
+                            "type": "integer"
+                        },
+                        "CustomMetadata": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Timesheet_Put",
+            "description": "The FieldsToUpdate field expects a string array collection of the field names you would like updated. Valid fields to update inlcude \"ProjectIDFK\", \"TimeSheetCategoryIDFK\", \"TaskIDFK\", \"Duration\", \"EntryDate\", \"Notes\", \"hasStartEndTime\", \"CustomMetadata\". If you intend to provide start\/end times on timesheets, this is achieved by including the start time in the EntryDate field (Iso date format), along with a Duration (decimal format).",
+            "method": "PUT",
+            "path": "/api/Timesheet",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "FieldsToUpdate",
+                        "ProjectIDFK",
+                        "TimeSheetEntryID"
+                    ],
+                    "properties": {
+                        "TimeSheetEntryID": {
+                            "type": "integer"
+                        },
+                        "FieldsToUpdate": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "ProjectIDFK": {
+                            "type": "integer"
+                        },
+                        "TimesheetCategoryIDFK": {
+                            "type": "integer"
+                        },
+                        "TaskIDFK": {
+                            "type": "integer"
+                        },
+                        "Duration": {
+                            "type": "number"
+                        },
+                        "EntryDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "hasStartEndTime": {
+                            "type": "boolean"
+                        },
+                        "Notes": {
+                            "type": "string"
+                        },
+                        "CustomMetadata": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "ScheduleSeries_EditBooking",
+            "description": "Edit Booking",
+            "method": "PUT",
+            "path": "/ScheduleSeries/EditBooking",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "ScheduleSeriesID": {
+                            "type": "integer"
+                        },
+                        "UserIDFK": {
+                            "type": "integer"
+                        },
+                        "HoursPerDay": {
+                            "type": "number"
+                        },
+                        "TotalDuration": {
+                            "type": "number"
+                        },
+                        "DurationType": {
+                            "type": "string"
+                        },
+                        "ScheduleOnDaysOff": {
+                            "type": "boolean"
+                        },
+                        "ProjectIDFK": {
+                            "type": "integer"
+                        },
+                        "CategoryIDFK": {
+                            "type": "integer"
+                        },
+                        "TaskIDFK": {
+                            "type": "integer"
+                        },
+                        "Notes": {
+                            "type": "string"
+                        },
+                        "StartDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "EndDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "FixedAmount_Get",
+            "description": "Gets list of Fixed Amounts",
+            "method": "GET",
+            "path": "/api/FixedAmount",
+            "parameters": {
+                "UpdatedAfter": {
+                    "location": "query",
+                    "description": "Limit results to records updated after the specified date",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "EntryDateFrom": {
+                    "location": "query",
+                    "description": "Start date to filter",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "EntryDateTo": {
+                    "location": "query",
+                    "description": "End date to filter",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "ProjectID": {
+                    "location": "query",
+                    "description": "(Optional) The ProjectID of a Project to filter Fixed Amounts for",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "TaskID": {
+                    "location": "query",
+                    "description": "(Optional) The TaskID of a Task to filter Fixed Amounts for",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "isInvoiced": {
+                    "location": "query",
+                    "description": "Invoiced status",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                },
+                "pageSize": {
+                    "location": "query",
+                    "description": "Number of items per page (max 1000)",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "pageNumber": {
+                    "location": "query",
+                    "description": "Page to display. Starts from 1.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "Sort": {
+                    "location": "query",
+                    "description": "Optional sorting instruction. Currently possible values: \"DateUpdated\", \"DateCreated\", \"DateUpdated desc\", \"DateCreated desc\",\"EntryDate\", \"EntryDate desc\", \"StartTimeLocal\",\"StartTimeLocal desc\", \"TimeSheetEntryID\", \"TimeSheetEntryID desc\"",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "ScheduleSeries_EditLeave",
+            "description": "Edit Leave Booking",
+            "method": "PUT",
+            "path": "/ScheduleSeries/EditLeave",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "ScheduleSeriesID": {
+                            "type": "integer"
+                        },
+                        "UserIDFK": {
+                            "type": "integer"
+                        },
+                        "HoursPerDay": {
+                            "type": "number"
+                        },
+                        "LeaveTypeIDFK": {
+                            "type": "integer"
+                        },
+                        "Notes": {
+                            "type": "string"
+                        },
+                        "StartDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "EndDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "ExpenseGroupLookup",
+            "description": "Expense Groups are for adhoc grouping of reported expenses. e.g. for expenses incurred on a Trip",
+            "method": "GET",
+            "path": "/api/ExpenseGroup/Lookup",
+            "parameters": {
+                "pageSize": {
+                    "location": "query",
+                    "description": "Number of items per page (max 1000)",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "pageNumber": {
+                    "location": "query",
+                    "description": "Page to display. Starts from 1.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "search": {
+                    "location": "query",
+                    "description": "Search string to match against Expense Group Name",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Task_Get",
+            "description": "Gets list of Tasks",
+            "method": "GET",
+            "path": "/api/Task",
+            "parameters": {
+                "UpdatedAfter": {
+                    "location": "query",
+                    "description": "Optional filter to records updated after a specific date.",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "pageSize": {
+                    "location": "query",
+                    "description": "Number of items per page. Defaults to 20.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "pageNumber": {
+                    "location": "query",
+                    "description": "Page to display. Starts from 1. Defaults to 1",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "Sort": {
+                    "location": "query",
+                    "description": "Optional sorting instruction. Currently possible values: \"DateUpdated\", \"DateCreated\", \"DateUpdated desc\", \"DateCreated desc\", \"SectionTitle\", \"Title\"",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "isComplete": {
+                    "location": "query",
+                    "description": "Optional filter to only display tasks linked to a Task Status where isComplete=false, or where isComplete=true",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                },
+                "ProjectID": {
+                    "location": "query",
+                    "description": "Optional filter to only display tasks belonging to a specific ProjectID",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Task_Post",
+            "description": "Create a Task",
+            "method": "POST",
+            "path": "/api/Task",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "ProjectIDFK",
+                        "SectionIDFK",
+                        "Title"
+                    ],
+                    "properties": {
+                        "ProjectIDFK": {
+                            "type": "integer"
+                        },
+                        "SectionIDFK": {
+                            "type": "integer"
+                        },
+                        "AccountTaskTypeIDFK": {
+                            "type": "integer"
+                        },
+                        "Title": {
+                            "type": "string"
+                        },
+                        "Description": {
+                            "type": "string"
+                        },
+                        "AssignedToUserIDFK": {
+                            "type": "integer"
+                        },
+                        "TaskPriorityCode": {
+                            "type": "string"
+                        },
+                        "DateStart": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "DateDue": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "EstimatedEffort": {
+                            "type": "number"
+                        },
+                        "Tags": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "Name": {
+                                        "type": "string"
+                                    },
+                                    "Color": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Task_Put",
+            "description": "Requires TaskID and a list of field names to update. The FieldsToUpdate field accepts a string array containing field names that should be updated.",
+            "method": "PUT",
+            "path": "/api/Task",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "FieldsToUpdate",
+                        "TaskID"
+                    ],
+                    "properties": {
+                        "TaskID": {
+                            "type": "integer"
+                        },
+                        "FieldsToUpdate": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "SectionIDFK": {
+                            "type": "integer"
+                        },
+                        "Title": {
+                            "type": "string"
+                        },
+                        "Description": {
+                            "type": "string"
+                        },
+                        "AssignedToUserIDFK": {
+                            "type": "integer"
+                        },
+                        "DateStart": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "DateDue": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "TaskPriorityCode": {
+                            "type": "string"
+                        },
+                        "EstimatedEffort": {
+                            "type": "number"
+                        },
+                        "TaskStatusCode": {
+                            "type": "string"
+                        },
+                        "PercentComplete": {
+                            "type": "integer"
+                        },
+                        "Tags": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "Name": {
+                                        "type": "string"
+                                    },
+                                    "Color": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Task_Delete",
+            "description": "Delete a Task",
+            "method": "DELETE",
+            "path": "/api/Task",
+            "parameters": {
+                "TaskID": {
+                    "location": "query",
+                    "description": "Task Id",
+                    "required": true,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Webhook_Get",
+            "description": "Get list of Webhook Subscriptions",
+            "method": "GET",
+            "path": "/api/Webhook"
+        },
+        {
+            "name": "Webhook_Post",
+            "description": "When you receive a webhook, you should respond with Http 200 OK Status Code, otherwise we will retry. To create a webhook, you need both the webhook_notifications scope, as well as the scope for the required entity being monitored.  Event values are: \"company_created\", \"company_deleted\", \"company_updated\", \"contact_created\", \"contact_deleted\", \"contact_updated\", \"invoice_created\", \"invoice_sent\",\"invoice_updated\",\"invoice_deleted\", \"project_created\", \"project_deleted\", \"project_updated\", \"task_created\", \"task_updated\",\"task_deleted\", \"timesheet_created\", \"timesheet_deleted\", \"timesheet_updated\".  You can subscribe to any webhook, but you will only receive notifications for data appropriate to the roles of your user account. There is an optional  Secret parameter (string 255 char max). This allows for webhook authentication. If provided, the Secret will be BASE 64 encoded and passed with notications as a basic authentication http header. i.e. Authorization Basic [BASE64 of Secret]\"",
+            "method": "POST",
+            "path": "/api/Webhook",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "event",
+                        "target_url"
+                    ],
+                    "properties": {
+                        "target_url": {
+                            "type": "string"
+                        },
+                        "event": {
+                            "type": "string"
+                        },
+                        "secret": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Webhook_DeleteByUrl",
+            "description": "Delete webhook subscription by URL",
+            "method": "DELETE",
+            "path": "/api/Webhook",
+            "parameters": {
+                "target_url": {
+                    "location": "query",
+                    "description": "Target URL that should be used to delete subscriptions",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "ScheduleAssignment_Get",
+            "description": "Schedule assignments are per-day, and link to a parent Schedule Series.",
+            "method": "GET",
+            "path": "/api/ScheduleAssignment",
+            "parameters": {
+                "UpdatedAfter": {
+                    "location": "query",
+                    "description": "Limit results to records updated after the specified date",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "ScheduleDateFrom": {
+                    "location": "query",
+                    "description": "Filter for schedule assignement  that are  on or after a specific date",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "ScheduleDateTo": {
+                    "location": "query",
+                    "description": "Filter for schedules that are on or before a specific date",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "ScheduleSeriesID": {
+                    "location": "query",
+                    "description": "Filter to records for a particular Schedule Series",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "UserID": {
+                    "location": "query",
+                    "description": "The UserID of a schedule user to filter assignments for. Only api users with Admin role can see all schedules across all users. Users with ScheduleUser role can access their own ScheduleSeries.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "UserEmail": {
+                    "location": "query",
+                    "description": "The email of the user who has been scheduled",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "pageSize": {
+                    "location": "query",
+                    "description": "Number of items per page (max 1000)",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "pageNumber": {
+                    "location": "query",
+                    "description": "Page to display. Starts from 1.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "Sort": {
+                    "location": "query",
+                    "description": "Optional sorting instruction. Currently possible values: \"DateUpdated\", \"DateCreated\", \"DateUpdated desc\", \"DateCreated desc\"",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "ProjectMember_Post",
+            "description": "the Amount columns for Cost, Budget, Rates should be specified as a decimal. Financial amounts assume the currency of the Customer company. Budget units depend on the Budget method set on the Project.",
+            "method": "POST",
+            "path": "/api/ProjectMember",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "isProjectManager": {
+                            "type": "boolean"
+                        },
+                        "isTimesheetAllowed": {
+                            "type": "boolean"
+                        },
+                        "isTimesheetApprover": {
+                            "type": "boolean"
+                        },
+                        "isTimesheetApprovalRequired": {
+                            "type": "boolean"
+                        },
+                        "canCreateTasks": {
+                            "type": "boolean"
+                        },
+                        "canDeleteTasks": {
+                            "type": "boolean"
+                        },
+                        "canCommentOnTasks": {
+                            "type": "boolean"
+                        },
+                        "canUpdateTasks": {
+                            "type": "boolean"
+                        },
+                        "ProjectIDFK": {
+                            "type": "integer"
+                        },
+                        "UserIDFK": {
+                            "type": "integer"
+                        },
+                        "CostAmount": {
+                            "type": "number"
+                        },
+                        "RateAmount": {
+                            "type": "number"
+                        },
+                        "BudgetAmount": {
+                            "type": "number"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "ScheduleSeries_Get",
+            "description": "Schedule Series represents a strip of time assigned to a user over a date range, for a certain number of hours per day. They can be for Leave or for project work Bookings.",
+            "method": "GET",
+            "path": "/api/ScheduleSeries",
+            "parameters": {
+                "UpdatedAfter": {
+                    "location": "query",
+                    "description": "Limit results to records updated after the specified date",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "ScheduleStartDateFrom": {
+                    "location": "query",
+                    "description": "Filter for schedules that start on or after a specific date",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "ScheduleStartDateTo": {
+                    "location": "query",
+                    "description": "Filter for schedules that start on or before a specific date",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "ScheduleEndDateFrom": {
+                    "location": "query",
+                    "description": "Filter for schedules that end on or after a specific date",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "ScheduleEndDateTo": {
+                    "location": "query",
+                    "description": "Filter for schedules that end on or before a specific date",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "UserID": {
+                    "location": "query",
+                    "description": "The UserID of a schedule user to filter assignments for. Only api users with Admin role can see all schedules across all users. Users with ScheduleUser role can access their own ScheduleSeries.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "UserEmail": {
+                    "location": "query",
+                    "description": "The email of the user who has been scheduled",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "TimeSheetCategoryID": {
+                    "location": "query",
+                    "description": "Filter for schedule records linked to a specific timesheeet category",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "TimeSheetCategoryName": {
+                    "location": "query",
+                    "description": "Filter for schedule records with a specific timesheeet category name (exact string match)",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "LeaveTypeID": {
+                    "location": "query",
+                    "description": "Filter to records of a particular leave type",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "ProjectID": {
+                    "location": "query",
+                    "description": "Filter to only include books linked to a specific project",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "CompanyID": {
+                    "location": "query",
+                    "description": "Filter to only include records linked to projects, where that project belongs to a specific customer company",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "pageSize": {
+                    "location": "query",
+                    "description": "Number of items per page (max 1000)",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "pageNumber": {
+                    "location": "query",
+                    "description": "Page to display. Starts from 1.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "Sort": {
+                    "location": "query",
+                    "description": "Optional sorting instruction. Currently possible values: \"DateUpdated\", \"DateCreated\", \"DateUpdated desc\", \"DateCreated desc\"",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Section_Get",
+            "description": "Gets list of Sections",
+            "method": "GET",
+            "path": "/api/Section",
+            "parameters": {
+                "ProjectID": {
+                    "location": "query",
+                    "description": "Get sections for Project with ProjectID",
+                    "required": true,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Section_Post",
+            "description": "Create a Section",
+            "method": "POST",
+            "path": "/api/Section",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "ProjectIDFK": {
+                            "type": "integer"
+                        },
+                        "Title": {
+                            "type": "string"
+                        },
+                        "StartDateUTC": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "EndDateUTC": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Section_Delete",
+            "description": "Delete a Section",
+            "method": "DELETE",
+            "path": "/api/Section",
+            "parameters": {
+                "SectionID": {
+                    "location": "query",
+                    "description": "Unique identifier for section",
+                    "required": true,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Estimate_GetByID",
+            "description": "Gets Estimate by Estimate ID",
+            "method": "GET",
+            "path": "/api/Estimate/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Estimate Estimate ID number",
+                    "required": true,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "TimesheetSubmission_Post",
+            "description": "Either provide a a specific Day (WholeDayOf) or any day in a Week (WholeWeekOf) to submit all draft timesheets in that day or week",
+            "method": "POST",
+            "path": "/api/TimesheetSubmission",
+            "parameters": {
+                "SendNotifications": {
+                    "location": "query",
+                    "description": "Send email alerts to timesheet approvers. Defaults to true",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                },
+                "WholeWeekOf": {
+                    "location": "query",
+                    "description": "A date (yyyy-MM-dd) that falls within  a Week to have all timesheets in that week submitted. Respects the First Day of Week setting in your account Timesheet Settings to determine the week range.",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "WholeDayOf": {
+                    "location": "query",
+                    "description": "A date (yyyy-MM-dd) to submit all timesheets on this day",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "UserID": {
+                    "location": "query",
+                    "description": "The user to submit timesheets for. Defaults to current user. Only allowed to be different from the current user when the current user has rights to Impersonate other users.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Company_GetByID",
+            "description": "Gets Company by Company ID",
+            "method": "GET",
+            "path": "/api/Company/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Company ID Number",
+                    "required": true,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "ExpenseApproval",
+            "description": "Submit Expenses for Approval.",
+            "method": "POST",
+            "path": "/api/ExpenseApproval/Submit",
+            "parameters": {
+                "UserID": {
+                    "location": "query",
+                    "description": "The user to submit the Expenses for. Defaults to current user. Only allowed to be different from the current user when the current user has rights to Impersonate other users.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "SendNotifications": {
+                    "location": "query",
+                    "description": "Send email alerts to expense approvers. Defaults to true",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Contact_Get",
+            "description": "Gets list of Contacts",
+            "method": "GET",
+            "path": "/api/Contact",
+            "parameters": {
+                "UpdatedAfter": {
+                    "location": "query",
+                    "description": "Limit results to records updated after the specified date",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "pageSize": {
+                    "location": "query",
+                    "description": "Number of items per page (max 1000)",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "pageNumber": {
+                    "location": "query",
+                    "description": "Page to display. Starts from 1.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "Sort": {
+                    "location": "query",
+                    "description": "Sort method",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "CompanyIDFK": {
+                    "location": "query",
+                    "description": "Company related to contacts",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Contact_Post",
+            "description": "Create a Contact",
+            "method": "POST",
+            "path": "/api/Contact",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "ContactEmail",
+                        "Firstname",
+                        "Lastname"
+                    ],
+                    "properties": {
+                        "CompanyIDFK": {
+                            "type": "integer"
+                        },
+                        "CompanyName": {
+                            "type": "string"
+                        },
+                        "CurrencyCode": {
+                            "type": "string"
+                        },
+                        "CompanyBillingAddress": {
+                            "type": "string"
+                        },
+                        "CompanyBillingAddressLine": {
+                            "type": "string"
+                        },
+                        "CompanyBillingAddressCity": {
+                            "type": "string"
+                        },
+                        "CompanyBillingAddressState": {
+                            "type": "string"
+                        },
+                        "CompanyBillingAddressPostCode": {
+                            "type": "string"
+                        },
+                        "CompanyBillingAddressCountryCode": {
+                            "type": "string"
+                        },
+                        "ContactEmail": {
+                            "type": "string"
+                        },
+                        "Firstname": {
+                            "type": "string"
+                        },
+                        "Lastname": {
+                            "type": "string"
+                        },
+                        "PositionTitle": {
+                            "type": "string"
+                        },
+                        "Mobile": {
+                            "type": "string"
+                        },
+                        "Phone": {
+                            "type": "string"
+                        },
+                        "UpdateExisting": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Payment_Get",
+            "description": "Gets list of Payments",
+            "method": "GET",
+            "path": "/api/Payment",
+            "parameters": {
+                "UpdatedAfter": {
+                    "location": "query",
+                    "description": "Limit results to records updated after the specified date",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "pageSize": {
+                    "location": "query",
+                    "description": "Number of items per page (max 1000)",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "pageNumber": {
+                    "location": "query",
+                    "description": "Page to display. Starts from 1.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Payment_Post",
+            "description": "Create new Payment and optionally assign payment allocations to Invoices",
+            "method": "POST",
+            "path": "/api/Payment",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "Amount": {
+                            "type": "number"
+                        },
+                        "PaymentNumber": {
+                            "type": "string"
+                        },
+                        "DateIssued": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "TransactionPrefix": {
+                            "type": "string"
+                        },
+                        "CustomerIDFK": {
+                            "type": "integer"
+                        },
+                        "ExchangeRate": {
+                            "type": "number"
+                        },
+                        "TransactionReference": {
+                            "type": "string"
+                        },
+                        "Notes": {
+                            "type": "string"
+                        },
+                        "PaymentProviderCode": {
+                            "type": "string"
+                        },
+                        "PaymentAllocations": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "InvoiceTransactionIDFK": {
+                                        "type": "integer"
+                                    },
+                                    "AllocationAmount": {
+                                        "type": "number"
+                                    },
+                                    "AllocationDate": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Expense_Get",
+            "description": "Gets list of Expenses",
+            "method": "GET",
+            "path": "/api/Expense",
+            "parameters": {
+                "UpdatedAfter": {
+                    "location": "query",
+                    "description": "Limit results to records updated after the specified date",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "ExpenseDateFrom": {
+                    "location": "query",
+                    "description": "Start date to filter",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "ExpenseDateTo": {
+                    "location": "query",
+                    "description": "End date to filter",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "UserEmail": {
+                    "location": "query",
+                    "description": "User email address",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "UserID": {
+                    "location": "query",
+                    "description": "User Id",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "CategoryName": {
+                    "location": "query",
+                    "description": "Category name",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "CustomerID": {
+                    "location": "query",
+                    "description": "Customer Id",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "ProjectID": {
+                    "location": "query",
+                    "description": "Project Id",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "isChargeable": {
+                    "location": "query",
+                    "description": "Chargeable status",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                },
+                "isInvoiced": {
+                    "location": "query",
+                    "description": "Invoiced status",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                },
+                "ExpenseReimbursementIDFK": {
+                    "location": "query",
+                    "description": "Expense reimbursement",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "ExpensePaymentMethodIDFK": {
+                    "location": "query",
+                    "description": "Expense payment method",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "ExpenseApprovalStatusCode": {
+                    "location": "query",
+                    "description": "Expense apprval status code",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "Search": {
+                    "location": "query",
+                    "description": "Search query",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "pageSize": {
+                    "location": "query",
+                    "description": "Number of items per page (max 1000)",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "pageNumber": {
+                    "location": "query",
+                    "description": "Page to display. Starts from 1.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "Sort": {
+                    "location": "query",
+                    "description": "Sort method",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Expense_Post",
+            "description": "Create an Expense",
+            "method": "POST",
+            "path": "/api/Expense",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "ExpenseDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "UserIDFK": {
+                            "type": "integer"
+                        },
+                        "UserEmail": {
+                            "type": "string"
+                        },
+                        "ExpenseCategoryIDFK": {
+                            "type": "integer"
+                        },
+                        "ExpenseCategoryName": {
+                            "type": "string"
+                        },
+                        "isChargeable": {
+                            "type": "boolean"
+                        },
+                        "isReimbursable": {
+                            "type": "boolean"
+                        },
+                        "Quantity": {
+                            "type": "number"
+                        },
+                        "CustomerIDFK": {
+                            "type": "integer"
+                        },
+                        "CustomerName": {
+                            "type": "string"
+                        },
+                        "ProjectIDFK": {
+                            "type": "integer"
+                        },
+                        "ProjectName": {
+                            "type": "string"
+                        },
+                        "TaskIDFK": {
+                            "type": "integer"
+                        },
+                        "CurrencyCode": {
+                            "type": "string"
+                        },
+                        "ExchangeRate": {
+                            "type": "number"
+                        },
+                        "Amount": {
+                            "type": "number"
+                        },
+                        "TaxIDFK": {
+                            "type": "integer"
+                        },
+                        "TaxName": {
+                            "type": "string"
+                        },
+                        "TransactionTaxConfigCode": {
+                            "type": "string"
+                        },
+                        "GroupTripName": {
+                            "type": "string"
+                        },
+                        "ExpensePaymentMethodIDFK": {
+                            "type": "integer"
+                        },
+                        "Merchant": {
+                            "type": "string"
+                        },
+                        "MerchantTaxNumber": {
+                            "type": "string"
+                        },
+                        "Notes": {
+                            "type": "string"
+                        },
+                        "VerifyAndSave": {
+                            "type": "boolean"
+                        },
+                        "FileAttachmentIDs": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Expense_Put",
+            "description": "Update an Expense",
+            "method": "PUT",
+            "path": "/api/Expense",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "ExpenseID",
+                        "FieldsToUpdate"
+                    ],
+                    "properties": {
+                        "ExpenseID": {
+                            "type": "integer"
+                        },
+                        "FieldsToUpdate": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "ExpenseDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "ExpenseCategoryIDFK": {
+                            "type": "integer"
+                        },
+                        "isChargeable": {
+                            "type": "boolean"
+                        },
+                        "isReimbursable": {
+                            "type": "boolean"
+                        },
+                        "Quantity": {
+                            "type": "number"
+                        },
+                        "CustomerIDFK": {
+                            "type": "integer"
+                        },
+                        "ProjectIDFK": {
+                            "type": "integer"
+                        },
+                        "TaskIDFK": {
+                            "type": "integer"
+                        },
+                        "CurrencyCode": {
+                            "type": "string"
+                        },
+                        "ExchangeRate": {
+                            "type": "number"
+                        },
+                        "Amount": {
+                            "type": "number"
+                        },
+                        "TaxIDFK": {
+                            "type": "integer"
+                        },
+                        "TransactionTaxConfigCode": {
+                            "type": "string"
+                        },
+                        "GroupTripName": {
+                            "type": "string"
+                        },
+                        "ExpensePaymentMethodIDFK": {
+                            "type": "integer"
+                        },
+                        "Merchant": {
+                            "type": "string"
+                        },
+                        "MerchantTaxNumber": {
+                            "type": "string"
+                        },
+                        "Notes": {
+                            "type": "string"
+                        },
+                        "VerifyAndSave": {
+                            "type": "boolean"
+                        },
+                        "FileAttachmentIDs": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Expense_Delete",
+            "description": "Delete a Timesheet Entry",
+            "method": "DELETE",
+            "path": "/api/Expense"
+        },
+        {
+            "name": "ScheduleSeries_AddLeave",
+            "description": "Create new Leave Booking",
+            "method": "POST",
+            "path": "/ScheduleSeries/AddLeave",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "LeaveUserIDFK": {
+                            "type": "integer"
+                        },
+                        "LeaveNotify": {
+                            "type": "boolean"
+                        },
+                        "LeaveHoursPerDay": {
+                            "type": "number"
+                        },
+                        "LeaveTypeIDFK": {
+                            "type": "integer"
+                        },
+                        "LeaveNotes": {
+                            "type": "string"
+                        },
+                        "LeaveStartDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "LeaveEndDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "ExpenseAttachment",
+            "description": "Create expense attachment",
+            "method": "POST",
+            "path": "/api/Expense/Attachment",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "File"
+                    ],
+                    "properties": {
+                        "File": {
+                            "type": "string",
+                            "format": "binary"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "TimesheetTimer_GetRunningTimer",
+            "description": "Gets the  Running Timer if there is one for a user.",
+            "method": "GET",
+            "path": "/api/TimesheetTimer",
+            "parameters": {
+                "UserID": {
+                    "location": "query",
+                    "description": "Optional - User ID number if impersonating a different user. Otherwise assumes the current user. Only users with certain security roles have permission to impersonate other users",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Account_Get",
+            "description": "Account Details",
+            "method": "GET",
+            "path": "/api/Account"
+        },
+        {
+            "name": "Contact_GetByID",
+            "description": "Gets Contact by Contact ID",
+            "method": "GET",
+            "path": "/api/Contact/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Contact ID number",
+                    "required": true,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Invoice_Get",
+            "description": "TransactionStatusCode values are: \"Draft\", \"Sent\", \"Late\", \"Paid\", \"Partial\", \"Void\"",
+            "method": "GET",
+            "path": "/api/Invoice",
+            "parameters": {
+                "UpdatedAfter": {
+                    "location": "query",
+                    "description": "Limit results to records updated after the specified date",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "pageSize": {
+                    "location": "query",
+                    "description": "Number of items per page (max 1000)",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "pageNumber": {
+                    "location": "query",
+                    "description": "Page to display. Starts from 1.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "Sort": {
+                    "location": "query",
+                    "description": "Sort method",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "CompanyIDFK": {
+                    "location": "query",
+                    "description": "Invoice issued company",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Invoice_Post",
+            "description": "Create a new draft invoice",
+            "method": "POST",
+            "path": "/api/Invoice",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "TransactionPrefix": {
+                            "type": "string"
+                        },
+                        "InvoiceNumber": {
+                            "type": "string"
+                        },
+                        "CompanyIDFK": {
+                            "type": "integer"
+                        },
+                        "CompanyName": {
+                            "type": "string"
+                        },
+                        "Firstname": {
+                            "type": "string"
+                        },
+                        "Lastname": {
+                            "type": "string"
+                        },
+                        "Email": {
+                            "type": "string"
+                        },
+                        "CurrencyCode": {
+                            "type": "string"
+                        },
+                        "ExchangeRate": {
+                            "type": "number"
+                        },
+                        "InvoiceTemplateIDFK": {
+                            "type": "integer"
+                        },
+                        "Subject": {
+                            "type": "string"
+                        },
+                        "CustomerPONumber": {
+                            "type": "string"
+                        },
+                        "DateIssued": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "PaymentTerms": {
+                            "type": "integer"
+                        },
+                        "DueDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "TransactionTaxConfigCode": {
+                            "type": "string"
+                        },
+                        "Notes": {
+                            "type": "string"
+                        },
+                        "LineItems": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "Quantity",
+                                    "UnitPrice"
+                                ],
+                                "properties": {
+                                    "InventoryItemIDFK": {
+                                        "type": "integer"
+                                    },
+                                    "InventoryItemName": {
+                                        "type": "string"
+                                    },
+                                    "Description": {
+                                        "type": "string"
+                                    },
+                                    "Quantity": {
+                                        "type": "number"
+                                    },
+                                    "UnitPrice": {
+                                        "type": "number"
+                                    },
+                                    "TaxIDFK": {
+                                        "type": "integer"
+                                    },
+                                    "TaxName": {
+                                        "type": "string"
+                                    },
+                                    "TaxPercent": {
+                                        "type": "number"
+                                    },
+                                    "Discount": {
+                                        "type": "number"
+                                    },
+                                    "ProjectIDFK": {
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Invoice_GetByID",
+            "description": "Gets Invoice by Invoice ID",
+            "method": "GET",
+            "path": "/api/Invoice/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Invoice Transaction ID number",
+                    "required": true,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Inventory_Get",
+            "description": "Gets list of Inventory",
+            "method": "GET",
+            "path": "/api/Inventory",
+            "parameters": {
+                "UpdatedAfter": {
+                    "location": "query",
+                    "description": "Limit results to records updated after the specified date",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "pageSize": {
+                    "location": "query",
+                    "description": "Number of items per page (max 1000)",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "pageNumber": {
+                    "location": "query",
+                    "description": "Page to display. Starts from 1.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Timesheet_GetByID",
+            "description": "Gets a Timesheet Entry by Timesheet ID",
+            "method": "GET",
+            "path": "/api/Timesheet/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Timesheet ID number",
+                    "required": true,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Timesheet_Delete",
+            "description": "Delete a Timesheet Entry",
+            "method": "DELETE",
+            "path": "/api/Timesheet/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "The id of the timesheet entry to be deleted",
+                    "required": true,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "TaskStatus_Get",
+            "description": "Gets list of Task Statuses",
+            "method": "GET",
+            "path": "/api/TaskStatus"
+        },
+        {
+            "name": "Expense_GetByID",
+            "description": "Gets an Expense Entry by Expense ID",
+            "method": "GET",
+            "path": "/api/Expense/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Expense ID number",
+                    "required": true,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Project_GetByID",
+            "description": "Gets Project by Project ID",
+            "method": "GET",
+            "path": "/api/Project/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Project ID number",
+                    "required": true,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "CompanyLookup",
+            "description": "Certain roles see a restricted set of companies based on their project memberships",
+            "method": "GET",
+            "path": "/api/Company/Lookup",
+            "parameters": {
+                "pageSize": {
+                    "location": "query",
+                    "description": "Number of items per page (max 1000)",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "pageNumber": {
+                    "location": "query",
+                    "description": "Page to display. Starts from 1.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "search": {
+                    "location": "query",
+                    "description": "Search string to match against Company title",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Estimate_Get",
+            "description": "EstimateStatusCode values are: \"Draft\", \"Sent\", \"Accepted\", \"Converted\", \"Expired\", \"Rejected\"",
+            "method": "GET",
+            "path": "/api/Estimate",
+            "parameters": {
+                "UpdatedAfter": {
+                    "location": "query",
+                    "description": "Limit results to records updated after the specified date",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "pageSize": {
+                    "location": "query",
+                    "description": "Number of items per page (max 1000)",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "pageNumber": {
+                    "location": "query",
+                    "description": "Page to display. Starts from 1.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "Sort": {
+                    "location": "query",
+                    "description": "Sort method",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "CompanyIDFK": {
+                    "location": "query",
+                    "description": "Company related to estimates",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Estimate_Post",
+            "description": "Create a new draft Estimate",
+            "method": "POST",
+            "path": "/api/Estimate",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "EstimatePrefix": {
+                            "type": "string"
+                        },
+                        "EstimateNumber": {
+                            "type": "string"
+                        },
+                        "CompanyIDFK": {
+                            "type": "integer"
+                        },
+                        "CompanyName": {
+                            "type": "string"
+                        },
+                        "Firstname": {
+                            "type": "string"
+                        },
+                        "Lastname": {
+                            "type": "string"
+                        },
+                        "Email": {
+                            "type": "string"
+                        },
+                        "CurrencyCode": {
+                            "type": "string"
+                        },
+                        "ExchangeRate": {
+                            "type": "number"
+                        },
+                        "InvoiceTemplateIDFK": {
+                            "type": "integer"
+                        },
+                        "Subject": {
+                            "type": "string"
+                        },
+                        "CustomerPONumber": {
+                            "type": "string"
+                        },
+                        "DateIssued": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "DueDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "EstimateTaxConfigCode": {
+                            "type": "string"
+                        },
+                        "Notes": {
+                            "type": "string"
+                        },
+                        "LineItems": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "Quantity",
+                                    "UnitPrice"
+                                ],
+                                "properties": {
+                                    "InventoryItemIDFK": {
+                                        "type": "integer"
+                                    },
+                                    "InventoryItemName": {
+                                        "type": "string"
+                                    },
+                                    "Description": {
+                                        "type": "string"
+                                    },
+                                    "Quantity": {
+                                        "type": "number"
+                                    },
+                                    "UnitPrice": {
+                                        "type": "number"
+                                    },
+                                    "TaxIDFK": {
+                                        "type": "integer"
+                                    },
+                                    "TaxName": {
+                                        "type": "string"
+                                    },
+                                    "TaxPercent": {
+                                        "type": "number"
+                                    },
+                                    "Discount": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Project_Get",
+            "description": "Gets list of Projects",
+            "method": "GET",
+            "path": "/api/Project",
+            "parameters": {
+                "UpdatedAfter": {
+                    "location": "query",
+                    "description": "Only show project records updated after a certain date (UTC)",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "pageSize": {
+                    "location": "query",
+                    "description": "Number of items per page (max 1000)",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "pageNumber": {
+                    "location": "query",
+                    "description": "Page to display. Starts from 1.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "Sort": {
+                    "location": "query",
+                    "description": "A column to sort on. Current possible values: \"DateUpdated\", \"DateCreated\", \"DateUpdated desc\", \"DateCreated desc\"",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "TimesheetUserID": {
+                    "location": "query",
+                    "description": "Filter to the projects that the supplied UserID can add timesheets to",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "includeArchived": {
+                    "location": "query",
+                    "description": "Include Archived Projects in the results",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Project_Post",
+            "description": "Create a Project",
+            "method": "POST",
+            "path": "/api/Project",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "ProjectTitle"
+                    ],
+                    "properties": {
+                        "CompanyIDFK": {
+                            "type": "integer"
+                        },
+                        "CompanyName": {
+                            "type": "string"
+                        },
+                        "CurrencyCode": {
+                            "type": "string"
+                        },
+                        "ProjectTitle": {
+                            "type": "string"
+                        },
+                        "ProjectCode": {
+                            "type": "string"
+                        },
+                        "ProjectNotes": {
+                            "type": "string"
+                        },
+                        "TimesheetApprovalRequiredbyDefault": {
+                            "type": "boolean"
+                        },
+                        "PopulateDefaultProjectMembers": {
+                            "type": "boolean"
+                        },
+                        "isTaskRequiredOnTimesheet": {
+                            "type": "boolean"
+                        },
+                        "StartDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "EndDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "BudgetAmount": {
+                            "type": "number"
+                        },
+                        "BudgetHours": {
+                            "type": "number"
+                        },
+                        "ProjectStatusCode": {
+                            "type": "string"
+                        },
+                        "ProjectCategoryIDFK": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Project_Put",
+            "description": "Update a Project",
+            "method": "PUT",
+            "path": "/api/Project",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "ProjectID": {
+                            "type": "integer"
+                        },
+                        "FieldsToUpdate": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "ProjectTitle": {
+                            "type": "string"
+                        },
+                        "ProjectNotes": {
+                            "type": "string"
+                        },
+                        "TimesheetApprovalRequiredbyDefault": {
+                            "type": "boolean"
+                        },
+                        "isTaskRequiredOnTimesheet": {
+                            "type": "boolean"
+                        },
+                        "StartDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "EndDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "BudgetAmount": {
+                            "type": "number"
+                        },
+                        "BudgetHours": {
+                            "type": "number"
+                        },
+                        "ProjectStatusCode": {
+                            "type": "string"
+                        },
+                        "ProjectCategoryIDFK": {
+                            "type": "integer"
+                        },
+                        "ProjectBillableTypeCode": {
+                            "type": "string"
+                        },
+                        "ProjectBudgetTypeCode": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "TimesheetTimer_StartTimer",
+            "description": "Starts a Timer running on an existing Timesheet Entry",
+            "method": "POST",
+            "path": "/api/TimesheetTimer/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "id of timesheet entry that should be used as the basis for running a timer. If the existing timesheet is not on the current day, or you have start/end times enabled, then a new timesheet will be created for the timer.",
+                    "required": true,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "UserID": {
+                    "location": "query",
+                    "description": "Optional - User ID number if impersonating a different user. Otherwise assumes the current user. Only users with certain security roles have permission to impersonate other users",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "TimesheetTimer_StopTimer",
+            "description": "Stop the timer running on an existing Timesheet Entry",
+            "method": "DELETE",
+            "path": "/api/TimesheetTimer/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "The ID of the existing timesheet entry that needs its timer stopped",
+                    "required": true,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "UserID": {
+                    "location": "query",
+                    "description": "Optional - User ID number if impersonating a different user. Otherwise assumes the current user. Only users with certain security roles have permission to impersonate other users",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "ProjectLookup",
+            "description": "Gets minimal list of active Projects for the current user",
+            "method": "GET",
+            "path": "/api/Project/Lookup",
+            "parameters": {
+                "pageSize": {
+                    "location": "query",
+                    "description": "Number of items per page (max 1000)",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "pageNumber": {
+                    "location": "query",
+                    "description": "Page to display. Starts from 1.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "TimesheetUserID": {
+                    "location": "query",
+                    "description": "Optionally Filter to the projects that the supplied UserID can add timesheets to",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "CompanyIDFK": {
+                    "location": "query",
+                    "description": "Optionally Filter for a specific Company ID",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "search": {
+                    "location": "query",
+                    "description": "Search string to match against Project title and Customer name",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Payment_GetByID",
+            "description": "Gets Payment by Payment Transaction ID",
+            "method": "GET",
+            "path": "/api/Payment/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Invoice Transaction ID Number",
+                    "required": true,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "ProjectTimesheetCategory_Get",
+            "description": "The default sort order is by isBillable desc, Name asc",
+            "method": "GET",
+            "path": "/api/ProjectTimesheetCategory",
+            "parameters": {
+                "ProjectID": {
+                    "location": "query",
+                    "description": "Get categories filtered by ProjectID",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "UserProfile_Get",
+            "description": "Admin and Invoice Managers can see all. Other users are limited to seeing their own profile.",
+            "method": "GET",
+            "path": "/api/UserProfile",
+            "parameters": {
+                "Roles": {
+                    "location": "query",
+                    "description": "Optional list of comma separated role codes to filter users by (e.g. \"TimesheetUser,Admin\")",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "Tags": {
+                    "location": "query",
+                    "description": "User role tags",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "CurrentUserOnly": {
+                    "location": "query",
+                    "description": "Optional boolean (true/false) to filter to only show current authenticated user (always true for non Admin/InvoiceManager users)",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                },
+                "CompanyIDFK": {
+                    "location": "query",
+                    "description": "Optionally filter by Company ID",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Task_GetByID",
+            "description": "Gets Task by Task ID",
+            "method": "GET",
+            "path": "/api/Task/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Task ID number",
+                    "required": true,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Company_Get",
+            "description": "Gets list of Companies",
+            "method": "GET",
+            "path": "/api/Company",
+            "parameters": {
+                "UpdatedAfter": {
+                    "location": "query",
+                    "description": "Limit results to records updated after the specified date",
+                    "schema": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                    }
+                },
+                "pageSize": {
+                    "location": "query",
+                    "description": "Number of results per page",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "pageNumber": {
+                    "location": "query",
+                    "description": "1 based page number to retrieve",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "Sort": {
+                    "location": "query",
+                    "description": "(optional) Supply one of: \"DateUpdated\", \"DateCreated\", \"CompanyName\",\"DateUpdated desc\",\"DateCreated desc\", \"CompanyName desc\"",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Company_Post",
+            "description": "Create a Company",
+            "method": "POST",
+            "path": "/api/Company",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "CompanyName"
+                    ],
+                    "properties": {
+                        "CompanyName": {
+                            "type": "string"
+                        },
+                        "CurrencyCode": {
+                            "type": "string"
+                        },
+                        "BillingAddressLine": {
+                            "type": "string"
+                        },
+                        "BillingAddressCity": {
+                            "type": "string"
+                        },
+                        "BillingAddressState": {
+                            "type": "string"
+                        },
+                        "BillingAddressPostCode": {
+                            "type": "string"
+                        },
+                        "BillingCountryCode": {
+                            "type": "string"
+                        },
+                        "BillingAddress": {
+                            "type": "string"
+                        },
+                        "Phone": {
+                            "type": "string"
+                        },
+                        "Fax": {
+                            "type": "string"
+                        },
+                        "website": {
+                            "type": "string"
+                        },
+                        "TaxNumber": {
+                            "type": "string"
+                        },
+                        "Comments": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Company_Put",
+            "description": "Requires CompanyID and a list of field names to update. The FieldsToUpdate field accepts a string array containing field names that should be updated.",
+            "method": "PUT",
+            "path": "/api/Company",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "CompanyID": {
+                            "type": "integer"
+                        },
+                        "FieldsToUpdate": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "CompanyName": {
+                            "type": "string"
+                        },
+                        "BillingAddressLine": {
+                            "type": "string"
+                        },
+                        "BillingAddressCity": {
+                            "type": "string"
+                        },
+                        "BillingAddressState": {
+                            "type": "string"
+                        },
+                        "BillingAddressPostCode": {
+                            "type": "string"
+                        },
+                        "BillingCountryCode": {
+                            "type": "string"
+                        },
+                        "BillingAddress": {
+                            "type": "string"
+                        },
+                        "Phone": {
+                            "type": "string"
+                        },
+                        "Fax": {
+                            "type": "string"
+                        },
+                        "website": {
+                            "type": "string"
+                        },
+                        "TaxNumber": {
+                            "type": "string"
+                        },
+                        "Comments": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Inventory_GetByID",
+            "description": "Gets InventoryItem by InventoryItem ID",
+            "method": "GET",
+            "path": "/api/Inventory/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "InventoryItem ID number",
+                    "required": true,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Currency_Get",
+            "description": "Gets list of Currencies",
+            "method": "GET",
+            "path": "/api/Currency"
+        },
+        {
+            "name": "Webhook_GetByID",
+            "description": "Get Webhook Subscription by SubscriptionID",
+            "method": "GET",
+            "path": "/api/Webhook/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Subscription Id",
+                    "required": true,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Webhook_Delete",
+            "description": "Delete Webhook Subscription by ID",
+            "method": "DELETE",
+            "path": "/api/Webhook/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Subscription id to be deleted",
+                    "required": true,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "ExpensePaymentMethodLookup",
+            "description": "Gets minimal list of Expense Payment Methods.",
+            "method": "GET",
+            "path": "/api/ExpensePaymentMethod/Lookup"
+        },
+        {
+            "name": "ExpenseCategory_Get",
+            "description": "The default sort order is by Name asc",
+            "method": "GET",
+            "path": "/api/ExpenseCategory",
+            "parameters": {
+                "isEnabled": {
+                    "location": "query",
+                    "description": "Optional filter on for enabled/disabled categories. Defaults to true.",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                }
+            }
+        }
+    ]
+}

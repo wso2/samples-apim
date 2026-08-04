@@ -1,0 +1,1098 @@
+{
+    "serviceUrl": "https://rest.ably.io",
+    "tools": [
+        {
+            "name": "getMessagesByChannel",
+            "description": "Get message history for a channel",
+            "method": "GET",
+            "path": "/channels/{channel_id}/messages",
+            "parameters": {
+                "channel_id": {
+                    "location": "path",
+                    "description": "The [Channel's ID](https://www.ably.io/documentation/rest/channels).",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "start": {
+                    "location": "query",
+                    "description": "Beginning of time The start of the query interval as a time in milliseconds since the epoch. A message qualifies as a member of the result set if it was received at or after this time.",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "The maximum number of records to return. A limit greater than 1,000 is invalid.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "end": {
+                    "location": "query",
+                    "description": "The end of the query interval as a time in milliseconds since the epoch. A message qualifies as a member of the result set if it was received at or before this time.",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "direction": {
+                    "location": "query",
+                    "description": "The direction of this query. The direction determines the order of the returned result array, but also determines which end of the query interval is the start point for the search. For example, a forwards query uses start as the start point, whereas a backwards query uses end as the start point.",
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "forwards",
+                            "backwards"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "publishMessagesToChannel",
+            "description": "Publish a message to the specified channel",
+            "method": "POST",
+            "path": "/channels/{channel_id}/messages",
+            "parameters": {
+                "channel_id": {
+                    "location": "path",
+                    "description": "The [Channel's ID](https://www.ably.io/documentation/rest/channels).",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "clientId": {
+                            "type": "string"
+                        },
+                        "connectionId": {
+                            "type": "string"
+                        },
+                        "data": {
+                            "type": "string"
+                        },
+                        "encoding": {
+                            "type": "string"
+                        },
+                        "extras": {
+                            "type": "object",
+                            "properties": {
+                                "push": {
+                                    "type": "object",
+                                    "properties": {
+                                        "apns": {
+                                            "type": "object",
+                                            "properties": {
+                                                "notification": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "body": {
+                                                            "type": "string"
+                                                        },
+                                                        "collapseKey": {
+                                                            "type": "string"
+                                                        },
+                                                        "icon": {
+                                                            "type": "string"
+                                                        },
+                                                        "sound": {
+                                                            "type": "string"
+                                                        },
+                                                        "title": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "data": {
+                                            "type": "string"
+                                        },
+                                        "fcm": {
+                                            "type": "object",
+                                            "properties": {
+                                                "notification": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "body": {
+                                                            "type": "string"
+                                                        },
+                                                        "collapseKey": {
+                                                            "type": "string"
+                                                        },
+                                                        "icon": {
+                                                            "type": "string"
+                                                        },
+                                                        "sound": {
+                                                            "type": "string"
+                                                        },
+                                                        "title": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "notification": {
+                                            "type": "object",
+                                            "properties": {
+                                                "body": {
+                                                    "type": "string"
+                                                },
+                                                "collapseKey": {
+                                                    "type": "string"
+                                                },
+                                                "icon": {
+                                                    "type": "string"
+                                                },
+                                                "sound": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "web": {
+                                            "type": "object",
+                                            "properties": {
+                                                "notification": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "body": {
+                                                            "type": "string"
+                                                        },
+                                                        "collapseKey": {
+                                                            "type": "string"
+                                                        },
+                                                        "icon": {
+                                                            "type": "string"
+                                                        },
+                                                        "sound": {
+                                                            "type": "string"
+                                                        },
+                                                        "title": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "id": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "timestamp": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "getPushDeviceDetails",
+            "description": "Get the full details of a device.",
+            "method": "GET",
+            "path": "/push/deviceRegistrations/{device_id}",
+            "parameters": {
+                "device_id": {
+                    "location": "path",
+                    "description": "Device's ID.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "putPushDeviceDetails",
+            "description": "Device registrations can be upserted (the existing registration is replaced entirely) with a PUT operation. Only clientId, metadata and push.recipient are mutable.",
+            "method": "PUT",
+            "path": "/push/deviceRegistrations/{device_id}",
+            "parameters": {
+                "device_id": {
+                    "location": "path",
+                    "description": "Device's ID.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "clientId": {
+                            "type": "string"
+                        },
+                        "deviceSecret": {
+                            "type": "string"
+                        },
+                        "formFactor": {
+                            "type": "string",
+                            "enum": [
+                                "phone",
+                                "tablet",
+                                "desktop",
+                                "tv",
+                                "watch",
+                                "car",
+                                "embedded"
+                            ]
+                        },
+                        "id": {
+                            "type": "string"
+                        },
+                        "metadata": {
+                            "type": "object",
+                            "properties": {}
+                        },
+                        "platform": {
+                            "type": "string",
+                            "enum": [
+                                "ios",
+                                "android"
+                            ]
+                        },
+                        "pushRecipient": {
+                            "type": "object",
+                            "properties": {
+                                "clientId": {
+                                    "type": "string"
+                                },
+                                "deviceId": {
+                                    "type": "string"
+                                },
+                                "deviceToken": {
+                                    "type": "string"
+                                },
+                                "registrationToken": {
+                                    "type": "string"
+                                },
+                                "transportType": {
+                                    "type": "string",
+                                    "enum": [
+                                        "apns",
+                                        "fcm",
+                                        "gcm"
+                                    ]
+                                }
+                            }
+                        },
+                        "pushState": {
+                            "type": "string",
+                            "enum": [
+                                "Active",
+                                "Failing",
+                                "Failed"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "unregisterPushDevice",
+            "description": "Unregisters a single device by its device ID. All its subscriptions for receiving push notifications through channels will also be deleted.",
+            "method": "DELETE",
+            "path": "/push/deviceRegistrations/{device_id}",
+            "parameters": {
+                "device_id": {
+                    "location": "path",
+                    "description": "Device's ID.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "patchPushDeviceDetails",
+            "description": "Specific attributes of an existing registration can be updated. Only clientId, metadata and push.recipient are mutable.",
+            "method": "PATCH",
+            "path": "/push/deviceRegistrations/{device_id}",
+            "parameters": {
+                "device_id": {
+                    "location": "path",
+                    "description": "Device's ID.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "clientId": {
+                            "type": "string"
+                        },
+                        "deviceSecret": {
+                            "type": "string"
+                        },
+                        "formFactor": {
+                            "type": "string",
+                            "enum": [
+                                "phone",
+                                "tablet",
+                                "desktop",
+                                "tv",
+                                "watch",
+                                "car",
+                                "embedded"
+                            ]
+                        },
+                        "id": {
+                            "type": "string"
+                        },
+                        "metadata": {
+                            "type": "object",
+                            "properties": {}
+                        },
+                        "platform": {
+                            "type": "string",
+                            "enum": [
+                                "ios",
+                                "android"
+                            ]
+                        },
+                        "pushRecipient": {
+                            "type": "object",
+                            "properties": {
+                                "clientId": {
+                                    "type": "string"
+                                },
+                                "deviceId": {
+                                    "type": "string"
+                                },
+                                "deviceToken": {
+                                    "type": "string"
+                                },
+                                "registrationToken": {
+                                    "type": "string"
+                                },
+                                "transportType": {
+                                    "type": "string",
+                                    "enum": [
+                                        "apns",
+                                        "fcm",
+                                        "gcm"
+                                    ]
+                                }
+                            }
+                        },
+                        "pushState": {
+                            "type": "string",
+                            "enum": [
+                                "Active",
+                                "Failing",
+                                "Failed"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "getMetadataOfChannel",
+            "description": "Get metadata of a channel",
+            "method": "GET",
+            "path": "/channels/{channel_id}",
+            "parameters": {
+                "channel_id": {
+                    "location": "path",
+                    "description": "The [Channel's ID](https://www.ably.io/documentation/rest/channels).",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getRegisteredPushDevices",
+            "description": "List of device details of devices registed for push notifications.",
+            "method": "GET",
+            "path": "/push/deviceRegistrations",
+            "parameters": {
+                "deviceId": {
+                    "location": "query",
+                    "description": "Optional filter to restrict to devices associated with that deviceId.",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "clientId": {
+                    "location": "query",
+                    "description": "Optional filter to restrict to devices associated with that clientId.",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "The maximum number of records to return.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "registerPushDevice",
+            "description": "Register a device’s details, including the information necessary to deliver push notifications to it. Requires \"push-admin\" capability.",
+            "method": "POST",
+            "path": "/push/deviceRegistrations",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "clientId": {
+                            "type": "string"
+                        },
+                        "deviceSecret": {
+                            "type": "string"
+                        },
+                        "formFactor": {
+                            "type": "string",
+                            "enum": [
+                                "phone",
+                                "tablet",
+                                "desktop",
+                                "tv",
+                                "watch",
+                                "car",
+                                "embedded"
+                            ]
+                        },
+                        "id": {
+                            "type": "string"
+                        },
+                        "metadata": {
+                            "type": "object",
+                            "properties": {}
+                        },
+                        "platform": {
+                            "type": "string",
+                            "enum": [
+                                "ios",
+                                "android"
+                            ]
+                        },
+                        "pushRecipient": {
+                            "type": "object",
+                            "properties": {
+                                "clientId": {
+                                    "type": "string"
+                                },
+                                "deviceId": {
+                                    "type": "string"
+                                },
+                                "deviceToken": {
+                                    "type": "string"
+                                },
+                                "registrationToken": {
+                                    "type": "string"
+                                },
+                                "transportType": {
+                                    "type": "string",
+                                    "enum": [
+                                        "apns",
+                                        "fcm",
+                                        "gcm"
+                                    ]
+                                }
+                            }
+                        },
+                        "pushState": {
+                            "type": "string",
+                            "enum": [
+                                "Active",
+                                "Failing",
+                                "Failed"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "unregisterAllPushDevices",
+            "description": "Unregisters devices. All their subscriptions for receiving push notifications through channels will also be deleted.",
+            "method": "DELETE",
+            "path": "/push/deviceRegistrations",
+            "parameters": {
+                "deviceId": {
+                    "location": "query",
+                    "description": "Optional filter to restrict to devices associated with that deviceId. Cannot be used with clientId.",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "clientId": {
+                    "location": "query",
+                    "description": "Optional filter to restrict to devices associated with that clientId. Cannot be used with deviceId.",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getMetadataOfAllChannels",
+            "description": "Enumerate all active channels of the application",
+            "method": "GET",
+            "path": "/channels",
+            "parameters": {
+                "limit": {
+                    "location": "query",
+                    "description": "Optionally specifies the maximum number of results to return. A limit greater than 1000 is unsupported",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "prefix": {
+                    "location": "query",
+                    "description": "Optionally limits the query to only those channels whose name starts with the given prefix",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "by": {
+                    "location": "query",
+                    "description": "optionally specifies whether to return just channel names (by=id) or ChannelDetails (by=value)",
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "value",
+                            "id"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "requestAccessToken",
+            "description": "This is the means by which clients obtain access tokens to use the service. You can see how to construct an Ably TokenRequest in the [Ably TokenRequest spec](https://www.ably.io/documentation/rest-api/token-request-spec) documentation, although we recommend you use an Ably SDK rather to create a TokenRequest, as the construction of a TokenRequest is complex. The resulting token response object contains the token properties as defined in Ably TokenRequest spec. Authentication is not required if using a Signed TokenRequest.",
+            "method": "POST",
+            "path": "/keys/{keyName}/requestToken",
+            "parameters": {
+                "keyName": {
+                    "location": "path",
+                    "description": "The [key name](https://www.ably.io/documentation/rest-api/token-request-spec#api-key-format) comprises of the app ID and key ID of an API key.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "oneOf": [
+                        {
+                            "type": "object",
+                            "required": [
+                                "keyName",
+                                "capability",
+                                "timestamp",
+                                "nonce"
+                            ],
+                            "properties": {
+                                "capability": {
+                                    "type": "object",
+                                    "properties": {}
+                                },
+                                "clientId": {
+                                    "type": "string"
+                                },
+                                "keyName": {
+                                    "type": "string"
+                                },
+                                "nonce": {
+                                    "type": "string"
+                                },
+                                "timestamp": {
+                                    "type": "integer"
+                                }
+                            }
+                        },
+                        {
+                            "allOf": [
+                                {
+                                    "type": "object",
+                                    "required": [
+                                        "keyName",
+                                        "capability",
+                                        "timestamp",
+                                        "nonce"
+                                    ],
+                                    "properties": {
+                                        "capability": {
+                                            "type": "object",
+                                            "properties": {}
+                                        },
+                                        "clientId": {
+                                            "type": "string"
+                                        },
+                                        "keyName": {
+                                            "type": "string"
+                                        },
+                                        "nonce": {
+                                            "type": "string"
+                                        },
+                                        "timestamp": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                },
+                                {
+                                    "type": "object",
+                                    "required": [
+                                        "mac"
+                                    ],
+                                    "properties": {
+                                        "mac": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "publishPushNotificationToDevices",
+            "description": "A convenience endpoint to deliver a push notification payload to a single device or set of devices identified by their client identifier.",
+            "method": "POST",
+            "path": "/push/publish",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "recipient"
+                    ],
+                    "properties": {
+                        "push": {
+                            "type": "object",
+                            "properties": {
+                                "apns": {
+                                    "type": "object",
+                                    "properties": {
+                                        "notification": {
+                                            "type": "object",
+                                            "properties": {
+                                                "body": {
+                                                    "type": "string"
+                                                },
+                                                "collapseKey": {
+                                                    "type": "string"
+                                                },
+                                                "icon": {
+                                                    "type": "string"
+                                                },
+                                                "sound": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "data": {
+                                    "type": "string"
+                                },
+                                "fcm": {
+                                    "type": "object",
+                                    "properties": {
+                                        "notification": {
+                                            "type": "object",
+                                            "properties": {
+                                                "body": {
+                                                    "type": "string"
+                                                },
+                                                "collapseKey": {
+                                                    "type": "string"
+                                                },
+                                                "icon": {
+                                                    "type": "string"
+                                                },
+                                                "sound": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "notification": {
+                                    "type": "object",
+                                    "properties": {
+                                        "body": {
+                                            "type": "string"
+                                        },
+                                        "collapseKey": {
+                                            "type": "string"
+                                        },
+                                        "icon": {
+                                            "type": "string"
+                                        },
+                                        "sound": {
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "web": {
+                                    "type": "object",
+                                    "properties": {
+                                        "notification": {
+                                            "type": "object",
+                                            "properties": {
+                                                "body": {
+                                                    "type": "string"
+                                                },
+                                                "collapseKey": {
+                                                    "type": "string"
+                                                },
+                                                "icon": {
+                                                    "type": "string"
+                                                },
+                                                "sound": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "recipient": {
+                            "type": "object",
+                            "properties": {
+                                "clientId": {
+                                    "type": "string"
+                                },
+                                "deviceId": {
+                                    "type": "string"
+                                },
+                                "deviceToken": {
+                                    "type": "string"
+                                },
+                                "registrationToken": {
+                                    "type": "string"
+                                },
+                                "transportType": {
+                                    "type": "string",
+                                    "enum": [
+                                        "apns",
+                                        "fcm",
+                                        "gcm"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "getStats",
+            "description": "The Ably system can be queried to obtain usage statistics for a given application, and results are provided aggregated across all channels in use in the application in the specified period. Stats may be used to track usage against account quotas.",
+            "method": "GET",
+            "path": "/stats",
+            "parameters": {
+                "start": {
+                    "location": "query",
+                    "description": "Beginning of time The start of the query interval as a time in milliseconds since the epoch. A message qualifies as a member of the result set if it was received at or after this time.",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "The maximum number of records to return. A limit greater than 1,000 is invalid.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "end": {
+                    "location": "query",
+                    "description": "The end of the query interval as a time in milliseconds since the epoch. A message qualifies as a member of the result set if it was received at or before this time.",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "direction": {
+                    "location": "query",
+                    "description": "The direction of this query. The direction determines the order of the returned result array, but also determines which end of the query interval is the start point for the search. For example, a forwards query uses start as the start point, whereas a backwards query uses end as the start point.",
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "forwards",
+                            "backwards"
+                        ]
+                    }
+                },
+                "unit": {
+                    "location": "query",
+                    "description": "Specifies the unit of aggregation in the returned results.",
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "minute",
+                            "hour",
+                            "day",
+                            "month"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "getTime",
+            "description": "This returns the service time in milliseconds since the epoch.",
+            "method": "GET",
+            "path": "/time"
+        },
+        {
+            "name": "getChannelsWithPushSubscribers",
+            "description": "Returns a paginated response of channel names.",
+            "method": "GET",
+            "path": "/push/channels"
+        },
+        {
+            "name": "updatePushDeviceDetails",
+            "description": "Gets an updated device details object.",
+            "method": "GET",
+            "path": "/push/deviceRegistrations/{device_id}/resetUpdateToken",
+            "parameters": {
+                "device_id": {
+                    "location": "path",
+                    "description": "Device's ID.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getPushSubscriptionsOnChannels",
+            "description": "Get a list of push notification subscriptions to channels.",
+            "method": "GET",
+            "path": "/push/channelSubscriptions",
+            "parameters": {
+                "channel": {
+                    "location": "query",
+                    "description": "Filter to restrict to subscriptions associated with that channel.",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "query",
+                    "description": "Optional filter to restrict to devices associated with that deviceId. Cannot be used with clientId.",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "clientId": {
+                    "location": "query",
+                    "description": "Optional filter to restrict to devices associated with that clientId. Cannot be used with deviceId.",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "The maximum number of records to return.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "subscribePushDeviceToChannel",
+            "description": "Subscribe either a single device or all devices associated with a client ID to receive push notifications from messages sent to a channel.",
+            "method": "POST",
+            "path": "/push/channelSubscriptions",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "oneOf": [
+                        {
+                            "type": "object",
+                            "properties": {
+                                "channel": {
+                                    "type": "string"
+                                },
+                                "deviceId": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "channel": {
+                                    "type": "string"
+                                },
+                                "clientId": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "deletePushDeviceDetails",
+            "description": "Delete a device details object.",
+            "method": "DELETE",
+            "path": "/push/channelSubscriptions",
+            "parameters": {
+                "channel": {
+                    "location": "query",
+                    "description": "Filter to restrict to subscriptions associated with that channel.",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "query",
+                    "description": "Must be set when clientId is empty, cannot be used with clientId.",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "clientId": {
+                    "location": "query",
+                    "description": "Must be set when deviceId is empty, cannot be used with deviceId.",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getPresenceOfChannel",
+            "description": "Get presence on a channel",
+            "method": "GET",
+            "path": "/channels/{channel_id}/presence",
+            "parameters": {
+                "channel_id": {
+                    "location": "path",
+                    "description": "The [Channel's ID](https://www.ably.io/documentation/rest/channels).",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "clientId": {
+                    "location": "query",
+                    "description": "Optional filter to restrict members present with that clientId",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "connectionId": {
+                    "location": "query",
+                    "description": "Optional filter to restrict members present with that connectionId",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "The maximum number of records to return. A limit greater than 1,000 is invalid.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getPresenceHistoryOfChannel",
+            "description": "Get presence on a channel",
+            "method": "GET",
+            "path": "/channels/{channel_id}/presence/history",
+            "parameters": {
+                "channel_id": {
+                    "location": "path",
+                    "description": "The [Channel's ID](https://www.ably.io/documentation/rest/channels).",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "start": {
+                    "location": "query",
+                    "description": "Beginning of time The start of the query interval as a time in milliseconds since the epoch. A message qualifies as a member of the result set if it was received at or after this time.",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "The maximum number of records to return. A limit greater than 1,000 is invalid.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "end": {
+                    "location": "query",
+                    "description": "The end of the query interval as a time in milliseconds since the epoch. A message qualifies as a member of the result set if it was received at or before this time.",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "direction": {
+                    "location": "query",
+                    "description": "The direction of this query. The direction determines the order of the returned result array, but also determines which end of the query interval is the start point for the search. For example, a forwards query uses start as the start point, whereas a backwards query uses end as the start point.",
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "forwards",
+                            "backwards"
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+}

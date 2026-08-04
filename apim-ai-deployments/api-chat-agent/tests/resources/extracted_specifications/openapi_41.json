@@ -1,0 +1,23 @@
+{
+    "tools": [
+        {
+            "name": "getSuggestions",
+            "description": "This operation provides suggestions for a given query or partial query.\r\n",
+            "method": "GET",
+            "path": "/",
+            "parameters": {
+                "q": {
+                    "location": "query",
+                    "description": "Query",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "bill g"
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+}

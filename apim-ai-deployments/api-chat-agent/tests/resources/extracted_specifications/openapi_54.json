@@ -1,0 +1,124 @@
+{
+    "serviceUrl": "https://testapi.cloudmersive.com/",
+    "tools": [
+        {
+            "name": "Content Threat Detection_Check Xxe",
+            "description": "Detects XXE (XML External Entity) attacks from XML text input.",
+            "method": "POST",
+            "path": "/security/threat-detection/content/xxe/detect/xml/string",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        {
+            "name": "Network Threat Detection_Detect Ssrf Url",
+            "description": "Checks if an input URL is at risk of being an SSRF (Server-side request forgery) threat or attack.",
+            "method": "POST",
+            "path": "/security/threat-detection/network/url/ssrf/detect",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "URL": {
+                            "type": "string"
+                        },
+                        "BlockedDomains": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Network Threat Detection_Is Threat",
+            "description": "Check if the input IP address is a known threat IP address.  Checks against known bad IPs, botnets, compromised servers, and other lists of threats.",
+            "method": "POST",
+            "path": "/security/threat-detection/network/ip/is-threat",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        {
+            "name": "Network Threat Detection_Is Tor Node",
+            "description": "Check if the input IP address is a Tor exit node server.  Tor servers are a type of privacy-preserving technology that can hide the original IP address who makes a request.",
+            "method": "POST",
+            "path": "/security/threat-detection/network/ip/is-tor-node",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        {
+            "name": "Content Threat Detection_Automatic Threat Detection String",
+            "description": "Auto-detects a wide range of threat types in input string, including Cross-Site Scripting (XSS), SQL Injection (SQLI), XML External Entitites (XXE), Server-side Request Forgeries (SSRF), and JSON Insecure Deserialization (JID).",
+            "method": "POST",
+            "path": "/security/threat-detection/content/automatic/detect/string",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        {
+            "name": "Content Threat Detection_Detect Insecure Deserialization Json String",
+            "description": "Detects Insecure Deserialization JSON (JID) attacks from text input.",
+            "method": "POST",
+            "path": "/security/threat-detection/content/insecure-deserialization/json/detect/string",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        {
+            "name": "Content Threat Detection_Check Sql Injection String",
+            "description": "Detects SQL Injection (SQLI) attacks from text input.",
+            "method": "POST",
+            "path": "/security/threat-detection/content/sql-injection/detect/string",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        {
+            "name": "Content Threat Detection_Protect Xss",
+            "description": "Detects and removes XSS (Cross-Site-Scripting) attacks from text input through normalization.  Returns the normalized result, as well as information on whether the original input contained an XSS risk.",
+            "method": "POST",
+            "path": "/security/threat-detection/content/xss/detect/string",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        {
+            "name": "Network Threat Detection_Is Bot",
+            "description": "Check if the input IP address is a Bot, robot, or otherwise a non-user entity.  Leverages real-time signals to check against known high-probability bots..",
+            "method": "POST",
+            "path": "/security/threat-detection/network/ip/is-bot",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "string"
+                }
+            }
+        }
+    ]
+}

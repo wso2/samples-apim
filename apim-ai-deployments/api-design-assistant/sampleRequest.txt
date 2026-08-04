@@ -1,0 +1,22 @@
+1. Scenario 1
+
+Sample Request for a basic REST API
+- I want an API where users can search for books in our library database. They should be able to search by title, author, or ISBN and get back details like book title, author, publication date, and a brief summary.
+
+Sample Request Body
+{
+  "text": "I want an API where users can search for books in our library database. They should be able to search by title, author, or ISBN and get back details like book title, author, publication date, and a brief summary.",
+  "sessionId": "123456"
+}
+
+-----------------
+
+2. Scenario 2
+
+Sample Request for a basic Async API
+- I want an API for real-time messaging
+
+{
+  "text": "I want an API for real-time messaging",
+  "sessionId": "123456"
+}

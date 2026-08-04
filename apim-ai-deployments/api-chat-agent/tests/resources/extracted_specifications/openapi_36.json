@@ -1,0 +1,836 @@
+{
+    "serviceUrl": "/",
+    "tools": [
+        {
+            "name": "Query_GetEventSchema",
+            "description": "Returns environment event schema for a given search span. Event schema is a set of property definitions. Event schema may not be contain all persisted properties when there are too many properties.",
+            "method": "POST",
+            "path": "/eventSchema",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "Version of the API to be used with the client request. Currently supported version is \"2020-07-31\".",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "storeType": {
+                    "location": "query",
+                    "description": "For the environments with warm store enabled, the query can be executed either on the 'WarmStore' or 'ColdStore'. This parameter in the query defines which store the query should be executed on. If not defined, the query will be executed on the cold store.",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "searchSpan"
+                    ],
+                    "properties": {
+                        "searchSpan": {
+                            "type": "object",
+                            "required": [
+                                "from",
+                                "to"
+                            ],
+                            "properties": {
+                                "from": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                                },
+                                "to": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "TimeSeriesInstances_Suggest",
+            "description": "Suggests keywords based on time series instance attributes to be later used in Search Instances.",
+            "method": "POST",
+            "path": "/timeseries/instances/suggest",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "Version of the API to be used with the client request. Currently supported version is \"2020-07-31\".",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "searchString"
+                    ],
+                    "properties": {
+                        "searchString": {
+                            "type": "string"
+                        },
+                        "take": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "TimeSeriesInstances_Search",
+            "description": "Partial list of hits on search for time series instances based on instance attributes.",
+            "method": "POST",
+            "path": "/timeseries/instances/search",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "Version of the API to be used with the client request. Currently supported version is \"2020-07-31\".",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "searchString"
+                    ],
+                    "properties": {
+                        "searchString": {
+                            "type": "string"
+                        },
+                        "path": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "instances": {
+                            "type": "object",
+                            "properties": {
+                                "recursive": {
+                                    "type": "boolean"
+                                },
+                                "sort": {
+                                    "type": "object",
+                                    "properties": {
+                                        "by": {
+                                            "type": "string",
+                                            "enum": [
+                                                "Rank",
+                                                "DisplayName"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "highlights": {
+                                    "type": "boolean"
+                                },
+                                "pageSize": {
+                                    "type": "integer"
+                                }
+                            }
+                        },
+                        "hierarchies": {
+                            "type": "object",
+                            "properties": {
+                                "expand": {
+                                    "type": "object",
+                                    "properties": {
+                                        "kind": {
+                                            "type": "string",
+                                            "enum": [
+                                                "UntilChildren",
+                                                "OneLevel"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "sort": {
+                                    "type": "object",
+                                    "properties": {
+                                        "by": {
+                                            "type": "string",
+                                            "enum": [
+                                                "CumulativeInstanceCount",
+                                                "Name"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "pageSize": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "ModelSettings_Get",
+            "description": "Returns the model settings which includes model display name, Time Series ID properties and default type ID. Every Gen2 environment has a model that is automatically created.",
+            "method": "GET",
+            "path": "/timeseries/modelSettings",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "Version of the API to be used with the client request. Currently supported version is \"2020-07-31\".",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "ModelSettings_Update",
+            "description": "Updates time series model settings - either the model name or default type ID.",
+            "method": "PATCH",
+            "path": "/timeseries/modelSettings",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "Version of the API to be used with the client request. Currently supported version is \"2020-07-31\".",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        },
+                        "defaultTypeId": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "TimeSeriesInstances_List",
+            "description": "Gets time series instances in pages.",
+            "method": "GET",
+            "path": "/timeseries/instances",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "Version of the API to be used with the client request. Currently supported version is \"2020-07-31\".",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Query_GetAvailability",
+            "description": "Returns the time range and distribution of event count over the event timestamp ($ts). This API can be used to provide landing experience of navigating to the environment.",
+            "method": "GET",
+            "path": "/availability",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "Version of the API to be used with the client request. Currently supported version is \"2020-07-31\".",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "storeType": {
+                    "location": "query",
+                    "description": "For the environments with warm store enabled, the query can be executed either on the 'WarmStore' or 'ColdStore'. This parameter in the query defines which store the query should be executed on. If not defined, the query will be executed on the cold store.",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "TimeSeriesHierarchies_List",
+            "description": "Returns time series hierarchies definitions in pages.",
+            "method": "GET",
+            "path": "/timeseries/hierarchies",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "Version of the API to be used with the client request. Currently supported version is \"2020-07-31\".",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "TimeSeriesTypes_ExecuteBatch",
+            "description": "Executes a batch get, create, update, delete operation on multiple time series types.",
+            "method": "POST",
+            "path": "/timeseries/types/$batch",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "Version of the API to be used with the client request. Currently supported version is \"2020-07-31\".",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "get": {
+                            "type": "object",
+                            "properties": {
+                                "typeIds": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "names": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "put": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "name",
+                                    "variables"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "variables": {
+                                        "type": "object",
+                                        "properties": {}
+                                    }
+                                }
+                            }
+                        },
+                        "delete": {
+                            "type": "object",
+                            "properties": {
+                                "typeIds": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "names": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Query_Execute",
+            "description": "Executes Time Series Query in pages of results - Get Events, Get Series or Aggregate Series.",
+            "method": "POST",
+            "path": "/timeseries/query",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "Version of the API to be used with the client request. Currently supported version is \"2020-07-31\".",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "storeType": {
+                    "location": "query",
+                    "description": "For the environments with warm store enabled, the query can be executed either on the 'WarmStore' or 'ColdStore'. This parameter in the query defines which store the query should be executed on. If not defined, the query will be executed on the cold store.",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "getEvents": {
+                            "type": "object",
+                            "required": [
+                                "searchSpan",
+                                "timeSeriesId"
+                            ],
+                            "properties": {
+                                "timeSeriesId": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {}
+                                    }
+                                },
+                                "searchSpan": {
+                                    "type": "object",
+                                    "required": [
+                                        "from",
+                                        "to"
+                                    ],
+                                    "properties": {
+                                        "from": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                                        },
+                                        "to": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                                        }
+                                    }
+                                },
+                                "filter": {
+                                    "type": "object",
+                                    "required": [
+                                        "tsx"
+                                    ],
+                                    "properties": {
+                                        "tsx": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "projectedProperties": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "type": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "Bool",
+                                                    "DateTime",
+                                                    "Double",
+                                                    "String",
+                                                    "TimeSpan",
+                                                    "Long"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "take": {
+                                    "type": "integer"
+                                }
+                            }
+                        },
+                        "getSeries": {
+                            "type": "object",
+                            "required": [
+                                "searchSpan",
+                                "timeSeriesId"
+                            ],
+                            "properties": {
+                                "timeSeriesId": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {}
+                                    }
+                                },
+                                "searchSpan": {
+                                    "type": "object",
+                                    "required": [
+                                        "from",
+                                        "to"
+                                    ],
+                                    "properties": {
+                                        "from": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                                        },
+                                        "to": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                                        }
+                                    }
+                                },
+                                "filter": {
+                                    "type": "object",
+                                    "required": [
+                                        "tsx"
+                                    ],
+                                    "properties": {
+                                        "tsx": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "projectedVariables": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "inlineVariables": {
+                                    "type": "object",
+                                    "properties": {}
+                                },
+                                "take": {
+                                    "type": "integer"
+                                }
+                            }
+                        },
+                        "aggregateSeries": {
+                            "type": "object",
+                            "required": [
+                                "interval",
+                                "searchSpan",
+                                "timeSeriesId"
+                            ],
+                            "properties": {
+                                "timeSeriesId": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {}
+                                    }
+                                },
+                                "searchSpan": {
+                                    "type": "object",
+                                    "required": [
+                                        "from",
+                                        "to"
+                                    ],
+                                    "properties": {
+                                        "from": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                                        },
+                                        "to": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                                        }
+                                    }
+                                },
+                                "filter": {
+                                    "type": "object",
+                                    "required": [
+                                        "tsx"
+                                    ],
+                                    "properties": {
+                                        "tsx": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "interval": {
+                                    "type": "string",
+                                    "format": "duration"
+                                },
+                                "projectedVariables": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "inlineVariables": {
+                                    "type": "object",
+                                    "properties": {}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "TimeSeriesInstances_ExecuteBatch",
+            "description": "Executes a batch get, create, update, delete operation on multiple time series instances.",
+            "method": "POST",
+            "path": "/timeseries/instances/$batch",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "Version of the API to be used with the client request. Currently supported version is \"2020-07-31\".",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "get": {
+                            "type": "object",
+                            "properties": {
+                                "timeSeriesIds": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {}
+                                        }
+                                    }
+                                },
+                                "names": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "put": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "timeSeriesId",
+                                    "typeId"
+                                ],
+                                "properties": {
+                                    "timeSeriesId": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {}
+                                        }
+                                    },
+                                    "typeId": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "hierarchyIds": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "instanceFields": {
+                                        "type": "object",
+                                        "properties": {}
+                                    }
+                                }
+                            }
+                        },
+                        "update": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "timeSeriesId",
+                                    "typeId"
+                                ],
+                                "properties": {
+                                    "timeSeriesId": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {}
+                                        }
+                                    },
+                                    "typeId": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "hierarchyIds": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "instanceFields": {
+                                        "type": "object",
+                                        "properties": {}
+                                    }
+                                }
+                            }
+                        },
+                        "delete": {
+                            "type": "object",
+                            "properties": {
+                                "timeSeriesIds": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {}
+                                        }
+                                    }
+                                },
+                                "names": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "TimeSeriesTypes_List",
+            "description": "Gets time series types in pages.",
+            "method": "GET",
+            "path": "/timeseries/types",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "Version of the API to be used with the client request. Currently supported version is \"2020-07-31\".",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "TimeSeriesHierarchies_ExecuteBatch",
+            "description": "Executes a batch get, create, update, delete operation on multiple time series hierarchy definitions.",
+            "method": "POST",
+            "path": "/timeseries/hierarchies/$batch",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "Version of the API to be used with the client request. Currently supported version is \"2020-07-31\".",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "get": {
+                            "type": "object",
+                            "properties": {
+                                "hierarchyIds": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "names": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "put": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "name",
+                                    "source"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "source": {
+                                        "type": "object",
+                                        "properties": {
+                                            "instanceFieldNames": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "delete": {
+                            "type": "object",
+                            "properties": {
+                                "hierarchyIds": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "names": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,65 @@
+{
+    "serviceUrl": "https://testapi.cloudmersive.com/",
+    "tools": [
+        {
+            "name": "Currency Exchange_Get Exchange Rate",
+            "description": "Automatically gets the exchange rate from the source currency into the destination currency using the latest available currency exchange rate data.",
+            "method": "POST",
+            "path": "/currency/exchange-rates/get/{source}/to/{destination}",
+            "parameters": {
+                "source": {
+                    "location": "path",
+                    "description": "Source currency three-digit code (ISO 4217), e.g. USD, EUR, etc.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "destination": {
+                    "location": "path",
+                    "description": "Destination currency three-digit code (ISO 4217), e.g. USD, EUR, etc.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Currency Exchange_Get Available Currencies",
+            "description": "Enumerates available currencies and the countries that correspond to these currencies.",
+            "method": "POST",
+            "path": "/currency/exchange-rates/list-available"
+        },
+        {
+            "name": "Currency Exchange_Convert Currency",
+            "description": "Automatically converts the price in the source currency into the destination currency using the latest available currency exchange rate data.",
+            "method": "POST",
+            "path": "/currency/exchange-rates/convert/{source}/to/{destination}",
+            "parameters": {
+                "source": {
+                    "location": "path",
+                    "description": "Source currency three-digit code (ISO 4217), e.g. USD, EUR, etc.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "destination": {
+                    "location": "path",
+                    "description": "Destination currency three-digit code (ISO 4217), e.g. USD, EUR, etc.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "number"
+                }
+            }
+        }
+    ]
+}

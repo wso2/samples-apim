@@ -1,0 +1,230 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "url": "https://{endpoint}/openai",
+      "variables": {
+        "endpoint": {
+          "default": "your-resource-name.openai.azure.com"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/deployments/{deployment-id}/embeddings": {
+      "post": {
+        "summary": "Get a vector representation of a given input that can be easily consumed by machine learning models and algorithms.",
+        "operationId": "embeddings_create",
+        "parameters": [
+          {
+            "name": "deployment-id",
+            "in": "path",
+            "required": true,
+            "description": "The deployment id of the model which was deployed.",
+            "schema": {
+              "type": "string",
+              "example": "ada-search-index-v1"
+            }
+          },
+          {
+            "name": "api-version",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "api version",
+              "example": "2023-03-15-preview"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "input"
+                ],
+                "properties": {
+                  "input": {
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "default": "",
+                        "nullable": true,
+                        "example": "This is a test."
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "nullable": false,
+                          "example": "This is a test."
+                        },
+                        "minItems": 1,
+                        "maxItems": 2048
+                      }
+                    ],
+                    "description": "Input text to get embeddings for, encoded as a string. To get embeddings for multiple inputs in a single request, pass an array of strings. Each input must not exceed 2048 tokens in length.\nUnless you are embedding code, we suggest replacing newlines (\\n) in your input with a single space, as we have observed inferior results when newlines are present."
+                  },
+                  "user": {
+                    "type": "string",
+                    "description": "A unique identifier representing your end-user, which can help monitoring and detecting abuse.",
+                    "nullable": false
+                  },
+                  "input_type": {
+                    "type": "string",
+                    "description": "input type of embedding search to use",
+                    "example": "query"
+                  },
+                  "model": {
+                    "type": "string",
+                    "description": "ID of the model to use. You can use the Models_List operation to see all of your available models, or see our Models_Get overview for descriptions of them.",
+                    "nullable": false
+                  }
+                },
+                "additionalProperties": true
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "object",
+                    "model",
+                    "data",
+                    "usage"
+                  ],
+                  "properties": {
+                    "object": {
+                      "type": "string"
+                    },
+                    "model": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "index",
+                          "object",
+                          "embedding"
+                        ],
+                        "properties": {
+                          "index": {
+                            "type": "integer"
+                          },
+                          "object": {
+                            "type": "string"
+                          },
+                          "embedding": {
+                            "type": "array",
+                            "items": {
+                              "type": "number"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "usage": {
+                      "type": "object",
+                      "required": [
+                        "prompt_tokens",
+                        "total_tokens"
+                      ],
+                      "properties": {
+                        "prompt_tokens": {
+                          "type": "integer"
+                        },
+                        "total_tokens": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-ballerina-display": {
+          "label": "Generate Embeddings"
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "errorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "param": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearer": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
+            "scopes": {}
+          }
+        },
+        "x-tokenInfoFunc": "api.middleware.auth.bearer_auth",
+        "x-scopeValidateFunc": "api.middleware.auth.validate_scopes"
+      },
+      "apiKey": {
+        "type": "apiKey",
+        "description": "The key used to access the OpenAI APIs",
+        "name": "api-key",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearer": [
+        "api.read"
+      ]
+    },
+    {
+      "apiKey": []
+    }
+  ],
+  "info": {
+    "x-ballerina-display": {
+      "label": "Azure OpenAI Embeddings",
+      "iconPath": "icon.png"
+    },
+    "title": "Azure OpenAI Service API",
+    "description": "This is a generated connector from [Azure OpenAI Embeddings API v2023-03-15-preview](https:\/\/learn.microsoft.com\/en-us\/azure\/cognitive-services\/openai\/reference#embeddings\/) OpenAPI specification.\nThe Azure Azure OpenAI Service REST API Embeddings Endpoint will generate one a vector representation of a given input that can be easily consumed by machine learning models and other algorithms.\n",
+    "x-ballerina-init-description": "The connector initialization requires setting the API credentials.\nCreate an [Azure](https:\/\/azure.microsoft.com\/en-us\/features\/azure-portal\/) account, an [Azure OpenAI resource with a model deployed](https:\/\/learn.microsoft.com\/en-us\/azure\/cognitive-services\/openai\/how-to\/create-resource) and refer [this guide](https:\/\/learn.microsoft.com\/en-us\/azure\/cognitive-services\/openai\/reference#authentication) to learn how to generate and use tokens\n",
+    "version": "2023-03-15-preview"
+  }
+}

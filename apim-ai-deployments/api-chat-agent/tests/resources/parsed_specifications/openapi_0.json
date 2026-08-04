@@ -1,0 +1,200 @@
+{
+  "openapi": "3.0.1",
+  "servers": [
+    {
+      "url": "https://f2c7f522-ef47-48ce-a429-3fc2f15d2011-dev.e1-us-east-azure.choreoapis.dev/fgbx/wifiapi/1.0.0"
+    }
+  ],
+  "paths": {
+    "/guest-wifi-accounts": {
+      "post": {
+        "summary": "Create new guest WiFi account",
+        "operationId": "postGuestWifiAccounts",
+        "requestBody": {
+          "description": "Payload of the request, new guest WiFi account details",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAccountPayload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerMessage"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "InternalServerError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/guest-wifi-accounts/{ownerEmail}/{username}": {
+      "delete": {
+        "summary": "Delete a guest WiFi account",
+        "operationId": "deleteGuestWifiAccountsOwneremailUsername",
+        "parameters": [
+          {
+            "name": "ownerEmail",
+            "in": "path",
+            "required": true,
+            "description": "Email address of the owner of the guest WiFi accounts",
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "description": "Username of the guest WiFi account to be deleted",
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerMessage"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "InternalServerError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/guest-wifi-accounts/{ownerEmail}": {
+      "get": {
+        "summary": "Get list of guest WiFi accounts of a given owner email address",
+        "operationId": "getGuestWifiAccountsOwneremail",
+        "parameters": [
+          {
+            "name": "ownerEmail",
+            "in": "path",
+            "required": true,
+            "description": "Email address of the owner of the guest WiFi accounts",
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "InternalServerError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AccountOperationPayload": {
+        "type": "object",
+        "required": [
+          "email",
+          "username"
+        ],
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateAccountPayload": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AccountOperationPayload"
+          },
+          {
+            "type": "object",
+            "required": [
+              "password"
+            ],
+            "properties": {
+              "password": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "ServerMessage": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "description": "GuestWiFi Server Message"
+      },
+      "TestReferenceSchema": {
+        "$ref": "#/components/schemas/ServerMessage"
+      }
+    }
+  },
+  "info": {
+    "title": "Service Openapi Yaml",
+    "version": "1.0.0"
+  }
+}

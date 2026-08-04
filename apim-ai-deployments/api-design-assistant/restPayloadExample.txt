@@ -1,0 +1,88 @@
+{
+  "id": "12341234-1234-1234-1234-121212121212",
+  "name": "hello API",
+  "description": null,
+  "accessControl": "NONE",
+  "accessControlRoles": [],
+  "additionalProperties": [],
+  "additionalPropertiesMap": {},
+  "advertiseInfo": {
+    "advertised": false,
+    "apiExternalProductionEndpoint": https://run.mocky.io/v3/c0e060d1-8116-429a-8ec9-959d2382bdfd,
+    "apiExternalSandboxEndpoint": https://run.mocky.io/v3/c0e060d1-8116-429a-8ec9-959d2382bdfd
+  },
+  "apiKeyHeader": "ApiKey",
+  "apiPolicies": null,
+  "apiThrottlingPolicy": null,
+  "asyncTransportProtocols": [],
+  "audience": null,
+  "authorizationHeader": "Authorization",
+  "businessInformation": {
+    "businessOwner": null,
+    "businessOwnerEmail": null,
+    "technicalOwner": null,
+    "technicalOwnerEmail": null
+  },
+  "cacheTimeout": 300,
+  "categories": [],
+  "context": "/helloAPI",
+  "corsConfiguration": {
+    "corsConfigurationEnabled": false,
+    "accessControlAllowOrigins": ["*"]
+  },
+  "createdTime": "1720589788682",
+  "description": null,
+  "enableSchemaValidation": false,
+  "enableSubscriberVerification": false,
+  "endpointConfig": {
+    "endpoint_type": "http"
+  },
+  "endpointImplementationType": "ENDPOINT",
+  "gatewayType": "wso2/synapse",
+  "gatewayVendor": "wso2",
+  "hasThumbnail": false,
+  "isDefaultVersion": false,
+  "isRevision": false,
+  "keyManagers": ["all"],
+  "lastUpdatedTime": "2024-08-20 10:42:18.511",
+  "lastUpdatedTimestamp": "1724130738511",
+  "lifeCycleStatus": "CREATED",
+  "maxTps": null,
+  "mediationPolicies": [],
+  "monetization": null,
+  "operations": [
+    {
+      "id": "",
+      "target": "/*",
+      "verb": "GET",
+      "authType": "Application & Application User"
+    }
+  ],
+  "policies": ["Unlimited"],
+  "provider": "admin",
+  "responseCachingEnabled": false,
+  "revisionId": 0,
+  "revisionedApiId": null,
+  "scopes": [],
+  "securityScheme": ["oauth_basic_auth_api_key_mandatory", "oauth2"],
+  "serviceInfo": null,
+  "subscriptionAvailability": "CURRENT_TENANT",
+  "subscriptionAvailableTenants": [],
+  "tags": [],
+  "threatProtectionPolicies": null,
+  "transport": ["http", "https"],
+  "type": "HTTP",
+  "version": "1.0.0",
+  "visibility": "PUBLIC",
+  "visibleRoles": [],
+  "visibleTenants": [],
+  "websubSubscriptionConfiguration": {
+    "enable": false,
+    "secret": "",
+    "signingAlgorithm": "SHA1",
+    "signatureHeader": "x-hub-signature"
+  },
+  "workflowStatus": null,
+  "wsdlInfo": null,
+  "wsdlUrl": null
+}

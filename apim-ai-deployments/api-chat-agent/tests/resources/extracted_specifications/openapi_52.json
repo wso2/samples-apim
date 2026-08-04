@@ -1,0 +1,77 @@
+{
+    "serviceUrl": "https://testapi.cloudmersive.com/",
+    "tools": [
+        {
+            "name": "Generate Barcode_QRCode",
+            "description": "Generate a QR code barcode as a PNG file, a type of 2D barcode which can encode free-form text information",
+            "method": "POST",
+            "path": "/barcode/generate/qrcode",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        {
+            "name": "Generate Barcode_EAN8",
+            "description": "Validates and generate a EAN-8 barcode as a PNG file, a type of 1D barcode",
+            "method": "POST",
+            "path": "/barcode/generate/ean-8",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        {
+            "name": "Generate Barcode_UPCE",
+            "description": "Validates and generate a UPC-E barcode as a PNG file, a type of 1D barcode",
+            "method": "POST",
+            "path": "/barcode/generate/upc-e",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        {
+            "name": "Generate Barcode_EAN13",
+            "description": "Validates and generate a EAN-13 barcode as a PNG file, a type of 1D barcode",
+            "method": "POST",
+            "path": "/barcode/generate/ean-13",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        {
+            "name": "Generate Barcode_UPCA",
+            "description": "Validate and generate a UPC-A barcode as a PNG file, a type of 1D barcode",
+            "method": "POST",
+            "path": "/barcode/generate/upc-a",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        {
+            "name": "Barcode Ean Lookup",
+            "description": "Lookup an input EAN barcode and return key details about the product",
+            "method": "POST",
+            "path": "/barcode/lookup/ean",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "string"
+                }
+            }
+        }
+    ]
+}

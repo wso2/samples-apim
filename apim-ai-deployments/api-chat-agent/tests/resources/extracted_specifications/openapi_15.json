@@ -1,0 +1,61 @@
+{
+    "serviceUrl": "https://unify.apideck.com",
+    "tools": [
+        {
+            "name": "getProxy",
+            "description": "Proxies a downstream GET request to a service and injects the necessary credentials into a request stored in Vault. This allows you to have an additional security layer and logging without needing to rely on Unify for normalization.\n**Note**: Vault will proxy all data to the downstream URL and method\/verb in the headers.\n",
+            "method": "GET",
+            "path": "/proxy",
+            "parameters": {}
+        },
+        {
+            "name": "postProxy",
+            "description": "Proxies a downstream POST request to a service and injects the necessary credentials into a request stored in Vault. This allows you to have an additional security layer and logging without needing to rely on Unify for normalization.\n**Note**: Vault will proxy all data to the downstream URL and method\/verb in the headers.\n",
+            "method": "POST",
+            "path": "/proxy",
+            "parameters": {},
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {}
+                }
+            }
+        },
+        {
+            "name": "putProxy",
+            "description": "Proxies a downstream PUT request to a service and injects the necessary credentials into a request stored in Vault. This allows you to have an additional security layer and logging without needing to rely on Unify for normalization.\n**Note**: Vault will proxy all data to the downstream URL and method\/verb in the headers.\n",
+            "method": "PUT",
+            "path": "/proxy",
+            "parameters": {},
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {}
+                }
+            }
+        },
+        {
+            "name": "deleteProxy",
+            "description": "Proxies a downstream DELETE request to a service and injects the necessary credentials into a request stored in Vault. This allows you to have an additional security layer and logging without needing to rely on Unify for normalization.\n**Note**: Vault will proxy all data to the downstream URL and method\/verb in the headers.\n",
+            "method": "DELETE",
+            "path": "/proxy",
+            "parameters": {}
+        },
+        {
+            "name": "patchProxy",
+            "description": "Proxies a downstream PATCH request to a service and injects the necessary credentials into a request stored in Vault. This allows you to have an additional security layer and logging without needing to rely on Unify for normalization.\n**Note**: Vault will proxy all data to the downstream URL and method\/verb in the headers.\n",
+            "method": "PATCH",
+            "path": "/proxy",
+            "parameters": {},
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {}
+                }
+            }
+        }
+    ]
+}

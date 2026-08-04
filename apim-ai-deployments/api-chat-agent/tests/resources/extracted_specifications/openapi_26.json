@@ -1,0 +1,1592 @@
+{
+    "serviceUrl": "https://management.azure.com/",
+    "tools": [
+        {
+            "name": "IotHubResource_GetValidSkus",
+            "description": "Get the list of valid SKUs for an IoT hub.",
+            "method": "GET",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/skus",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceName": {
+                    "location": "path",
+                    "description": "The name of the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Operations_List",
+            "description": "Lists all of the available IoT Hub REST API operations.",
+            "method": "GET",
+            "path": "/providers/Microsoft.Devices/operations",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "IotHubResource_TestAllRoutes",
+            "description": "Test all routes configured in this Iot Hub",
+            "method": "POST",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{iotHubName}/routing/routes/$testall",
+            "parameters": {
+                "iotHubName": {
+                    "location": "path",
+                    "description": "IotHub to be tested",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "resource group which Iot Hub belongs to",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "message": {
+                            "type": "object",
+                            "properties": {
+                                "appProperties": {
+                                    "type": "object",
+                                    "properties": {}
+                                },
+                                "body": {
+                                    "type": "string"
+                                },
+                                "systemProperties": {
+                                    "type": "object",
+                                    "properties": {}
+                                }
+                            }
+                        },
+                        "routingSource": {
+                            "type": "string",
+                            "enum": [
+                                "Invalid",
+                                "DeviceMessages",
+                                "TwinChangeEvents",
+                                "DeviceLifecycleEvents",
+                                "DeviceJobLifecycleEvents"
+                            ]
+                        },
+                        "twin": {
+                            "type": "object",
+                            "properties": {
+                                "properties": {
+                                    "type": "object",
+                                    "properties": {
+                                        "desired": {
+                                            "type": "object",
+                                            "properties": {}
+                                        },
+                                        "reported": {
+                                            "type": "object",
+                                            "properties": {}
+                                        }
+                                    }
+                                },
+                                "tags": {
+                                    "type": "object",
+                                    "properties": {}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "IotHubResource_TestRoute",
+            "description": "Test the new route for this Iot Hub",
+            "method": "POST",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{iotHubName}/routing/routes/$testnew",
+            "parameters": {
+                "iotHubName": {
+                    "location": "path",
+                    "description": "IotHub to be tested",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "resource group which Iot Hub belongs to",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "route"
+                    ],
+                    "properties": {
+                        "message": {
+                            "type": "object",
+                            "properties": {
+                                "appProperties": {
+                                    "type": "object",
+                                    "properties": {}
+                                },
+                                "body": {
+                                    "type": "string"
+                                },
+                                "systemProperties": {
+                                    "type": "object",
+                                    "properties": {}
+                                }
+                            }
+                        },
+                        "route": {
+                            "type": "object",
+                            "required": [
+                                "endpointNames",
+                                "isEnabled",
+                                "name",
+                                "source"
+                            ],
+                            "properties": {
+                                "condition": {
+                                    "type": "string"
+                                },
+                                "endpointNames": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "isEnabled": {
+                                    "type": "boolean"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "pattern": "^[A-Za-z0-9-._]{1,64}$"
+                                },
+                                "source": {
+                                    "type": "string",
+                                    "enum": [
+                                        "Invalid",
+                                        "DeviceMessages",
+                                        "TwinChangeEvents",
+                                        "DeviceLifecycleEvents",
+                                        "DeviceJobLifecycleEvents"
+                                    ]
+                                }
+                            }
+                        },
+                        "twin": {
+                            "type": "object",
+                            "properties": {
+                                "properties": {
+                                    "type": "object",
+                                    "properties": {
+                                        "desired": {
+                                            "type": "object",
+                                            "properties": {}
+                                        },
+                                        "reported": {
+                                            "type": "object",
+                                            "properties": {}
+                                        }
+                                    }
+                                },
+                                "tags": {
+                                    "type": "object",
+                                    "properties": {}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "IotHubResource_ListBySubscription",
+            "description": "Get all the IoT hubs in a subscription.",
+            "method": "GET",
+            "path": "/subscriptions/{subscriptionId}/providers/Microsoft.Devices/IotHubs",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "IotHubResource_GetKeysForKeyName",
+            "description": "Get a shared access policy by name from an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.",
+            "method": "POST",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/IotHubKeys/{keyName}/listkeys",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceName": {
+                    "location": "path",
+                    "description": "The name of the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "keyName": {
+                    "location": "path",
+                    "description": "The name of the shared access policy.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "IotHub_ManualFailover",
+            "description": "Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see https://aka.ms/manualfailover",
+            "method": "POST",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{iotHubName}/failover",
+            "parameters": {
+                "iotHubName": {
+                    "location": "path",
+                    "description": "Name of the IoT hub to failover",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "Name of the resource group containing the IoT hub resource",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "failoverRegion"
+                    ],
+                    "properties": {
+                        "failoverRegion": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Certificates_Get",
+            "description": "Returns the certificate.",
+            "method": "GET",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates/{certificateName}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceName": {
+                    "location": "path",
+                    "description": "The name of the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "certificateName": {
+                    "location": "path",
+                    "description": "The name of the certificate",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9-._]{1,64}$"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Certificates_CreateOrUpdate",
+            "description": "Adds new or replaces existing certificate.",
+            "method": "PUT",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates/{certificateName}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceName": {
+                    "location": "path",
+                    "description": "The name of the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "certificateName": {
+                    "location": "path",
+                    "description": "The name of the certificate",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9-._]{1,64}$"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "certificate": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Certificates_Delete",
+            "description": "Deletes an existing X509 certificate or does nothing if it does not exist.",
+            "method": "DELETE",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates/{certificateName}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceName": {
+                    "location": "path",
+                    "description": "The name of the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "certificateName": {
+                    "location": "path",
+                    "description": "The name of the certificate",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9-._]{1,64}$"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Certificates_ListByIotHub",
+            "description": "Returns the list of certificates.",
+            "method": "GET",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceName": {
+                    "location": "path",
+                    "description": "The name of the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "IotHubResource_GetJob",
+            "description": "Get the details of a job from an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.",
+            "method": "GET",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/jobs/{jobId}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceName": {
+                    "location": "path",
+                    "description": "The name of the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "jobId": {
+                    "location": "path",
+                    "description": "The job identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "IotHubResource_Get",
+            "description": "Get the non-security related metadata of an IoT hub.",
+            "method": "GET",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceName": {
+                    "location": "path",
+                    "description": "The name of the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "IotHubResource_CreateOrUpdate",
+            "description": "Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub metadata and security metadata, and then combine them with the modified values in a new body to update the IoT hub.",
+            "method": "PUT",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceName": {
+                    "location": "path",
+                    "description": "The name of the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "allOf": [
+                        {
+                            "type": "object",
+                            "required": [
+                                "location"
+                            ],
+                            "properties": {
+                                "id": {
+                                    "type": "string"
+                                },
+                                "location": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "pattern": "^(?![0-9]+$)(?!-)[a-zA-Z0-9-]{2,49}[a-zA-Z0-9]$"
+                                },
+                                "tags": {
+                                    "type": "object",
+                                    "properties": {}
+                                },
+                                "type": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "IotHubResource_Delete",
+            "description": "Delete an IoT hub.",
+            "method": "DELETE",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceName": {
+                    "location": "path",
+                    "description": "The name of the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "IotHubResource_Update",
+            "description": "Update an existing IoT Hub tags. to update other fields use the CreateOrUpdate method",
+            "method": "PATCH",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}",
+            "parameters": {
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "Resource group identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceName": {
+                    "location": "path",
+                    "description": "Name of iot hub to update.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "tags": {
+                            "type": "object",
+                            "properties": {}
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "IotHubResource_ExportDevices",
+            "description": "Exports all the device identities in the IoT hub identity registry to an Azure Storage blob container. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.",
+            "method": "POST",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/exportDevices",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceName": {
+                    "location": "path",
+                    "description": "The name of the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "excludeKeys",
+                        "exportBlobContainerUri"
+                    ],
+                    "properties": {
+                        "excludeKeys": {
+                            "type": "boolean"
+                        },
+                        "exportBlobContainerUri": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "IotHubResource_GetStats",
+            "description": "Get the statistics from an IoT hub.",
+            "method": "GET",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/IotHubStats",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceName": {
+                    "location": "path",
+                    "description": "The name of the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "IotHubResource_ListKeys",
+            "description": "Get the security metadata for an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.",
+            "method": "POST",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/listkeys",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceName": {
+                    "location": "path",
+                    "description": "The name of the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "IotHubResource_GetQuotaMetrics",
+            "description": "Get the quota metrics for an IoT hub.",
+            "method": "GET",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/quotaMetrics",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceName": {
+                    "location": "path",
+                    "description": "The name of the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "ResourceProviderCommon_GetSubscriptionQuota",
+            "description": "Get the number of free and paid iot hubs in the subscription",
+            "method": "GET",
+            "path": "/subscriptions/{subscriptionId}/providers/Microsoft.Devices/usages",
+            "parameters": {
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Certificates_Verify",
+            "description": "Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre uploaded certificate.",
+            "method": "POST",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates/{certificateName}/verify",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceName": {
+                    "location": "path",
+                    "description": "The name of the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "certificateName": {
+                    "location": "path",
+                    "description": "The name of the certificate",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9-._]{1,64}$"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "certificate": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "IotHubResource_GetEndpointHealth",
+            "description": "Get the health for routing endpoints.",
+            "method": "GET",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{iotHubName}/routingEndpointsHealth",
+            "parameters": {
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "iotHubName": {
+                    "location": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Certificates_GenerateVerificationCode",
+            "description": "Generates verification code for proof of possession flow. The verification code will be used to generate a leaf certificate.",
+            "method": "POST",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates/{certificateName}/generateVerificationCode",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceName": {
+                    "location": "path",
+                    "description": "The name of the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "certificateName": {
+                    "location": "path",
+                    "description": "The name of the certificate",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9-._]{1,64}$"
+                    }
+                }
+            }
+        },
+        {
+            "name": "IotHubResource_ImportDevices",
+            "description": "Import, update, or delete device identities in the IoT hub identity registry from a blob. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.",
+            "method": "POST",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/importDevices",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceName": {
+                    "location": "path",
+                    "description": "The name of the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "inputBlobContainerUri",
+                        "outputBlobContainerUri"
+                    ],
+                    "properties": {
+                        "inputBlobContainerUri": {
+                            "type": "string"
+                        },
+                        "outputBlobContainerUri": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "IotHubResource_ListByResourceGroup",
+            "description": "Get all the IoT hubs in a resource group.",
+            "method": "GET",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "IotHubResource_CheckNameAvailability",
+            "description": "Check if an IoT hub name is available.",
+            "method": "POST",
+            "path": "/subscriptions/{subscriptionId}/providers/Microsoft.Devices/checkNameAvailability",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "name"
+                    ],
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "IotHubResource_ListJobs",
+            "description": "Get a list of all the jobs in an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.",
+            "method": "GET",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/jobs",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceName": {
+                    "location": "path",
+                    "description": "The name of the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "IotHubResource_ListEventHubConsumerGroups",
+            "description": "Get a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in an IoT hub.",
+            "method": "GET",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/eventHubEndpoints/{eventHubEndpointName}/ConsumerGroups",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceName": {
+                    "location": "path",
+                    "description": "The name of the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "eventHubEndpointName": {
+                    "location": "path",
+                    "description": "The name of the Event Hub-compatible endpoint.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "IotHubResource_GetEventHubConsumerGroup",
+            "description": "Get a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.",
+            "method": "GET",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/eventHubEndpoints/{eventHubEndpointName}/ConsumerGroups/{name}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceName": {
+                    "location": "path",
+                    "description": "The name of the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "eventHubEndpointName": {
+                    "location": "path",
+                    "description": "The name of the Event Hub-compatible endpoint in the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "location": "path",
+                    "description": "The name of the consumer group to retrieve.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "IotHubResource_CreateEventHubConsumerGroup",
+            "description": "Add a consumer group to an Event Hub-compatible endpoint in an IoT hub.",
+            "method": "PUT",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/eventHubEndpoints/{eventHubEndpointName}/ConsumerGroups/{name}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceName": {
+                    "location": "path",
+                    "description": "The name of the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "eventHubEndpointName": {
+                    "location": "path",
+                    "description": "The name of the Event Hub-compatible endpoint in the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "location": "path",
+                    "description": "The name of the consumer group to add.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "IotHubResource_DeleteEventHubConsumerGroup",
+            "description": "Delete a consumer group from an Event Hub-compatible endpoint in an IoT hub.",
+            "method": "DELETE",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/eventHubEndpoints/{eventHubEndpointName}/ConsumerGroups/{name}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription identifier.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "resourceName": {
+                    "location": "path",
+                    "description": "The name of the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "eventHubEndpointName": {
+                    "location": "path",
+                    "description": "The name of the Event Hub-compatible endpoint in the IoT hub.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "location": "path",
+                    "description": "The name of the consumer group to delete.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    ]
+}

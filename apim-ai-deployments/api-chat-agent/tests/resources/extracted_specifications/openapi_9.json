@@ -1,0 +1,1413 @@
+{
+    "serviceUrl": "https://test.api.amadeus.com/v1",
+    "tools": [
+        {
+            "name": "createFlightOrders",
+            "description": "",
+            "method": "POST",
+            "path": "/booking/flight-orders",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "data": {
+                            "type": "object",
+                            "required": [
+                                "type",
+                                "flightOffers",
+                                "travelers",
+                                "contacts"
+                            ],
+                            "properties": {
+                                "type": {
+                                    "type": "string"
+                                },
+                                "id": {
+                                    "type": "string"
+                                },
+                                "queuingOfficeId": {
+                                    "type": "string"
+                                },
+                                "ownerOfficeId": {
+                                    "type": "string"
+                                },
+                                "associatedRecords": {
+                                    "type": "array",
+                                    "items": {
+                                        "allOf": [
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "reference": {
+                                                        "type": "string"
+                                                    },
+                                                    "creationDate": {
+                                                        "type": "string"
+                                                    },
+                                                    "originSystemCode": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "flightOfferId": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                "flightOffers": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "type",
+                                            "id"
+                                        ],
+                                        "properties": {
+                                            "type": {
+                                                "type": "string"
+                                            },
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "source": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "GDS"
+                                                ]
+                                            },
+                                            "instantTicketingRequired": {
+                                                "type": "boolean"
+                                            },
+                                            "disablePricing": {
+                                                "type": "boolean"
+                                            },
+                                            "nonHomogeneous": {
+                                                "type": "boolean"
+                                            },
+                                            "oneWay": {
+                                                "type": "boolean"
+                                            },
+                                            "paymentCardRequired": {
+                                                "type": "boolean"
+                                            },
+                                            "lastTicketingDate": {
+                                                "type": "string"
+                                            },
+                                            "numberOfBookableSeats": {
+                                                "type": "number"
+                                            },
+                                            "itineraries": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "required": [
+                                                        "segments"
+                                                    ],
+                                                    "properties": {
+                                                        "duration": {
+                                                            "type": "string"
+                                                        },
+                                                        "segments": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "allOf": [
+                                                                    {
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "id": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "numberOfStops": {
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "blacklistedInEU": {
+                                                                                "type": "boolean"
+                                                                            },
+                                                                            "co2Emissions": {
+                                                                                "type": "array",
+                                                                                "items": {
+                                                                                    "type": "object",
+                                                                                    "properties": {
+                                                                                        "weight": {
+                                                                                            "type": "integer"
+                                                                                        },
+                                                                                        "weightUnit": {
+                                                                                            "type": "string"
+                                                                                        },
+                                                                                        "cabin": {
+                                                                                            "type": "string",
+                                                                                            "enum": [
+                                                                                                "ECONOMY",
+                                                                                                "PREMIUM_ECONOMY",
+                                                                                                "BUSINESS",
+                                                                                                "FIRST"
+                                                                                            ]
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "departure": {
+                                                                                "allOf": [
+                                                                                    {
+                                                                                        "type": "object",
+                                                                                        "properties": {
+                                                                                            "iataCode": {
+                                                                                                "type": "string"
+                                                                                            },
+                                                                                            "terminal": {
+                                                                                                "type": "string"
+                                                                                            }
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "type": "object",
+                                                                                        "properties": {
+                                                                                            "at": {
+                                                                                                "type": "string",
+                                                                                                "format": "date-time",
+                                                                                                "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            },
+                                                                            "arrival": {
+                                                                                "allOf": [
+                                                                                    {
+                                                                                        "type": "object",
+                                                                                        "properties": {
+                                                                                            "iataCode": {
+                                                                                                "type": "string"
+                                                                                            },
+                                                                                            "terminal": {
+                                                                                                "type": "string"
+                                                                                            }
+                                                                                        }
+                                                                                    },
+                                                                                    {
+                                                                                        "type": "object",
+                                                                                        "properties": {
+                                                                                            "at": {
+                                                                                                "type": "string",
+                                                                                                "format": "date-time",
+                                                                                                "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                ]
+                                                                            },
+                                                                            "carrierCode": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "number": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "aircraft": {
+                                                                                "type": "object",
+                                                                                "properties": {
+                                                                                    "code": {
+                                                                                        "type": "string",
+                                                                                        "pattern": "[a-zA-Z0-9]{3}"
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            "operating": {
+                                                                                "type": "object",
+                                                                                "properties": {
+                                                                                    "carrierCode": {
+                                                                                        "type": "string"
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            "duration": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "stops": {
+                                                                                "type": "array",
+                                                                                "items": {
+                                                                                    "allOf": [
+                                                                                        {
+                                                                                            "type": "object",
+                                                                                            "properties": {
+                                                                                                "iataCode": {
+                                                                                                    "type": "string"
+                                                                                                },
+                                                                                                "duration": {
+                                                                                                    "type": "string"
+                                                                                                }
+                                                                                            }
+                                                                                        },
+                                                                                        {
+                                                                                            "type": "object",
+                                                                                            "properties": {
+                                                                                                "arrivalAt": {
+                                                                                                    "type": "string",
+                                                                                                    "format": "date-time",
+                                                                                                    "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                                                                                                },
+                                                                                                "departureAt": {
+                                                                                                    "type": "string",
+                                                                                                    "format": "date-time",
+                                                                                                    "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "price": {
+                                                "allOf": [
+                                                    {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "margin": {
+                                                                "type": "string"
+                                                            },
+                                                            "grandTotal": {
+                                                                "type": "string"
+                                                            },
+                                                            "billingCurrency": {
+                                                                "type": "string"
+                                                            },
+                                                            "additionalServices": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "amount": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "type": {
+                                                                            "type": "string",
+                                                                            "enum": [
+                                                                                "CHECKED_BAGS",
+                                                                                "MEALS",
+                                                                                "SEATS",
+                                                                                "OTHER_SERVICES"
+                                                                            ]
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "currency": {
+                                                                "type": "string"
+                                                            },
+                                                            "total": {
+                                                                "type": "string"
+                                                            },
+                                                            "base": {
+                                                                "type": "string"
+                                                            },
+                                                            "fees": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "amount": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "type": {
+                                                                            "type": "string",
+                                                                            "enum": [
+                                                                                "TICKETING",
+                                                                                "FORM_OF_PAYMENT",
+                                                                                "SUPPLIER"
+                                                                            ]
+                                                                        }
+                                                                    }
+                                                                }
+                                                            },
+                                                            "taxes": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "amount": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "code": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            },
+                                                            "refundableTaxes": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "pricingOptions": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "fareType": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "PUBLISHED"
+                                                            ]
+                                                        }
+                                                    },
+                                                    "includedCheckedBagsOnly": {
+                                                        "type": "boolean"
+                                                    },
+                                                    "refundableFare": {
+                                                        "type": "boolean"
+                                                    },
+                                                    "noRestrictionFare": {
+                                                        "type": "boolean"
+                                                    },
+                                                    "noPenaltyFare": {
+                                                        "type": "boolean"
+                                                    }
+                                                }
+                                            },
+                                            "validatingAirlineCodes": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "travelerPricings": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "required": [
+                                                        "travelerId",
+                                                        "fareOption",
+                                                        "travelerType",
+                                                        "fareDetailsBySegment"
+                                                    ],
+                                                    "properties": {
+                                                        "travelerId": {
+                                                            "type": "string"
+                                                        },
+                                                        "fareOption": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "STANDARD",
+                                                                "INCLUSIVE_TOUR",
+                                                                "SPANISH_MELILLA_RESIDENT",
+                                                                "SPANISH_CEUTA_RESIDENT",
+                                                                "SPANISH_CANARY_RESIDENT",
+                                                                "SPANISH_BALEARIC_RESIDENT",
+                                                                "AIR_FRANCE_METROPOLITAN_DISCOUNT_PASS",
+                                                                "AIR_FRANCE_DOM_DISCOUNT_PASS",
+                                                                "AIR_FRANCE_COMBINED_DISCOUNT_PASS",
+                                                                "AIR_FRANCE_FAMILY",
+                                                                "ADULT_WITH_COMPANION",
+                                                                "COMPANION"
+                                                            ]
+                                                        },
+                                                        "travelerType": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "ADULT",
+                                                                "CHILD",
+                                                                "SENIOR",
+                                                                "YOUNG",
+                                                                "HELD_INFANT",
+                                                                "SEATED_INFANT",
+                                                                "STUDENT"
+                                                            ]
+                                                        },
+                                                        "associatedAdultId": {
+                                                            "type": "string"
+                                                        },
+                                                        "price": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "currency": {
+                                                                    "type": "string"
+                                                                },
+                                                                "total": {
+                                                                    "type": "string"
+                                                                },
+                                                                "base": {
+                                                                    "type": "string"
+                                                                },
+                                                                "fees": {
+                                                                    "type": "array",
+                                                                    "items": {
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "amount": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "type": {
+                                                                                "type": "string",
+                                                                                "enum": [
+                                                                                    "TICKETING",
+                                                                                    "FORM_OF_PAYMENT",
+                                                                                    "SUPPLIER"
+                                                                                ]
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "taxes": {
+                                                                    "type": "array",
+                                                                    "items": {
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "amount": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "code": {
+                                                                                "type": "string"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "refundableTaxes": {
+                                                                    "type": "string"
+                                                                }
+                                                            }
+                                                        },
+                                                        "fareDetailsBySegment": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "object",
+                                                                "required": [
+                                                                    "segmentId"
+                                                                ],
+                                                                "properties": {
+                                                                    "segmentId": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "cabin": {
+                                                                        "type": "string",
+                                                                        "enum": [
+                                                                            "ECONOMY",
+                                                                            "PREMIUM_ECONOMY",
+                                                                            "BUSINESS",
+                                                                            "FIRST"
+                                                                        ]
+                                                                    },
+                                                                    "fareBasis": {
+                                                                        "type": "string",
+                                                                        "pattern": "[[A-Z0-9]{1,18}"
+                                                                    },
+                                                                    "brandedFare": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "class": {
+                                                                        "type": "string",
+                                                                        "pattern": "[A-Z]{1}"
+                                                                    },
+                                                                    "isAllotment": {
+                                                                        "type": "boolean"
+                                                                    },
+                                                                    "allotmentDetails": {
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "tourName": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "tourReference": {
+                                                                                "type": "string"
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    "sliceDiceIndicator": {
+                                                                        "type": "string",
+                                                                        "enum": [
+                                                                            "LOCAL_AVAILABILITY",
+                                                                            "SUB_OD_AVAILABILITY_1",
+                                                                            "SUB_OD_AVAILABILITY_2"
+                                                                        ]
+                                                                    },
+                                                                    "includedCheckedBags": {
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "quantity": {
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "weight": {
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "weightUnit": {
+                                                                                "type": "string"
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    "additionalServices": {
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "chargeableCheckedBags": {
+                                                                                "type": "object",
+                                                                                "properties": {
+                                                                                    "quantity": {
+                                                                                        "type": "integer"
+                                                                                    },
+                                                                                    "weight": {
+                                                                                        "type": "integer"
+                                                                                    },
+                                                                                    "weightUnit": {
+                                                                                        "type": "string"
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            "chargeableSeatNumber": {
+                                                                                "type": "string",
+                                                                                "pattern": "[1-9][0-9]{0,2}[A-Z]?"
+                                                                            },
+                                                                            "otherServices": {
+                                                                                "type": "array",
+                                                                                "items": {
+                                                                                    "type": "string",
+                                                                                    "enum": [
+                                                                                        "PRIORITY_BOARDING",
+                                                                                        "AIRPORT_CHECKIN"
+                                                                                    ]
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "travelers": {
+                                    "type": "array",
+                                    "items": {
+                                        "allOf": [
+                                            {
+                                                "type": "object",
+                                                "required": [
+                                                    "id",
+                                                    "name"
+                                                ],
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string"
+                                                    },
+                                                    "dateOfBirth": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "pattern": "yyyy-MM-dd"
+                                                    },
+                                                    "gender": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "MALE",
+                                                            "FEMALE",
+                                                            "UNSPECIFIED",
+                                                            "UNDISCLOSED"
+                                                        ]
+                                                    },
+                                                    "name": {
+                                                        "allOf": [
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "firstName": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "lastName": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "middleName": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "secondLastName": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "documents": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "allOf": [
+                                                                {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "number": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "issuanceDate": {
+                                                                            "type": "string",
+                                                                            "format": "date",
+                                                                            "pattern": "yyyy-MM-dd"
+                                                                        },
+                                                                        "expiryDate": {
+                                                                            "type": "string",
+                                                                            "format": "date",
+                                                                            "pattern": "yyyy-MM-dd"
+                                                                        },
+                                                                        "issuanceCountry": {
+                                                                            "type": "string",
+                                                                            "pattern": "[a-zA-Z]{2}"
+                                                                        },
+                                                                        "issuanceLocation": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "nationality": {
+                                                                            "type": "string",
+                                                                            "pattern": "[a-zA-Z]{2}"
+                                                                        },
+                                                                        "birthPlace": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "documentType": {
+                                                                            "type": "string",
+                                                                            "enum": [
+                                                                                "VISA",
+                                                                                "PASSPORT",
+                                                                                "IDENTITY_CARD",
+                                                                                "KNOWN_TRAVELER",
+                                                                                "REDRESS"
+                                                                            ]
+                                                                        },
+                                                                        "validityCountry": {
+                                                                            "type": "string",
+                                                                            "pattern": "[a-zA-Z]{2}"
+                                                                        },
+                                                                        "birthCountry": {
+                                                                            "type": "string",
+                                                                            "pattern": "[a-zA-Z]{2}"
+                                                                        },
+                                                                        "holder": {
+                                                                            "type": "boolean"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "emergencyContact": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "addresseeName": {
+                                                                "type": "string",
+                                                                "pattern": "[a-zA-Z -]"
+                                                            },
+                                                            "countryCode": {
+                                                                "type": "string",
+                                                                "pattern": "[A-Z]{2}"
+                                                            },
+                                                            "number": {
+                                                                "type": "string",
+                                                                "pattern": "[0-9]{1,15}"
+                                                            },
+                                                            "text": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    },
+                                                    "loyaltyPrograms": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "programOwner": {
+                                                                    "type": "string"
+                                                                },
+                                                                "id": {
+                                                                    "type": "string"
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "discountEligibility": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "subType": {
+                                                                    "type": "string",
+                                                                    "enum": [
+                                                                        "SPANISH_RESIDENT",
+                                                                        "AIR_FRANCE_DOMESTIC",
+                                                                        "AIR_FRANCE_COMBINED",
+                                                                        "AIR_FRANCE_METROPOLITAN"
+                                                                    ]
+                                                                },
+                                                                "cityName": {
+                                                                    "type": "string"
+                                                                },
+                                                                "travelerType": {
+                                                                    "type": "string",
+                                                                    "enum": [
+                                                                        "SPANISH_CITIZEN",
+                                                                        "EUROPEAN_CITIZEN",
+                                                                        "GOVERNMENT_WORKER",
+                                                                        "MILITARY",
+                                                                        "MINOR_WITHOUT_ID"
+                                                                    ]
+                                                                },
+                                                                "cardNumber": {
+                                                                    "type": "string",
+                                                                    "pattern": "[0-9A-Z][0-9]{0,12}[A-Z]"
+                                                                },
+                                                                "certificateNumber": {
+                                                                    "type": "string",
+                                                                    "pattern": "[0-9A-Z][0-9]{0,12}[A-Z]"
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "contact": {
+                                                        "allOf": [
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "addresseeName": {
+                                                                        "allOf": [
+                                                                            {
+                                                                                "type": "object",
+                                                                                "properties": {
+                                                                                    "firstName": {
+                                                                                        "type": "string"
+                                                                                    },
+                                                                                    "lastName": {
+                                                                                        "type": "string"
+                                                                                    },
+                                                                                    "middleName": {
+                                                                                        "type": "string"
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "object",
+                                                                                "properties": {
+                                                                                    "secondLastName": {
+                                                                                        "type": "string"
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    "address": {
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "lines": {
+                                                                                "type": "array",
+                                                                                "items": {
+                                                                                    "type": "string"
+                                                                                }
+                                                                            },
+                                                                            "postalCode": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "countryCode": {
+                                                                                "type": "string",
+                                                                                "pattern": "[a-zA-Z]{2}"
+                                                                            },
+                                                                            "cityName": {
+                                                                                "type": "string",
+                                                                                "pattern": "[a-zA-Z -]{1,35}"
+                                                                            },
+                                                                            "stateName": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "postalBox": {
+                                                                                "type": "string"
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    "language": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "purpose": {
+                                                                        "type": "string",
+                                                                        "enum": [
+                                                                            "STANDARD",
+                                                                            "INVOICE",
+                                                                            "STANDARD_WITHOUT_TRANSMISSION"
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "phones": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "object",
+                                                                            "required": [
+                                                                                "deviceType",
+                                                                                "countryCallingCode",
+                                                                                "number"
+                                                                            ],
+                                                                            "properties": {
+                                                                                "deviceType": {
+                                                                                    "type": "string",
+                                                                                    "enum": [
+                                                                                        "MOBILE",
+                                                                                        "LANDLINE",
+                                                                                        "FAX"
+                                                                                    ]
+                                                                                },
+                                                                                "countryCallingCode": {
+                                                                                    "type": "string",
+                                                                                    "pattern": "[0-9+]{2,5}"
+                                                                                },
+                                                                                "number": {
+                                                                                    "type": "string",
+                                                                                    "pattern": "[0-9]{1,15}"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                    "companyName": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "emailAddress": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                "remarks": {
+                                    "type": "object",
+                                    "properties": {
+                                        "general": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "required": [
+                                                    "subType",
+                                                    "text"
+                                                ],
+                                                "properties": {
+                                                    "subType": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "GENERAL_MISCELLANEOUS",
+                                                            "CONFIDENTIAL",
+                                                            "INVOICE",
+                                                            "QUALITY_CONTROL",
+                                                            "BACKOFFICE",
+                                                            "FULFILLMENT",
+                                                            "ITINERARY",
+                                                            "TICKETING_MISCELLANEOUS",
+                                                            "TOUR_CODE"
+                                                        ]
+                                                    },
+                                                    "category": {
+                                                        "type": "string",
+                                                        "pattern": "[A-Z]{1}"
+                                                    },
+                                                    "text": {
+                                                        "type": "string"
+                                                    },
+                                                    "travelerIds": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "flightOfferIds": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "airline": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "required": [
+                                                    "subType",
+                                                    "airlineCode",
+                                                    "text"
+                                                ],
+                                                "properties": {
+                                                    "subType": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "OTHER_SERVICE_INFORMATION",
+                                                            "KEYWORD",
+                                                            "OTHER_SERVICE",
+                                                            "CLIENT_ID",
+                                                            "ADVANCED_TICKET_TIME_LIMIT"
+                                                        ]
+                                                    },
+                                                    "keyword": {
+                                                        "type": "string"
+                                                    },
+                                                    "airlineCode": {
+                                                        "type": "string"
+                                                    },
+                                                    "text": {
+                                                        "type": "string"
+                                                    },
+                                                    "travelerIds": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "flightOfferIds": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "formOfPayments": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "b2bWallet": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "cardId": {
+                                                        "type": "string"
+                                                    },
+                                                    "cardUsageName": {
+                                                        "type": "string"
+                                                    },
+                                                    "cardFriendlyName": {
+                                                        "type": "string",
+                                                        "pattern": "[a-zA-Z0-9]{1,35}"
+                                                    },
+                                                    "reportingData": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "name": {
+                                                                    "type": "string"
+                                                                },
+                                                                "value": {
+                                                                    "type": "string"
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "virtualCreditCardDetails": {
+                                                        "allOf": [
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "brand": {
+                                                                        "type": "string",
+                                                                        "enum": [
+                                                                            "VISA",
+                                                                            "AMERICAN_EXPRESS",
+                                                                            "MASTERCARD",
+                                                                            "VISA_ELECTRON",
+                                                                            "VISA_DEBIT",
+                                                                            "MASTERCARD_DEBIT",
+                                                                            "MAESTRO",
+                                                                            "DINERS",
+                                                                            "EASYPAY"
+                                                                        ]
+                                                                    },
+                                                                    "holder": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "number": {
+                                                                        "type": "string",
+                                                                        "pattern": "[a-zA-Z0-9]{1,35}"
+                                                                    },
+                                                                    "expiryDate": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "amount": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "currencyCode": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "flightOfferIds": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "creditCard": {
+                                                "allOf": [
+                                                    {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "brand": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                    "VISA",
+                                                                    "AMERICAN_EXPRESS",
+                                                                    "MASTERCARD",
+                                                                    "VISA_ELECTRON",
+                                                                    "VISA_DEBIT",
+                                                                    "MASTERCARD_DEBIT",
+                                                                    "MAESTRO",
+                                                                    "DINERS",
+                                                                    "EASYPAY"
+                                                                ]
+                                                            },
+                                                            "holder": {
+                                                                "type": "string"
+                                                            },
+                                                            "number": {
+                                                                "type": "string",
+                                                                "pattern": "[a-zA-Z0-9]{1,35}"
+                                                            },
+                                                            "expiryDate": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "securityCode": {
+                                                                "type": "string"
+                                                            },
+                                                            "flightOfferIds": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            "other": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "method": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "ACCOUNT",
+                                                            "CHECK",
+                                                            "CASH",
+                                                            "NONREFUNDABLE"
+                                                        ]
+                                                    },
+                                                    "flightOfferIds": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "ticketingAgreement": {
+                                    "type": "object",
+                                    "properties": {
+                                        "option": {
+                                            "type": "string",
+                                            "enum": [
+                                                "CONFIRM",
+                                                "DELAY_TO_QUEUE",
+                                                "DELAY_TO_CANCEL"
+                                            ]
+                                        },
+                                        "delay": {
+                                            "type": "string"
+                                        },
+                                        "dateTime": {
+                                            "type": "string"
+                                        },
+                                        "segmentIds": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "automatedProcess": {
+                                    "type": "array",
+                                    "items": {
+                                        "allOf": [
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "code": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "IMMEDIATE",
+                                                            "DELAYED",
+                                                            "ERROR"
+                                                        ]
+                                                    },
+                                                    "queue": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "number": {
+                                                                "type": "string"
+                                                            },
+                                                            "category": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    },
+                                                    "text": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "delay": {
+                                                        "type": "string"
+                                                    },
+                                                    "officeId": {
+                                                        "type": "string"
+                                                    },
+                                                    "dateTime": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                "contacts": {
+                                    "type": "array",
+                                    "items": {
+                                        "allOf": [
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "addresseeName": {
+                                                        "allOf": [
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "firstName": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "lastName": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "middleName": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "secondLastName": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "address": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "lines": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "postalCode": {
+                                                                "type": "string"
+                                                            },
+                                                            "countryCode": {
+                                                                "type": "string",
+                                                                "pattern": "[a-zA-Z]{2}"
+                                                            },
+                                                            "cityName": {
+                                                                "type": "string",
+                                                                "pattern": "[a-zA-Z -]{1,35}"
+                                                            },
+                                                            "stateName": {
+                                                                "type": "string"
+                                                            },
+                                                            "postalBox": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    },
+                                                    "language": {
+                                                        "type": "string"
+                                                    },
+                                                    "purpose": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "STANDARD",
+                                                            "INVOICE",
+                                                            "STANDARD_WITHOUT_TRANSMISSION"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "phones": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object",
+                                                            "required": [
+                                                                "deviceType",
+                                                                "countryCallingCode",
+                                                                "number"
+                                                            ],
+                                                            "properties": {
+                                                                "deviceType": {
+                                                                    "type": "string",
+                                                                    "enum": [
+                                                                        "MOBILE",
+                                                                        "LANDLINE",
+                                                                        "FAX"
+                                                                    ]
+                                                                },
+                                                                "countryCallingCode": {
+                                                                    "type": "string",
+                                                                    "pattern": "[0-9+]{2,5}"
+                                                                },
+                                                                "number": {
+                                                                    "type": "string",
+                                                                    "pattern": "[0-9]{1,15}"
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "companyName": {
+                                                        "type": "string"
+                                                    },
+                                                    "emailAddress": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                "tickets": {
+                                    "type": "array",
+                                    "items": {
+                                        "allOf": [
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "documentType": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "ETICKET",
+                                                            "PTICKET",
+                                                            "EMD",
+                                                            "MCO"
+                                                        ]
+                                                    },
+                                                    "documentNumber": {
+                                                        "type": "string"
+                                                    },
+                                                    "documentStatus": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "ISSUED",
+                                                            "REFUNDED",
+                                                            "VOID",
+                                                            "ORIGINAL",
+                                                            "EXCHANGED"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "travelerId": {
+                                                        "type": "string"
+                                                    },
+                                                    "segmentIds": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

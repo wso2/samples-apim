@@ -1,0 +1,8 @@
+fastapi==0.115.13
+langchain_openai==0.0.8
+pymilvus==2.3.7
+PyYAML==6.0.1
+uvicorn==0.28.0
+starlette==0.40.0
+marshmallow==3.20.1
+setuptools<81

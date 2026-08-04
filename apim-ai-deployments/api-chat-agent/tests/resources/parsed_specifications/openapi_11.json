@@ -1,0 +1,2559 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "url": "https://test.api.amadeus.com/v2"
+    }
+  ],
+  "paths": {
+    "/shopping/flight-offers": {
+      "get": {
+        "tags": [
+          "Shopping"
+        ],
+        "summary": "Return list of Flight Offers based on searching criteria.",
+        "description": "",
+        "operationId": "getFlightOffers",
+        "parameters": [
+          {
+            "name": "originLocationCode",
+            "in": "query",
+            "required": true,
+            "description": "city/airport [IATA code](http://www.iata.org/publications/Pages/code-search.aspx) from which the traveler will depart, e.g. BOS for Boston",
+            "schema": {
+              "type": "string",
+              "pattern": "[A-Z]{3}"
+            },
+            "example": "SYD"
+          },
+          {
+            "name": "destinationLocationCode",
+            "in": "query",
+            "required": true,
+            "description": "city/airport [IATA code](http://www.iata.org/publications/Pages/code-search.aspx) to which the traveler is going, e.g. PAR for Paris",
+            "schema": {
+              "type": "string",
+              "pattern": "[A-Z]{3}"
+            },
+            "example": "BKK"
+          },
+          {
+            "name": "departureDate",
+            "in": "query",
+            "required": true,
+            "description": "the date on which the traveler will depart from the origin to go to the destination. Dates are specified in the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) YYYY-MM-DD format, e.g. 2017-12-25",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2022-11-01T00:00:00.000Z"
+          },
+          {
+            "name": "returnDate",
+            "in": "query",
+            "required": false,
+            "description": "the date on which the traveler will depart from the destination to return to the origin. If this parameter is not specified, only one-way itineraries are found. If this parameter is specified, only round-trip itineraries are found. Dates are specified in the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) YYYY-MM-DD format, e.g. 2018-02-28",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "adults",
+            "in": "query",
+            "required": true,
+            "description": "the number of adult travelers (age 12 or older on date of departure).",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9,
+              "default": 1
+            }
+          },
+          {
+            "name": "children",
+            "in": "query",
+            "required": false,
+            "description": "the number of child travelers (older than age 2 and younger than age 12 on date of departure) who will each have their own separate seat. If specified, this number should be greater than or equal to 0",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9
+            }
+          },
+          {
+            "name": "infants",
+            "in": "query",
+            "required": false,
+            "description": "the number of infant travelers (whose age is less or equal to 2 on date of departure). Infants travel on the lap of an adult traveler, and thus the number of infants must not exceed the number of adults. If specified, this number should be greater than or equal to 0",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9
+            }
+          },
+          {
+            "name": "travelClass",
+            "in": "query",
+            "required": false,
+            "description": "most of the flight time should be spent in a cabin of this quality or higher. The accepted travel class is economy, premium economy, business or first class. If no travel class is specified, the search considers any travel class",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ECONOMY",
+                "PREMIUM_ECONOMY",
+                "BUSINESS",
+                "FIRST"
+              ]
+            }
+          },
+          {
+            "name": "includedAirlineCodes",
+            "in": "query",
+            "required": false,
+            "description": "This option ensures that the system will only consider these airlines. This can not be cumulated with parameter excludedAirlineCodes.\n\nAirlines are specified as [IATA airline codes](http:\/\/www.iata.org\/publications\/Pages\/code-search.aspx) and are comma-separated, e.g. 6X,7X,8X\n",
+            "schema": {
+              "type": "string",
+              "pattern": "[0-9A-Z]{2}"
+            }
+          },
+          {
+            "name": "excludedAirlineCodes",
+            "in": "query",
+            "required": false,
+            "description": "This option ensures that the system will ignore these airlines. This can not be cumulated with parameter includedAirlineCodes.\n\nAirlines are specified as [IATA airline codes](http:\/\/www.iata.org\/publications\/Pages\/code-search.aspx) and are comma-separated, e.g. 6X,7X,8X\n",
+            "schema": {
+              "type": "string",
+              "pattern": "[0-9A-Z]{2}"
+            }
+          },
+          {
+            "name": "nonStop",
+            "in": "query",
+            "required": false,
+            "description": "if set to true, the search will find only flights going from the origin to the destination with no stop in between",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "currencyCode",
+            "in": "query",
+            "required": false,
+            "description": "the preferred currency for the flight offers. Currency is specified in the [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) format, e.g. EUR for Euro",
+            "schema": {
+              "type": "string",
+              "pattern": "[A-Z]{3}"
+            }
+          },
+          {
+            "name": "maxPrice",
+            "in": "query",
+            "required": false,
+            "description": "maximum price per traveler. By default, no limit is applied. If specified, the value should be a positive number with no decimals",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
+            "name": "max",
+            "in": "query",
+            "required": false,
+            "description": "maximum number of flight offers to return. If specified, the value should be greater than or equal to 1",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 250
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/GETAirOffersReply"
+          },
+          "400": {
+            "$ref": "#/components/responses/400_Search"
+          },
+          "default": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Shopping"
+        ],
+        "summary": "Return list of Flight Offers based on posted searching criteria.",
+        "description": "",
+        "operationId": "searchFlightOffers",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/getOverride"
+          }
+        ],
+        "requestBody": {
+          "description": "list of criteria to retrieve a list of flight offers",
+          "content": {
+            "application/vnd.amadeus+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetFlightOffersQuery"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/returnAirOffers"
+          },
+          "400": {
+            "$ref": "#/components/responses/400_Search"
+          },
+          "default": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Error_400": {
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Issue"
+            }
+          }
+        },
+        "required": [
+          "errors"
+        ],
+        "example": {
+          "errors": [
+            {
+              "status": 400,
+              "code": 477,
+              "title": "INVALID FORMAT",
+              "detail": "invalid query parameter format",
+              "source": {
+                "parameter": "airport",
+                "example": "CDG"
+              }
+            }
+          ]
+        }
+      },
+      "Error_500": {
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Issue"
+            }
+          }
+        },
+        "required": [
+          "errors"
+        ],
+        "example": {
+          "errors": [
+            {
+              "status": 500,
+              "code": 141,
+              "title": "SYSTEM ERROR HAS OCCURRED"
+            }
+          ]
+        }
+      },
+      "Issue": {
+        "properties": {
+          "status": {
+            "type": "integer",
+            "description": "the HTTP status code applicable to this error"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int64",
+            "description": "an application-specific error code"
+          },
+          "title": {
+            "type": "string",
+            "description": "a short summary of the error"
+          },
+          "detail": {
+            "type": "string",
+            "description": "explanation of the error"
+          },
+          "source": {
+            "type": "object",
+            "maxProperties": 1,
+            "properties": {
+              "pointer": {
+                "type": "string",
+                "description": "a JSON Pointer [RFC6901] to the associated entity in the request document"
+              },
+              "parameter": {
+                "type": "string",
+                "description": "a string indicating which URI query parameter caused the issue"
+              },
+              "example": {
+                "type": "string",
+                "description": "a string indicating an example of the right value"
+              }
+            },
+            "description": "an object containing references to the source of the error",
+            "title": "Issue_Source"
+          }
+        }
+      },
+      "Collection_Meta": {
+        "properties": {
+          "count": {
+            "type": "integer",
+            "example": 1
+          },
+          "oneWayCombinations": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "originDestinationId": {
+                  "type": "string"
+                },
+                "flightOfferIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "title": "oneWayCombinations"
+            }
+          }
+        },
+        "title": "Collection_Meta"
+      },
+      "Collection_Meta_Link": {
+        "properties": {
+          "count": {
+            "type": "integer",
+            "example": 1
+          },
+          "links": {
+            "properties": {
+              "self": {
+                "type": "string",
+                "format": "uri",
+                "example": "https://test.api.amadeus.com/v1/area/resources?..."
+              },
+              "next": {
+                "type": "string",
+                "format": "uri",
+                "example": "https://test.api.amadeus.com/v1/area/resources?..."
+              },
+              "previous": {
+                "type": "string",
+                "format": "uri",
+                "example": "https://test.api.amadeus.com/v1/area/resources?..."
+              },
+              "last": {
+                "type": "string",
+                "format": "uri",
+                "example": "https://test.api.amadeus.com/v1/area/resources?..."
+              },
+              "first": {
+                "type": "string",
+                "format": "uri",
+                "example": "https://test.api.amadeus.com/v1/area/resources?..."
+              },
+              "up": {
+                "type": "string",
+                "format": "uri",
+                "example": "https://test.api.amadeus.com/v1/area/resources?..."
+              }
+            },
+            "title": "CollectionLinks",
+            "example": {
+              "self": "https://test.api.amadeus.com/v1/area/resources?param=value"
+            }
+          }
+        },
+        "title": "Collection_Meta"
+      },
+      "LocationEntry": {
+        "properties": {
+          "key": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": {
+          "$ref": "#/components/schemas/LocationValue"
+        }
+      },
+      "AircraftEntry": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": {
+          "type": "string",
+          "description": "the manufacturer/model of aircraft"
+        }
+      },
+      "CurrencyEntry": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "example": "Euro"
+          }
+        },
+        "additionalProperties": {
+          "type": "string",
+          "example": "EUR"
+        }
+      },
+      "CarrierEntry": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": {
+          "type": "string",
+          "description": "the carrier name"
+        }
+      },
+      "FlightSegment": {
+        "type": "object",
+        "properties": {
+          "departure": {
+            "$ref": "#/components/schemas/FlightEndPoint"
+          },
+          "arrival": {
+            "$ref": "#/components/schemas/FlightEndPoint"
+          },
+          "carrierCode": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2,
+            "description": "providing the airline / carrier code",
+            "example": "DL"
+          },
+          "number": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4,
+            "description": "the flight number as assigned by the carrier",
+            "example": "212"
+          },
+          "aircraft": {
+            "$ref": "#/components/schemas/AircraftEquipment"
+          },
+          "operating": {
+            "$ref": "#/components/schemas/OperatingFlight"
+          },
+          "duration": {
+            "type": "string",
+            "description": "stop duration in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) PnYnMnDTnHnMnS format, e.g. PT2H10M",
+            "example": "PT2H10M"
+          },
+          "stops": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FlightStop"
+            },
+            "description": "information regarding the different stops composing the flight segment. E.g. technical stop, change of gauge..."
+          }
+        },
+        "description": "defining a flight segment; including both operating and marketing details when applicable"
+      },
+      "OriginalFlightEndPoint": {
+        "type": "object",
+        "properties": {
+          "iataCode": {
+            "type": "string",
+            "description": "[IATA airline codes](http://www.iata.org/publications/Pages/code-search.aspx)",
+            "example": "JFK"
+          },
+          "terminal": {
+            "type": "string",
+            "description": "terminal name / number",
+            "example": "T2"
+          }
+        },
+        "description": "departure or arrival information"
+      },
+      "FlightEndPoint": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/OriginalFlightEndPoint"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "local date and time in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) YYYY-MM-ddThh:mm:ss format, e.g. 2017-02-10T20:40:00",
+                "example": "2017-10-23T20:00:00.000Z"
+              }
+            }
+          }
+        ],
+        "description": "departure or arrival information",
+        "title": "FlightEndPoint"
+      },
+      "OriginalFlightStop": {
+        "type": "object",
+        "properties": {
+          "iataCode": {
+            "type": "string",
+            "description": "[IATA airline codes](http://www.iata.org/publications/Pages/code-search.aspx)",
+            "example": "JFK"
+          },
+          "duration": {
+            "type": "string",
+            "description": "stop duration in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) PnYnMnDTnHnMnS format, e.g. PT2H10M",
+            "example": "PT2H10M"
+          }
+        },
+        "description": "details of stops for direct or change of gauge flights"
+      },
+      "FlightStop": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/OriginalFlightStop"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "arrivalAt": {
+                "type": "string",
+                "format": "date-time",
+                "description": "arrival at the stop in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) YYYY-MM-ddThh:mm:ss format, e.g. 2017-02-10T20:40:00",
+                "example": "2017-10-23T20:00:00.000Z"
+              },
+              "departureAt": {
+                "type": "string",
+                "format": "date-time",
+                "description": "departure from the stop in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) YYYY-MM-ddThh:mm:ss format, e.g. 2017-02-10T20:40:00",
+                "example": "2017-10-23T20:00:00.000Z"
+              }
+            }
+          }
+        ],
+        "description": "details of stops for direct or change of gauge flights",
+        "title": "FlightStop"
+      },
+      "AircraftEquipment": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "[a-zA-Z0-9]{3}",
+            "description": "IATA aircraft code (http:\/\/www.flugzeuginfo.net\/table_accodes_iata_en.php)\n",
+            "example": "318"
+          }
+        },
+        "description": "information related to the aircraft"
+      },
+      "OperatingFlight": {
+        "type": "object",
+        "properties": {
+          "carrierCode": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2,
+            "description": "providing the airline / carrier code",
+            "example": "DL"
+          }
+        },
+        "description": "information about the operating flight"
+      },
+      "Price": {
+        "properties": {
+          "currency": {
+            "type": "string",
+            "example": "USD"
+          },
+          "total": {
+            "type": "string",
+            "description": "Total amount paid by the user",
+            "example": "932.70"
+          },
+          "base": {
+            "type": "string",
+            "description": "Amount without taxes",
+            "example": "632.70"
+          },
+          "fees": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Fee"
+            },
+            "description": "List of applicable fees"
+          },
+          "taxes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tax"
+            }
+          },
+          "refundableTaxes": {
+            "type": "string",
+            "description": "The amount of taxes which are refundable",
+            "example": "200.00"
+          }
+        }
+      },
+      "Extended_Price": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "margin": {
+                "type": "string",
+                "description": "BOOK step ONLY - The price margin percentage (plus or minus) that the booking can tolerate. When set to 0, then no price magin is tolerated.",
+                "example": "1.00"
+              },
+              "grandTotal": {
+                "type": "string",
+                "description": "Total amount paid by the user (including fees and selected additional services).",
+                "example": "987.00"
+              },
+              "billingCurrency": {
+                "type": "string",
+                "description": "Currency of the payment. It may be different than the requested currency",
+                "example": "EUR"
+              },
+              "additionalServices": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "amount": {
+                      "type": "string",
+                      "example": "332.70"
+                    },
+                    "type": {
+                      "$ref": "#/components/schemas/AdditionalServiceType"
+                    }
+                  },
+                  "title": "AdditionalService"
+                },
+                "title": "AdditionalServices"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/Price"
+          }
+        ],
+        "description": "price information",
+        "type": "object",
+        "title": "Price"
+      },
+      "Fee": {
+        "properties": {
+          "amount": {
+            "type": "string",
+            "example": "332.70"
+          },
+          "type": {
+            "$ref": "#/components/schemas/FeeType"
+          }
+        },
+        "description": "a fee"
+      },
+      "FeeType": {
+        "type": "string",
+        "enum": [
+          "TICKETING",
+          "FORM_OF_PAYMENT",
+          "SUPPLIER"
+        ],
+        "description": "type of fee",
+        "example": "TICKETING"
+      },
+      "Tax": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "string",
+            "example": "332.70"
+          },
+          "code": {
+            "type": "string",
+            "example": "MX"
+          }
+        },
+        "description": "a tax"
+      },
+      "TravelClass": {
+        "type": "string",
+        "enum": [
+          "ECONOMY",
+          "PREMIUM_ECONOMY",
+          "BUSINESS",
+          "FIRST"
+        ],
+        "description": "quality of service offered in the cabin where the seat is located in this flight. Economy, premium economy, business or first class",
+        "example": "PREMIUM_ECONOMY"
+      },
+      "Co2Emission": {
+        "type": "object",
+        "properties": {
+          "weight": {
+            "type": "integer",
+            "description": "Weight of Co2 emitted for the concerned segment",
+            "example": 90
+          },
+          "weightUnit": {
+            "type": "string",
+            "description": "Code to qualify unit as pounds or kilos",
+            "example": "KG"
+          },
+          "cabin": {
+            "$ref": "#/components/schemas/TravelClass"
+          }
+        }
+      },
+      "OriginDestination": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": 1
+          },
+          "originLocationCode": {
+            "type": "string",
+            "description": "Origin location, such as a city or an airport. Currently, only the locations defined in [IATA](http://www.iata.org/publications/Pages/code-search.aspx) are supported.",
+            "example": "PAR"
+          },
+          "originRadius": {
+            "type": "number",
+            "description": "Include other possible locations around the point, located less than this distance in kilometers away. Max:300\n\nCan not be combined with \"dateWindow\" or \"timeWindow\".\n",
+            "example": 200
+          },
+          "alternativeOriginsCodes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "title": "code"
+            },
+            "minItems": 1,
+            "maxItems": 2,
+            "description": "Set of alternative origin location, such as a city or an airport. Currently, only the locations defined in [IATA](http://www.iata.org/publications/Pages/code-search.aspx) are supported.",
+            "example": [
+              "LON",
+              "MUC"
+            ]
+          },
+          "destinationLocationCode": {
+            "type": "string",
+            "description": "Destination location, such as a city or an airport. Currently, only the locations defined in [IATA](http://www.iata.org/publications/Pages/code-search.aspx) are supported.",
+            "example": "NYC"
+          },
+          "destinationRadius": {
+            "type": "number",
+            "description": "Include other possible locations around the point, located less than this distance in kilometers away. Max:300\n\nCan not be combined with \"dateWindow\" or \"timeWindow\".\n",
+            "example": 200
+          },
+          "alternativeDestinationsCodes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "title": "code"
+            },
+            "minItems": 1,
+            "maxItems": 2,
+            "description": "Set of alternative destination location, such as a city or an airport. Currently, only the locations defined in [IATA](http://www.iata.org/publications/Pages/code-search.aspx) are supported."
+          },
+          "departureDateTimeRange": {
+            "$ref": "#/components/schemas/DateTimeRange"
+          },
+          "arrivalDateTimeRange": {
+            "$ref": "#/components/schemas/DateTimeRange"
+          },
+          "includedConnectionPoints": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "title": "code"
+            },
+            "minItems": 1,
+            "maxItems": 2,
+            "description": "List of included connections points. When an includedViaPoints option is specified, all FlightOffer returned must at least go via this Connecting Point. Currently, only the locations defined in IATA are supported. Used only by the AMADEUS provider",
+            "example": [
+              "MRS"
+            ]
+          },
+          "excludedConnectionPoints": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "title": "code"
+            },
+            "minItems": 1,
+            "maxItems": 3,
+            "description": "List of excluded connections points. Any FlightOffer with these connections points will be present in response. Currently, only the locations defined in IATA are supported. Used only by the AMADEUS provider",
+            "example": [
+              "MRS"
+            ]
+          }
+        }
+      },
+      "DateTimeRange": {
+        "type": "object",
+        "required": [
+          "date"
+        ],
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "Dates are specified in the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) YYYY-MM-DD format, e.g. 2018-12-25",
+            "example": "2018-09-22T00:00:00.000Z"
+          },
+          "dateWindow": {
+            "type": "string",
+            "pattern": "^[MPI][1-3]D",
+            "description": "Either 1, 2 or 3 extra days around the local date (IxD for +\/- x days - Ex: I3D), Either 1 to 3 days after the local date (PxD for +x days - Ex: P3D), or 1 to 3 days before the local date (MxD for -x days - Ex: M3D)\n\nCan not be combined with \"originRadius\" or \"destinationRadius\".\n",
+            "example": "I3D"
+          },
+          "time": {
+            "type": "string",
+            "description": "Local time. hh:mm:ss format, e.g 10:30:00",
+            "example": "10:30:00"
+          },
+          "timeWindow": {
+            "type": "string",
+            "pattern": "^([1-9]|10|11|12)H",
+            "description": "1 to 12 hours around (both +and -) the local time. Possibly limited by the number of extra days when specified, i.e.  in some situations, it may not be used to exceed the maximum date range. [1-12]H format, e.g. 6H\n\nCan not be combined with \"originRadius\" or \"destinationRadius\".\n",
+            "example": "2H"
+          }
+        },
+        "title": "dateTimeRange"
+      },
+      "Traveler": {
+        "type": "object",
+        "required": [
+          "id",
+          "travelerType"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": 1
+          },
+          "travelerType": {
+            "$ref": "#/components/schemas/TravelerType"
+          },
+          "associatedAdultId": {
+            "type": "string",
+            "description": "if type=\"HELD_INFANT\", corresponds to the adult travelers's id who will share the seat"
+          }
+        }
+      },
+      "SearchCriteria": {
+        "type": "object",
+        "properties": {
+          "excludeAllotments": {
+            "type": "boolean",
+            "description": "This option allows to exclude the isAllotment flag associated to a booking class in the search response when it exist.",
+            "example": false
+          },
+          "addOneWayOffers": {
+            "type": "boolean",
+            "description": "This option allows activate the one-way combinable feature",
+            "example": true
+          },
+          "maxFlightOffers": {
+            "type": "number",
+            "description": "Maximum number of flight offers returned (Max 250)",
+            "default": 250,
+            "example": 250
+          },
+          "maxPrice": {
+            "type": "integer",
+            "description": "maximum price per traveler. By default, no limit is applied. If specified, the value should be a positive number with no decimals",
+            "example": 100
+          },
+          "allowAlternativeFareOptions": {
+            "type": "boolean",
+            "description": "This option allows to default to a standard fareOption if no offers are found for the selected fareOption.",
+            "example": true
+          },
+          "oneFlightOfferPerDay": {
+            "type": "boolean",
+            "description": "Requests the system to find at least one flight-offer per day, if possible, when a range of dates is specified. Default is false.",
+            "example": true
+          },
+          "additionalInformation": {
+            "type": "object",
+            "properties": {
+              "chargeableCheckedBags": {
+                "type": "boolean",
+                "description": "If true, returns the price of the first additional bag when the airline is an \"Amadeus Ancillary Services\" member.",
+                "example": true
+              },
+              "brandedFares": {
+                "type": "boolean",
+                "description": "If true, returns the fare family name for each flight-offer which supports fare family",
+                "example": true
+              }
+            },
+            "title": "AdditionalInformation"
+          },
+          "pricingOptions": {
+            "$ref": "#/components/schemas/ExtendedPricingOptions"
+          },
+          "flightFilters": {
+            "type": "object",
+            "properties": {
+              "crossBorderAllowed": {
+                "type": "boolean",
+                "description": "Allows to search a location outside the borders when a radius around a location is specified. Default is false.",
+                "example": false
+              },
+              "moreOvernightsAllowed": {
+                "type": "boolean",
+                "description": "This flag enables/disables the possibility to have more overnight flights in Low Fare Search",
+                "example": false
+              },
+              "returnToDepartureAirport": {
+                "type": "boolean",
+                "description": "This option force to retrieve flight-offer with a departure and a return in the same airport",
+                "example": false
+              },
+              "railSegmentAllowed": {
+                "type": "boolean",
+                "description": "This flag enable/disable filtering of rail segment (TGV AIR, RAIL ...)",
+                "example": true
+              },
+              "busSegmentAllowed": {
+                "type": "boolean",
+                "description": "This flag enable/disable filtering of bus segment",
+                "example": true
+              },
+              "maxFlightTime": {
+                "type": "number",
+                "description": "Maximum flight time as a percentage relative to the shortest flight time available for the itinerary",
+                "example": 200
+              },
+              "carrierRestrictions": {
+                "type": "object",
+                "properties": {
+                  "blacklistedInEUAllowed": {
+                    "type": "boolean",
+                    "description": "This flag enable/disable filtering of blacklisted airline by EU. The list of the banned airlines is published in the Official Journal of the European Union, where they are included as annexes A and B to the Commission Regulation. The blacklist of an airline can concern all its flights or some specific aircraft types pertaining to the airline"
+                  },
+                  "excludedCarrierCodes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "minItems": 1,
+                    "maxItems": 99,
+                    "description": "This option ensures that the system will only consider these airlines."
+                  },
+                  "includedCarrierCodes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "minItems": 1,
+                    "maxItems": 99,
+                    "description": "This option ensures that the system will only consider these airlines."
+                  }
+                },
+                "description": "Restriction towards carriers.",
+                "title": "CarrierRestrictions"
+              },
+              "cabinRestrictions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "cabin": {
+                      "$ref": "#/components/schemas/TravelClass"
+                    },
+                    "coverage": {
+                      "$ref": "#/components/schemas/Coverage"
+                    },
+                    "originDestinationIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "The list of originDestination identifiers for which the cabinRestriction applies",
+                      "title": "originDestinationIds",
+                      "example": [
+                        1,
+                        2
+                      ]
+                    }
+                  },
+                  "title": "CabinRestriction"
+                },
+                "minItems": 1,
+                "maxItems": 6,
+                "description": "Restriction towards cabins.",
+                "title": "CabinRestrictions"
+              },
+              "connectionRestriction": {
+                "type": "object",
+                "properties": {
+                  "maxNumberOfConnections": {
+                    "type": "number",
+                    "description": "The maximal number of connections for each itinerary. Value can be 0, 1 or 2.",
+                    "example": 2
+                  },
+                  "airportChangeAllowed": {
+                    "type": "boolean",
+                    "description": "Allow to change airport during connection",
+                    "example": false
+                  },
+                  "technicalStopsAllowed": {
+                    "type": "boolean",
+                    "description": "This option allows the single segment to have one or more intermediate stops (technical stops).",
+                    "example": true
+                  }
+                },
+                "description": "Restriction towards number of connections.",
+                "title": "ConnectionRestriction"
+              }
+            },
+            "title": "FlightFilters"
+          }
+        }
+      },
+      "FlightOffer": {
+        "type": "object",
+        "required": [
+          "type",
+          "id"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "the resource name",
+            "example": "flight-offer"
+          },
+          "id": {
+            "type": "string",
+            "description": "Id of the flight offer",
+            "example": "1"
+          },
+          "source": {
+            "$ref": "#/components/schemas/FlightOfferSource"
+          },
+          "instantTicketingRequired": {
+            "type": "boolean",
+            "description": "If true, inform that a ticketing will be required at booking step.",
+            "example": false
+          },
+          "disablePricing": {
+            "type": "boolean",
+            "description": "BOOK step ONLY - If true, allows to book a PNR without pricing. Only for the source \"GDS\"",
+            "example": false
+          },
+          "nonHomogeneous": {
+            "type": "boolean",
+            "description": "If true, upon completion of the booking, this pricing solution is expected to yield multiple records (a record contains booking information confirmed and stored, typically a Passenger Name Record (PNR), in the provider GDS or system)",
+            "example": false
+          },
+          "oneWay": {
+            "type": "boolean",
+            "description": "If true, the flight offer can be combined with other oneWays flight-offers to complete the whole journey (one-Way combinable feature).",
+            "example": false
+          },
+          "paymentCardRequired": {
+            "type": "boolean",
+            "description": "If true, a payment card is mandatory to book this flight offer",
+            "example": false
+          },
+          "lastTicketingDate": {
+            "type": "string",
+            "description": "If booked on the same day as the search (with respect to timezone), this flight offer is guaranteed to be thereafter valid for ticketing until this date (included). Unspecified when it does not make sense for this flight offer (e.g. no control over ticketing once booked). YYYY-MM-DD format, e.g. 2019-06-07",
+            "example": "2018-06-19T00:00:00.000Z"
+          },
+          "numberOfBookableSeats": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 9,
+            "description": "Number of seats bookable in a single request. Can not be higher than 9.",
+            "example": 9
+          },
+          "itineraries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "segments"
+              ],
+              "properties": {
+                "duration": {
+                  "type": "string",
+                  "description": "duration in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) PnYnMnDTnHnMnS format, e.g. PT2H10M for a duration of 2h10m",
+                  "example": "PT2H10M"
+                },
+                "segments": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Segment"
+                  },
+                  "minItems": 1,
+                  "maxItems": 9,
+                  "title": "Segments"
+                }
+              },
+              "title": "Itineraries"
+            }
+          },
+          "price": {
+            "$ref": "#/components/schemas/Extended_Price"
+          },
+          "pricingOptions": {
+            "type": "object",
+            "properties": {
+              "fareType": {
+                "$ref": "#/components/schemas/PricingOptionsFareType"
+              },
+              "includedCheckedBagsOnly": {
+                "type": "boolean",
+                "description": "If true, returns the flight-offers with included checked bags only",
+                "example": true
+              },
+              "refundableFare": {
+                "type": "boolean",
+                "description": "If true, returns the flight-offers with refundable fares only",
+                "example": true
+              },
+              "noRestrictionFare": {
+                "type": "boolean",
+                "description": "If true, returns the flight-offers with no restriction fares only",
+                "example": true
+              },
+              "noPenaltyFare": {
+                "type": "boolean",
+                "description": "If true, returns the flight-offers with no penalty fares only",
+                "example": true
+              }
+            },
+            "title": "PricingOptions"
+          },
+          "validatingAirlineCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "maxItems": 9,
+            "description": "This option ensures that the system will only consider offers with these airlines as validating carrier.",
+            "example": [
+              "AF"
+            ]
+          },
+          "travelerPricings": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "travelerId": {
+                  "type": "string",
+                  "description": "Id of the traveler",
+                  "example": "1"
+                },
+                "fareOption": {
+                  "$ref": "#/components/schemas/TravelerPricingFareOption"
+                },
+                "travelerType": {
+                  "$ref": "#/components/schemas/TravelerType"
+                },
+                "associatedAdultId": {
+                  "type": "string",
+                  "description": "if type=\"HELD_INFANT\", corresponds to the adult traveler's id who will share the seat"
+                },
+                "price": {
+                  "$ref": "#/components/schemas/Price"
+                },
+                "fareDetailsBySegment": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "segmentId": {
+                        "type": "string",
+                        "description": "Id of the segment",
+                        "example": "1"
+                      },
+                      "cabin": {
+                        "$ref": "#/components/schemas/TravelClass"
+                      },
+                      "fareBasis": {
+                        "type": "string",
+                        "pattern": "[[A-Z0-9]{1,18}",
+                        "description": "Fare basis specifying the rules of a fare. Usually, though not always, is composed of the booking class code followed by a set of letters and digits representing other characteristics of the ticket, such as refundability, minimum stay requirements, discounts or special promotional elements.",
+                        "example": "ANNNNF4K"
+                      },
+                      "brandedFare": {
+                        "type": "string",
+                        "description": "The name of the Fare Family corresponding to the fares. Only for the GDS provider and if the airline has fare families filled",
+                        "example": "LIGHTONE"
+                      },
+                      "class": {
+                        "type": "string",
+                        "pattern": "[A-Z]{1}",
+                        "description": "The code of the booking class, a.k.a. class of service or Reservations/Booking Designator (RBD)",
+                        "example": "A"
+                      },
+                      "isAllotment": {
+                        "type": "boolean",
+                        "description": "True if the corresponding booking class is in an allotment",
+                        "example": true
+                      },
+                      "allotmentDetails": {
+                        "type": "object",
+                        "properties": {
+                          "tourName": {
+                            "type": "string"
+                          },
+                          "tourReference": {
+                            "type": "string"
+                          }
+                        },
+                        "title": "AllotmentDetails"
+                      },
+                      "sliceDiceIndicator": {
+                        "$ref": "#/components/schemas/SliceDiceIndicator"
+                      },
+                      "includedCheckedBags": {
+                        "$ref": "#/components/schemas/BaggageAllowance"
+                      },
+                      "additionalServices": {
+                        "type": "object",
+                        "properties": {
+                          "chargeableCheckedBags": {
+                            "$ref": "#/components/schemas/BaggageAllowance"
+                          },
+                          "chargeableSeatNumber": {
+                            "type": "string",
+                            "pattern": "[1-9][0-9]{0,2}[A-Z]?",
+                            "description": "seat number",
+                            "example": "33D"
+                          },
+                          "otherServices": {
+                            "type": "array",
+                            "items": {
+                              "$ref": "#/components/schemas/ServiceName"
+                            },
+                            "description": "Other services to add",
+                            "example": [
+                              "PRIORITY_BOARDING"
+                            ]
+                          }
+                        },
+                        "title": "AdditionalServicesRequest"
+                      }
+                    },
+                    "required": [
+                      "segmentId"
+                    ],
+                    "description": "Fare details of the segment",
+                    "title": "FareDetailsBySegment"
+                  }
+                }
+              },
+              "required": [
+                "travelerId",
+                "fareOption",
+                "travelerType",
+                "fareDetailsBySegment"
+              ],
+              "title": "TravelerPricing"
+            },
+            "description": "Fare information for each traveler/segment",
+            "title": "TravelerPricings"
+          }
+        },
+        "title": "Flight-offer"
+      },
+      "Segment": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Id of the segment",
+                "example": 1
+              },
+              "numberOfStops": {
+                "type": "integer",
+                "description": "Number of stops planned on the segment for technical or operation purpose i.e. refueling",
+                "example": 0
+              },
+              "blacklistedInEU": {
+                "type": "boolean",
+                "description": "When the flight has a marketing or\/and operating airline that is identified as blacklisted by the European Commission. \n\nTo improve travel safety, the European Commission regularly updates the list of the banned carriers from operating in Europe. It allows any Travel Agency located in the European Union to easily identify and hide any travel recommendation based on some unsafe airlines. \nThe [list of the banned airlines](https:\/\/ec.europa.eu\/transport\/sites\/transport\/files\/air-safety-list_en.pdf) is published in the Official Journal of the European Union, where they are included as annexes A and B to the Commission Regulation. The blacklist of an airline can concern all its flights or some specific aircraft types pertaining to the airline   \n",
+                "example": false
+              },
+              "co2Emissions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Co2Emission"
+                },
+                "minItems": 1,
+                "description": "Co2 informations"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/FlightSegment"
+          }
+        ]
+      },
+      "TravelerType": {
+        "type": "string",
+        "enum": [
+          "ADULT",
+          "CHILD",
+          "SENIOR",
+          "YOUNG",
+          "HELD_INFANT",
+          "SEATED_INFANT",
+          "STUDENT"
+        ],
+        "description": "traveler type\nage restrictions : CHILD < 12y, HELD_INFANT < 2y, SEATED_INFANT < 2y, SENIOR >=60y\n",
+        "example": "ADULT"
+      },
+      "ExtendedPricingOptions": {
+        "type": "object",
+        "properties": {
+          "includedCheckedBagsOnly": {
+            "type": "boolean",
+            "description": "If true, returns the flight-offers with included checked bags only",
+            "example": true
+          },
+          "refundableFare": {
+            "type": "boolean",
+            "description": "If true, returns the flight-offers with refundable fares only",
+            "example": true
+          },
+          "noRestrictionFare": {
+            "type": "boolean",
+            "description": "If true, returns the flight-offers with no restriction fares only",
+            "example": true
+          },
+          "noPenaltyFare": {
+            "type": "boolean",
+            "description": "If true, returns the flight-offers with no penalty fares only",
+            "example": true
+          }
+        },
+        "description": "fare filter options",
+        "title": "pricingOptions"
+      },
+      "Coverage": {
+        "type": "string",
+        "enum": [
+          "MOST_SEGMENTS",
+          "AT_LEAST_ONE_SEGMENT",
+          "ALL_SEGMENTS"
+        ],
+        "description": "part of the trip covered by the travel class restriction (ALL_SEGMENTS if ommited)",
+        "example": "MOST_SEGMENTS"
+      },
+      "AdditionalServiceType": {
+        "type": "string",
+        "enum": [
+          "CHECKED_BAGS",
+          "MEALS",
+          "SEATS",
+          "OTHER_SERVICES"
+        ],
+        "description": "additional service type",
+        "example": "CHECKED_BAGS"
+      },
+      "FlightOfferSource": {
+        "type": "string",
+        "enum": [
+          "GDS"
+        ],
+        "description": "source of the flight offer",
+        "example": "GDS"
+      },
+      "PricingOptionsFareType": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "PUBLISHED",
+            "NEGOTIATED",
+            "CORPORATE"
+          ]
+        },
+        "description": "type of fare of the flight-offer",
+        "example": [
+          "PUBLISHED"
+        ]
+      },
+      "TravelerPricingFareOption": {
+        "type": "string",
+        "enum": [
+          "STANDARD",
+          "INCLUSIVE_TOUR",
+          "SPANISH_MELILLA_RESIDENT",
+          "SPANISH_CEUTA_RESIDENT",
+          "SPANISH_CANARY_RESIDENT",
+          "SPANISH_BALEARIC_RESIDENT",
+          "AIR_FRANCE_METROPOLITAN_DISCOUNT_PASS",
+          "AIR_FRANCE_DOM_DISCOUNT_PASS",
+          "AIR_FRANCE_COMBINED_DISCOUNT_PASS",
+          "AIR_FRANCE_FAMILY",
+          "ADULT_WITH_COMPANION",
+          "COMPANION"
+        ],
+        "description": "option specifying a group of fares, which may be valid under certain conditons\nCan be used to specify special fare discount for a passenger\n",
+        "example": "STANDARD"
+      },
+      "SliceDiceIndicator": {
+        "type": "string",
+        "enum": [
+          "LOCAL_AVAILABILITY",
+          "SUB_OD_AVAILABILITY_1",
+          "SUB_OD_AVAILABILITY_2"
+        ],
+        "description": "slice and Dice indicator, such as Local Availability, Sub OnD(Origin and Destination) 1 Availability and Sub OnD 2 Availability"
+      },
+      "Dictionaries": {
+        "type": "object",
+        "properties": {
+          "locations": {
+            "$ref": "#/components/schemas/LocationEntry"
+          },
+          "aircraft": {
+            "$ref": "#/components/schemas/AircraftEntry"
+          },
+          "currencies": {
+            "$ref": "#/components/schemas/CurrencyEntry"
+          },
+          "carriers": {
+            "$ref": "#/components/schemas/CarrierEntry"
+          }
+        }
+      },
+      "LocationValue": {
+        "properties": {
+          "cityCode": {
+            "type": "string",
+            "description": "City code associated to the airport",
+            "example": "PAR"
+          },
+          "countryCode": {
+            "type": "string",
+            "description": "Country code of the airport",
+            "example": "FR"
+          }
+        }
+      },
+      "GetFlightOffersQuery": {
+        "properties": {
+          "currencyCode": {
+            "type": "string",
+            "description": "The currency code, as defined in [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217), to reflect the currency in which this amount is expressed.",
+            "example": "EUR"
+          },
+          "originDestinations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OriginDestination"
+            },
+            "minItems": 1,
+            "maxItems": 6,
+            "description": "Origins and Destinations must be properly ordered in time (chronological order in accordance with the timezone of each location) to describe the journey consistently. Dates and times must not be past nor more than 365 days in the future, according to provider settings.Number of Origins and Destinations must not exceed the limit defined in provider settings.",
+            "title": "originDestinations"
+          },
+          "travelers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Traveler"
+            },
+            "minItems": 1,
+            "maxItems": 18,
+            "description": "travelers in the trip. \n\n Maximum number of passengers older than 2 yo (CHILD, ADULT, YOUGHT): 9.\n Each adult can travel with one INFANT so maximum total number of passengers: 18",
+            "title": "travelers"
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FlightOfferSource"
+            },
+            "minItems": 1,
+            "description": "Allows enable one or more sources. If present in the list, these sources will be called by the system.",
+            "title": "sources"
+          },
+          "searchCriteria": {
+            "$ref": "#/components/schemas/SearchCriteria"
+          }
+        },
+        "required": [
+          "originDestinations",
+          "travelers",
+          "sources"
+        ],
+        "title": "getFlightOffersQuery",
+        "example": {
+          "currencyCode": "USD",
+          "originDestinations": [
+            {
+              "id": "1",
+              "originLocationCode": "RIO",
+              "destinationLocationCode": "MAD",
+              "departureDateTimeRange": {
+                "date": "2022-11-01T00:00:00.000Z",
+                "time": "10:00:00"
+              }
+            },
+            {
+              "id": "2",
+              "originLocationCode": "MAD",
+              "destinationLocationCode": "RIO",
+              "departureDateTimeRange": {
+                "date": "2022-11-05T00:00:00.000Z",
+                "time": "17:00:00"
+              }
+            }
+          ],
+          "travelers": [
+            {
+              "id": "1",
+              "travelerType": "ADULT"
+            },
+            {
+              "id": "2",
+              "travelerType": "CHILD"
+            }
+          ],
+          "sources": [
+            "GDS"
+          ],
+          "searchCriteria": {
+            "maxFlightOffers": 2,
+            "flightFilters": {
+              "cabinRestrictions": [
+                {
+                  "cabin": "BUSINESS",
+                  "coverage": "MOST_SEGMENTS",
+                  "originDestinationIds": [
+                    "1"
+                  ]
+                }
+              ],
+              "carrierRestrictions": {
+                "excludedCarrierCodes": [
+                  "AA",
+                  "TP",
+                  "AZ"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "ServiceName": {
+        "type": "string",
+        "enum": [
+          "PRIORITY_BOARDING",
+          "AIRPORT_CHECKIN"
+        ],
+        "description": "type of service",
+        "example": "PRIORITY_BOARDING"
+      },
+      "BaggageAllowance": {
+        "type": "object",
+        "properties": {
+          "quantity": {
+            "type": "integer",
+            "description": "Total number of units",
+            "example": 1
+          },
+          "weight": {
+            "type": "integer",
+            "description": "Weight of the baggage allowance",
+            "example": 20
+          },
+          "weightUnit": {
+            "type": "string",
+            "description": "Code to qualify unit as pounds or kilos",
+            "example": "KG"
+          }
+        },
+        "description": "baggageAllowance"
+      }
+    },
+    "responses": {
+      "500": {
+        "description": "Unexpected error",
+        "content": {
+          "application/vnd.amadeus+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error_500"
+            }
+          }
+        }
+      },
+      "returnAirOffers": {
+        "description": "Successful Operation",
+        "content": {
+          "application/vnd.amadeus+json": {
+            "schema": {
+              "properties": {
+                "warnings": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Issue"
+                  }
+                },
+                "meta": {
+                  "$ref": "#/components/schemas/Collection_Meta"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FlightOffer"
+                  }
+                },
+                "dictionaries": {
+                  "$ref": "#/components/schemas/Dictionaries"
+                }
+              },
+              "required": [
+                "data"
+              ],
+              "title": "Success",
+              "example": {
+                "meta": {
+                  "count": 2
+                },
+                "data": [
+                  {
+                    "type": "flight-offer",
+                    "id": "1",
+                    "source": "GDS",
+                    "instantTicketingRequired": false,
+                    "nonHomogeneous": false,
+                    "oneWay": false,
+                    "lastTicketingDate": "2022-11-01T00:00:00.000Z",
+                    "numberOfBookableSeats": 9,
+                    "itineraries": [
+                      {
+                        "duration": "PT14H15M",
+                        "segments": [
+                          {
+                            "departure": {
+                              "iataCode": "SYD",
+                              "terminal": "1",
+                              "at": "2022-11-01T11:35:00.000Z"
+                            },
+                            "arrival": {
+                              "iataCode": "MNL",
+                              "terminal": "2",
+                              "at": "2022-11-01T16:50:00.000Z"
+                            },
+                            "carrierCode": "PR",
+                            "number": "212",
+                            "aircraft": {
+                              "code": "333"
+                            },
+                            "operating": {
+                              "carrierCode": "PR"
+                            },
+                            "duration": "PT8H15M",
+                            "id": "1",
+                            "numberOfStops": 0,
+                            "blacklistedInEU": false
+                          },
+                          {
+                            "departure": {
+                              "iataCode": "MNL",
+                              "terminal": "1",
+                              "at": "2022-11-01T19:20:00.000Z"
+                            },
+                            "arrival": {
+                              "iataCode": "BKK",
+                              "at": "2022-11-01T21:50:00.000Z"
+                            },
+                            "carrierCode": "PR",
+                            "number": "732",
+                            "aircraft": {
+                              "code": "321"
+                            },
+                            "operating": {
+                              "carrierCode": "PR"
+                            },
+                            "duration": "PT3H30M",
+                            "id": "2",
+                            "numberOfStops": 0,
+                            "blacklistedInEU": false
+                          }
+                        ]
+                      },
+                      {
+                        "duration": "PT16H15M",
+                        "segments": [
+                          {
+                            "departure": {
+                              "iataCode": "BKK",
+                              "at": "2022-11-05T13:30:00.000Z"
+                            },
+                            "arrival": {
+                              "iataCode": "MNL",
+                              "terminal": "2",
+                              "at": "2022-11-05T18:00:00.000Z"
+                            },
+                            "carrierCode": "PR",
+                            "number": "731",
+                            "aircraft": {
+                              "code": "333"
+                            },
+                            "operating": {
+                              "carrierCode": "PR"
+                            },
+                            "duration": "PT3H30M",
+                            "id": "3",
+                            "numberOfStops": 0,
+                            "blacklistedInEU": false
+                          },
+                          {
+                            "departure": {
+                              "iataCode": "MNL",
+                              "terminal": "1",
+                              "at": "2022-11-05T22:10:00.000Z"
+                            },
+                            "arrival": {
+                              "iataCode": "SYD",
+                              "terminal": "1",
+                              "at": "2022-11-06T09:45:00.000Z"
+                            },
+                            "carrierCode": "PR",
+                            "number": "211",
+                            "aircraft": {
+                              "code": "333"
+                            },
+                            "operating": {
+                              "carrierCode": "PR"
+                            },
+                            "duration": "PT8H35M",
+                            "id": "4",
+                            "numberOfStops": 0,
+                            "blacklistedInEU": false
+                          }
+                        ]
+                      }
+                    ],
+                    "price": {
+                      "currency": "EUR",
+                      "total": "1279.54",
+                      "base": "844.00",
+                      "fees": [
+                        {
+                          "amount": "0.00",
+                          "type": "SUPPLIER"
+                        },
+                        {
+                          "amount": "0.00",
+                          "type": "TICKETING"
+                        }
+                      ],
+                      "grandTotal": "1279.54"
+                    },
+                    "pricingOptions": {
+                      "fareType": [
+                        "PUBLISHED"
+                      ],
+                      "includedCheckedBagsOnly": true
+                    },
+                    "validatingAirlineCodes": [
+                      "PR"
+                    ],
+                    "travelerPricings": [
+                      {
+                        "travelerId": "1",
+                        "fareOption": "STANDARD",
+                        "travelerType": "ADULT",
+                        "price": {
+                          "currency": "EUR",
+                          "total": "639.77",
+                          "base": "422.00"
+                        },
+                        "fareDetailsBySegment": [
+                          {
+                            "segmentId": "1",
+                            "cabin": "ECONOMY",
+                            "fareBasis": "TBAU",
+                            "class": "T",
+                            "includedCheckedBags": {
+                              "weight": 30,
+                              "weightUnit": "KG"
+                            }
+                          },
+                          {
+                            "segmentId": "2",
+                            "cabin": "ECONOMY",
+                            "fareBasis": "TBAU",
+                            "class": "T",
+                            "includedCheckedBags": {
+                              "weight": 30,
+                              "weightUnit": "KG"
+                            }
+                          },
+                          {
+                            "segmentId": "3",
+                            "cabin": "ECONOMY",
+                            "fareBasis": "KBAU",
+                            "class": "K",
+                            "includedCheckedBags": {
+                              "weight": 30,
+                              "weightUnit": "KG"
+                            }
+                          },
+                          {
+                            "segmentId": "4",
+                            "cabin": "ECONOMY",
+                            "fareBasis": "KBAU",
+                            "class": "K",
+                            "includedCheckedBags": {
+                              "weight": 30,
+                              "weightUnit": "KG"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "travelerId": "2",
+                        "fareOption": "STANDARD",
+                        "travelerType": "ADULT",
+                        "price": {
+                          "currency": "EUR",
+                          "total": "639.77",
+                          "base": "422.00"
+                        },
+                        "fareDetailsBySegment": [
+                          {
+                            "segmentId": "1",
+                            "cabin": "ECONOMY",
+                            "fareBasis": "TBAU",
+                            "class": "T",
+                            "includedCheckedBags": {
+                              "weight": 30,
+                              "weightUnit": "KG"
+                            }
+                          },
+                          {
+                            "segmentId": "2",
+                            "cabin": "ECONOMY",
+                            "fareBasis": "TBAU",
+                            "class": "T",
+                            "includedCheckedBags": {
+                              "weight": 30,
+                              "weightUnit": "KG"
+                            }
+                          },
+                          {
+                            "segmentId": "3",
+                            "cabin": "ECONOMY",
+                            "fareBasis": "KBAU",
+                            "class": "K",
+                            "includedCheckedBags": {
+                              "weight": 30,
+                              "weightUnit": "KG"
+                            }
+                          },
+                          {
+                            "segmentId": "4",
+                            "cabin": "ECONOMY",
+                            "fareBasis": "KBAU",
+                            "class": "K",
+                            "includedCheckedBags": {
+                              "weight": 30,
+                              "weightUnit": "KG"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "flight-offer",
+                    "id": "2",
+                    "source": "GDS",
+                    "instantTicketingRequired": false,
+                    "nonHomogeneous": false,
+                    "oneWay": false,
+                    "lastTicketingDate": "2022-11-01T00:00:00.000Z",
+                    "numberOfBookableSeats": 9,
+                    "itineraries": [
+                      {
+                        "duration": "PT14H15M",
+                        "segments": [
+                          {
+                            "departure": {
+                              "iataCode": "SYD",
+                              "terminal": "1",
+                              "at": "2022-11-01T11:35:00.000Z"
+                            },
+                            "arrival": {
+                              "iataCode": "MNL",
+                              "terminal": "2",
+                              "at": "2022-11-01T16:50:00.000Z"
+                            },
+                            "carrierCode": "PR",
+                            "number": "212",
+                            "aircraft": {
+                              "code": "333"
+                            },
+                            "operating": {
+                              "carrierCode": "PR"
+                            },
+                            "duration": "PT8H15M",
+                            "id": "1",
+                            "numberOfStops": 0,
+                            "blacklistedInEU": false
+                          },
+                          {
+                            "departure": {
+                              "iataCode": "MNL",
+                              "terminal": "1",
+                              "at": "2022-11-01T19:20:00.000Z"
+                            },
+                            "arrival": {
+                              "iataCode": "BKK",
+                              "at": "2022-11-01T21:50:00.000Z"
+                            },
+                            "carrierCode": "PR",
+                            "number": "732",
+                            "aircraft": {
+                              "code": "321"
+                            },
+                            "operating": {
+                              "carrierCode": "PR"
+                            },
+                            "duration": "PT3H30M",
+                            "id": "2",
+                            "numberOfStops": 0,
+                            "blacklistedInEU": false
+                          }
+                        ]
+                      },
+                      {
+                        "duration": "PT28H15M",
+                        "segments": [
+                          {
+                            "departure": {
+                              "iataCode": "BKK",
+                              "at": "2022-11-05T01:30:00.000Z"
+                            },
+                            "arrival": {
+                              "iataCode": "MNL",
+                              "terminal": "2",
+                              "at": "2022-11-05T05:45:00.000Z"
+                            },
+                            "carrierCode": "PR",
+                            "number": "741",
+                            "aircraft": {
+                              "code": "321"
+                            },
+                            "operating": {
+                              "carrierCode": "PR"
+                            },
+                            "duration": "PT3H15M",
+                            "id": "5",
+                            "numberOfStops": 0,
+                            "blacklistedInEU": false
+                          },
+                          {
+                            "departure": {
+                              "iataCode": "MNL",
+                              "terminal": "1",
+                              "at": "2022-11-05T22:10:00.000Z"
+                            },
+                            "arrival": {
+                              "iataCode": "SYD",
+                              "terminal": "1",
+                              "at": "2022-11-06T09:45:00.000Z"
+                            },
+                            "carrierCode": "PR",
+                            "number": "211",
+                            "aircraft": {
+                              "code": "333"
+                            },
+                            "operating": {
+                              "carrierCode": "PR"
+                            },
+                            "duration": "PT8H35M",
+                            "id": "6",
+                            "numberOfStops": 0,
+                            "blacklistedInEU": false
+                          }
+                        ]
+                      }
+                    ],
+                    "price": {
+                      "currency": "EUR",
+                      "total": "1279.54",
+                      "base": "844.00",
+                      "fees": [
+                        {
+                          "amount": "0.00",
+                          "type": "SUPPLIER"
+                        },
+                        {
+                          "amount": "0.00",
+                          "type": "TICKETING"
+                        }
+                      ],
+                      "grandTotal": "1279.54"
+                    },
+                    "pricingOptions": {
+                      "fareType": [
+                        "PUBLISHED"
+                      ],
+                      "includedCheckedBagsOnly": true
+                    },
+                    "validatingAirlineCodes": [
+                      "PR"
+                    ],
+                    "travelerPricings": [
+                      {
+                        "travelerId": "1",
+                        "fareOption": "STANDARD",
+                        "travelerType": "ADULT",
+                        "price": {
+                          "currency": "EUR",
+                          "total": "639.77",
+                          "base": "422.00"
+                        },
+                        "fareDetailsBySegment": [
+                          {
+                            "segmentId": "1",
+                            "cabin": "ECONOMY",
+                            "fareBasis": "TBAU",
+                            "class": "T",
+                            "includedCheckedBags": {
+                              "weight": 30,
+                              "weightUnit": "KG"
+                            }
+                          },
+                          {
+                            "segmentId": "2",
+                            "cabin": "ECONOMY",
+                            "fareBasis": "TBAU",
+                            "class": "T",
+                            "includedCheckedBags": {
+                              "weight": 30,
+                              "weightUnit": "KG"
+                            }
+                          },
+                          {
+                            "segmentId": "5",
+                            "cabin": "ECONOMY",
+                            "fareBasis": "KBAU",
+                            "class": "K",
+                            "includedCheckedBags": {
+                              "weight": 30,
+                              "weightUnit": "KG"
+                            }
+                          },
+                          {
+                            "segmentId": "6",
+                            "cabin": "ECONOMY",
+                            "fareBasis": "KBAU",
+                            "class": "K",
+                            "includedCheckedBags": {
+                              "weight": 30,
+                              "weightUnit": "KG"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "travelerId": "2",
+                        "fareOption": "STANDARD",
+                        "travelerType": "ADULT",
+                        "price": {
+                          "currency": "EUR",
+                          "total": "639.77",
+                          "base": "422.00"
+                        },
+                        "fareDetailsBySegment": [
+                          {
+                            "segmentId": "1",
+                            "cabin": "ECONOMY",
+                            "fareBasis": "TBAU",
+                            "class": "T",
+                            "includedCheckedBags": {
+                              "weight": 30,
+                              "weightUnit": "KG"
+                            }
+                          },
+                          {
+                            "segmentId": "2",
+                            "cabin": "ECONOMY",
+                            "fareBasis": "TBAU",
+                            "class": "T",
+                            "includedCheckedBags": {
+                              "weight": 30,
+                              "weightUnit": "KG"
+                            }
+                          },
+                          {
+                            "segmentId": "5",
+                            "cabin": "ECONOMY",
+                            "fareBasis": "KBAU",
+                            "class": "K",
+                            "includedCheckedBags": {
+                              "weight": 30,
+                              "weightUnit": "KG"
+                            }
+                          },
+                          {
+                            "segmentId": "6",
+                            "cabin": "ECONOMY",
+                            "fareBasis": "KBAU",
+                            "class": "K",
+                            "includedCheckedBags": {
+                              "weight": 30,
+                              "weightUnit": "KG"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "dictionaries": {
+                  "locations": {
+                    "BKK": {
+                      "cityCode": "BKK",
+                      "countryCode": "TH"
+                    },
+                    "MNL": {
+                      "cityCode": "MNL",
+                      "countryCode": "PH"
+                    },
+                    "SYD": {
+                      "cityCode": "SYD",
+                      "countryCode": "AU"
+                    }
+                  },
+                  "aircraft": {
+                    "321": "AIRBUS A321",
+                    "333": "AIRBUS A330-300"
+                  },
+                  "currencies": {
+                    "EUR": "EURO"
+                  },
+                  "carriers": {
+                    "PR": "PHILIPPINE AIRLINES"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "GETAirOffersReply": {
+        "description": "Successful Operation",
+        "content": {
+          "application/vnd.amadeus+json": {
+            "schema": {
+              "properties": {
+                "warnings": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Issue"
+                  }
+                },
+                "meta": {
+                  "$ref": "#/components/schemas/Collection_Meta_Link"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FlightOffer"
+                  }
+                },
+                "dictionaries": {
+                  "$ref": "#/components/schemas/Dictionaries"
+                }
+              },
+              "required": [
+                "data"
+              ],
+              "title": "Success",
+              "example": {
+                "meta": {
+                  "count": 2,
+                  "links": {
+                    "self": "https://test.api.amadeus.com/v2/shopping/flight-offers?originLocationCode=SYD&destinationLocationCode=BKK&departureDate=2021-11-01&adults=1&max=2"
+                  }
+                },
+                "data": [
+                  {
+                    "type": "flight-offer",
+                    "id": "1",
+                    "source": "GDS",
+                    "instantTicketingRequired": false,
+                    "nonHomogeneous": false,
+                    "oneWay": false,
+                    "lastTicketingDate": "2021-11-01T00:00:00.000Z",
+                    "numberOfBookableSeats": 9,
+                    "itineraries": [
+                      {
+                        "duration": "PT14H15M",
+                        "segments": [
+                          {
+                            "departure": {
+                              "iataCode": "SYD",
+                              "terminal": "1",
+                              "at": "2021-11-01T11:35:00.000Z"
+                            },
+                            "arrival": {
+                              "iataCode": "MNL",
+                              "terminal": "2",
+                              "at": "2021-11-01T16:50:00.000Z"
+                            },
+                            "carrierCode": "PR",
+                            "number": "212",
+                            "aircraft": {
+                              "code": "333"
+                            },
+                            "operating": {
+                              "carrierCode": "PR"
+                            },
+                            "duration": "PT8H15M",
+                            "id": "1",
+                            "numberOfStops": 0,
+                            "blacklistedInEU": false
+                          },
+                          {
+                            "departure": {
+                              "iataCode": "MNL",
+                              "terminal": "1",
+                              "at": "2021-11-01T19:20:00.000Z"
+                            },
+                            "arrival": {
+                              "iataCode": "BKK",
+                              "at": "2021-11-01T21:50:00.000Z"
+                            },
+                            "carrierCode": "PR",
+                            "number": "732",
+                            "aircraft": {
+                              "code": "320"
+                            },
+                            "operating": {
+                              "carrierCode": "PR"
+                            },
+                            "duration": "PT3H30M",
+                            "id": "2",
+                            "numberOfStops": 0,
+                            "blacklistedInEU": false
+                          }
+                        ]
+                      }
+                    ],
+                    "price": {
+                      "currency": "EUR",
+                      "total": "355.34",
+                      "base": "255.00",
+                      "fees": [
+                        {
+                          "amount": "0.00",
+                          "type": "SUPPLIER"
+                        },
+                        {
+                          "amount": "0.00",
+                          "type": "TICKETING"
+                        }
+                      ],
+                      "grandTotal": "355.34"
+                    },
+                    "pricingOptions": {
+                      "fareType": [
+                        "PUBLISHED"
+                      ],
+                      "includedCheckedBagsOnly": true
+                    },
+                    "validatingAirlineCodes": [
+                      "PR"
+                    ],
+                    "travelerPricings": [
+                      {
+                        "travelerId": "1",
+                        "fareOption": "STANDARD",
+                        "travelerType": "ADULT",
+                        "price": {
+                          "currency": "EUR",
+                          "total": "355.34",
+                          "base": "255.00"
+                        },
+                        "fareDetailsBySegment": [
+                          {
+                            "segmentId": "1",
+                            "cabin": "ECONOMY",
+                            "fareBasis": "EOBAU",
+                            "class": "E",
+                            "includedCheckedBags": {
+                              "weight": 25,
+                              "weightUnit": "KG"
+                            }
+                          },
+                          {
+                            "segmentId": "2",
+                            "cabin": "ECONOMY",
+                            "fareBasis": "EOBAU",
+                            "class": "E",
+                            "includedCheckedBags": {
+                              "weight": 25,
+                              "weightUnit": "KG"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "flight-offer",
+                    "id": "2",
+                    "source": "GDS",
+                    "instantTicketingRequired": false,
+                    "nonHomogeneous": false,
+                    "oneWay": false,
+                    "lastTicketingDate": "2021-11-01T00:00:00.000Z",
+                    "numberOfBookableSeats": 9,
+                    "itineraries": [
+                      {
+                        "duration": "PT16H35M",
+                        "segments": [
+                          {
+                            "departure": {
+                              "iataCode": "SYD",
+                              "terminal": "1",
+                              "at": "2021-11-01T11:35:00.000Z"
+                            },
+                            "arrival": {
+                              "iataCode": "MNL",
+                              "terminal": "2",
+                              "at": "2021-11-01T16:50:00.000Z"
+                            },
+                            "carrierCode": "PR",
+                            "number": "212",
+                            "aircraft": {
+                              "code": "333"
+                            },
+                            "operating": {
+                              "carrierCode": "PR"
+                            },
+                            "duration": "PT8H15M",
+                            "id": "3",
+                            "numberOfStops": 0,
+                            "blacklistedInEU": false
+                          },
+                          {
+                            "departure": {
+                              "iataCode": "MNL",
+                              "terminal": "1",
+                              "at": "2021-11-01T21:40:00.000Z"
+                            },
+                            "arrival": {
+                              "iataCode": "BKK",
+                              "at": "2021-11-02T00:10:00.000Z"
+                            },
+                            "carrierCode": "PR",
+                            "number": "740",
+                            "aircraft": {
+                              "code": "321"
+                            },
+                            "operating": {
+                              "carrierCode": "PR"
+                            },
+                            "duration": "PT3H30M",
+                            "id": "4",
+                            "numberOfStops": 0,
+                            "blacklistedInEU": false
+                          }
+                        ]
+                      }
+                    ],
+                    "price": {
+                      "currency": "EUR",
+                      "total": "355.34",
+                      "base": "255.00",
+                      "fees": [
+                        {
+                          "amount": "0.00",
+                          "type": "SUPPLIER"
+                        },
+                        {
+                          "amount": "0.00",
+                          "type": "TICKETING"
+                        }
+                      ],
+                      "grandTotal": "355.34"
+                    },
+                    "pricingOptions": {
+                      "fareType": [
+                        "PUBLISHED"
+                      ],
+                      "includedCheckedBagsOnly": true
+                    },
+                    "validatingAirlineCodes": [
+                      "PR"
+                    ],
+                    "travelerPricings": [
+                      {
+                        "travelerId": "1",
+                        "fareOption": "STANDARD",
+                        "travelerType": "ADULT",
+                        "price": {
+                          "currency": "EUR",
+                          "total": "355.34",
+                          "base": "255.00"
+                        },
+                        "fareDetailsBySegment": [
+                          {
+                            "segmentId": "3",
+                            "cabin": "ECONOMY",
+                            "fareBasis": "EOBAU",
+                            "class": "E",
+                            "includedCheckedBags": {
+                              "weight": 25,
+                              "weightUnit": "KG"
+                            }
+                          },
+                          {
+                            "segmentId": "4",
+                            "cabin": "ECONOMY",
+                            "fareBasis": "EOBAU",
+                            "class": "E",
+                            "includedCheckedBags": {
+                              "weight": 25,
+                              "weightUnit": "KG"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "dictionaries": {
+                  "locations": {
+                    "BKK": {
+                      "cityCode": "BKK",
+                      "countryCode": "TH"
+                    },
+                    "MNL": {
+                      "cityCode": "MNL",
+                      "countryCode": "PH"
+                    },
+                    "SYD": {
+                      "cityCode": "SYD",
+                      "countryCode": "AU"
+                    }
+                  },
+                  "aircraft": {
+                    "320": "AIRBUS A320",
+                    "321": "AIRBUS A321",
+                    "333": "AIRBUS A330-300"
+                  },
+                  "currencies": {
+                    "EUR": "EURO"
+                  },
+                  "carriers": {
+                    "PR": "PHILIPPINE AIRLINES"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400_Search": {
+        "description": "code    | title                                 \n------- | ------------------------------------- \n425     | INVALID DATE\n477     | INVALID FORMAT\n2668    | PARAMETER COMBINATION INVALID\/RESTRICTED\n4926    | INVALID DATA RECEIVED\n10661   | MAXIMUM NUMBER OF OCCURRENCES EXCEEDED \n32171   | MANDATORY DATA MISSING\n",
+        "content": {
+          "application/vnd.amadeus+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error_400"
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "getOverride": {
+        "name": "X-HTTP-Method-Override",
+        "in": "header",
+        "required": true,
+        "description": "the HTTP method to apply",
+        "schema": {
+          "type": "string",
+          "default": "GET"
+        }
+      }
+    },
+    "securitySchemes": {
+      "OAuth2": {
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "scopes": {},
+            "tokenUrl": "https://test.api.amadeus.com/v1/security/oauth2/token"
+          }
+        }
+      }
+    }
+  },
+  "x-generatedAt": "2020-08-03T13:16:56.309Z",
+  "info": {
+    "version": "2.5.2",
+    "title": "Flight Offers Search",
+    "x-tags": [
+      "#online-retail",
+      "#mobile-services",
+      "#ama-for-dev"
+    ],
+    "x-status": "validated",
+    "x-release-note": {
+      "2.5.0": [
+        "Add Expanded parameters criterias in flight-offers search"
+      ],
+      "2.4.0": [
+        "Add new sources \"LTC\" and \"EAC\""
+      ],
+      "2.3.0": [
+        "Add Farerules into POST Search flight-offer reply"
+      ],
+      "2.2.0": [
+        "Add maxPrice filtering"
+      ],
+      "2.1.0": [
+        "Add currencies, aircraft and carriers dictionary"
+      ],
+      "2.0.0": [
+        "Initial Version",
+        "Includes search and price flight offer"
+      ]
+    },
+    "description": "This is a generated connector for [Amadeus Flight Offers Search API](https:\/\/developers.amadeus.com\/self-service\/category\/air\/api-doc\/flight-offers-search) OpenAPI specification. \nThis [Amadeus Flight Offers Search API](https:\/\/developers.amadeus.com\/) provides the capability to search for the cheapest flight for a given itinerary.",
+    "x-ballerina-init-description": "The connector initialization requires clientId and clientSecret. \nPlease create [Amadeus](https:\/\/developers.amadeus.com\/register) account and Obtain clientId and clientSecret following [this guide](https:\/\/developers.amadeus.com\/get-started\/get-started-with-self-service-apis-335)\n",
+    "x-ballerina-display": {
+      "label": "Amadeus Flight Offers Search",
+      "iconPath": "icon.png"
+    }
+  }
+}

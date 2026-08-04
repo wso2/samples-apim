@@ -1,0 +1,110 @@
+{
+    "serviceUrl": "https://{endpoint}/openai",
+    "tools": [
+        {
+            "name": "Completions_Create",
+            "description": "Creates a completion for the provided prompt, parameters and chosen model.",
+            "method": "POST",
+            "path": "/deployments/{deployment-id}/completions",
+            "parameters": {
+                "deployment-id": {
+                    "location": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "prompt": {
+                            "oneOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            ]
+                        },
+                        "max_tokens": {
+                            "type": "integer"
+                        },
+                        "temperature": {
+                            "type": "number"
+                        },
+                        "top_p": {
+                            "type": "number"
+                        },
+                        "logit_bias": {
+                            "type": "object",
+                            "properties": {}
+                        },
+                        "user": {
+                            "type": "string"
+                        },
+                        "n": {
+                            "type": "integer"
+                        },
+                        "stream": {
+                            "type": "boolean"
+                        },
+                        "logprobs": {
+                            "type": "integer"
+                        },
+                        "model": {
+                            "type": "string"
+                        },
+                        "suffix": {
+                            "type": "string"
+                        },
+                        "echo": {
+                            "type": "boolean"
+                        },
+                        "stop": {
+                            "oneOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            ]
+                        },
+                        "completion_config": {
+                            "type": "string"
+                        },
+                        "cache_level": {
+                            "type": "integer"
+                        },
+                        "presence_penalty": {
+                            "type": "number"
+                        },
+                        "frequency_penalty": {
+                            "type": "number"
+                        },
+                        "best_of": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

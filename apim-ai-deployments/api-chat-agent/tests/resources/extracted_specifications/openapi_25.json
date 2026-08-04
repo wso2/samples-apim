@@ -1,0 +1,1863 @@
+{
+    "tools": [
+        {
+            "name": "Devices_GetComponentTelemetryValue",
+            "description": "Get the last telemetry value from a component.",
+            "method": "GET",
+            "path": "/devices/{deviceId}/components/{componentName}/telemetry/{telemetryName}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "componentName": {
+                    "location": "path",
+                    "description": "Name of the device component.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "telemetryName": {
+                    "location": "path",
+                    "description": "Name of this device telemetry.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_GetModuleComponentTelemetryValue",
+            "description": "Get the last telemetry value from a module component.",
+            "method": "GET",
+            "path": "/devices/{deviceId}/modules/{moduleName}/components/{componentName}/telemetry/{telemetryName}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "moduleName": {
+                    "location": "path",
+                    "description": "Name of the device module.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "componentName": {
+                    "location": "path",
+                    "description": "Name of the device component.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "telemetryName": {
+                    "location": "path",
+                    "description": "Name of this device telemetry.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Roles_List",
+            "description": "Get the list of roles in an application.",
+            "method": "GET",
+            "path": "/roles",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_List",
+            "description": "Get the list of devices in an application",
+            "method": "GET",
+            "path": "/devices",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_GetModuleCommandHistory",
+            "description": "Get module command history",
+            "method": "GET",
+            "path": "/devices/{deviceId}/modules/{moduleName}/commands/{commandName}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "moduleName": {
+                    "location": "path",
+                    "description": "Name of the device module.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "commandName": {
+                    "location": "path",
+                    "description": "Name of this device command.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_RunModuleCommand",
+            "description": "Run a command on a module.",
+            "method": "POST",
+            "path": "/devices/{deviceId}/modules/{moduleName}/commands/{commandName}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "moduleName": {
+                    "location": "path",
+                    "description": "Name of the device module.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "commandName": {
+                    "location": "path",
+                    "description": "Name of this device command.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string"
+                        },
+                        "connectionTimeout": {
+                            "type": "integer"
+                        },
+                        "responseTimeout": {
+                            "type": "integer"
+                        },
+                        "request": {
+                            "type": "object",
+                            "properties": {}
+                        },
+                        "response": {
+                            "type": "object",
+                            "properties": {}
+                        },
+                        "responseCode": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "ApiTokens_List",
+            "description": "Get the list of API tokens in an application. The token value will never be returned for security reasons.",
+            "method": "GET",
+            "path": "/apiTokens",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Roles_Get",
+            "description": "Get a role by ID.",
+            "method": "GET",
+            "path": "/roles/{roleId}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "roleId": {
+                    "location": "path",
+                    "description": "Unique ID for the role.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_GetModuleTelemetryValue",
+            "description": "Get the last telemetry value from a module.",
+            "method": "GET",
+            "path": "/devices/{deviceId}/modules/{moduleName}/telemetry/{telemetryName}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "moduleName": {
+                    "location": "path",
+                    "description": "Name of the device module.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "telemetryName": {
+                    "location": "path",
+                    "description": "Name of this device telemetry.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_ListModuleComponents",
+            "description": "List the components present in a module",
+            "method": "GET",
+            "path": "/devices/{deviceId}/modules/{moduleName}/components",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "moduleName": {
+                    "location": "path",
+                    "description": "Name of the device module.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_GetCredentials",
+            "description": "Get device credentials",
+            "method": "GET",
+            "path": "/devices/{deviceId}/credentials",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "DeviceTemplates_List",
+            "description": "Get the list of device templates in an application",
+            "method": "GET",
+            "path": "/deviceTemplates",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_ListModules",
+            "description": "List the modules present in a device",
+            "method": "GET",
+            "path": "/devices/{deviceId}/modules",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_GetProperties",
+            "description": "Get all property values of a device by device ID.",
+            "method": "GET",
+            "path": "/devices/{deviceId}/properties",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_ReplaceProperties",
+            "description": "Replace all property values of a device by device ID.",
+            "method": "PUT",
+            "path": "/devices/{deviceId}/properties",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {}
+                }
+            }
+        },
+        {
+            "name": "Devices_UpdateProperties",
+            "description": "Update property values of a device by device ID.",
+            "method": "PATCH",
+            "path": "/devices/{deviceId}/properties",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {}
+                }
+            }
+        },
+        {
+            "name": "Users_Get",
+            "description": "Get a user by ID",
+            "method": "GET",
+            "path": "/users/{userId}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "userId": {
+                    "location": "path",
+                    "description": "Unique ID of the user.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Users_Create",
+            "description": "Create a user in the application",
+            "method": "PUT",
+            "path": "/users/{userId}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "userId": {
+                    "location": "path",
+                    "description": "Unique ID of the user.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "allOf": [
+                        {
+                            "type": "object",
+                            "required": [
+                                "roles"
+                            ],
+                            "properties": {
+                                "roles": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "role"
+                                        ],
+                                        "properties": {
+                                            "role": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Users_Remove",
+            "description": "Delete a user",
+            "method": "DELETE",
+            "path": "/users/{userId}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "userId": {
+                    "location": "path",
+                    "description": "Unique ID of the user.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Users_Update",
+            "description": "Update a user in the application via patch",
+            "method": "PATCH",
+            "path": "/users/{userId}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "userId": {
+                    "location": "path",
+                    "description": "Unique ID of the user.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {}
+                }
+            }
+        },
+        {
+            "name": "Devices_Get",
+            "description": "Get details about an existing device by device ID.",
+            "method": "GET",
+            "path": "/devices/{deviceId}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_Create",
+            "description": "Create a new device.",
+            "method": "PUT",
+            "path": "/devices/{deviceId}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string"
+                        },
+                        "etag": {
+                            "type": "string"
+                        },
+                        "displayName": {
+                            "type": "string"
+                        },
+                        "template": {
+                            "type": "string"
+                        },
+                        "enabled": {
+                            "type": "boolean"
+                        },
+                        "provisioned": {
+                            "type": "boolean"
+                        },
+                        "simulated": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_Remove",
+            "description": "Delete an existing device by device ID.",
+            "method": "DELETE",
+            "path": "/devices/{deviceId}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_Update",
+            "description": "Update an existing device by ID.",
+            "method": "PATCH",
+            "path": "/devices/{deviceId}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {}
+                }
+            }
+        },
+        {
+            "name": "Devices_ListComponents",
+            "description": "List the components present in a device",
+            "method": "GET",
+            "path": "/devices/{deviceId}/components",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_GetModuleProperties",
+            "description": "Get all property values of a module.",
+            "method": "GET",
+            "path": "/devices/{deviceId}/modules/{moduleName}/properties",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "moduleName": {
+                    "location": "path",
+                    "description": "Name of the device module.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_ReplaceModuleProperties",
+            "description": "Replace all property values of a module.",
+            "method": "PUT",
+            "path": "/devices/{deviceId}/modules/{moduleName}/properties",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "moduleName": {
+                    "location": "path",
+                    "description": "Name of the device module.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {}
+                }
+            }
+        },
+        {
+            "name": "Devices_UpdateModuleProperties",
+            "description": "Update property values of a module.",
+            "method": "PATCH",
+            "path": "/devices/{deviceId}/modules/{moduleName}/properties",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "moduleName": {
+                    "location": "path",
+                    "description": "Name of the device module.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {}
+                }
+            }
+        },
+        {
+            "name": "Users_List",
+            "description": "Get the list of users in an application",
+            "method": "GET",
+            "path": "/users",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_GetComponentCommandHistory",
+            "description": "Get component command history",
+            "method": "GET",
+            "path": "/devices/{deviceId}/components/{componentName}/commands/{commandName}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "componentName": {
+                    "location": "path",
+                    "description": "Name of the device component.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "commandName": {
+                    "location": "path",
+                    "description": "Name of this device command.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_RunComponentCommand",
+            "description": "Run a command on a component.",
+            "method": "POST",
+            "path": "/devices/{deviceId}/components/{componentName}/commands/{commandName}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "componentName": {
+                    "location": "path",
+                    "description": "Name of the device component.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "commandName": {
+                    "location": "path",
+                    "description": "Name of this device command.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string"
+                        },
+                        "connectionTimeout": {
+                            "type": "integer"
+                        },
+                        "responseTimeout": {
+                            "type": "integer"
+                        },
+                        "request": {
+                            "type": "object",
+                            "properties": {}
+                        },
+                        "response": {
+                            "type": "object",
+                            "properties": {}
+                        },
+                        "responseCode": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_GetModuleComponentCommandHistory",
+            "description": "Get module component command history",
+            "method": "GET",
+            "path": "/devices/{deviceId}/modules/{moduleName}/components/{componentName}/commands/{commandName}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "moduleName": {
+                    "location": "path",
+                    "description": "Name of the device module.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "componentName": {
+                    "location": "path",
+                    "description": "Name of the device component.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "commandName": {
+                    "location": "path",
+                    "description": "Name of this device command.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_RunModuleComponentCommand",
+            "description": "Run a command on a module.",
+            "method": "POST",
+            "path": "/devices/{deviceId}/modules/{moduleName}/components/{componentName}/commands/{commandName}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "moduleName": {
+                    "location": "path",
+                    "description": "Name of the device module.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "componentName": {
+                    "location": "path",
+                    "description": "Name of the device component.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "commandName": {
+                    "location": "path",
+                    "description": "Name of this device command.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string"
+                        },
+                        "connectionTimeout": {
+                            "type": "integer"
+                        },
+                        "responseTimeout": {
+                            "type": "integer"
+                        },
+                        "request": {
+                            "type": "object",
+                            "properties": {}
+                        },
+                        "response": {
+                            "type": "object",
+                            "properties": {}
+                        },
+                        "responseCode": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_GetComponentProperties",
+            "description": "Get device properties for a specific component",
+            "method": "GET",
+            "path": "/devices/{deviceId}/components/{componentName}/properties",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "componentName": {
+                    "location": "path",
+                    "description": "Name of the device component.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_ReplaceComponentProperties",
+            "description": "Replace device properties for a specific component",
+            "method": "PUT",
+            "path": "/devices/{deviceId}/components/{componentName}/properties",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "componentName": {
+                    "location": "path",
+                    "description": "Name of the device component.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {}
+                }
+            }
+        },
+        {
+            "name": "Devices_UpdateComponentProperties",
+            "description": "Update device properties for a specific component via patch",
+            "method": "PATCH",
+            "path": "/devices/{deviceId}/components/{componentName}/properties",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "componentName": {
+                    "location": "path",
+                    "description": "Name of the device component.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {}
+                }
+            }
+        },
+        {
+            "name": "Devices_GetCommandHistory",
+            "description": "Get device command history",
+            "method": "GET",
+            "path": "/devices/{deviceId}/commands/{commandName}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "commandName": {
+                    "location": "path",
+                    "description": "Name of this device command.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_RunCommand",
+            "description": "Run a command on a device.",
+            "method": "POST",
+            "path": "/devices/{deviceId}/commands/{commandName}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "commandName": {
+                    "location": "path",
+                    "description": "Name of this device command.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string"
+                        },
+                        "connectionTimeout": {
+                            "type": "integer"
+                        },
+                        "responseTimeout": {
+                            "type": "integer"
+                        },
+                        "request": {
+                            "type": "object",
+                            "properties": {}
+                        },
+                        "response": {
+                            "type": "object",
+                            "properties": {}
+                        },
+                        "responseCode": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_GetModuleComponentProperties",
+            "description": "Get module properties for a specific component",
+            "method": "GET",
+            "path": "/devices/{deviceId}/modules/{moduleName}/components/{componentName}/properties",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "moduleName": {
+                    "location": "path",
+                    "description": "Name of the device module.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "componentName": {
+                    "location": "path",
+                    "description": "Name of the device component.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_ReplaceModuleComponentProperties",
+            "description": "Replace module properties for a specific component",
+            "method": "PUT",
+            "path": "/devices/{deviceId}/modules/{moduleName}/components/{componentName}/properties",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "moduleName": {
+                    "location": "path",
+                    "description": "Name of the device module.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "componentName": {
+                    "location": "path",
+                    "description": "Name of the device component.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {}
+                }
+            }
+        },
+        {
+            "name": "Devices_UpdateModuleComponentProperties",
+            "description": "Update module properties for a specific component via patch",
+            "method": "PATCH",
+            "path": "/devices/{deviceId}/modules/{moduleName}/components/{componentName}/properties",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "moduleName": {
+                    "location": "path",
+                    "description": "Name of the device module.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "componentName": {
+                    "location": "path",
+                    "description": "Name of the device component.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {}
+                }
+            }
+        },
+        {
+            "name": "ApiTokens_Get",
+            "description": "Get an API token by ID.",
+            "method": "GET",
+            "path": "/apiTokens/{tokenId}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "tokenId": {
+                    "location": "path",
+                    "description": "Unique ID for the API token.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "ApiTokens_Create",
+            "description": "Create a new API token in the application to use in the IoT Central public API. The token value will be returned in the response, and won't be returned again in subsequent requests.",
+            "method": "PUT",
+            "path": "/apiTokens/{tokenId}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "tokenId": {
+                    "location": "path",
+                    "description": "Unique ID for the API token.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "allOf": [
+                        {
+                            "type": "object",
+                            "required": [
+                                "roles"
+                            ],
+                            "properties": {
+                                "roles": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "role"
+                                        ],
+                                        "properties": {
+                                            "role": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "ApiTokens_Remove",
+            "description": "Delete an API token.",
+            "method": "DELETE",
+            "path": "/apiTokens/{tokenId}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "tokenId": {
+                    "location": "path",
+                    "description": "Unique ID for the API token.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_GetAttestation",
+            "description": "Get device attestation",
+            "method": "GET",
+            "path": "/devices/{deviceId}/attestation",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_CreateAttestation",
+            "description": "Create an individual device attestation",
+            "method": "PUT",
+            "path": "/devices/{deviceId}/attestation",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "type"
+                    ],
+                    "properties": {
+                        "type": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_RemoveAttestation",
+            "description": "Remove an individual device attestation",
+            "method": "DELETE",
+            "path": "/devices/{deviceId}/attestation",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "Devices_UpdateAttestation",
+            "description": "Update an individual device attestation via patch",
+            "method": "PATCH",
+            "path": "/devices/{deviceId}/attestation",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {}
+                }
+            }
+        },
+        {
+            "name": "Devices_GetTelemetryValue",
+            "description": "Get the last telemetry value from a device.",
+            "method": "GET",
+            "path": "/devices/{deviceId}/telemetry/{telemetryName}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceId": {
+                    "location": "path",
+                    "description": "Unique ID of the device.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "telemetryName": {
+                    "location": "path",
+                    "description": "Name of this device telemetry.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "DeviceTemplates_Get",
+            "description": "Get a device template by ID",
+            "method": "GET",
+            "path": "/deviceTemplates/{deviceTemplateId}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceTemplateId": {
+                    "location": "path",
+                    "description": "Digital Twin Model Identifier of the device template, [More Details](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md#digital-twin-model-identifier)",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "DeviceTemplates_Create",
+            "description": "Publish a new device template. Default views will be automatically generated for new device templates created this way.",
+            "method": "PUT",
+            "path": "/deviceTemplates/{deviceTemplateId}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceTemplateId": {
+                    "location": "path",
+                    "description": "Digital Twin Model Identifier of the device template, [More Details](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md#digital-twin-model-identifier)",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "@type",
+                        "capabilityModel"
+                    ],
+                    "properties": {
+                        "@id": {
+                            "type": "string"
+                        },
+                        "@type": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "etag": {
+                            "type": "string"
+                        },
+                        "displayName": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "capabilityModel": {
+                            "type": "object",
+                            "properties": {}
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "DeviceTemplates_Remove",
+            "description": "Delete an existing device template by device ID.",
+            "method": "DELETE",
+            "path": "/deviceTemplates/{deviceTemplateId}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceTemplateId": {
+                    "location": "path",
+                    "description": "Digital Twin Model Identifier of the device template, [More Details](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md#digital-twin-model-identifier)",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "DeviceTemplates_Update",
+            "description": "Update the cloud properties and overrides of an existing device template via patch.",
+            "method": "PATCH",
+            "path": "/deviceTemplates/{deviceTemplateId}",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "The version of the API being called.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "deviceTemplateId": {
+                    "location": "path",
+                    "description": "Digital Twin Model Identifier of the device template, [More Details](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md#digital-twin-model-identifier)",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {}
+                }
+            }
+        }
+    ]
+}

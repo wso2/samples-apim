@@ -1,0 +1,73 @@
+{
+    "serviceUrl": "https://api.byautomata.io/",
+    "tools": [
+        {
+            "name": "searchContent",
+            "description": "Send search terms to receive the most relevant articles and companies.",
+            "method": "GET",
+            "path": "/contentpro-search",
+            "parameters": {
+                "terms": {
+                    "location": "query",
+                    "description": "We provide information about related companies and articles based on the search terms you provide. Separate search terms with commas. Ex. https://api.byautomata.io/contentpro-search?terms=cloud+computing,enterprise,security",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "search",
+            "description": "Send search terms to receive the most relevant companies along with text snippets.",
+            "method": "GET",
+            "path": "/search",
+            "parameters": {
+                "terms": {
+                    "location": "query",
+                    "description": "We provide information about related companies based on the search terms you provide. Separate search terms with commas. Ex. https://api.byautomata.io/search?link=cloud+computing,enterprise,security",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "page": {
+                    "location": "query",
+                    "description": "Page number of search results. Ex. https://api.byautomata.io/search?page=0&link=cloud+computing,enterprise,security",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "searchSimilarText",
+            "description": "The /contentpro-similar-text endpoint accepts and arbitrary piece of text and returns similar articles and blogs written by companies.",
+            "method": "POST",
+            "path": "/contentpro-similar-text"
+        },
+        {
+            "name": "getSimilar",
+            "description": "Send a company website to receive a list of companies related to them.",
+            "method": "GET",
+            "path": "/similar",
+            "parameters": {
+                "link": {
+                    "location": "query",
+                    "description": "We'll provide information about related companies based on the site you provide. If a LinkedIn page is sent, we will try to identify the company related to the page. Ex. https://api.byautomata.io/similar?link=ibm.com",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "page": {
+                    "location": "query",
+                    "description": "Page number of search results. Ex. https://api.byautomata.io/similar?link=ibm.com&page=1",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    ]
+}

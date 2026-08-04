@@ -1,0 +1,3067 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "url": "https://api.clever.com/v1.2"
+    }
+  ],
+  "paths": {
+    "/districts/{id}/status": {
+      "get": {
+        "tags": [
+          "Districts"
+        ],
+        "summary": "Returns the status of the district.",
+        "operationId": "getDistrictStatus",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "District ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "DistrictStatusResponses or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DistrictStatusResponses"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/students/{id}/contacts": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "summary": "Returns the contacts for a student.",
+        "operationId": "getContactsForStudent",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Contact ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of contacts",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "StudentContactsForStudentResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentContactsForStudentResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/students/{id}": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "summary": "Returns a specific student.",
+        "operationId": "getStudent",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Student ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "Include",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "StudentResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/sections/{id}": {
+      "get": {
+        "tags": [
+          "Sections"
+        ],
+        "summary": "Returns a specific section.",
+        "operationId": "getSection",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Section ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SectionResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SectionResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/teachers/{id}/grade_levels": {
+      "get": {
+        "tags": [
+          "Teachers"
+        ],
+        "summary": "Returns the grade levels for sections a teacher teaches.",
+        "operationId": "getGradeLevelsForTeacher",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Teacher ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "GradeLevelsResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GradeLevelsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/contacts/{id}": {
+      "get": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Returns a specific student contact.",
+        "operationId": "getContact",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Contact ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "StudentContactResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentContactResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/sections": {
+      "get": {
+        "tags": [
+          "Sections"
+        ],
+        "summary": "Returns a list of sections.",
+        "operationId": "getSections",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of sections",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "starting_after",
+            "in": "query",
+            "description": "Starting after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ending_before",
+            "in": "query",
+            "description": "Ending before",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "where",
+            "in": "query",
+            "description": "Location",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SectionsResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SectionsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/students/{id}/sections": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "summary": "Returns the sections for a student.",
+        "operationId": "getSectionsForStudent",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Student ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of students",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "starting_after",
+            "in": "query",
+            "description": "Starting after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ending_before",
+            "in": "query",
+            "description": "Ending before",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SectionsResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SectionsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/teachers/{id}/school": {
+      "get": {
+        "tags": [
+          "Teachers"
+        ],
+        "summary": "Retrieves school info for a teacher.",
+        "operationId": "getSchoolForTeacher",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Teacher ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SchoolResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchoolResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/schools/{id}/district": {
+      "get": {
+        "tags": [
+          "Schools"
+        ],
+        "summary": "Returns the district for a school.",
+        "operationId": "getDistrictForSchool",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "School ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "DistrictResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DistrictResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/districts/{id}": {
+      "get": {
+        "tags": [
+          "Districts"
+        ],
+        "summary": "Returns a specific district.",
+        "operationId": "getDistrict",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "District ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "Includes",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "DistrictResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DistrictResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/schools": {
+      "get": {
+        "tags": [
+          "Schools"
+        ],
+        "summary": "Returns a list of schools.",
+        "operationId": "getSchools",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of schools",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "starting_after",
+            "in": "query",
+            "description": "Starting after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ending_before",
+            "in": "query",
+            "description": "Ending before",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "where",
+            "in": "query",
+            "description": "Location",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SchoolsResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchoolsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/schools/{id}/students": {
+      "get": {
+        "tags": [
+          "Schools"
+        ],
+        "summary": "Returns the students for a school.",
+        "operationId": "getStudentsForSchool",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "School ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of students",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "starting_after",
+            "in": "query",
+            "description": "Starting after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ending_before",
+            "in": "query",
+            "description": "Ending before",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "where",
+            "in": "query",
+            "description": "Location",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "StudentsResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/district_admins/{id}": {
+      "get": {
+        "tags": [
+          "District Admins"
+        ],
+        "summary": "Returns a specific district admin.",
+        "operationId": "getDistrictAdmin",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "District admin ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "DistrictAdminResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DistrictAdminResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/sections/{id}/district": {
+      "get": {
+        "tags": [
+          "Sections"
+        ],
+        "summary": "Returns the district for a section.",
+        "operationId": "getDistrictForSection",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Section ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "DistrictResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DistrictResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/school_admins/{id}/schools": {
+      "get": {
+        "tags": [
+          "School Admins"
+        ],
+        "summary": "Returns the schools for a school admin.",
+        "operationId": "getSchoolsForSchoolAdmin",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "School admin ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of schools",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "starting_after",
+            "in": "query",
+            "description": "Starting after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ending_before",
+            "in": "query",
+            "description": "Ending before",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SchoolsResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchoolsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/students/{id}/district": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "summary": "Returns the district for a student.",
+        "operationId": "getDistrictForStudent",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Student ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "DistrictResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DistrictResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/sections/{id}/teachers": {
+      "get": {
+        "tags": [
+          "Sections"
+        ],
+        "summary": "Returns the teachers for a section.",
+        "operationId": "getTeachersForSection",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Section ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of teachers",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "starting_after",
+            "in": "query",
+            "description": "Starting after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ending_before",
+            "in": "query",
+            "description": "Ending before",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "TeachersResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeachersResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/teachers": {
+      "get": {
+        "tags": [
+          "Teachers"
+        ],
+        "summary": "Returns a list of teachers.",
+        "operationId": "getTeachers",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of teachers",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "starting_after",
+            "in": "query",
+            "description": "Starting after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ending_before",
+            "in": "query",
+            "description": "Ending before",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "where",
+            "in": "query",
+            "description": "Location",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "TeachersResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeachersResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teachers/{id}/sections": {
+      "get": {
+        "tags": [
+          "Teachers"
+        ],
+        "summary": "Returns the sections for a teacher.",
+        "operationId": "getSectionsForTeacher",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Teacher ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of sections",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "starting_after",
+            "in": "query",
+            "description": "Starting after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ending_before",
+            "in": "query",
+            "description": "Ending before",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SectionsResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SectionsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/sections/{id}/school": {
+      "get": {
+        "tags": [
+          "Sections"
+        ],
+        "summary": "Returns the school for a section",
+        "operationId": "getSchoolForSection",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Section ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SchoolResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchoolResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/teachers/{id}/students": {
+      "get": {
+        "tags": [
+          "Teachers"
+        ],
+        "summary": "Returns the students for a teacher.",
+        "operationId": "getStudentsForTeacher",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Teacher ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of students",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "starting_after",
+            "in": "query",
+            "description": "Starting after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ending_before",
+            "in": "query",
+            "description": "Ending before",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "StudentsResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/contacts/{id}/district": {
+      "get": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Returns the district for a student contact.",
+        "operationId": "getDistrictForStudentContact",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Contact ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "DistrictResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DistrictResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/school_admins/{id}": {
+      "get": {
+        "tags": [
+          "School Admins"
+        ],
+        "summary": "Returns a specific school admin.",
+        "operationId": "getSchoolAdmin",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "School admin ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "Include",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SchoolAdminResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchoolAdminResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/teachers/{id}": {
+      "get": {
+        "tags": [
+          "Teachers"
+        ],
+        "summary": "Returns a specific teacher.",
+        "operationId": "getTeacher",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Teacher ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "Include",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "TeacherResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeacherResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/sections/{id}/teacher": {
+      "get": {
+        "tags": [
+          "Sections"
+        ],
+        "summary": "Returns the primary teacher for a section.",
+        "operationId": "getTeacherForSection",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Section ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "TeacherResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeacherResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/students": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "summary": "Returns a list of students.",
+        "operationId": "getStudents",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of students",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "starting_after",
+            "in": "query",
+            "description": "Starting after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ending_before",
+            "in": "query",
+            "description": "Ending before",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "where",
+            "in": "query",
+            "description": "Location",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "StudentsResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sections/{id}/students": {
+      "get": {
+        "tags": [
+          "Sections"
+        ],
+        "summary": "Returns the students for a section.",
+        "operationId": "getStudentsForSection",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Section ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of students",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "starting_after",
+            "in": "query",
+            "description": "Starting after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ending_before",
+            "in": "query",
+            "description": "Ending before",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "StudentsResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/schools/{id}/sections": {
+      "get": {
+        "tags": [
+          "Schools"
+        ],
+        "summary": "Returns the sections for a school.",
+        "operationId": "getSectionsForSchool",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "School ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of sections",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "starting_after",
+            "in": "query",
+            "description": "Starting after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ending_before",
+            "in": "query",
+            "description": "Ending before",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "where",
+            "in": "query",
+            "description": "Location",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SectionsResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SectionsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/contacts/{id}/student": {
+      "get": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Returns the student for a student contact.",
+        "operationId": "getStudentForContact",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Contact ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "StudentResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/districts/{id}/teachers": {
+      "get": {
+        "tags": [
+          "Districts"
+        ],
+        "summary": "Returns the teachers for a district.",
+        "operationId": "getTeachersForDistrict",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "District ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of teachers",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "starting_after",
+            "in": "query",
+            "description": "Starting after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ending_before",
+            "in": "query",
+            "description": "Ending before",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "where",
+            "in": "query",
+            "description": "Location",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "TeachersResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeachersResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/students/{id}/school": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "summary": "Returns the primary school for a student.",
+        "operationId": "getSchoolForStudent",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Student ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SchoolResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchoolResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/teachers/{id}/district": {
+      "get": {
+        "tags": [
+          "Teachers"
+        ],
+        "summary": "Returns the district for a teacher.",
+        "operationId": "getDistrictForTeacher",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Teacher ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "DistrictResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DistrictResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/districts/{id}/sections": {
+      "get": {
+        "tags": [
+          "Districts"
+        ],
+        "summary": "Returns the sections for a district.",
+        "operationId": "getSectionsForDistrict",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "District ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of sections",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "starting_after",
+            "in": "query",
+            "description": "Starting after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ending_before",
+            "in": "query",
+            "description": "Ending before",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "where",
+            "in": "query",
+            "description": "Location",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SectionsResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SectionsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/district_admins": {
+      "get": {
+        "tags": [
+          "District Admins"
+        ],
+        "summary": "Returns a list of district admins.",
+        "operationId": "getDistrictAdmins",
+        "parameters": [
+          {
+            "name": "starting_after",
+            "in": "query",
+            "description": "Starting after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ending_before",
+            "in": "query",
+            "description": "Ending before",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "show_links",
+            "in": "query",
+            "description": "Show links",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "DistrictAdminsResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DistrictAdminsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/districts/{id}/schools": {
+      "get": {
+        "tags": [
+          "Districts"
+        ],
+        "summary": "Returns the schools for a district.",
+        "operationId": "getSchoolsForDistrict",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "District ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of schools",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "starting_after",
+            "in": "query",
+            "description": "Starting after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ending_before",
+            "in": "query",
+            "description": "Ending before",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "where",
+            "in": "query",
+            "description": "Location",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SchoolsResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchoolsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/schools/{id}": {
+      "get": {
+        "tags": [
+          "Schools"
+        ],
+        "summary": "Returns a specific school.",
+        "operationId": "getSchool",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "School ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SchoolResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchoolResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/students/{id}/teachers": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "summary": "Returns the teachers for a student.",
+        "operationId": "getTeachersForStudent",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Student ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of teachers",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "starting_after",
+            "in": "query",
+            "description": "Starting after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ending_before",
+            "in": "query",
+            "description": "Ending before",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "TeachersResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeachersResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/schools/{id}/teachers": {
+      "get": {
+        "tags": [
+          "Schools"
+        ],
+        "summary": "Returns the teachers for a school.",
+        "operationId": "getTeachersForSchool",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "School ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of schools",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "starting_after",
+            "in": "query",
+            "description": "Starting after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ending_before",
+            "in": "query",
+            "description": "Ending before",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "where",
+            "in": "query",
+            "description": "Location",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "TeachersResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeachersResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/districts/{id}/students": {
+      "get": {
+        "tags": [
+          "Districts"
+        ],
+        "summary": "Returns the students for a district.",
+        "operationId": "getStudentsForDistrict",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "District ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of students",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "starting_after",
+            "in": "query",
+            "description": "Starting after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ending_before",
+            "in": "query",
+            "description": "Ending before",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "where",
+            "in": "query",
+            "description": "Location",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "StudentsResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/school_admins": {
+      "get": {
+        "tags": [
+          "School Admins"
+        ],
+        "summary": "Returns a list of school admins.",
+        "operationId": "getSchoolAdmins",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of admins",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "starting_after",
+            "in": "query",
+            "description": "Starting after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ending_before",
+            "in": "query",
+            "description": "Ending before",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "where",
+            "in": "query",
+            "description": "Location",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SchoolAdminsResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchoolAdminsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contacts": {
+      "get": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Returns a list of student contacts.",
+        "operationId": "getContacts",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of contacts",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "starting_after",
+            "in": "query",
+            "description": "Starting after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ending_before",
+            "in": "query",
+            "description": "Ending before",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "StudentContactsResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentContactsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/districts": {
+      "get": {
+        "tags": [
+          "Districts"
+        ],
+        "summary": "Returns a list of districts.",
+        "operationId": "getDistricts",
+        "responses": {
+          "200": {
+            "description": "DistrictsResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DistrictsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/districts/{id}/admins": {
+      "get": {
+        "tags": [
+          "Districts"
+        ],
+        "summary": "Returns the admins for a district.",
+        "operationId": "getAdminsForDistrict",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "District ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "DistrictAdminsResponse or error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DistrictAdminsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BadRequest": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "Credentials": {
+        "type": "object",
+        "properties": {
+          "district_username": {
+            "type": "string"
+          }
+        }
+      },
+      "District": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "x-validation": true
+          },
+          "mdr_number": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "DistrictAdmin": {
+        "type": "object",
+        "properties": {
+          "district": {
+            "type": "string",
+            "x-validation": true
+          },
+          "email": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "x-validation": true
+          },
+          "name": {
+            "$ref": "#/components/schemas/Name"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "DistrictAdminResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/DistrictAdmin"
+          }
+        }
+      },
+      "DistrictAdminsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DistrictAdmin"
+            }
+          }
+        }
+      },
+      "DistrictResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/District"
+          }
+        }
+      },
+      "DistrictStatus": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "x-validation": true
+          },
+          "instant_login": {
+            "type": "boolean"
+          },
+          "last_sync": {
+            "type": "string",
+            "format": "datetime",
+            "nullable": true,
+            "x-validation": true
+          },
+          "launch_date": {
+            "type": "string",
+            "format": "datetime",
+            "x-validation": true
+          },
+          "pause_end": {
+            "type": "string",
+            "format": "datetime",
+            "nullable": true,
+            "x-validation": true
+          },
+          "pause_start": {
+            "type": "string",
+            "format": "datetime",
+            "nullable": true,
+            "x-validation": true
+          },
+          "sis_type": {
+            "type": "string",
+            "x-validation": true
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "running",
+              "pending",
+              "error",
+              "paused"
+            ],
+            "x-validation": true
+          }
+        }
+      },
+      "DistrictStatusResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/DistrictStatus"
+          }
+        }
+      },
+      "DistrictStatusResponses": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DistrictStatusResponse"
+            }
+          }
+        }
+      },
+      "DistrictsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DistrictResponse"
+            }
+          }
+        }
+      },
+      "GradeLevelsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "InternalError": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "Location": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "lat": {
+            "type": "string",
+            "nullable": true
+          },
+          "lon": {
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "nullable": true
+          },
+          "zip": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Name": {
+        "type": "object",
+        "properties": {
+          "first": {
+            "type": "string",
+            "nullable": true
+          },
+          "last": {
+            "type": "string",
+            "nullable": true
+          },
+          "middle": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "NotFound": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "Principal": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "School": {
+        "type": "object",
+        "properties": {
+          "created": {
+            "type": "string",
+            "format": "datetime",
+            "x-validation": true
+          },
+          "district": {
+            "type": "string",
+            "x-validation": true
+          },
+          "high_grade": {
+            "type": "string",
+            "enum": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10",
+              "11",
+              "12",
+              "PreKindergarten",
+              "Kindergarten",
+              "PostGraduate",
+              "Other"
+            ],
+            "nullable": true,
+            "x-validation": true
+          },
+          "id": {
+            "type": "string",
+            "x-validation": true
+          },
+          "last_modified": {
+            "type": "string",
+            "format": "datetime",
+            "x-validation": true
+          },
+          "location": {
+            "$ref": "#/components/schemas/Location"
+          },
+          "low_grade": {
+            "type": "string",
+            "enum": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10",
+              "11",
+              "12",
+              "PreKindergarten",
+              "Kindergarten",
+              "PostGraduate",
+              "Other"
+            ],
+            "nullable": true,
+            "x-validation": true
+          },
+          "mdr_number": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string"
+          },
+          "nces_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "principal": {
+            "$ref": "#/components/schemas/Principal"
+          },
+          "school_number": {
+            "type": "string"
+          },
+          "sis_id": {
+            "type": "string"
+          },
+          "state_id": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "SchoolAdmin": {
+        "type": "object",
+        "properties": {
+          "credentials": {
+            "$ref": "#/components/schemas/Credentials"
+          },
+          "district": {
+            "type": "string",
+            "x-validation": true
+          },
+          "email": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "x-validation": true
+          },
+          "name": {
+            "$ref": "#/components/schemas/Name"
+          },
+          "schools": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "x-validation": true
+          },
+          "staff_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "SchoolAdminResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SchoolAdmin"
+          }
+        }
+      },
+      "SchoolAdminsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SchoolAdminResponse"
+            }
+          }
+        }
+      },
+      "SchoolResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/School"
+          }
+        }
+      },
+      "SchoolsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SchoolResponse"
+            }
+          }
+        }
+      },
+      "Section": {
+        "type": "object",
+        "properties": {
+          "course_description": {
+            "type": "string",
+            "nullable": true
+          },
+          "course_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "course_number": {
+            "type": "string",
+            "nullable": true
+          },
+          "created": {
+            "type": "string",
+            "format": "datetime",
+            "x-validation": true
+          },
+          "district": {
+            "type": "string",
+            "x-validation": true
+          },
+          "grade": {
+            "type": "string",
+            "enum": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10",
+              "11",
+              "12",
+              "PreKindergarten",
+              "Kindergarten",
+              "PostGraduate",
+              "Other"
+            ],
+            "nullable": true,
+            "x-validation": true
+          },
+          "id": {
+            "type": "string",
+            "x-validation": true
+          },
+          "last_modified": {
+            "type": "string",
+            "format": "datetime",
+            "x-validation": true
+          },
+          "name": {
+            "type": "string"
+          },
+          "period": {
+            "type": "string",
+            "nullable": true
+          },
+          "school": {
+            "type": "string",
+            "x-validation": true
+          },
+          "section_number": {
+            "type": "string",
+            "nullable": true
+          },
+          "sis_id": {
+            "type": "string"
+          },
+          "students": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "x-validation": true
+          },
+          "subject": {
+            "type": "string",
+            "enum": [
+              "english/language arts",
+              "math",
+              "science",
+              "social studies",
+              "language",
+              "homeroom/advisory",
+              "interventions/online learning",
+              "technology and engineering",
+              "PE and health",
+              "arts and music",
+              "other"
+            ],
+            "x-validation": true
+          },
+          "teacher": {
+            "type": "string",
+            "nullable": true,
+            "x-validation": true
+          },
+          "teachers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "x-validation": true
+          },
+          "term": {
+            "$ref": "#/components/schemas/Term"
+          }
+        }
+      },
+      "SectionResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Section"
+          }
+        }
+      },
+      "SectionsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SectionResponse"
+            }
+          }
+        }
+      },
+      "Student": {
+        "type": "object",
+        "properties": {
+          "created": {
+            "type": "string",
+            "format": "datetime",
+            "x-validation": true
+          },
+          "credentials": {
+            "$ref": "#/components/schemas/Credentials"
+          },
+          "district": {
+            "type": "string",
+            "x-validation": true
+          },
+          "dob": {
+            "type": "string",
+            "pattern": "(?:[0-9]{1,2})/([0-9]{1,2})/([0-9]{4})",
+            "nullable": true,
+            "x-validation": true
+          },
+          "ell_status": {
+            "type": "string",
+            "enum": [
+              "Y",
+              "N",
+              ""
+            ],
+            "nullable": true,
+            "x-validation": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "gender": {
+            "type": "string",
+            "enum": [
+              "M",
+              "F",
+              ""
+            ],
+            "nullable": true,
+            "x-validation": true
+          },
+          "grade": {
+            "type": "string",
+            "enum": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10",
+              "11",
+              "12",
+              "PreKindergarten",
+              "Kindergarten",
+              "PostGraduate",
+              "Other"
+            ],
+            "nullable": true,
+            "x-validation": true
+          },
+          "graduation_year": {
+            "type": "string",
+            "nullable": true,
+            "x-validation": true
+          },
+          "hispanic_ethnicity": {
+            "type": "string",
+            "enum": [
+              "Y",
+              "N",
+              ""
+            ],
+            "nullable": true,
+            "x-validation": true
+          },
+          "id": {
+            "type": "string",
+            "x-validation": true
+          },
+          "last_modified": {
+            "type": "string",
+            "format": "datetime",
+            "x-validation": true
+          },
+          "location": {
+            "$ref": "#/components/schemas/Location"
+          },
+          "name": {
+            "$ref": "#/components/schemas/Name"
+          },
+          "race": {
+            "type": "string",
+            "enum": [
+              "Caucasian",
+              "Asian",
+              "Black or African American",
+              "American Indian",
+              "Hawaiian or Other Pacific Islander",
+              "Two or More Races",
+              "Unknown",
+              ""
+            ],
+            "nullable": true,
+            "x-validation": true
+          },
+          "school": {
+            "type": "string",
+            "x-validation": true
+          },
+          "schools": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "x-validation": true
+          },
+          "sis_id": {
+            "type": "string"
+          },
+          "state_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "student_number": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "StudentContact": {
+        "type": "object",
+        "properties": {
+          "district": {
+            "type": "string",
+            "x-validation": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "x-validation": true
+          },
+          "name": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone_type": {
+            "type": "string",
+            "nullable": true
+          },
+          "relationship": {
+            "type": "string",
+            "nullable": true
+          },
+          "sis_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "student": {
+            "type": "string",
+            "x-validation": true
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "StudentContactResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/StudentContact"
+          }
+        }
+      },
+      "StudentContactsForStudentResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StudentContact"
+            }
+          }
+        }
+      },
+      "StudentContactsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StudentContactResponse"
+            }
+          }
+        }
+      },
+      "StudentResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Student"
+          }
+        }
+      },
+      "StudentsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StudentResponse"
+            }
+          }
+        }
+      },
+      "Teacher": {
+        "type": "object",
+        "properties": {
+          "created": {
+            "type": "string",
+            "format": "datetime",
+            "x-validation": true
+          },
+          "credentials": {
+            "$ref": "#/components/schemas/Credentials"
+          },
+          "district": {
+            "type": "string",
+            "x-validation": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "x-validation": true
+          },
+          "last_modified": {
+            "type": "string",
+            "format": "datetime",
+            "x-validation": true
+          },
+          "name": {
+            "$ref": "#/components/schemas/Name"
+          },
+          "school": {
+            "type": "string",
+            "x-validation": true
+          },
+          "schools": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "x-validation": true
+          },
+          "sis_id": {
+            "type": "string"
+          },
+          "state_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "teacher_number": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "TeacherResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Teacher"
+          }
+        }
+      },
+      "TeachersResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TeacherResponse"
+            }
+          }
+        }
+      },
+      "Term": {
+        "type": "object",
+        "properties": {
+          "end_date": {
+            "type": "string",
+            "format": "datetime",
+            "nullable": true,
+            "x-validation": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "start_date": {
+            "type": "string",
+            "format": "datetime",
+            "nullable": true,
+            "x-validation": true
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/BadRequest"
+            }
+          }
+        }
+      },
+      "InternalError": {
+        "description": "Internal Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/InternalError"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Entity Not Found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/NotFound"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "oauth": {
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://clever.com/oauth/authorize",
+            "scopes": {},
+            "tokenUrl": "https://clever.com/oauth/tokens"
+          }
+        },
+        "type": "oauth2"
+      }
+    }
+  },
+  "security": [
+    {
+      "oauth": []
+    }
+  ],
+  "x-samples-languages": [
+    "curl",
+    "node",
+    "ruby",
+    "python",
+    "php",
+    "java",
+    "go"
+  ],
+  "info": {
+    "x-ballerina-display": {
+      "label": "Clever Data",
+      "iconPath": "icon.png"
+    },
+    "contact": {
+      "x-twitter": "clever"
+    },
+    "description": "This is a generated connector for [Clever Data API v1.2](https:\/\/dev.clever.com\/v1.2\/docs\/secure-sync) OpenAPI specification.\nClever Data API provides the capability to retrieve information from Clever data store.\n",
+    "title": "Data API",
+    "version": "1.2.0",
+    "x-apisguru-categories": [
+      "education"
+    ],
+    "x-logo": {
+      "url": "https://twitter.com/clever/profile_image?size=original"
+    },
+    "x-origin": [
+      {
+        "format": "openapi",
+        "url": "https://raw.githubusercontent.com/Clever/swagger-api/master/v1.2.yml",
+        "version": "3.0"
+      }
+    ],
+    "x-providerName": "clever.com",
+    "x-ballerina-init-description": "The connector initialization requires setting the API credentials.\nCreate a [Clever account](https:\/\/clever.com\/signup) and obtain tokens by following this [guide](https:\/\/dev.clever.com\/v1.2\/docs\/getting-started).\n"
+  }
+}

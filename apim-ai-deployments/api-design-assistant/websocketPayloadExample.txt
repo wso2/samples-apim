@@ -1,0 +1,154 @@
+{
+    "id": "c399f0a2-c919-4175-81ab-896df6a1a2a1",
+    "name": "WebSocket",
+    "description": null,
+    "context": "/websocket",
+    "version": "1.0.0",
+    "provider": "a78faf9f-558d-4fef-b8bc-f42d3ec05390",
+    "lifeCycleStatus": "CREATED",
+    "wsdlInfo": null,
+    "wsdlUrl": null,
+    "responseCachingEnabled": false,
+    "cacheTimeout": 300,
+    "hasThumbnail": false,
+    "isDefaultVersion": false,
+    "isRevision": false,
+    "revisionedApiId": null,
+    "revisionId": 0,
+    "enableSchemaValidation": false,
+    "enableSubscriberVerification": false,
+    "type": "WS",
+    "audience": null,
+    "transport": [],
+    "tags": [],
+    "policies": [
+        "AsyncUnlimited"
+    ],
+    "apiThrottlingPolicy": "",
+    "authorizationHeader": "Authorization",
+    "apiKeyHeader": "ApiKey",
+    "securityScheme": [
+        "oauth_basic_auth_api_key_mandatory",
+        "oauth2"
+    ],
+    "maxTps": null,
+    "visibility": "PUBLIC",
+    "visibleRoles": [],
+    "visibleTenants": [],
+    "mediationPolicies": [],
+    "apiPolicies": null,
+    "subscriptionAvailability": "CURRENT_TENANT",
+    "subscriptionAvailableTenants": [],
+    "additionalProperties": [],
+    "additionalPropertiesMap": {},
+    "monetization": null,
+    "accessControl": "NONE",
+    "accessControlRoles": [],
+    "businessInformation": {
+        "businessOwner": null,
+        "businessOwnerEmail": null,
+        "technicalOwner": null,
+        "technicalOwnerEmail": null
+    },
+    "corsConfiguration": {
+        "corsConfigurationEnabled": false,
+        "accessControlAllowOrigins": [
+            "*"
+        ],
+        "accessControlAllowCredentials": false,
+        "accessControlAllowHeaders": [
+            "authorization",
+            "Access-Control-Allow-Origin",
+            "Content-Type",
+            "SOAPAction",
+            "apikey",
+            "Internal-Key"
+        ],
+        "accessControlAllowMethods": [
+            "GET",
+            "PUT",
+            "POST",
+            "DELETE",
+            "PATCH",
+            "OPTIONS"
+        ]
+    },
+    "websubSubscriptionConfiguration": {
+        "enable": false,
+        "secret": "",
+        "signingAlgorithm": "SHA1",
+        "signatureHeader": "x-hub-signature"
+    },
+    "workflowStatus": null,
+    "createdTime": "1732682135843",
+    "lastUpdatedTimestamp": "1733995363195",
+    "lastUpdatedTime": "2024-12-12 14:52:43.195",
+    "endpointConfig": {
+        "endpoint_type": "ws",
+        "sandbox_endpoints": {
+            "url": "ws://ws.ifelse.io:80"
+        },
+        "production_endpoints": {
+            "url": "ws://ws.ifelse.io:80"
+        }
+    },
+    "endpointImplementationType": "ENDPOINT",
+    "scopes": [],
+    "operations": [
+        {
+            "id": "",
+            "target": "/*",
+            "verb": "SUBSCRIBE",
+            "authType": "Application & Application User",
+            "throttlingPolicy": "Unlimited",
+            "scopes": [],
+            "usedProductIds": [],
+            "amznResourceName": null,
+            "amznResourceTimeout": null,
+            "amznResourceContentEncode": null,
+            "payloadSchema": null,
+            "uriMapping": null,
+            "operationPolicies": {
+                "request": [],
+                "response": [],
+                "fault": []
+            }
+        },
+        {
+            "id": "",
+            "target": "/*",
+            "verb": "PUBLISH",
+            "authType": "Application & Application User",
+            "throttlingPolicy": "Unlimited",
+            "scopes": [],
+            "usedProductIds": [],
+            "amznResourceName": null,
+            "amznResourceTimeout": null,
+            "amznResourceContentEncode": null,
+            "payloadSchema": null,
+            "uriMapping": null,
+            "operationPolicies": {
+                "request": [],
+                "response": [],
+                "fault": []
+            }
+        }
+    ],
+    "threatProtectionPolicies": null,
+    "categories": [],
+    "keyManagers": [
+        "all"
+    ],
+    "serviceInfo": null,
+    "advertiseInfo": {
+        "advertised": false,
+        "apiExternalProductionEndpoint": null,
+        "apiExternalSandboxEndpoint": null,
+        "originalDevPortalUrl": null,
+        "apiOwner": "a78faf9f-558d-4fef-b8bc-f42d3ec05390",
+        "vendor": "WSO2"
+    },
+    "gatewayVendor": "wso2",
+    "gatewayType": "wso2/synapse",
+    "asyncTransportProtocols": []
+}

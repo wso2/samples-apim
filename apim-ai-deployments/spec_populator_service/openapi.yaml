@@ -1,0 +1,578 @@
+openapi: 3.0.3
+
+info:
+  title: Spec Populator Service
+  description: |
+    Maintains the Milvus vector store that backs the Marketplace Assistant. It is the
+    **write** half of that feature: every API published, updated or removed in the
+    product is embedded and upserted here, and the Marketplace Assistant then
+    retrieves from what this service wrote. An empty store means the assistant answers
+    without ever grounding on a real API.
+
+    ## Where this sits
+
+    A backend service deployed behind an API gateway. It has **two** consumers, and
+    they differ in what they expect back:
+
+    | Consumer | Resource here | Success status |
+    |---|---|---|
+    | API Manager — publish | `POST /vectors` | `201` |
+    | API Manager — delete | `DELETE /vectors/{uuid}` | `200` |
+    | API Manager — Developer Portal count | `GET /vectors/count` | `200` |
+    | `apictl ai upload` | `POST /vectors/bulk` | `200` |
+    | `apictl ai delete` | `DELETE /vectors` | `200` |
+
+    The first three are driven from `MarketplaceAssistantApiPublisherNotifier` on
+    publish, lifecycle-change and delete events, and from the Developer Portal for the
+    count. The last two are driven by the API Controller (`apictl`), which reaches this
+    service directly rather than through API Manager.
+
+    ## Partitioning
+
+    Vectors are filed under `keyID` — the store partition, injected by the gateway from
+    the caller's credential — and additionally carry `tenant_domain` and
+    `visibility_roles` so the Marketplace Assistant can filter retrieval on them.
+
+    `keyID` is the whole of the scoping. It must be **byte-identical** on the write
+    resources and on the Marketplace Assistant's read, or retrieval silently returns
+    nothing. It also forms part of the stored record's primary key, so a `keyID` that
+    differs between write and delete makes the delete a no-op that still reports
+    success.
+
+    Every resource here takes it the same way, as a query parameter, so a single
+    gateway policy covers the whole contract.
+
+    ## Which definition field is read
+
+    `api_type` decides where the API definition is taken from. Sending a type without
+    its matching definition field is a validation error:
+
+    | `api_type` | Field read |
+    |---|---|
+    | `HTTP`, `REST`, `SOAP`, `SOAPTOREST`, `APIPRODUCT` | `api_spec` |
+    | `GRAPHQL` | `sdl_schema` |
+    | `ASYNC`, `WS`, `WEBSUB`, `SSE`, `WEBHOOK` | `async_spec` |
+
+    `APIPRODUCT` is stored as `HTTP`. The `version` sent in the payload wins over any
+    version inside the definition, which may be stale.
+
+    ## Additional request properties
+
+    The gateway proxies request bodies through unchanged, so payloads arrive carrying
+    any top-level attributes API Manager's `AIRequestPropertyEnricher` added. Read only
+    the fields you need and ignore the rest.
+
+    Every request schema therefore sets `additionalProperties: true`. Do not tighten
+    it: a validator that rejects unknown top-level attributes would break every
+    enriched publish.
+
+    ## Access control
+
+    No service-level authentication. Access is controlled by the Frontier Gateway in
+    front of the deployment, so `security: []` below is deliberate.
+
+    ## Status codes
+
+    - **`POST /vectors` must answer `201`.** API Manager's `APIUtil.invokeAIService`
+      accepts only `SC_CREATED`; a `200` is read as a failure.
+    - **`POST /vectors/bulk` must answer `200`.** Its consumer is `apictl ai upload`,
+      which checks `resp.StatusCode() != 200` and retries, then gives up. This is the
+      one POST that is not `201`.
+    - **Both DELETEs and the GET answer `200`.** `marketplaceAssistantDeleteService` and
+      `getMarketplaceChatApiCount` accept only `SC_OK`, and `apictl ai delete` likewise
+      checks for `200`.
+
+    Anything else is read as a failure regardless of what the body says.
+
+    ## Error handling
+
+    `422` covers everything the request got wrong: a missing or mistyped body field, a
+    missing query or path parameter, or an `api_type` sent without the definition field
+    it selects. `500` is reserved for genuine failures of the service or its
+    dependencies — the vector store or the embedding model being unreachable.
+
+    **A `null` is not a missing field.** API Manager sends `description` as JSON `null`
+    whenever the API has no description, and the definition fields can arrive the same
+    way. A validator that treats null as absent rejects ordinary publishes, and since
+    the publish notifier logs and swallows the failure, the only symptom is an API the
+    Marketplace Assistant can never find. Reject a null only for the definition field
+    that `api_type` selects, where there is genuinely nothing to embed.
+  version: 1.0.0
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+
+servers:
+  - url: http://{host}:{port}
+    description: Internal service endpoint
+    variables:
+      host:
+        default: localhost
+      port:
+        default: '8000'
+
+tags:
+  - name: Vectors
+    description: Writing and removing single APIs.
+  - name: Vector Batches
+    description: Writing and removing APIs in batches.
+  - name: Counts
+    description: How many APIs a key has indexed, and the allowance it is measured against.
+
+security: []
+
+paths:
+  # /vectors/bulk and /vectors/count are declared before /vectors/{uuid} on purpose:
+  # both also match the {uuid} template, and frameworks that resolve routes in
+  # declaration order (FastAPI among them) would send them to the {uuid} handler.
+  /vectors:
+    post:
+      tags:
+        - Vectors
+      summary: Add or update one API in the vector store
+      description: |
+        Embeds the API definition and upserts it. Idempotent on the vector id, so
+        re-publishing an unchanged API replaces its vector rather than duplicating it.
+
+        The vector is filed under `keyID` and carries `tenant_domain` and
+        `visibility_roles` so the Marketplace Assistant can filter on them. Omitting
+        `visibility_roles` stores an empty role set, which makes the API visible to
+        everyone in that tenant.
+
+        **The vector id comes from the body's `uuid`.** This is a fixed path with no
+        path parameter — API Manager posts the identifier in the payload only, so an
+        implementation must not require it in the URL.
+      operationId: addVector
+      parameters:
+        - $ref: '#/components/parameters/KeyIdQueryParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiRecord'
+      responses:
+        '201':
+          description: The API was indexed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    delete:
+      tags:
+        - Vector Batches
+      summary: Remove every indexed API of one tenant
+      description: |
+        Deletes vectors matching `keyID` and `tenant_domain` — a collection-level
+        delete, scoped by the query parameters rather than addressing one vector.
+
+        The consumer is **`apictl ai delete`**, which supplies the tenant as a
+        `TENANT-DOMAIN` request header; the gateway turns that into the
+        `tenant_domain` query parameter. API Manager never calls this resource.
+
+        **`tenant_domain` is required, and omitting it is a no-op rather than a wider
+        delete.** Both values are interpolated into the filter expression, so a missing
+        `tenant_domain` becomes the literal string `'None'` and matches nothing; the
+        response is still `200` with a zero delete count. There is deliberately no
+        resource that deletes across every tenant at once.
+
+        `apictl` parses the response as an object of integer counts, so `message` must
+        be an object here — never a string.
+      operationId: bulkRemoveVector
+      parameters:
+        - $ref: '#/components/parameters/KeyIdQueryParam'
+        - $ref: '#/components/parameters/TenantDomainQueryParam'
+      responses:
+        '200':
+          description: The vectors were removed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /vectors/bulk:
+    post:
+      tags:
+        - Vector Batches
+      summary: Add or update a batch of APIs in the vector store
+      description: |
+        Bulk form of `POST /vectors`, used to seed or re-sync the store. It is a
+        separate resource rather than a variant of `POST /vectors` because its consumer
+        requires a different success status.
+
+        The consumer is **`apictl ai upload`**, not API Manager.
+
+        `apictl` also parses the response as an object of integer counts, so `message`
+        must be an object here — never a string.
+
+        Every API in `apis` is embedded before anything is written, so a single
+        malformed entry fails the whole batch with `500` and writes nothing. Keeping
+        batches within the API allowance is the caller's job — this resource does not
+        check it.
+      operationId: bulkAddVector
+      parameters:
+        - $ref: '#/components/parameters/KeyIdQueryParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkApiRecords'
+      responses:
+        '200':
+          description: The batch was indexed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /vectors/count:
+    get:
+      tags:
+        - Counts
+      summary: Count the APIs indexed under one subscription key
+      description: |
+        Returns how many vectors are filed under `keyID`, together with the
+        allowance that count is measured against.
+
+        `limit` is the implementation's own configuration. Nothing in the request
+        carries it, and this service is the only place it is known.
+      operationId: getVectorCount
+      parameters:
+        - $ref: '#/components/parameters/KeyIdQueryParam'
+      responses:
+        '200':
+          description: The current count and the allowance it is measured against.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiCountResponse'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /vectors/{uuid}:
+    delete:
+      tags:
+        - Vectors
+      summary: Remove one API from the vector store
+      description: |
+        Deletes the vector for `uuid` within the `keyID` partition.
+
+        `keyID` must be the same value the API was indexed under — it forms part of the
+        stored record's primary key, so a different value deletes nothing while still
+        answering `200`.
+
+        Removing an API that was never indexed is not an error.
+      operationId: removeVector
+      parameters:
+        - $ref: '#/components/parameters/UuidPathParam'
+        - $ref: '#/components/parameters/KeyIdQueryParam'
+      responses:
+        '200':
+          description: The vector was removed, or did not exist.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  parameters:
+    TenantDomainQueryParam:
+      name: tenant_domain
+      in: query
+      required: true
+      description: |
+        Tenant to scope the deletion to. Named to match the `tenant_domain` body field
+        used elsewhere in this contract rather than the camel-cased form.
+
+        `apictl` sends the tenant as a `TENANT-DOMAIN` header; mapping it onto this
+        query parameter is the gateway's job. Omitting it deletes nothing — it does not
+        widen the delete.
+      schema:
+        type: string
+        minLength: 1
+        example: carbon.super
+
+    UuidPathParam:
+      name: uuid
+      in: path
+      required: true
+      description: |
+        Identifier of the API to remove — the same value that was sent as `uuid` in the
+        body when it was indexed.
+      schema:
+        type: string
+        example: 5acfba2e-7501-481c-a9cd-3d0951f7d3f3
+
+    KeyIdQueryParam:
+      name: keyID
+      in: query
+      required: true
+      description: |
+        Store partition. Neither API Manager nor `apictl` sends it — the gateway injects
+        it from the caller's credential.
+
+        Reject a missing or empty value with `422` rather than proceeding. An empty
+        `keyID` writes a vector the Marketplace Assistant can never retrieve, and
+        reports success while doing so.
+
+        The stored record's primary key is `keyID` concatenated with the API's `uuid`
+        and is capped at 100 characters, which is where `maxLength` comes from: 100 less
+        the 36 characters of a UUID.
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 64
+        example: 7f3c9d21-4a6e-4b18-9f52-2c8e1d4a7b30
+
+  responses:
+    ValidationError:
+      description: |
+        The request is malformed — a missing or mistyped body field, a missing query
+        or path parameter, or an `api_type` sent without the definition field it
+        selects.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HTTPValidationError'
+
+    InternalServerError:
+      description: |
+        The vector store or the embedding model failed. Request-shape problems are
+        reported as `422`, not here.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDetail'
+
+  schemas:
+    ErrorDetail:
+      type: object
+      description: FastAPI-style error body carrying the underlying exception text.
+      properties:
+        detail:
+          type: string
+      required:
+        - detail
+
+    HTTPValidationError:
+      type: object
+      title: HTTPValidationError
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      required:
+        - detail
+
+    ValidationError:
+      type: object
+      title: ValidationError
+      properties:
+        loc:
+          type: array
+          description: Path to the offending value.
+          items:
+            oneOf:
+              - type: string
+              - type: integer
+          example:
+            - query
+            - keyID
+        msg:
+          type: string
+          example: field required
+        type:
+          type: string
+          example: value_error.missing
+      required:
+        - loc
+        - msg
+        - type
+
+    MessageResponse:
+      type: object
+      description: |
+        Outcome of a write or delete — the store's result as an object of counts.
+
+        `message` must be an **object**, not a string. `apictl` deserialises the bulk
+        responses into a map of string to integer, so a string here fails to parse on
+        the client.
+      properties:
+        message:
+          type: object
+          description: |
+            Counts reported by the store, such as `insert_count`, `upsert_count` or
+            `delete_count`. Additional keys are permitted; values are integers.
+          additionalProperties:
+            type: integer
+          example:
+            insert_count: 1
+      required:
+        - message
+
+    ApiCountResponse:
+      type: object
+      description: |
+        Count plus allowance. Mirrors API Manager's
+        `MarketplaceAssistantApiCountResponseDTO`, which reads both fields.
+      properties:
+        count:
+          type: integer
+          minimum: 0
+          description: Number of APIs currently indexed under this `keyID`.
+          example: 42
+        limit:
+          type: integer
+          minimum: 0
+          description: |
+            Maximum number of APIs this subscription may index. Sourced from the
+            implementation's own configuration — no request field carries it.
+
+            This resource only reports the allowance. Whether a publish is refused
+            once `count` reaches `limit` is not part of this contract.
+          example: 100
+      required:
+        - count
+        - limit
+      example:
+        count: 42
+        limit: 100
+
+    ApiType:
+      type: string
+      description: |
+        API type, which determines which definition field is read. `APIPRODUCT` is
+        stored as `HTTP`.
+      enum:
+        - HTTP
+        - REST
+        - SOAP
+        - SOAPTOREST
+        - APIPRODUCT
+        - GRAPHQL
+        - ASYNC
+        - WS
+        - WEBSUB
+        - SSE
+        - WEBHOOK
+
+    ApiRecord:
+      type: object
+      description: |
+        One API to index. Exactly one of `api_spec`, `sdl_schema` or `async_spec` is
+        read, chosen by `api_type`; the others may be omitted.
+      properties:
+        uuid:
+          type: string
+          description: Identifier the API is indexed under, and the one to pass when removing it.
+          example: 5acfba2e-7501-481c-a9cd-3d0951f7d3f3
+        api_name:
+          type: string
+          example: PizzaShackAPI
+        api_type:
+          $ref: '#/components/schemas/ApiType'
+        version:
+          type: string
+          description: |
+            API version as recorded in the product. Used in preference to the version
+            inside the definition, which may be out of date.
+          example: 1.0.0
+        description:
+          type: string
+          nullable: true
+          description: |
+            API description, indexed alongside the definition.
+
+            **Always present, but frequently `null`.** API Manager copies
+            `api.getDescription()` into the payload with no null guard — unlike
+            `visibility_roles`, which it explicitly converts to an empty string — so
+            every API published without a description arrives as `"description": null`.
+
+            Treat null as an absent description. Rejecting it fails an ordinary
+            publish, and because the publish notifier swallows the error the API simply
+            never reaches the store.
+          example: Pizza delivery API
+        tenant_domain:
+          type: string
+          description: Tenant the API belongs to. Required in `apim` mode.
+          example: carbon.super
+        api_spec:
+          type: string
+          nullable: true
+          description: |
+            OpenAPI definition as JSON or YAML **text**. Read when `api_type` is
+            `HTTP`, `REST`, `SOAP`, `SOAPTOREST` or `APIPRODUCT`.
+
+            Nullable for the same reason as `description`: API Manager reads it
+            straight from the API with no null guard. Unlike `description` it cannot
+            simply be ignored — there is nothing to embed without it — so answer `422`
+            when the field selected by `api_type` is absent or null.
+        sdl_schema:
+          type: string
+          nullable: true
+          description: |
+            GraphQL SDL as text. Read when `api_type` is `GRAPHQL`. Nullable on the
+            wire; see `api_spec`.
+        async_spec:
+          type: string
+          nullable: true
+          description: |
+            AsyncAPI definition as JSON or YAML text. Read when `api_type` is
+            `ASYNC`, `WS`, `WEBSUB`, `SSE` or `WEBHOOK`. Nullable on the wire; see
+            `api_spec`.
+        visibility_roles:
+          type: string
+          description: |
+            Comma-separated roles allowed to see this API, lower-cased. When present,
+            the Marketplace Assistant filters retrieval against the caller's roles.
+            Omit — or send an empty string — to make the API visible to everyone in
+            the tenant.
+          example: admin,internal/subscriber
+        apim_version:
+          type: string
+          description: Version of the calling product instance. Recorded, not used for filtering.
+          example: 4.5.0
+      required:
+        - uuid
+        - api_name
+        - api_type
+        - version
+        - description
+        - tenant_domain
+      additionalProperties: true
+
+    BulkApiRecords:
+      type: object
+      properties:
+        apis:
+          type: array
+          description: |
+            APIs to index. Processed as one unit — a single bad entry fails the whole
+            batch.
+          items:
+            $ref: '#/components/schemas/ApiRecord'
+      required:
+        - apis
+      additionalProperties: true
+

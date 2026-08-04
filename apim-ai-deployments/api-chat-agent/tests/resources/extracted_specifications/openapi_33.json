@@ -1,0 +1,516 @@
+{
+    "serviceUrl": "https://eu.eth.chaingateway.io/v1",
+    "tools": [
+        {
+            "name": "deleteAddress",
+            "description": "Deletes an existing Ethereum address. Be careful when using this function.",
+            "method": "POST",
+            "path": "/deleteAddress",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "ethereumaddress",
+                        "password"
+                    ],
+                    "properties": {
+                        "ethereumaddress": {
+                            "type": "string"
+                        },
+                        "password": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "getBlock",
+            "description": "Returns information of an Ethereum block with or without transactions.",
+            "method": "POST",
+            "path": "/getBlock",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "block"
+                    ],
+                    "properties": {
+                        "block": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "newAddress",
+            "description": "Generates a new Ethereum addresses you can use to send or receive funds. Do not lose the password! We can't restore access to an address if you lose it.",
+            "method": "POST",
+            "path": "/newAddress",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "password"
+                    ],
+                    "properties": {
+                        "password": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "listAddresses",
+            "description": "Returns all Ethereum addresses created with an account.",
+            "method": "POST",
+            "path": "/listAddresses",
+            "parameters": {}
+        },
+        {
+            "name": "resendFailedIPN",
+            "description": "Tries to resend a failed IPN.",
+            "method": "POST",
+            "path": "/resendFailedIPN",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "id"
+                    ],
+                    "properties": {
+                        "id": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "clearAddress",
+            "description": "Sends all available Ethereum funds of an address to a specified receiver address.",
+            "method": "POST",
+            "path": "/clearAddress",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "ethereumaddress",
+                        "newaddress",
+                        "password"
+                    ],
+                    "properties": {
+                        "ethereumaddress": {
+                            "type": "string"
+                        },
+                        "newaddress": {
+                            "type": "string"
+                        },
+                        "password": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "sendEthereum",
+            "description": "Sends Ethereum from an address controlled by the account to a specified receiver address.",
+            "method": "POST",
+            "path": "/sendEthereum",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "from",
+                        "to",
+                        "password",
+                        "amount"
+                    ],
+                    "properties": {
+                        "from": {
+                            "type": "string"
+                        },
+                        "to": {
+                            "type": "string"
+                        },
+                        "password": {
+                            "type": "string"
+                        },
+                        "amount": {
+                            "type": "number"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "getTransactions",
+            "description": "Returns information like confirmations, token contract address, amount, gas price and more of a given transaction.",
+            "method": "POST",
+            "path": "/getTransactions",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "txid"
+                    ],
+                    "properties": {
+                        "txid": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "getLastBlockNumber",
+            "description": "Returns the block number of the last mined Ethereum block.",
+            "method": "POST",
+            "path": "/getLastBlockNumber",
+            "parameters": {}
+        },
+        {
+            "name": "getGasPrice",
+            "description": "Returns the current gas price in GWEI.",
+            "method": "POST",
+            "path": "/getGasPrice",
+            "parameters": {}
+        },
+        {
+            "name": "importAddress",
+            "description": "Imports an existing keystore into system and makes it possible to send transactions from it.",
+            "method": "POST",
+            "path": "/importAddress",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "filename",
+                        "content",
+                        "password"
+                    ],
+                    "properties": {
+                        "filename": {
+                            "type": "string"
+                        },
+                        "content": {
+                            "type": "object",
+                            "required": [
+                                "version",
+                                "id",
+                                "address",
+                                "crypto"
+                            ],
+                            "properties": {
+                                "version": {
+                                    "type": "integer"
+                                },
+                                "id": {
+                                    "type": "string"
+                                },
+                                "address": {
+                                    "type": "string"
+                                },
+                                "crypto": {
+                                    "type": "object",
+                                    "required": [
+                                        "ciphertext",
+                                        "cipherparams",
+                                        "cipher",
+                                        "kdf",
+                                        "kdfparams",
+                                        "mac"
+                                    ],
+                                    "properties": {
+                                        "ciphertext": {
+                                            "type": "string"
+                                        },
+                                        "cipherparams": {
+                                            "type": "object",
+                                            "required": [
+                                                "iv"
+                                            ],
+                                            "properties": {
+                                                "iv": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "cipher": {
+                                            "type": "string"
+                                        },
+                                        "kdf": {
+                                            "type": "string"
+                                        },
+                                        "kdfparams": {
+                                            "type": "object",
+                                            "required": [
+                                                "dklen",
+                                                "salt",
+                                                "n",
+                                                "r",
+                                                "p"
+                                            ],
+                                            "properties": {
+                                                "dklen": {
+                                                    "type": "integer"
+                                                },
+                                                "salt": {
+                                                    "type": "string"
+                                                },
+                                                "n": {
+                                                    "type": "integer"
+                                                },
+                                                "r": {
+                                                    "type": "integer"
+                                                },
+                                                "p": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        },
+                                        "mac": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "password": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "unsubscribeAddress",
+            "description": "Deletes an existing subscription/IPN for the given address (and contractaddress).",
+            "method": "POST",
+            "path": "/unsubscribeAddress",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "ethereumaddress",
+                        "contractaddress",
+                        "url"
+                    ],
+                    "properties": {
+                        "ethereumaddress": {
+                            "type": "string"
+                        },
+                        "contractaddress": {
+                            "type": "string"
+                        },
+                        "url": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "sendToken",
+            "description": "Sends ERC20 tokens from an address controlled by the account to a specified receiver address. The token contract address is needed to specify the token. The use of the identifier parameter is recommend and awaits an unique string. Whenever a transaction is beeing sent, the identifier is checked and the transaction gets dropped if there is one with that identifier already.",
+            "method": "POST",
+            "path": "/sendToken",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "contractaddress",
+                        "from",
+                        "to",
+                        "password",
+                        "amount",
+                        "identifier"
+                    ],
+                    "properties": {
+                        "contractaddress": {
+                            "type": "string"
+                        },
+                        "from": {
+                            "type": "string"
+                        },
+                        "to": {
+                            "type": "string"
+                        },
+                        "password": {
+                            "type": "string"
+                        },
+                        "amount": {
+                            "type": "integer"
+                        },
+                        "identifier": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "getToken",
+            "description": "Returns information about a specific ERC20 token like name, symbol, decimal places and total supply.",
+            "method": "POST",
+            "path": "/getToken",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "contractaddress"
+                    ],
+                    "properties": {
+                        "contractaddress": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "exportAddress",
+            "description": "Exports an existing keystore file so you can use it in other wallets.",
+            "method": "POST",
+            "path": "/exportAddress",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "ethaddress",
+                        "password"
+                    ],
+                    "properties": {
+                        "ethaddress": {
+                            "type": "string"
+                        },
+                        "password": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "listSubscribedAddresses",
+            "description": "Returns all subscriptions/IPNs created with an account.",
+            "method": "POST",
+            "path": "/listSubscribedAddresses",
+            "parameters": {}
+        },
+        {
+            "name": "listFailedIPNs",
+            "description": "Returns all IPNs that couldn't be sent. Our system tries to send IPNs 10 times until they end up failed.",
+            "method": "POST",
+            "path": "/listFailedIPNs",
+            "parameters": {}
+        },
+        {
+            "name": "getExchangeRate",
+            "description": "Returns the current Ethereum price in Euro or US Dollar.",
+            "method": "POST",
+            "path": "/getExchangeRate",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "currency"
+                    ],
+                    "properties": {
+                        "currency": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "getEthereumBalance",
+            "description": "Returns the Ethereum balance of a given address.",
+            "method": "POST",
+            "path": "/getEthereumBalance",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "ethereumaddress"
+                    ],
+                    "properties": {
+                        "ethereumaddress": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "getTokenBalance",
+            "description": "Returns the token balance of a given address.",
+            "method": "POST",
+            "path": "/getTokenBalance",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "contractaddress",
+                        "ethereumaddress"
+                    ],
+                    "properties": {
+                        "contractaddress": {
+                            "type": "string"
+                        },
+                        "ethereumaddress": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "subscribeAddress",
+            "description": "Creates a new subscription/IPN for the given address (and contractaddress). You will receive a notification to the given url every time a deposit is received. Unsubscribe the address before sending tokens/ETH from it or you won't get reliable notifications anymore.",
+            "method": "POST",
+            "path": "/subscribeAddress",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "ethereumaddress",
+                        "contractaddress",
+                        "url"
+                    ],
+                    "properties": {
+                        "ethereumaddress": {
+                            "type": "string"
+                        },
+                        "contractaddress": {
+                            "type": "string"
+                        },
+                        "url": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

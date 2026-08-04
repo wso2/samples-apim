@@ -1,0 +1,3839 @@
+{
+    "tools": [
+        {
+            "name": "GetDeletedStorageAccounts",
+            "description": "The Get Deleted Storage Accounts operation returns the storage accounts that have been deleted for a vault enabled for soft-delete. This operation requires the storage/list permission.",
+            "method": "GET",
+            "path": "/deletedstorage",
+            "parameters": {
+                "maxresults": {
+                    "location": "query",
+                    "description": "Maximum number of results to return in a page. If not specified the service will return up to 25 results.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "BackupCertificate",
+            "description": "Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate will be downloaded. This operation requires the certificates/backup permission.",
+            "method": "POST",
+            "path": "/certificates/{certificate-name}/backup",
+            "parameters": {
+                "certificate-name": {
+                    "location": "path",
+                    "description": "The name of the certificate.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetDeletedSecrets",
+            "description": "The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for soft-delete. This operation requires the secrets/list permission.",
+            "method": "GET",
+            "path": "/deletedsecrets",
+            "parameters": {
+                "maxresults": {
+                    "location": "query",
+                    "description": "Maximum number of results to return in a page. If not specified the service will return up to 25 results.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetCertificateIssuer",
+            "description": "The GetCertificateIssuer operation returns the specified certificate issuer resources in the specified key vault. This operation requires the certificates/manageissuers/getissuers permission.",
+            "method": "GET",
+            "path": "/certificates/issuers/{issuer-name}",
+            "parameters": {
+                "issuer-name": {
+                    "location": "path",
+                    "description": "The name of the issuer.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "SetCertificateIssuer",
+            "description": "The SetCertificateIssuer operation adds or updates the specified certificate issuer. This operation requires the certificates/setissuers permission.",
+            "method": "PUT",
+            "path": "/certificates/issuers/{issuer-name}",
+            "parameters": {
+                "issuer-name": {
+                    "location": "path",
+                    "description": "The name of the issuer.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "provider"
+                    ],
+                    "properties": {
+                        "attributes": {
+                            "type": "object",
+                            "properties": {
+                                "created": {
+                                    "type": "integer"
+                                },
+                                "enabled": {
+                                    "type": "boolean"
+                                },
+                                "updated": {
+                                    "type": "integer"
+                                }
+                            }
+                        },
+                        "credentials": {
+                            "type": "object",
+                            "properties": {
+                                "account_id": {
+                                    "type": "string"
+                                },
+                                "pwd": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "org_details": {
+                            "type": "object",
+                            "properties": {
+                                "admin_details": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "first_name": {
+                                                "type": "string"
+                                            },
+                                            "last_name": {
+                                                "type": "string"
+                                            },
+                                            "phone": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "id": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "provider": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "DeleteCertificateIssuer",
+            "description": "The DeleteCertificateIssuer operation permanently removes the specified certificate issuer from the vault. This operation requires the certificates/manageissuers/deleteissuers permission.",
+            "method": "DELETE",
+            "path": "/certificates/issuers/{issuer-name}",
+            "parameters": {
+                "issuer-name": {
+                    "location": "path",
+                    "description": "The name of the issuer.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "UpdateCertificateIssuer",
+            "description": "The UpdateCertificateIssuer operation performs an update on the specified certificate issuer entity. This operation requires the certificates/setissuers permission.",
+            "method": "PATCH",
+            "path": "/certificates/issuers/{issuer-name}",
+            "parameters": {
+                "issuer-name": {
+                    "location": "path",
+                    "description": "The name of the issuer.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "attributes": {
+                            "type": "object",
+                            "properties": {
+                                "created": {
+                                    "type": "integer"
+                                },
+                                "enabled": {
+                                    "type": "boolean"
+                                },
+                                "updated": {
+                                    "type": "integer"
+                                }
+                            }
+                        },
+                        "credentials": {
+                            "type": "object",
+                            "properties": {
+                                "account_id": {
+                                    "type": "string"
+                                },
+                                "pwd": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "org_details": {
+                            "type": "object",
+                            "properties": {
+                                "admin_details": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "first_name": {
+                                                "type": "string"
+                                            },
+                                            "last_name": {
+                                                "type": "string"
+                                            },
+                                            "phone": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "id": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "provider": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetCertificateOperation",
+            "description": "Gets the creation operation associated with a specified certificate. This operation requires the certificates/get permission.",
+            "method": "GET",
+            "path": "/certificates/{certificate-name}/pending",
+            "parameters": {
+                "certificate-name": {
+                    "location": "path",
+                    "description": "The name of the certificate.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "DeleteCertificateOperation",
+            "description": "Deletes the creation operation for a specified certificate that is in the process of being created. The certificate is no longer created. This operation requires the certificates/update permission.",
+            "method": "DELETE",
+            "path": "/certificates/{certificate-name}/pending",
+            "parameters": {
+                "certificate-name": {
+                    "location": "path",
+                    "description": "The name of the certificate.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "UpdateCertificateOperation",
+            "description": "Updates a certificate creation operation that is already in progress. This operation requires the certificates/update permission.",
+            "method": "PATCH",
+            "path": "/certificates/{certificate-name}/pending",
+            "parameters": {
+                "certificate-name": {
+                    "location": "path",
+                    "description": "The name of the certificate.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "cancellation_requested"
+                    ],
+                    "properties": {
+                        "cancellation_requested": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "RecoverDeletedStorageAccount",
+            "description": "Recovers the deleted storage account in the specified vault. This operation can only be performed on a soft-delete enabled vault. This operation requires the storage/recover permission.",
+            "method": "POST",
+            "path": "/deletedstorage/{storage-account-name}/recover",
+            "parameters": {
+                "storage-account-name": {
+                    "location": "path",
+                    "description": "The name of the storage account.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z]+$"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "RestoreSecret",
+            "description": "Restores a backed up secret, and all its versions, to a vault. This operation requires the secrets/restore permission.",
+            "method": "POST",
+            "path": "/secrets/restore",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "value"
+                    ],
+                    "properties": {
+                        "value": {
+                            "type": "string",
+                            "format": "base64url"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "RecoverDeletedKey",
+            "description": "The Recover Deleted Key operation is applicable for deleted keys in soft-delete enabled vaults. It recovers the deleted key back to its latest version under /keys. An attempt to recover an non-deleted key will return an error. Consider this the inverse of the delete operation on soft-delete enabled vaults. This operation requires the keys/recover permission.",
+            "method": "POST",
+            "path": "/deletedkeys/{key-name}/recover",
+            "parameters": {
+                "key-name": {
+                    "location": "path",
+                    "description": "The name of the deleted key.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "BackupSecret",
+            "description": "Requests that a backup of the specified secret be downloaded to the client. All versions of the secret will be downloaded. This operation requires the secrets/backup permission.",
+            "method": "POST",
+            "path": "/secrets/{secret-name}/backup",
+            "parameters": {
+                "secret-name": {
+                    "location": "path",
+                    "description": "The name of the secret.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetKey",
+            "description": "The get key operation is applicable to all key types. If the requested key is symmetric, then no key material is released in the response. This operation requires the keys/get permission.",
+            "method": "GET",
+            "path": "/keys/{key-name}/{key-version}",
+            "parameters": {
+                "key-name": {
+                    "location": "path",
+                    "description": "The name of the key to get.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "key-version": {
+                    "location": "path",
+                    "description": "Adding the version parameter retrieves a specific version of a key.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "UpdateKey",
+            "description": "In order to perform this operation, the key must already exist in the Key Vault. Note: The cryptographic material of a key itself cannot be changed. This operation requires the keys/update permission.",
+            "method": "PATCH",
+            "path": "/keys/{key-name}/{key-version}",
+            "parameters": {
+                "key-name": {
+                    "location": "path",
+                    "description": "The name of key to update.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "key-version": {
+                    "location": "path",
+                    "description": "The version of the key to update.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "attributes": {
+                            "allOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "created": {
+                                            "type": "integer"
+                                        },
+                                        "enabled": {
+                                            "type": "boolean"
+                                        },
+                                        "exp": {
+                                            "type": "integer"
+                                        },
+                                        "nbf": {
+                                            "type": "integer"
+                                        },
+                                        "updated": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "key_ops": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "encrypt",
+                                    "decrypt",
+                                    "sign",
+                                    "verify",
+                                    "wrapKey",
+                                    "unwrapKey"
+                                ]
+                            }
+                        },
+                        "tags": {
+                            "type": "object",
+                            "properties": {}
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "RestoreKey",
+            "description": "Imports a previously backed up key into Azure Key Vault, restoring the key, its key identifier, attributes and access control policies. The RESTORE operation may be used to import a previously backed up key. Individual versions of a key cannot be restored. The key is restored in its entirety with the same key name as it had when it was backed up. If the key name is not available in the target Key Vault, the RESTORE operation will be rejected. While the key name is retained during restore, the final key identifier will change if the key is restored to a different vault. Restore will restore all versions and preserve version identifiers. The RESTORE operation is subject to security constraints: The target Key Vault must be owned by the same Microsoft Azure Subscription as the source Key Vault The user must have RESTORE permission in the target Key Vault. This operation requires the keys/restore permission.",
+            "method": "POST",
+            "path": "/keys/restore",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "value"
+                    ],
+                    "properties": {
+                        "value": {
+                            "type": "string",
+                            "format": "base64url"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "CreateKey",
+            "description": "The create key operation can be used to create any key type in Azure Key Vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the keys/create permission.",
+            "method": "POST",
+            "path": "/keys/{key-name}/create",
+            "parameters": {
+                "key-name": {
+                    "location": "path",
+                    "description": "The name for the new key. The system will generate the version name for the new key.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z-]+$"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "kty"
+                    ],
+                    "properties": {
+                        "attributes": {
+                            "allOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "created": {
+                                            "type": "integer"
+                                        },
+                                        "enabled": {
+                                            "type": "boolean"
+                                        },
+                                        "exp": {
+                                            "type": "integer"
+                                        },
+                                        "nbf": {
+                                            "type": "integer"
+                                        },
+                                        "updated": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "crv": {
+                            "type": "string",
+                            "enum": [
+                                "P-256",
+                                "P-384",
+                                "P-521",
+                                "P-256K"
+                            ]
+                        },
+                        "key_ops": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "encrypt",
+                                    "decrypt",
+                                    "sign",
+                                    "verify",
+                                    "wrapKey",
+                                    "unwrapKey"
+                                ]
+                            }
+                        },
+                        "key_size": {
+                            "type": "integer"
+                        },
+                        "kty": {
+                            "type": "string",
+                            "enum": [
+                                "EC",
+                                "EC-HSM",
+                                "RSA",
+                                "RSA-HSM",
+                                "oct"
+                            ]
+                        },
+                        "tags": {
+                            "type": "object",
+                            "properties": {}
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "BackupStorageAccount",
+            "description": "Requests that a backup of the specified storage account be downloaded to the client. This operation requires the storage/backup permission.",
+            "method": "POST",
+            "path": "/storage/{storage-account-name}/backup",
+            "parameters": {
+                "storage-account-name": {
+                    "location": "path",
+                    "description": "The name of the storage account.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetDeletedSasDefinitions",
+            "description": "The Get Deleted Sas Definitions operation returns the SAS definitions that have been deleted for a vault enabled for soft-delete. This operation requires the storage/listsas permission.",
+            "method": "GET",
+            "path": "/deletedstorage/{storage-account-name}/sas",
+            "parameters": {
+                "storage-account-name": {
+                    "location": "path",
+                    "description": "The name of the storage account.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z]+$"
+                    }
+                },
+                "maxresults": {
+                    "location": "query",
+                    "description": "Maximum number of results to return in a page. If not specified the service will return up to 25 results.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "CreateCertificate",
+            "description": "If this is the first version, the certificate resource is created. This operation requires the certificates/create permission.",
+            "method": "POST",
+            "path": "/certificates/{certificate-name}/create",
+            "parameters": {
+                "certificate-name": {
+                    "location": "path",
+                    "description": "The name of the certificate.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z-]+$"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "attributes": {
+                            "allOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "created": {
+                                            "type": "integer"
+                                        },
+                                        "enabled": {
+                                            "type": "boolean"
+                                        },
+                                        "exp": {
+                                            "type": "integer"
+                                        },
+                                        "nbf": {
+                                            "type": "integer"
+                                        },
+                                        "updated": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "policy": {
+                            "type": "object",
+                            "properties": {
+                                "attributes": {
+                                    "allOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "created": {
+                                                    "type": "integer"
+                                                },
+                                                "enabled": {
+                                                    "type": "boolean"
+                                                },
+                                                "exp": {
+                                                    "type": "integer"
+                                                },
+                                                "nbf": {
+                                                    "type": "integer"
+                                                },
+                                                "updated": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "id": {
+                                    "type": "string"
+                                },
+                                "issuer": {
+                                    "type": "object",
+                                    "properties": {
+                                        "cert_transparency": {
+                                            "type": "boolean"
+                                        },
+                                        "cty": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "key_props": {
+                                    "type": "object",
+                                    "properties": {
+                                        "crv": {
+                                            "type": "string",
+                                            "enum": [
+                                                "P-256",
+                                                "P-384",
+                                                "P-521",
+                                                "P-256K"
+                                            ]
+                                        },
+                                        "exportable": {
+                                            "type": "boolean"
+                                        },
+                                        "key_size": {
+                                            "type": "integer"
+                                        },
+                                        "kty": {
+                                            "type": "string",
+                                            "enum": [
+                                                "EC",
+                                                "EC-HSM",
+                                                "RSA",
+                                                "RSA-HSM",
+                                                "oct"
+                                            ]
+                                        },
+                                        "reuse_key": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                },
+                                "lifetime_actions": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "action": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "action_type": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "EmailContacts",
+                                                            "AutoRenew"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            "trigger": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "days_before_expiry": {
+                                                        "type": "integer"
+                                                    },
+                                                    "lifetime_percentage": {
+                                                        "type": "integer"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "secret_props": {
+                                    "type": "object",
+                                    "properties": {
+                                        "contentType": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "x509_props": {
+                                    "type": "object",
+                                    "properties": {
+                                        "ekus": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "key_usage": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "digitalSignature",
+                                                    "nonRepudiation",
+                                                    "keyEncipherment",
+                                                    "dataEncipherment",
+                                                    "keyAgreement",
+                                                    "keyCertSign",
+                                                    "cRLSign",
+                                                    "encipherOnly",
+                                                    "decipherOnly"
+                                                ]
+                                            }
+                                        },
+                                        "sans": {
+                                            "type": "object",
+                                            "properties": {
+                                                "dns_names": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "emails": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "upns": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "subject": {
+                                            "type": "string"
+                                        },
+                                        "validity_months": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "tags": {
+                            "type": "object",
+                            "properties": {}
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "MergeCertificate",
+            "description": "The MergeCertificate operation performs the merging of a certificate or certificate chain with a key pair currently available in the service. This operation requires the certificates/create permission.",
+            "method": "POST",
+            "path": "/certificates/{certificate-name}/pending/merge",
+            "parameters": {
+                "certificate-name": {
+                    "location": "path",
+                    "description": "The name of the certificate.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "x5c"
+                    ],
+                    "properties": {
+                        "attributes": {
+                            "allOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "created": {
+                                            "type": "integer"
+                                        },
+                                        "enabled": {
+                                            "type": "boolean"
+                                        },
+                                        "exp": {
+                                            "type": "integer"
+                                        },
+                                        "nbf": {
+                                            "type": "integer"
+                                        },
+                                        "updated": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "tags": {
+                            "type": "object",
+                            "properties": {}
+                        },
+                        "x5c": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "format": "byte",
+                                "pattern": "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetDeletedKey",
+            "description": "The Get Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be invoked on any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation requires the keys/get permission. ",
+            "method": "GET",
+            "path": "/deletedkeys/{key-name}",
+            "parameters": {
+                "key-name": {
+                    "location": "path",
+                    "description": "The name of the key.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "PurgeDeletedKey",
+            "description": "The Purge Deleted Key operation is applicable for soft-delete enabled vaults. While the operation can be invoked on any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation requires the keys/purge permission.",
+            "method": "DELETE",
+            "path": "/deletedkeys/{key-name}",
+            "parameters": {
+                "key-name": {
+                    "location": "path",
+                    "description": "The name of the key",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetDeletedSecret",
+            "description": "The Get Deleted Secret operation returns the specified deleted secret along with its attributes. This operation requires the secrets/get permission.",
+            "method": "GET",
+            "path": "/deletedsecrets/{secret-name}",
+            "parameters": {
+                "secret-name": {
+                    "location": "path",
+                    "description": "The name of the secret.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "PurgeDeletedSecret",
+            "description": "The purge deleted secret operation removes the secret permanently, without the possibility of recovery. This operation can only be enabled on a soft-delete enabled vault. This operation requires the secrets/purge permission.",
+            "method": "DELETE",
+            "path": "/deletedsecrets/{secret-name}",
+            "parameters": {
+                "secret-name": {
+                    "location": "path",
+                    "description": "The name of the secret.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetKeyVersions",
+            "description": "The full key identifier, attributes, and tags are provided in the response. This operation requires the keys/list permission.",
+            "method": "GET",
+            "path": "/keys/{key-name}/versions",
+            "parameters": {
+                "key-name": {
+                    "location": "path",
+                    "description": "The name of the key.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "maxresults": {
+                    "location": "query",
+                    "description": "Maximum number of results to return in a page. If not specified the service will return up to 25 results.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetStorageAccount",
+            "description": "Gets information about a specified storage account. This operation requires the storage/get permission.",
+            "method": "GET",
+            "path": "/storage/{storage-account-name}",
+            "parameters": {
+                "storage-account-name": {
+                    "location": "path",
+                    "description": "The name of the storage account.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z]+$"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "SetStorageAccount",
+            "description": "Creates or updates a new storage account. This operation requires the storage/set permission.",
+            "method": "PUT",
+            "path": "/storage/{storage-account-name}",
+            "parameters": {
+                "storage-account-name": {
+                    "location": "path",
+                    "description": "The name of the storage account.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z]+$"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "activeKeyName",
+                        "autoRegenerateKey",
+                        "resourceId"
+                    ],
+                    "properties": {
+                        "activeKeyName": {
+                            "type": "string"
+                        },
+                        "attributes": {
+                            "type": "object",
+                            "properties": {
+                                "created": {
+                                    "type": "integer"
+                                },
+                                "enabled": {
+                                    "type": "boolean"
+                                },
+                                "recoveryLevel": {
+                                    "type": "string",
+                                    "enum": [
+                                        "Purgeable",
+                                        "Recoverable+Purgeable",
+                                        "Recoverable",
+                                        "Recoverable+ProtectedSubscription"
+                                    ]
+                                },
+                                "updated": {
+                                    "type": "integer"
+                                }
+                            }
+                        },
+                        "autoRegenerateKey": {
+                            "type": "boolean"
+                        },
+                        "regenerationPeriod": {
+                            "type": "string"
+                        },
+                        "resourceId": {
+                            "type": "string"
+                        },
+                        "tags": {
+                            "type": "object",
+                            "properties": {}
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "DeleteStorageAccount",
+            "description": "Deletes a storage account. This operation requires the storage/delete permission.",
+            "method": "DELETE",
+            "path": "/storage/{storage-account-name}",
+            "parameters": {
+                "storage-account-name": {
+                    "location": "path",
+                    "description": "The name of the storage account.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z]+$"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "UpdateStorageAccount",
+            "description": "Updates the specified attributes associated with the given storage account. This operation requires the storage/set/update permission.",
+            "method": "PATCH",
+            "path": "/storage/{storage-account-name}",
+            "parameters": {
+                "storage-account-name": {
+                    "location": "path",
+                    "description": "The name of the storage account.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z]+$"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "activeKeyName": {
+                            "type": "string"
+                        },
+                        "attributes": {
+                            "type": "object",
+                            "properties": {
+                                "created": {
+                                    "type": "integer"
+                                },
+                                "enabled": {
+                                    "type": "boolean"
+                                },
+                                "recoveryLevel": {
+                                    "type": "string",
+                                    "enum": [
+                                        "Purgeable",
+                                        "Recoverable+Purgeable",
+                                        "Recoverable",
+                                        "Recoverable+ProtectedSubscription"
+                                    ]
+                                },
+                                "updated": {
+                                    "type": "integer"
+                                }
+                            }
+                        },
+                        "autoRegenerateKey": {
+                            "type": "boolean"
+                        },
+                        "regenerationPeriod": {
+                            "type": "string"
+                        },
+                        "tags": {
+                            "type": "object",
+                            "properties": {}
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "encrypt",
+            "description": "The ENCRYPT operation encrypts an arbitrary sequence of bytes using an encryption key that is stored in Azure Key Vault. Note that the ENCRYPT operation only supports a single block of data, the size of which is dependent on the target key and the encryption algorithm to be used. The ENCRYPT operation is only strictly necessary for symmetric keys stored in Azure Key Vault since protection with an asymmetric key can be performed using public portion of the key. This operation is supported for asymmetric keys as a convenience for callers that have a key-reference but do not have access to the public key material. This operation requires the keys/encrypt permission.",
+            "method": "POST",
+            "path": "/keys/{key-name}/{key-version}/encrypt",
+            "parameters": {
+                "key-name": {
+                    "location": "path",
+                    "description": "The name of the key.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "key-version": {
+                    "location": "path",
+                    "description": "The version of the key.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "alg",
+                        "value"
+                    ],
+                    "properties": {
+                        "alg": {
+                            "type": "string",
+                            "enum": [
+                                "RSA-OAEP",
+                                "RSA-OAEP-256",
+                                "RSA1_5"
+                            ]
+                        },
+                        "value": {
+                            "type": "string",
+                            "format": "base64url"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "BackupKey",
+            "description": "The Key Backup operation exports a key from Azure Key Vault in a protected form. Note that this operation does NOT return key material in a form that can be used outside the Azure Key Vault system, the returned key material is either protected to a Azure Key Vault HSM or to Azure Key Vault itself. The intent of this operation is to allow a client to GENERATE a key in one Azure Key Vault instance, BACKUP the key, and then RESTORE it into another Azure Key Vault instance. The BACKUP operation may be used to export, in protected form, any key type from Azure Key Vault. Individual versions of a key cannot be backed up. BACKUP / RESTORE can be performed within geographical boundaries only; meaning that a BACKUP from one geographical area cannot be restored to another geographical area. For example, a backup from the US geographical area cannot be restored in an EU geographical area. This operation requires the key/backup permission.",
+            "method": "POST",
+            "path": "/keys/{key-name}/backup",
+            "parameters": {
+                "key-name": {
+                    "location": "path",
+                    "description": "The name of the key.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "SetSecret",
+            "description": " The SET operation adds a secret to the Azure Key Vault. If the named secret already exists, Azure Key Vault creates a new version of that secret. This operation requires the secrets/set permission.",
+            "method": "PUT",
+            "path": "/secrets/{secret-name}",
+            "parameters": {
+                "secret-name": {
+                    "location": "path",
+                    "description": "The name of the secret.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z-]+$"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "value"
+                    ],
+                    "properties": {
+                        "attributes": {
+                            "allOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "created": {
+                                            "type": "integer"
+                                        },
+                                        "enabled": {
+                                            "type": "boolean"
+                                        },
+                                        "exp": {
+                                            "type": "integer"
+                                        },
+                                        "nbf": {
+                                            "type": "integer"
+                                        },
+                                        "updated": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "contentType": {
+                            "type": "string"
+                        },
+                        "tags": {
+                            "type": "object",
+                            "properties": {}
+                        },
+                        "value": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "DeleteSecret",
+            "description": "The DELETE operation applies to any secret stored in Azure Key Vault. DELETE cannot be applied to an individual version of a secret. This operation requires the secrets/delete permission.",
+            "method": "DELETE",
+            "path": "/secrets/{secret-name}",
+            "parameters": {
+                "secret-name": {
+                    "location": "path",
+                    "description": "The name of the secret.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "decrypt",
+            "description": "The DECRYPT operation decrypts a well-formed block of ciphertext using the target encryption key and specified algorithm. This operation is the reverse of the ENCRYPT operation; only a single block of data may be decrypted, the size of this block is dependent on the target key and the algorithm to be used. The DECRYPT operation applies to asymmetric and symmetric keys stored in Azure Key Vault since it uses the private portion of the key. This operation requires the keys/decrypt permission.",
+            "method": "POST",
+            "path": "/keys/{key-name}/{key-version}/decrypt",
+            "parameters": {
+                "key-name": {
+                    "location": "path",
+                    "description": "The name of the key.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "key-version": {
+                    "location": "path",
+                    "description": "The version of the key.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "alg",
+                        "value"
+                    ],
+                    "properties": {
+                        "alg": {
+                            "type": "string",
+                            "enum": [
+                                "RSA-OAEP",
+                                "RSA-OAEP-256",
+                                "RSA1_5"
+                            ]
+                        },
+                        "value": {
+                            "type": "string",
+                            "format": "base64url"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetCertificateContacts",
+            "description": "The GetCertificateContacts operation returns the set of certificate contact resources in the specified key vault. This operation requires the certificates/managecontacts permission.",
+            "method": "GET",
+            "path": "/certificates/contacts",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "SetCertificateContacts",
+            "description": "Sets the certificate contacts for the specified key vault. This operation requires the certificates/managecontacts permission.",
+            "method": "PUT",
+            "path": "/certificates/contacts",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "contacts": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "id": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "DeleteCertificateContacts",
+            "description": "Deletes the certificate contacts for a specified key vault certificate. This operation requires the certificates/managecontacts permission.",
+            "method": "DELETE",
+            "path": "/certificates/contacts",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "ImportCertificate",
+            "description": "Imports an existing valid certificate, containing a private key, into Azure Key Vault. The certificate to be imported can be in either PFX or PEM format. If the certificate is in PEM format the PEM file must contain the key as well as x509 certificates. This operation requires the certificates/import permission.",
+            "method": "POST",
+            "path": "/certificates/{certificate-name}/import",
+            "parameters": {
+                "certificate-name": {
+                    "location": "path",
+                    "description": "The name of the certificate.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z-]+$"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "value"
+                    ],
+                    "properties": {
+                        "attributes": {
+                            "allOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "created": {
+                                            "type": "integer"
+                                        },
+                                        "enabled": {
+                                            "type": "boolean"
+                                        },
+                                        "exp": {
+                                            "type": "integer"
+                                        },
+                                        "nbf": {
+                                            "type": "integer"
+                                        },
+                                        "updated": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "policy": {
+                            "type": "object",
+                            "properties": {
+                                "attributes": {
+                                    "allOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "created": {
+                                                    "type": "integer"
+                                                },
+                                                "enabled": {
+                                                    "type": "boolean"
+                                                },
+                                                "exp": {
+                                                    "type": "integer"
+                                                },
+                                                "nbf": {
+                                                    "type": "integer"
+                                                },
+                                                "updated": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "id": {
+                                    "type": "string"
+                                },
+                                "issuer": {
+                                    "type": "object",
+                                    "properties": {
+                                        "cert_transparency": {
+                                            "type": "boolean"
+                                        },
+                                        "cty": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "key_props": {
+                                    "type": "object",
+                                    "properties": {
+                                        "crv": {
+                                            "type": "string",
+                                            "enum": [
+                                                "P-256",
+                                                "P-384",
+                                                "P-521",
+                                                "P-256K"
+                                            ]
+                                        },
+                                        "exportable": {
+                                            "type": "boolean"
+                                        },
+                                        "key_size": {
+                                            "type": "integer"
+                                        },
+                                        "kty": {
+                                            "type": "string",
+                                            "enum": [
+                                                "EC",
+                                                "EC-HSM",
+                                                "RSA",
+                                                "RSA-HSM",
+                                                "oct"
+                                            ]
+                                        },
+                                        "reuse_key": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                },
+                                "lifetime_actions": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "action": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "action_type": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "EmailContacts",
+                                                            "AutoRenew"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            "trigger": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "days_before_expiry": {
+                                                        "type": "integer"
+                                                    },
+                                                    "lifetime_percentage": {
+                                                        "type": "integer"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "secret_props": {
+                                    "type": "object",
+                                    "properties": {
+                                        "contentType": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "x509_props": {
+                                    "type": "object",
+                                    "properties": {
+                                        "ekus": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "key_usage": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "digitalSignature",
+                                                    "nonRepudiation",
+                                                    "keyEncipherment",
+                                                    "dataEncipherment",
+                                                    "keyAgreement",
+                                                    "keyCertSign",
+                                                    "cRLSign",
+                                                    "encipherOnly",
+                                                    "decipherOnly"
+                                                ]
+                                            }
+                                        },
+                                        "sans": {
+                                            "type": "object",
+                                            "properties": {
+                                                "dns_names": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "emails": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "upns": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "subject": {
+                                            "type": "string"
+                                        },
+                                        "validity_months": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "pwd": {
+                            "type": "string"
+                        },
+                        "tags": {
+                            "type": "object",
+                            "properties": {}
+                        },
+                        "value": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "RestoreCertificate",
+            "description": "Restores a backed up certificate, and all its versions, to a vault. This operation requires the certificates/restore permission.",
+            "method": "POST",
+            "path": "/certificates/restore",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "value"
+                    ],
+                    "properties": {
+                        "value": {
+                            "type": "string",
+                            "format": "base64url"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetCertificatePolicy",
+            "description": "The GetCertificatePolicy operation returns the specified certificate policy resources in the specified key vault. This operation requires the certificates/get permission.",
+            "method": "GET",
+            "path": "/certificates/{certificate-name}/policy",
+            "parameters": {
+                "certificate-name": {
+                    "location": "path",
+                    "description": "The name of the certificate in a given key vault.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "UpdateCertificatePolicy",
+            "description": "Set specified members in the certificate policy. Leave others as null. This operation requires the certificates/update permission.",
+            "method": "PATCH",
+            "path": "/certificates/{certificate-name}/policy",
+            "parameters": {
+                "certificate-name": {
+                    "location": "path",
+                    "description": "The name of the certificate in the given vault.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "attributes": {
+                            "allOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "created": {
+                                            "type": "integer"
+                                        },
+                                        "enabled": {
+                                            "type": "boolean"
+                                        },
+                                        "exp": {
+                                            "type": "integer"
+                                        },
+                                        "nbf": {
+                                            "type": "integer"
+                                        },
+                                        "updated": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "id": {
+                            "type": "string"
+                        },
+                        "issuer": {
+                            "type": "object",
+                            "properties": {
+                                "cert_transparency": {
+                                    "type": "boolean"
+                                },
+                                "cty": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "key_props": {
+                            "type": "object",
+                            "properties": {
+                                "crv": {
+                                    "type": "string",
+                                    "enum": [
+                                        "P-256",
+                                        "P-384",
+                                        "P-521",
+                                        "P-256K"
+                                    ]
+                                },
+                                "exportable": {
+                                    "type": "boolean"
+                                },
+                                "key_size": {
+                                    "type": "integer"
+                                },
+                                "kty": {
+                                    "type": "string",
+                                    "enum": [
+                                        "EC",
+                                        "EC-HSM",
+                                        "RSA",
+                                        "RSA-HSM",
+                                        "oct"
+                                    ]
+                                },
+                                "reuse_key": {
+                                    "type": "boolean"
+                                }
+                            }
+                        },
+                        "lifetime_actions": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "action": {
+                                        "type": "object",
+                                        "properties": {
+                                            "action_type": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "EmailContacts",
+                                                    "AutoRenew"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "trigger": {
+                                        "type": "object",
+                                        "properties": {
+                                            "days_before_expiry": {
+                                                "type": "integer"
+                                            },
+                                            "lifetime_percentage": {
+                                                "type": "integer"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "secret_props": {
+                            "type": "object",
+                            "properties": {
+                                "contentType": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "x509_props": {
+                            "type": "object",
+                            "properties": {
+                                "ekus": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "key_usage": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "enum": [
+                                            "digitalSignature",
+                                            "nonRepudiation",
+                                            "keyEncipherment",
+                                            "dataEncipherment",
+                                            "keyAgreement",
+                                            "keyCertSign",
+                                            "cRLSign",
+                                            "encipherOnly",
+                                            "decipherOnly"
+                                        ]
+                                    }
+                                },
+                                "sans": {
+                                    "type": "object",
+                                    "properties": {
+                                        "dns_names": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "emails": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "upns": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "subject": {
+                                    "type": "string"
+                                },
+                                "validity_months": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "RestoreStorageAccount",
+            "description": "Restores a backed up storage account to a vault. This operation requires the storage/restore permission.",
+            "method": "POST",
+            "path": "/storage/restore",
+            "parameters": {
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "value"
+                    ],
+                    "properties": {
+                        "value": {
+                            "type": "string",
+                            "format": "base64url"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetCertificateIssuers",
+            "description": "The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault. This operation requires the certificates/manageissuers/getissuers permission.",
+            "method": "GET",
+            "path": "/certificates/issuers",
+            "parameters": {
+                "maxresults": {
+                    "location": "query",
+                    "description": "Maximum number of results to return in a page. If not specified the service will return up to 25 results.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetDeletedCertificate",
+            "description": "The GetDeletedCertificate operation retrieves the deleted certificate information plus its attributes, such as retention interval, scheduled permanent deletion and the current deletion recovery level. This operation requires the certificates/get permission.",
+            "method": "GET",
+            "path": "/deletedcertificates/{certificate-name}",
+            "parameters": {
+                "certificate-name": {
+                    "location": "path",
+                    "description": "The name of the certificate",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "PurgeDeletedCertificate",
+            "description": "The PurgeDeletedCertificate operation performs an irreversible deletion of the specified certificate, without possibility for recovery. The operation is not available if the recovery level does not specify 'Purgeable'. This operation requires the certificate/purge permission.",
+            "method": "DELETE",
+            "path": "/deletedcertificates/{certificate-name}",
+            "parameters": {
+                "certificate-name": {
+                    "location": "path",
+                    "description": "The name of the certificate",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "sign",
+            "description": "The SIGN operation is applicable to asymmetric and symmetric keys stored in Azure Key Vault since this operation uses the private portion of the key. This operation requires the keys/sign permission.",
+            "method": "POST",
+            "path": "/keys/{key-name}/{key-version}/sign",
+            "parameters": {
+                "key-name": {
+                    "location": "path",
+                    "description": "The name of the key.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "key-version": {
+                    "location": "path",
+                    "description": "The version of the key.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "alg",
+                        "value"
+                    ],
+                    "properties": {
+                        "alg": {
+                            "type": "string",
+                            "enum": [
+                                "PS256",
+                                "PS384",
+                                "PS512",
+                                "RS256",
+                                "RS384",
+                                "RS512",
+                                "RSNULL",
+                                "ES256",
+                                "ES384",
+                                "ES512",
+                                "ES256K"
+                            ]
+                        },
+                        "value": {
+                            "type": "string",
+                            "format": "base64url"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "RecoverDeletedSecret",
+            "description": "Recovers the deleted secret in the specified vault. This operation can only be performed on a soft-delete enabled vault. This operation requires the secrets/recover permission.",
+            "method": "POST",
+            "path": "/deletedsecrets/{secret-name}/recover",
+            "parameters": {
+                "secret-name": {
+                    "location": "path",
+                    "description": "The name of the deleted secret.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetSasDefinitions",
+            "description": "List storage SAS definitions for the given storage account. This operation requires the storage/listsas permission.",
+            "method": "GET",
+            "path": "/storage/{storage-account-name}/sas",
+            "parameters": {
+                "storage-account-name": {
+                    "location": "path",
+                    "description": "The name of the storage account.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z]+$"
+                    }
+                },
+                "maxresults": {
+                    "location": "query",
+                    "description": "Maximum number of results to return in a page. If not specified the service will return up to 25 results.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "RegenerateStorageAccountKey",
+            "description": "Regenerates the specified key value for the given storage account. This operation requires the storage/regeneratekey permission.",
+            "method": "POST",
+            "path": "/storage/{storage-account-name}/regeneratekey",
+            "parameters": {
+                "storage-account-name": {
+                    "location": "path",
+                    "description": "The name of the storage account.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z]+$"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "keyName"
+                    ],
+                    "properties": {
+                        "keyName": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetSasDefinition",
+            "description": "Gets information about a SAS definition for the specified storage account. This operation requires the storage/getsas permission.",
+            "method": "GET",
+            "path": "/storage/{storage-account-name}/sas/{sas-definition-name}",
+            "parameters": {
+                "storage-account-name": {
+                    "location": "path",
+                    "description": "The name of the storage account.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z]+$"
+                    }
+                },
+                "sas-definition-name": {
+                    "location": "path",
+                    "description": "The name of the SAS definition.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z]+$"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "SetSasDefinition",
+            "description": "Creates or updates a new SAS definition for the specified storage account. This operation requires the storage/setsas permission.",
+            "method": "PUT",
+            "path": "/storage/{storage-account-name}/sas/{sas-definition-name}",
+            "parameters": {
+                "storage-account-name": {
+                    "location": "path",
+                    "description": "The name of the storage account.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z]+$"
+                    }
+                },
+                "sas-definition-name": {
+                    "location": "path",
+                    "description": "The name of the SAS definition.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z]+$"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "sasType",
+                        "templateUri",
+                        "validityPeriod"
+                    ],
+                    "properties": {
+                        "attributes": {
+                            "type": "object",
+                            "properties": {
+                                "created": {
+                                    "type": "integer"
+                                },
+                                "enabled": {
+                                    "type": "boolean"
+                                },
+                                "recoveryLevel": {
+                                    "type": "string",
+                                    "enum": [
+                                        "Purgeable",
+                                        "Recoverable+Purgeable",
+                                        "Recoverable",
+                                        "Recoverable+ProtectedSubscription"
+                                    ]
+                                },
+                                "updated": {
+                                    "type": "integer"
+                                }
+                            }
+                        },
+                        "sasType": {
+                            "type": "string",
+                            "enum": [
+                                "account",
+                                "service"
+                            ]
+                        },
+                        "tags": {
+                            "type": "object",
+                            "properties": {}
+                        },
+                        "templateUri": {
+                            "type": "string"
+                        },
+                        "validityPeriod": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "DeleteSasDefinition",
+            "description": "Deletes a SAS definition from a specified storage account. This operation requires the storage/deletesas permission.",
+            "method": "DELETE",
+            "path": "/storage/{storage-account-name}/sas/{sas-definition-name}",
+            "parameters": {
+                "storage-account-name": {
+                    "location": "path",
+                    "description": "The name of the storage account.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z]+$"
+                    }
+                },
+                "sas-definition-name": {
+                    "location": "path",
+                    "description": "The name of the SAS definition.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z]+$"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "UpdateSasDefinition",
+            "description": "Updates the specified attributes associated with the given SAS definition. This operation requires the storage/setsas permission.",
+            "method": "PATCH",
+            "path": "/storage/{storage-account-name}/sas/{sas-definition-name}",
+            "parameters": {
+                "storage-account-name": {
+                    "location": "path",
+                    "description": "The name of the storage account.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z]+$"
+                    }
+                },
+                "sas-definition-name": {
+                    "location": "path",
+                    "description": "The name of the SAS definition.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z]+$"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "attributes": {
+                            "type": "object",
+                            "properties": {
+                                "created": {
+                                    "type": "integer"
+                                },
+                                "enabled": {
+                                    "type": "boolean"
+                                },
+                                "recoveryLevel": {
+                                    "type": "string",
+                                    "enum": [
+                                        "Purgeable",
+                                        "Recoverable+Purgeable",
+                                        "Recoverable",
+                                        "Recoverable+ProtectedSubscription"
+                                    ]
+                                },
+                                "updated": {
+                                    "type": "integer"
+                                }
+                            }
+                        },
+                        "sasType": {
+                            "type": "string",
+                            "enum": [
+                                "account",
+                                "service"
+                            ]
+                        },
+                        "tags": {
+                            "type": "object",
+                            "properties": {}
+                        },
+                        "templateUri": {
+                            "type": "string"
+                        },
+                        "validityPeriod": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "wrapKey",
+            "description": "The WRAP operation supports encryption of a symmetric key using a key encryption key that has previously been stored in an Azure Key Vault. The WRAP operation is only strictly necessary for symmetric keys stored in Azure Key Vault since protection with an asymmetric key can be performed using the public portion of the key. This operation is supported for asymmetric keys as a convenience for callers that have a key-reference but do not have access to the public key material. This operation requires the keys/wrapKey permission.",
+            "method": "POST",
+            "path": "/keys/{key-name}/{key-version}/wrapkey",
+            "parameters": {
+                "key-name": {
+                    "location": "path",
+                    "description": "The name of the key.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "key-version": {
+                    "location": "path",
+                    "description": "The version of the key.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "alg",
+                        "value"
+                    ],
+                    "properties": {
+                        "alg": {
+                            "type": "string",
+                            "enum": [
+                                "RSA-OAEP",
+                                "RSA-OAEP-256",
+                                "RSA1_5"
+                            ]
+                        },
+                        "value": {
+                            "type": "string",
+                            "format": "base64url"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetSecretVersions",
+            "description": "The full secret identifier and attributes are provided in the response. No values are returned for the secrets. This operations requires the secrets/list permission.",
+            "method": "GET",
+            "path": "/secrets/{secret-name}/versions",
+            "parameters": {
+                "secret-name": {
+                    "location": "path",
+                    "description": "The name of the secret.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "maxresults": {
+                    "location": "query",
+                    "description": "Maximum number of results to return in a page. If not specified, the service will return up to 25 results.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "RecoverDeletedSasDefinition",
+            "description": "Recovers the deleted SAS definition for the specified storage account. This operation can only be performed on a soft-delete enabled vault. This operation requires the storage/recover permission.",
+            "method": "POST",
+            "path": "/deletedstorage/{storage-account-name}/sas/{sas-definition-name}/recover",
+            "parameters": {
+                "storage-account-name": {
+                    "location": "path",
+                    "description": "The name of the storage account.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z]+$"
+                    }
+                },
+                "sas-definition-name": {
+                    "location": "path",
+                    "description": "The name of the SAS definition.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z]+$"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetCertificate",
+            "description": "Gets information about a specific certificate. This operation requires the certificates/get permission.",
+            "method": "GET",
+            "path": "/certificates/{certificate-name}/{certificate-version}",
+            "parameters": {
+                "certificate-name": {
+                    "location": "path",
+                    "description": "The name of the certificate in the given vault.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "certificate-version": {
+                    "location": "path",
+                    "description": "The version of the certificate.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "UpdateCertificate",
+            "description": "The UpdateCertificate operation applies the specified update on the given certificate; the only elements updated are the certificate's attributes. This operation requires the certificates/update permission.",
+            "method": "PATCH",
+            "path": "/certificates/{certificate-name}/{certificate-version}",
+            "parameters": {
+                "certificate-name": {
+                    "location": "path",
+                    "description": "The name of the certificate in the given key vault.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "certificate-version": {
+                    "location": "path",
+                    "description": "The version of the certificate.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "attributes": {
+                            "allOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "created": {
+                                            "type": "integer"
+                                        },
+                                        "enabled": {
+                                            "type": "boolean"
+                                        },
+                                        "exp": {
+                                            "type": "integer"
+                                        },
+                                        "nbf": {
+                                            "type": "integer"
+                                        },
+                                        "updated": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "policy": {
+                            "type": "object",
+                            "properties": {
+                                "attributes": {
+                                    "allOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "created": {
+                                                    "type": "integer"
+                                                },
+                                                "enabled": {
+                                                    "type": "boolean"
+                                                },
+                                                "exp": {
+                                                    "type": "integer"
+                                                },
+                                                "nbf": {
+                                                    "type": "integer"
+                                                },
+                                                "updated": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "id": {
+                                    "type": "string"
+                                },
+                                "issuer": {
+                                    "type": "object",
+                                    "properties": {
+                                        "cert_transparency": {
+                                            "type": "boolean"
+                                        },
+                                        "cty": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "key_props": {
+                                    "type": "object",
+                                    "properties": {
+                                        "crv": {
+                                            "type": "string",
+                                            "enum": [
+                                                "P-256",
+                                                "P-384",
+                                                "P-521",
+                                                "P-256K"
+                                            ]
+                                        },
+                                        "exportable": {
+                                            "type": "boolean"
+                                        },
+                                        "key_size": {
+                                            "type": "integer"
+                                        },
+                                        "kty": {
+                                            "type": "string",
+                                            "enum": [
+                                                "EC",
+                                                "EC-HSM",
+                                                "RSA",
+                                                "RSA-HSM",
+                                                "oct"
+                                            ]
+                                        },
+                                        "reuse_key": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                },
+                                "lifetime_actions": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "action": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "action_type": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "EmailContacts",
+                                                            "AutoRenew"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            "trigger": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "days_before_expiry": {
+                                                        "type": "integer"
+                                                    },
+                                                    "lifetime_percentage": {
+                                                        "type": "integer"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "secret_props": {
+                                    "type": "object",
+                                    "properties": {
+                                        "contentType": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "x509_props": {
+                                    "type": "object",
+                                    "properties": {
+                                        "ekus": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "key_usage": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "digitalSignature",
+                                                    "nonRepudiation",
+                                                    "keyEncipherment",
+                                                    "dataEncipherment",
+                                                    "keyAgreement",
+                                                    "keyCertSign",
+                                                    "cRLSign",
+                                                    "encipherOnly",
+                                                    "decipherOnly"
+                                                ]
+                                            }
+                                        },
+                                        "sans": {
+                                            "type": "object",
+                                            "properties": {
+                                                "dns_names": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "emails": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "upns": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "subject": {
+                                            "type": "string"
+                                        },
+                                        "validity_months": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "tags": {
+                            "type": "object",
+                            "properties": {}
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetDeletedCertificates",
+            "description": "The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state and ready for recovery or purging. This operation includes deletion-specific information. This operation requires the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.",
+            "method": "GET",
+            "path": "/deletedcertificates",
+            "parameters": {
+                "maxresults": {
+                    "location": "query",
+                    "description": "Maximum number of results to return in a page. If not specified the service will return up to 25 results.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "includePending": {
+                    "location": "query",
+                    "description": "Specifies whether to include certificates which are not completely provisioned.",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetKeys",
+            "description": "Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a stored key. The LIST operation is applicable to all key types, however only the base key identifier, attributes, and tags are provided in the response. Individual versions of a key are not listed in the response. This operation requires the keys/list permission.",
+            "method": "GET",
+            "path": "/keys",
+            "parameters": {
+                "maxresults": {
+                    "location": "query",
+                    "description": "Maximum number of results to return in a page. If not specified the service will return up to 25 results.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetStorageAccounts",
+            "description": "List storage accounts managed by the specified key vault. This operation requires the storage/list permission.",
+            "method": "GET",
+            "path": "/storage",
+            "parameters": {
+                "maxresults": {
+                    "location": "query",
+                    "description": "Maximum number of results to return in a page. If not specified the service will return up to 25 results.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetCertificateVersions",
+            "description": "The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This operation requires the certificates/list permission.",
+            "method": "GET",
+            "path": "/certificates/{certificate-name}/versions",
+            "parameters": {
+                "certificate-name": {
+                    "location": "path",
+                    "description": "The name of the certificate.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "maxresults": {
+                    "location": "query",
+                    "description": "Maximum number of results to return in a page. If not specified the service will return up to 25 results.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "RecoverDeletedCertificate",
+            "description": "The RecoverDeletedCertificate operation performs the reversal of the Delete operation. The operation is applicable in vaults enabled for soft-delete, and must be issued during the retention interval (available in the deleted certificate's attributes). This operation requires the certificates/recover permission.",
+            "method": "POST",
+            "path": "/deletedcertificates/{certificate-name}/recover",
+            "parameters": {
+                "certificate-name": {
+                    "location": "path",
+                    "description": "The name of the deleted certificate",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetSecrets",
+            "description": "The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its attributes are provided in the response. Individual secret versions are not listed in the response. This operation requires the secrets/list permission.",
+            "method": "GET",
+            "path": "/secrets",
+            "parameters": {
+                "maxresults": {
+                    "location": "query",
+                    "description": "Maximum number of results to return in a page. If not specified, the service will return up to 25 results.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "unwrapKey",
+            "description": "The UNWRAP operation supports decryption of a symmetric key using the target key encryption key. This operation is the reverse of the WRAP operation. The UNWRAP operation applies to asymmetric and symmetric keys stored in Azure Key Vault since it uses the private portion of the key. This operation requires the keys/unwrapKey permission.",
+            "method": "POST",
+            "path": "/keys/{key-name}/{key-version}/unwrapkey",
+            "parameters": {
+                "key-name": {
+                    "location": "path",
+                    "description": "The name of the key.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "key-version": {
+                    "location": "path",
+                    "description": "The version of the key.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "alg",
+                        "value"
+                    ],
+                    "properties": {
+                        "alg": {
+                            "type": "string",
+                            "enum": [
+                                "RSA-OAEP",
+                                "RSA-OAEP-256",
+                                "RSA1_5"
+                            ]
+                        },
+                        "value": {
+                            "type": "string",
+                            "format": "base64url"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetSecret",
+            "description": "The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the secrets/get permission.",
+            "method": "GET",
+            "path": "/secrets/{secret-name}/{secret-version}",
+            "parameters": {
+                "secret-name": {
+                    "location": "path",
+                    "description": "The name of the secret.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "secret-version": {
+                    "location": "path",
+                    "description": "The version of the secret.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "UpdateSecret",
+            "description": "The UPDATE operation changes specified attributes of an existing stored secret. Attributes that are not specified in the request are left unchanged. The value of a secret itself cannot be changed. This operation requires the secrets/set permission.",
+            "method": "PATCH",
+            "path": "/secrets/{secret-name}/{secret-version}",
+            "parameters": {
+                "secret-name": {
+                    "location": "path",
+                    "description": "The name of the secret.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "secret-version": {
+                    "location": "path",
+                    "description": "The version of the secret.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "attributes": {
+                            "allOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "created": {
+                                            "type": "integer"
+                                        },
+                                        "enabled": {
+                                            "type": "boolean"
+                                        },
+                                        "exp": {
+                                            "type": "integer"
+                                        },
+                                        "nbf": {
+                                            "type": "integer"
+                                        },
+                                        "updated": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "contentType": {
+                            "type": "string"
+                        },
+                        "tags": {
+                            "type": "object",
+                            "properties": {}
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetDeletedSasDefinition",
+            "description": "The Get Deleted SAS Definition operation returns the specified deleted SAS definition along with its attributes. This operation requires the storage/getsas permission.",
+            "method": "GET",
+            "path": "/deletedstorage/{storage-account-name}/sas/{sas-definition-name}",
+            "parameters": {
+                "storage-account-name": {
+                    "location": "path",
+                    "description": "The name of the storage account.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z]+$"
+                    }
+                },
+                "sas-definition-name": {
+                    "location": "path",
+                    "description": "The name of the SAS definition.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z]+$"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "verify",
+            "description": "The VERIFY operation is applicable to symmetric keys stored in Azure Key Vault. VERIFY is not strictly necessary for asymmetric keys stored in Azure Key Vault since signature verification can be performed using the public portion of the key but this operation is supported as a convenience for callers that only have a key-reference and not the public portion of the key. This operation requires the keys/verify permission.",
+            "method": "POST",
+            "path": "/keys/{key-name}/{key-version}/verify",
+            "parameters": {
+                "key-name": {
+                    "location": "path",
+                    "description": "The name of the key.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "key-version": {
+                    "location": "path",
+                    "description": "The version of the key.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "alg",
+                        "digest",
+                        "value"
+                    ],
+                    "properties": {
+                        "alg": {
+                            "type": "string",
+                            "enum": [
+                                "PS256",
+                                "PS384",
+                                "PS512",
+                                "RS256",
+                                "RS384",
+                                "RS512",
+                                "RSNULL",
+                                "ES256",
+                                "ES384",
+                                "ES512",
+                                "ES256K"
+                            ]
+                        },
+                        "digest": {
+                            "type": "string",
+                            "format": "base64url"
+                        },
+                        "value": {
+                            "type": "string",
+                            "format": "base64url"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetCertificates",
+            "description": "The GetCertificates operation returns the set of certificates resources in the specified key vault. This operation requires the certificates/list permission.",
+            "method": "GET",
+            "path": "/certificates",
+            "parameters": {
+                "maxresults": {
+                    "location": "query",
+                    "description": "Maximum number of results to return in a page. If not specified the service will return up to 25 results.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "includePending": {
+                    "location": "query",
+                    "description": "Specifies whether to include certificates which are not completely provisioned.",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "DeleteCertificate",
+            "description": "Deletes all versions of a certificate object along with its associated policy. Delete certificate cannot be used to remove individual versions of a certificate object. This operation requires the certificates/delete permission.",
+            "method": "DELETE",
+            "path": "/certificates/{certificate-name}",
+            "parameters": {
+                "certificate-name": {
+                    "location": "path",
+                    "description": "The name of the certificate.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetDeletedKeys",
+            "description": "Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a deleted key. This operation includes deletion-specific information. The Get Deleted Keys operation is applicable for vaults enabled for soft-delete. While the operation can be invoked on any vault, it will return an error if invoked on a non soft-delete enabled vault. This operation requires the keys/list permission.",
+            "method": "GET",
+            "path": "/deletedkeys",
+            "parameters": {
+                "maxresults": {
+                    "location": "query",
+                    "description": "Maximum number of results to return in a page. If not specified the service will return up to 25 results.",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "ImportKey",
+            "description": "The import key operation may be used to import any key type into an Azure Key Vault. If the named key already exists, Azure Key Vault creates a new version of the key. This operation requires the keys/import permission.",
+            "method": "PUT",
+            "path": "/keys/{key-name}",
+            "parameters": {
+                "key-name": {
+                    "location": "path",
+                    "description": "Name for the imported key.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z-]+$"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "key"
+                    ],
+                    "properties": {
+                        "Hsm": {
+                            "type": "boolean"
+                        },
+                        "attributes": {
+                            "allOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "created": {
+                                            "type": "integer"
+                                        },
+                                        "enabled": {
+                                            "type": "boolean"
+                                        },
+                                        "exp": {
+                                            "type": "integer"
+                                        },
+                                        "nbf": {
+                                            "type": "integer"
+                                        },
+                                        "updated": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "key": {
+                            "type": "object",
+                            "properties": {
+                                "crv": {
+                                    "type": "string",
+                                    "enum": [
+                                        "P-256",
+                                        "P-384",
+                                        "P-521",
+                                        "P-256K"
+                                    ]
+                                },
+                                "d": {
+                                    "type": "string",
+                                    "format": "base64url"
+                                },
+                                "dp": {
+                                    "type": "string",
+                                    "format": "base64url"
+                                },
+                                "dq": {
+                                    "type": "string",
+                                    "format": "base64url"
+                                },
+                                "e": {
+                                    "type": "string",
+                                    "format": "base64url"
+                                },
+                                "k": {
+                                    "type": "string",
+                                    "format": "base64url"
+                                },
+                                "key_hsm": {
+                                    "type": "string",
+                                    "format": "base64url"
+                                },
+                                "key_ops": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "kid": {
+                                    "type": "string"
+                                },
+                                "kty": {
+                                    "type": "string",
+                                    "enum": [
+                                        "EC",
+                                        "EC-HSM",
+                                        "RSA",
+                                        "RSA-HSM",
+                                        "oct"
+                                    ]
+                                },
+                                "n": {
+                                    "type": "string",
+                                    "format": "base64url"
+                                },
+                                "p": {
+                                    "type": "string",
+                                    "format": "base64url"
+                                },
+                                "q": {
+                                    "type": "string",
+                                    "format": "base64url"
+                                },
+                                "qi": {
+                                    "type": "string",
+                                    "format": "base64url"
+                                },
+                                "x": {
+                                    "type": "string",
+                                    "format": "base64url"
+                                },
+                                "y": {
+                                    "type": "string",
+                                    "format": "base64url"
+                                }
+                            }
+                        },
+                        "tags": {
+                            "type": "object",
+                            "properties": {}
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "DeleteKey",
+            "description": "The delete key operation cannot be used to remove individual versions of a key. This operation removes the cryptographic material associated with the key, which means the key is not usable for Sign/Verify, Wrap/Unwrap or Encrypt/Decrypt operations. This operation requires the keys/delete permission.",
+            "method": "DELETE",
+            "path": "/keys/{key-name}",
+            "parameters": {
+                "key-name": {
+                    "location": "path",
+                    "description": "The name of the key to delete.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetDeletedStorageAccount",
+            "description": "The Get Deleted Storage Account operation returns the specified deleted storage account along with its attributes. This operation requires the storage/get permission.",
+            "method": "GET",
+            "path": "/deletedstorage/{storage-account-name}",
+            "parameters": {
+                "storage-account-name": {
+                    "location": "path",
+                    "description": "The name of the storage account.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z]+$"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "PurgeDeletedStorageAccount",
+            "description": "The purge deleted storage account operation removes the secret permanently, without the possibility of recovery. This operation can only be performed on a soft-delete enabled vault. This operation requires the storage/purge permission.",
+            "method": "DELETE",
+            "path": "/deletedstorage/{storage-account-name}",
+            "parameters": {
+                "storage-account-name": {
+                    "location": "path",
+                    "description": "The name of the storage account.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[0-9a-zA-Z]+$"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "Client API version.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,288 @@
+{
+    "serviceUrl": "https://platform.staging.brexapps.com",
+    "tools": [
+        {
+            "name": "listReferralsGet",
+            "description": "Returns referrals created.\n*Note*: This doesn't include referrals that have expired\n",
+            "method": "GET",
+            "path": "/v1/referrals",
+            "parameters": {
+                "cursor": {
+                    "location": "query",
+                    "description": "The cursor",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "createReferralRequestPost",
+            "description": "This creates new referrals. The response will contain an identifier and a unique personalized link to an application flow. Many fields are optional and when they're provided they'll prefill the application flow for Brex.  You should handle and store these references securely as they contain sensitive information about the referral.",
+            "method": "POST",
+            "path": "/v1/referrals",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "applicant",
+                        "referral_code"
+                    ],
+                    "properties": {
+                        "referral_code": {
+                            "type": "string"
+                        },
+                        "applicant": {
+                            "type": "object",
+                            "required": [
+                                "email",
+                                "first_name",
+                                "last_name"
+                            ],
+                            "properties": {
+                                "last_name": {
+                                    "type": "string"
+                                },
+                                "first_name": {
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "format": "email"
+                                }
+                            }
+                        },
+                        "business": {
+                            "type": "object",
+                            "properties": {
+                                "legal_name": {
+                                    "type": "string"
+                                },
+                                "incorporation_type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "C_CORP",
+                                        "S_CORP",
+                                        "B_CORP",
+                                        "LLC",
+                                        "LLP",
+                                        "SOLE_PROP",
+                                        "ORG_501C3"
+                                    ]
+                                },
+                                "employer_identification_number": {
+                                    "type": "string"
+                                },
+                                "website_url": {
+                                    "type": "string"
+                                },
+                                "activity_description": {
+                                    "type": "string"
+                                },
+                                "address": {
+                                    "type": "object",
+                                    "properties": {
+                                        "line1": {
+                                            "type": "string"
+                                        },
+                                        "line2": {
+                                            "type": "string"
+                                        },
+                                        "city": {
+                                            "type": "string"
+                                        },
+                                        "state": {
+                                            "type": "string"
+                                        },
+                                        "country": {
+                                            "type": "string"
+                                        },
+                                        "postal_code": {
+                                            "type": "string"
+                                        },
+                                        "phone_number": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "beneficial_owners": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "legal_name",
+                                            "prong"
+                                        ],
+                                        "properties": {
+                                            "legal_name": {
+                                                "type": "string"
+                                            },
+                                            "company_relationship": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "FOUNDER",
+                                                    "EXECUTIVE",
+                                                    "SENIOR_LEADERSHIP",
+                                                    "OTHER"
+                                                ]
+                                            },
+                                            "date_of_birth": {
+                                                "type": "string",
+                                                "format": "date",
+                                                "pattern": "yyyy-MM-dd"
+                                            },
+                                            "identity_document": {
+                                                "type": "object",
+                                                "required": [
+                                                    "country",
+                                                    "number",
+                                                    "type"
+                                                ],
+                                                "properties": {
+                                                    "country": {
+                                                        "type": "string"
+                                                    },
+                                                    "type": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "SSN",
+                                                            "PASSPORT"
+                                                        ]
+                                                    },
+                                                    "number": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            "address": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "line1": {
+                                                        "type": "string"
+                                                    },
+                                                    "line2": {
+                                                        "type": "string"
+                                                    },
+                                                    "city": {
+                                                        "type": "string"
+                                                    },
+                                                    "state": {
+                                                        "type": "string"
+                                                    },
+                                                    "country": {
+                                                        "type": "string"
+                                                    },
+                                                    "postal_code": {
+                                                        "type": "string"
+                                                    },
+                                                    "phone_number": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            "prong": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "OWNERSHIP",
+                                                    "CONTROL",
+                                                    "BOTH"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "alternate_address": {
+                                    "type": "object",
+                                    "properties": {
+                                        "line1": {
+                                            "type": "string"
+                                        },
+                                        "line2": {
+                                            "type": "string"
+                                        },
+                                        "city": {
+                                            "type": "string"
+                                        },
+                                        "state": {
+                                            "type": "string"
+                                        },
+                                        "country": {
+                                            "type": "string"
+                                        },
+                                        "postal_code": {
+                                            "type": "string"
+                                        },
+                                        "phone_number": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "contact_preference": {
+                            "type": "string",
+                            "enum": [
+                                "NO_OUTBOUND",
+                                "EMAIL_OUTBOUND"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "getReferralGet",
+            "description": "Returns a referral object by ID if it exists",
+            "method": "GET",
+            "path": "/v1/referrals/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Referral ID.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "createDocumentPost",
+            "description": "The `url` will be a pre-signed S3 URL to upload the referral doc securely. This URL can only be used for a `PUT` operation and expires 30 minutes after its creation. Once your upload is complete, we will use this to prefill the application.\n",
+            "method": "POST",
+            "path": "/v1/referrals/{id}/document_upload",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Referral ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "type"
+                    ],
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "ARTICLES_OF_INCORPORATION",
+                                "IRS_EIN_CONFIRMATION",
+                                "IRS_EIN_APPLICATION",
+                                "CERTIFICATE_GOOD_STANDING"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

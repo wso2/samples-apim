@@ -1,0 +1,4634 @@
+{
+  "openapi": "3.0.2",
+  "servers": [
+    {
+      "url": "https://api.askspoke.com/api/v1",
+      "description": "Production API server"
+    }
+  ],
+  "paths": {
+    "/requests/{requestId}/merge": {
+      "post": {
+        "tags": [
+          "Requests"
+        ],
+        "summary": "Merge requests",
+        "description": "Merge a list of spoke requests to a primary request. Merging a request carries out the following actions – 1. Mark all the tasks of the secondary requests as completed. 2. Lock all the secondary requests. 3. Add all the viewers of secondary requests to primary request.",
+        "operationId": "mergeRequest",
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "description": "the request id of the request you wish to merge in to",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "MergeRequest payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "requests"
+                ],
+                "properties": {
+                  "requests": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "5c61e9f43e8c4c11f53240f8"
+                    },
+                    "description": "Request ids to be merged into the request in the path parameter"
+                  }
+                },
+                "example": {
+                  "requests": [
+                    "5c61e9f43e8c4c11f53240f8"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "No Content."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/tags": {
+      "get": {
+        "tags": [
+          "Tags"
+        ],
+        "summary": "List tags",
+        "description": "Returns a list of tags.",
+        "operationId": "getTags",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "description": "The index of the tag to start with.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "The number of tags to return. Defaults to 25.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "description": "A search query to search tags for",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tagId",
+            "in": "query",
+            "required": false,
+            "description": "A comma separated list of tags",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of tags.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Tag"
+                      }
+                    },
+                    "total": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The total number of the tags."
+                    },
+                    "start": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The start offset for this set of tags."
+                    },
+                    "count": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The number of tags returned."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/requests/{requestId}": {
+      "get": {
+        "tags": [
+          "Requests"
+        ],
+        "summary": "Get a request",
+        "description": "Get a request.",
+        "operationId": "getRequest",
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "description": "the ID of the request, 24 characters, hexadecimal",
+            "schema": {
+              "type": "string"
+            },
+            "example": "5c61e9f43e8c4c11f53240f8"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Request"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Requests"
+        ],
+        "summary": "Delete a request",
+        "description": "Delete a request.",
+        "operationId": "deleteRequest",
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "description": "the ID of the request, 24 characters, hexadecimal",
+            "schema": {
+              "type": "string"
+            },
+            "example": "5c61e9f43e8c4c11f53240f8"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Requests"
+        ],
+        "summary": "Update a request",
+        "description": "Update a request.",
+        "operationId": "updateRequest",
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "description": "the ID of the request, 24 characters, hexadecimal",
+            "schema": {
+              "type": "string"
+            },
+            "example": "5c61e9f43e8c4c11f53240f8"
+          }
+        ],
+        "requestBody": {
+          "description": "RequestPatchBody payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestPatchBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated request object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Request"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/configlists/{listId}": {
+      "post": {
+        "tags": [
+          "ConfigList"
+        ],
+        "summary": "Create a config list.",
+        "description": "Create a single config list.",
+        "operationId": "addConfigList",
+        "parameters": [
+          {
+            "name": "listId",
+            "in": "path",
+            "required": true,
+            "description": "List ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "ConfigList payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfigList"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A config list object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfigList"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "ConfigList"
+        ],
+        "summary": "Delete a config list.",
+        "description": "Delete a single config list.",
+        "operationId": "deleteConfigList",
+        "parameters": [
+          {
+            "name": "listId",
+            "in": "path",
+            "required": true,
+            "description": "the ID of the configlist, 24 characters, hexadecimal",
+            "schema": {
+              "type": "string"
+            },
+            "example": "5c61e9f43e8c4c11f53240f8"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "ConfigList"
+        ],
+        "summary": "Update a config list.",
+        "description": "Update a single config list.",
+        "operationId": "updateConfigList",
+        "parameters": [
+          {
+            "name": "listId",
+            "in": "path",
+            "required": true,
+            "description": "the ID of the configlist, 24 characters, hexadecimal",
+            "schema": {
+              "type": "string"
+            },
+            "example": "5c61e9f43e8c4c11f53240f8"
+          }
+        ],
+        "requestBody": {
+          "description": "ConfigList payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfigList"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A config list object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfigList"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/requests/{requestId}/subscribers/{userId}": {
+      "post": {
+        "tags": [
+          "Requests"
+        ],
+        "summary": "Add a subscriber",
+        "description": "Add a subscriber to a request",
+        "operationId": "AddSubscriberToRequest",
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the request that will have the new subscriber.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the user to subscribe to the request.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All request subscribers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubscriberList"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Requests"
+        ],
+        "summary": "Remove a subscriber",
+        "description": "Remove a subscriber to a request",
+        "operationId": "RemoveSubscriberFromRequest",
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the request that will have the subscriber removed.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the user to remove as a subscriber.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All request subscribers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubscriberList"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/users/{userId}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get a user",
+        "description": "Get a user.",
+        "operationId": "getUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the user.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update a user",
+        "description": "Update a user.",
+        "operationId": "updateUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "ID of user that needs to be updated.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "UpdateUser payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "displayName": {
+                    "type": "string",
+                    "description": "New display name.",
+                    "example": "Jane Doe"
+                  },
+                  "phoneNumber": {
+                    "type": "string",
+                    "description": "New phone number of the user.",
+                    "example": 1234567890
+                  },
+                  "countryId": {
+                    "type": "string",
+                    "description": "country of the users phone number.",
+                    "example": "US"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "New email of the user."
+                  },
+                  "profile": {
+                    "$ref": "#/components/schemas/Profile"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User detail.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/request_types/{requestTypeId}": {
+      "get": {
+        "tags": [
+          "RequestTypes"
+        ],
+        "summary": "Get a request type.",
+        "description": "Return a single equest type.",
+        "operationId": "getRequestType",
+        "parameters": [
+          {
+            "name": "requestTypeId",
+            "in": "path",
+            "required": true,
+            "description": "id of the request type",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A request type object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestType"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/resources": {
+      "get": {
+        "tags": [
+          "Resources"
+        ],
+        "summary": "List resources",
+        "description": "Return a list of resources.",
+        "operationId": "getResources",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "description": "A search query to search resources for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ai",
+            "in": "query",
+            "required": false,
+            "description": "Whether or not to use AI-based search. Requires q to be set as well.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "description": "Parameter to get resources by status.  0 = ok, 1 = needs_review, 2 = deprecated..",
+            "schema": {
+              "type": "string",
+              "enum": [
+                0,
+                1,
+                2
+              ]
+            }
+          },
+          {
+            "name": "team",
+            "in": "query",
+            "required": false,
+            "description": "Get resources belonging to one or more teams. Send comma-separated string for multiple teams, \"none\" for no team",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "author",
+            "in": "query",
+            "required": false,
+            "description": "Get resources created one or more authors. Send comma-separated string for multiple authors.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reviewBy",
+            "in": "query",
+            "required": false,
+            "description": "Get resources up for review before this timestamp (ms since epoch).",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "description": "The index of the request to start with.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "The number of parameters to return. Defaults to 25.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of resources.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Resource"
+                      }
+                    },
+                    "total": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The total number of the resources."
+                    },
+                    "start": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The start offset for this set of resouces."
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The number of resouces returned."
+                    },
+                    "newStart": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "Where to start next request for pagination."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Resources"
+        ],
+        "summary": "Create a resource",
+        "description": "Create a new askSpoke resource. Users with Administrator permissions can create a resource with anyone as the author. Regularly permissioned users can only author requests as themselves.",
+        "operationId": "addResource",
+        "requestBody": {
+          "description": "ResourcePostBody payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResourcePostBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated resource object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Resource"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/configlists": {
+      "get": {
+        "tags": [
+          "ConfigList"
+        ],
+        "summary": "List config lists",
+        "description": "Return a list of CMDB lists.",
+        "operationId": "getConfigLists",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "description": "Parameter for text-searching lists by name or item name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "description": "The index of the list to start with.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "The number of lists to return. Defaults to 25.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "listId",
+            "in": "query",
+            "required": false,
+            "description": "comma-separated list of listids to return",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "withItem",
+            "in": "query",
+            "required": false,
+            "description": "comma-separated list of itemids to return",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of config lists.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ConfigList"
+                      }
+                    },
+                    "total": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The total number of config lists."
+                    },
+                    "start": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The start offset for this set of lists."
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The number of lists returned."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/users/email/{address}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get a user by email",
+        "description": "Look up a user by email address.",
+        "operationId": "getUserByEmail",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "required": true,
+            "description": "Email address of the user. Case insensitive.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/teams": {
+      "get": {
+        "tags": [
+          "Teams"
+        ],
+        "summary": "List teams",
+        "description": "Return a list of teams.",
+        "operationId": "getTeams",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "description": "Text search to search teams for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ai",
+            "in": "query",
+            "required": false,
+            "description": "Whether or not to use AI-based search. Requires q to be set as well.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "slug",
+            "in": "query",
+            "required": false,
+            "description": "Comma-separated list of team slugs to get.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "description": "The index of the request to start with. Ignored if ai is set to true.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "The number of parameters to return. Defaults to 25. Ignored if ai is set to true.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of teams.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Team"
+                      }
+                    },
+                    "total": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The total number of the teams."
+                    },
+                    "start": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The start offset for this set of teams."
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The limit of teams returned."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/requests/bulk_add_tag": {
+      "patch": {
+        "tags": [
+          "Requests"
+        ],
+        "summary": "Bulk add tags",
+        "description": "Add a tag to multiple requests.",
+        "operationId": "bulkAddTags",
+        "requestBody": {
+          "description": "A payload containing the tag id of the tag to be added and a list of request ids that the tag will be added to.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "requests",
+                  "tag"
+                ],
+                "properties": {
+                  "requests": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "the IDs of the requests to be updated, 24 characters, hexadecimal"
+                  },
+                  "tag": {
+                    "type": "string",
+                    "description": "ID of the tag to add to the requests."
+                  }
+                },
+                "example": {
+                  "requests": [
+                    "5c61e9f43e8c4c11f53240f8"
+                  ],
+                  "tag": "5c61e9f43e8c4c11f532000"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Request"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "List users",
+        "description": "Return a list of users.",
+        "operationId": "getUsers",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "description": "Text search to search user for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "description": "Filter user based on status.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ACTIVE",
+                "INVITED"
+              ]
+            }
+          },
+          {
+            "name": "team",
+            "in": "query",
+            "required": false,
+            "description": "Filter user based on team.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "description": "The index of the request to start with.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "The number of parameters to return. Defaults to 10.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of users.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/User"
+                      }
+                    },
+                    "total": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The total number of the users."
+                    },
+                    "start": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The start offset for this set of users."
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The number of users returned."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/request_types": {
+      "get": {
+        "tags": [
+          "RequestTypes"
+        ],
+        "summary": "List request types",
+        "description": "Return a list of request types.",
+        "operationId": "getRequestTypes",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "description": "Parameter for text-searching requestTypes",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "team",
+            "in": "query",
+            "required": false,
+            "description": "Get request types belonging to a team.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "description": "The index of the request type to start with.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "The number of request types to return. Defaults to 25.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "description": "sort order for the returned request types",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "createdLast",
+                "createdFirst",
+                "updated",
+                "text"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of request types.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RequestType"
+                      }
+                    },
+                    "total": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The total number of the request types."
+                    },
+                    "start": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The start offset for this set of request types."
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The number of request types returned."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/webhooks/{webhookId}": {
+      "get": {
+        "tags": [
+          "Webhook Subscriptions"
+        ],
+        "summary": "Get a webhook subscription",
+        "description": "Get a webhook subscription.",
+        "operationId": "getWebhook",
+        "parameters": [
+          {
+            "name": "webhookId",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the webhook to get.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Webhook Subscription object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookSubscription"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Webhook Subscriptions"
+        ],
+        "summary": "Delete a  webhook subscription.",
+        "description": "Delete a  webhook subscription.",
+        "operationId": "deleteWebhook",
+        "parameters": [
+          {
+            "name": "webhookId",
+            "in": "path",
+            "required": true,
+            "description": "ID of  webhook subscription to deleted.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Webhook Subscriptions"
+        ],
+        "summary": "Update a webhook subscription",
+        "description": "Update a webhook subscription.",
+        "operationId": "updateWebhook",
+        "parameters": [
+          {
+            "name": "webhookId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the webhook subscription that needs to be updated.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "WebhookSubscriptionPostBody payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebhookSubscriptionPostBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated webhook subscription object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookSubscription"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/requests/{requestId}/messages": {
+      "post": {
+        "tags": [
+          "Requests"
+        ],
+        "summary": "Post a message",
+        "description": "Post a message to a request. The message will show up in the Request Panel. If creating a message as a User, the user id included in the POST body must match the user that generated the API key",
+        "operationId": "postRequestMessage",
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the request.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "PostRequestMessage payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "actor",
+                  "content"
+                ],
+                "properties": {
+                  "actor": {
+                    "$ref": "#/components/schemas/UpdateActor"
+                  },
+                  "content": {
+                    "$ref": "#/components/schemas/MessageContent"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Update"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/requests": {
+      "get": {
+        "tags": [
+          "Requests"
+        ],
+        "summary": "List requests",
+        "description": "Return a list of requests.",
+        "operationId": "getRequests",
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "description": "Parameter to filter queries",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "inbox",
+                "unassigned",
+                "sent"
+              ],
+              "default": "inbox"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "description": "Parameter to get requests by status. Should be a comma-separated string of statuses.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "OPEN",
+                "PENDING",
+                "LOCKED",
+                "RESOLVED",
+                "AUTO_RESOLVED"
+              ],
+              "default": "OPEN"
+            },
+            "example": "OPEN,RESOLVED"
+          },
+          {
+            "name": "team",
+            "in": "query",
+            "required": false,
+            "description": "Get requests belonging to this team",
+            "schema": {
+              "type": "string"
+            },
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          {
+            "name": "tag",
+            "in": "query",
+            "required": false,
+            "description": "Get requests tagged with this tag. Accepts a comma-separated string of many tags, and returns requests that match any provided tag. The keyword `none` can also be passed to return requests that are not tagged.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "5eac9b4b0972029e5ca5dde1,none"
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "description": "Searches and returns request with this text",
+            "schema": {
+              "type": "string"
+            },
+            "example": "wifi"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "description": "The index of the request to start with",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "The number of requests to return at once. Max is 100.",
+            "schema": {
+              "type": "integer",
+              "default": 25
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "description": "The order by which requests should be returned. When querying with a `q` param, results will be sorted by their similarity to the query when no other `sort` is specified.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "updated",
+                "updatedFirst",
+                "createdLast",
+                "createdFirst",
+                "slaAscending"
+              ],
+              "default": "updated"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Request"
+                      },
+                      "description": "The list of requests itself."
+                    },
+                    "total": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The total number of requests."
+                    },
+                    "start": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The start offset for this set of requests."
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The number of requests returned."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Requests"
+        ],
+        "summary": "Create new request",
+        "description": "Create a new askSpoke request. Admins can create a request with anyone as the requester while regularly priviledged users can only request for themselves.",
+        "operationId": "addRequest",
+        "requestBody": {
+          "description": "AddRequest payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "subject",
+                  "requester"
+                ],
+                "properties": {
+                  "subject": {
+                    "type": "string",
+                    "description": "Request subject.",
+                    "example": "What's the Wi-Fi password?"
+                  },
+                  "body": {
+                    "type": "string",
+                    "description": "a longer description of the request",
+                    "example": "I swear I had it yesterday..."
+                  },
+                  "requester": {
+                    "type": "string",
+                    "description": "user id of person who will be the requester",
+                    "example": "5c61e9f43e8c4c11f53240f8"
+                  },
+                  "owner": {
+                    "type": "string",
+                    "description": "user id of the person the request will be assigned to. Will be automatically delegated if left blank",
+                    "example": "5c61e9f43e8c4c11f53240f8"
+                  },
+                  "team": {
+                    "type": "string",
+                    "description": "ID of the team to assign the request to.",
+                    "example": "5c61e9f43e8c4c11f53240f8"
+                  },
+                  "privacyLevel": {
+                    "type": "string",
+                    "enum": [
+                      "private",
+                      "public"
+                    ],
+                    "description": "Privacy level for the request."
+                  },
+                  "requestType": {
+                    "type": "string",
+                    "description": "ID of the request type form.",
+                    "example": "5c61e9f43e8c4c11f53240f8"
+                  },
+                  "requestTypeInfo": {
+                    "$ref": "#/components/schemas/RequestTypeInfo"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request detail.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Request"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/requests/tasks": {
+      "get": {
+        "tags": [
+          "Requests"
+        ],
+        "summary": "Get open tasks",
+        "description": "Return open tasks with requests subject and permalinkId.",
+        "operationId": "getOpenTasks",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "description": "The index of the task to start with.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "The number of tasks to return.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "byDueDate",
+            "in": "query",
+            "required": false,
+            "description": "Whether to sort tasks by due date or not.",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of pending tasks.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RequestTask"
+                      }
+                    },
+                    "total": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The total number of tasks."
+                    },
+                    "start": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The start offset for this set of tasks."
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The number of tasks returned."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/resources/{resourceId}": {
+      "get": {
+        "tags": [
+          "Resources"
+        ],
+        "summary": "Get a resource",
+        "description": "Get a resource.",
+        "operationId": "getResource",
+        "parameters": [
+          {
+            "name": "resourceId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the resource.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resource object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Resource"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Resources"
+        ],
+        "summary": "Delete a resource",
+        "description": "Delete a resource.",
+        "operationId": "deleteResource",
+        "parameters": [
+          {
+            "name": "resourceId",
+            "in": "path",
+            "required": true,
+            "description": "ID of resource that needs to be deleted.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Resources"
+        ],
+        "summary": "Update a resource",
+        "description": "Update a resource.",
+        "operationId": "updateResource",
+        "parameters": [
+          {
+            "name": "resourceId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the resource that needs to be updated.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "ResourcePostBody payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResourcePostBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated resource object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Resource"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/whoami": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get API user details",
+        "description": "Returns user id, name, current org and role for the API key.",
+        "operationId": "whoami",
+        "responses": {
+          "200": {
+            "description": "User and Org details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "org": {
+                      "type": "string",
+                      "description": "current org id",
+                      "example": "askSpoke"
+                    },
+                    "user": {
+                      "type": "string",
+                      "description": "user id",
+                      "example": "5c61e9f43e8c4c11f53240f8"
+                    },
+                    "displayName": {
+                      "type": "string",
+                      "description": "user name",
+                      "example": "Jane Doe"
+                    },
+                    "role": {
+                      "type": "string",
+                      "description": "user role",
+                      "example": "MEMBER"
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "user status",
+                      "example": "ACTIVE"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/teams/{teamId}": {
+      "get": {
+        "tags": [
+          "Teams"
+        ],
+        "summary": "Get a team",
+        "description": "Get a team.",
+        "operationId": "getTeam",
+        "parameters": [
+          {
+            "name": "teamId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the team.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Team object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Team"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Teams"
+        ],
+        "summary": "Update a team",
+        "description": "Update a team.",
+        "operationId": "updateTeam",
+        "parameters": [
+          {
+            "name": "teamId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the team.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "TeamPatchBody payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeamPatchBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Team object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Team"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/webhooks": {
+      "get": {
+        "tags": [
+          "Webhook Subscriptions"
+        ],
+        "summary": "Lists webhook subscriptions",
+        "description": "An array of all the webhook subscriptions for this user on this org.",
+        "operationId": "getWebhooks",
+        "responses": {
+          "200": {
+            "description": "Lists all the webhook subscriptions for this user on this org.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/WebhookSubscription"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Webhook Subscriptions"
+        ],
+        "summary": "Creates a new webhook subscription",
+        "description": "Sign up to receive webhooks from askSpoke.",
+        "operationId": "addWebhook",
+        "requestBody": {
+          "description": "WebhookSubscriptionPostBody payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebhookSubscriptionPostBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Webhook subscription detail.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookSubscription"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/requests/{requestId}/tags": {
+      "patch": {
+        "tags": [
+          "Requests"
+        ],
+        "summary": "Add tags",
+        "description": "Add tags to a request.",
+        "operationId": "AddTagsToRequest",
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the request that needs to be updated.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "AddTagsToRequest payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "tags"
+                ],
+                "properties": {
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "description": "a tag id",
+                          "example": "5c61e9f43e8c4c11f53240f8"
+                        }
+                      }
+                    },
+                    "description": "Tag ids to add"
+                  }
+                },
+                "example": {
+                  "tags": [
+                    {
+                      "_id": "5c61e9f43e8c4c11f53240f7"
+                    },
+                    {
+                      "_id": "5c61e9f43e8c4c11f53240f8"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/requests/{requestId}/secondary": {
+      "get": {
+        "tags": [
+          "Requests"
+        ],
+        "summary": "Get merged requests",
+        "description": "Gets requests merged into the given request.",
+        "operationId": "getMergedRequests",
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "description": "the request id of the request for which you wish to see the merged requests of",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "description": "The index of merged requests to start with",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "The number of requests merged with your initial request to return. Defaults to 25.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of requests.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Request"
+                      }
+                    },
+                    "total": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The total number of the requests."
+                    },
+                    "start": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The start offset for this set of requests."
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The number of requests returned."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/requests/{requestId}/tags/{tagId}": {
+      "delete": {
+        "tags": [
+          "Requests"
+        ],
+        "summary": "Delete tag",
+        "description": "Delete tag from a request.",
+        "operationId": "DeleteTagFromRequest",
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the request that needs to be updated.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tagId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the tag to remove from the request.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content."
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Request": {
+        "type": "object",
+        "required": [
+          "subject",
+          "requester"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID",
+            "readOnly": true,
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "requester": {
+            "type": "string",
+            "description": "Requester",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "owner": {
+            "type": "string",
+            "description": "Owner",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "subject": {
+            "type": "string",
+            "description": "Subject",
+            "example": "What's the Wi-Fi passowrd?"
+          },
+          "status": {
+            "$ref": "#/components/schemas/RequestStatus",
+            "description": "Status"
+          },
+          "requestType": {
+            "type": "object",
+            "description": "Request type",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "requestTypeInfo": {
+            "$ref": "#/components/schemas/RequestTypeInfoResponse",
+            "description": "Request type info"
+          },
+          "privacyLevel": {
+            "type": "string",
+            "enum": [
+              "private",
+              "public"
+            ],
+            "description": "Privacy level"
+          },
+          "team": {
+            "type": "string",
+            "description": "Team",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "org": {
+            "type": "string",
+            "description": "Org",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "isAutoResolved": {
+            "type": "boolean",
+            "description": "Is auto resolved"
+          },
+          "isFiled": {
+            "type": "boolean",
+            "description": "is filed"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Email",
+            "readOnly": true
+          },
+          "permalink": {
+            "type": "string",
+            "format": "url",
+            "description": "Permalink",
+            "readOnly": true,
+            "example": "https://example.askspoke.com/requests/8782"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Created at",
+            "readOnly": true,
+            "example": "2019-02-27T18:54:09.980Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Updated at",
+            "readOnly": true,
+            "example": "2019-02-27T18:54:09.980Z"
+          },
+          "resolveTime": {
+            "type": "integer",
+            "description": "Resolve time",
+            "readOnly": true,
+            "example": 123456
+          },
+          "teamResponseTimeInMs": {
+            "type": "integer",
+            "description": "Team response time in ms",
+            "readOnly": true,
+            "example": 123456
+          },
+          "lastResolvedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Last resolved at",
+            "readOnly": true,
+            "example": "2019-02-27T18:54:09.980Z"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "5c61e9f43e8c4c11f53240f8"
+            },
+            "description": "Tags"
+          },
+          "taskInstances": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskInstanceResponse"
+            },
+            "description": "Task instances"
+          }
+        },
+        "description": "Request object."
+      },
+      "RequestPatchBody": {
+        "type": "object",
+        "properties": {
+          "requester": {
+            "type": "string",
+            "description": "New requester user id",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "owner": {
+            "type": "string",
+            "description": "New request owner user id",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "subject": {
+            "type": "string",
+            "description": "New request subject",
+            "example": "What's the Wi-Fi passowrd?"
+          },
+          "status": {
+            "$ref": "#/components/schemas/RequestStatus"
+          },
+          "requestType": {
+            "type": "object",
+            "description": "New request type id",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "requestTypeInfo": {
+            "$ref": "#/components/schemas/RequestTypeInfo"
+          },
+          "taskInstances": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskInstance"
+            },
+            "description": "Task instances"
+          },
+          "privacyLevel": {
+            "type": "string",
+            "enum": [
+              "private",
+              "public"
+            ],
+            "description": "New privacy level"
+          },
+          "team": {
+            "type": "string",
+            "description": "New team id",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          }
+        },
+        "description": "Request PATCH object."
+      },
+      "RequestStatus": {
+        "type": "string",
+        "enum": [
+          "AUTO_RESOLVED",
+          "OPEN",
+          "RESOLVED"
+        ],
+        "description": "Request statuses."
+      },
+      "RequestTask": {
+        "type": "object",
+        "required": [
+          "subject"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID",
+            "readOnly": true,
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "subject": {
+            "type": "string",
+            "description": "Subject",
+            "example": "What's the Wi-Fi passowrd?"
+          },
+          "permalinkId": {
+            "type": "integer",
+            "description": "Permalink ID",
+            "example": 123
+          },
+          "taskInstances": {
+            "$ref": "#/components/schemas/TaskInstance",
+            "description": "Task instances"
+          },
+          "sortField": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Sort field",
+            "readOnly": true,
+            "example": "2019-02-27T18:54:09.980Z"
+          }
+        },
+        "description": "Request containing single task object."
+      },
+      "TaskInstance": {
+        "type": "object",
+        "required": [
+          "uuid"
+        ],
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "description": "UUID",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "owner": {
+            "type": "string",
+            "description": "Owner",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "OPEN",
+              "COMPLETED",
+              "TOMBSTONED"
+            ],
+            "description": "Status"
+          },
+          "dueDate": {
+            "type": "string",
+            "description": "Due date",
+            "example": "2021-01-01T08:00:00.000Z"
+          }
+        },
+        "description": "Task instances"
+      },
+      "TaskInstanceResponse": {
+        "type": "object",
+        "required": [
+          "subject"
+        ],
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "description": "UUID",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "subject": {
+            "type": "string",
+            "description": "Subject",
+            "example": "Add user to Okta."
+          },
+          "taskTemplate": {
+            "$ref": "#/components/schemas/TaskTemplate",
+            "description": "Task template"
+          },
+          "requestTypeId": {
+            "type": "string",
+            "description": "Request type ID",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "isRequired": {
+            "type": "boolean",
+            "description": "Is required"
+          },
+          "parentTaskUUIDs": {
+            "type": "string",
+            "description": "Parent task UUIDs",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "isApproval": {
+            "type": "boolean",
+            "description": "Is Approval"
+          },
+          "approvalState": {
+            "type": "string",
+            "enum": [
+              "APPROVED",
+              "DENIED"
+            ],
+            "description": "Approval State"
+          },
+          "owner": {
+            "type": "string",
+            "description": "Owner",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "dueDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Due date",
+            "example": "2019-02-27T18:54:09.980Z"
+          },
+          "wasManuallyReassigned": {
+            "type": "boolean",
+            "description": "Was manually reassigned"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "OPEN",
+              "COMPLETED",
+              "TOMBSTONED"
+            ],
+            "description": "Status"
+          },
+          "timestamps": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamps",
+            "example": "2019-02-27T18:54:09.980Z"
+          }
+        },
+        "description": "A representation of a single task on a request"
+      },
+      "Resource": {
+        "type": "object",
+        "required": [
+          "subject",
+          "requester"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID",
+            "readOnly": true,
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "text",
+              "link",
+              "file"
+            ],
+            "description": "Type"
+          },
+          "author": {
+            "type": "string",
+            "description": "Author",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title",
+            "example": "Wi-Fi password"
+          },
+          "body": {
+            "type": "string",
+            "description": "Body",
+            "example": "<Wi-Fi password here>"
+          },
+          "file": {
+            "type": "object",
+            "description": "File",
+            "example": "File object"
+          },
+          "link": {
+            "type": "object",
+            "description": "Link",
+            "example": "Link object"
+          },
+          "keywords": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Keywords",
+            "example": "['Wi-Fi', 'password']"
+          },
+          "team": {
+            "type": "string",
+            "description": "Team",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "org": {
+            "type": "string",
+            "description": "Org",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "isDeprecated": {
+            "type": "boolean",
+            "description": "Is deprecated"
+          },
+          "needsReview": {
+            "type": "boolean",
+            "description": "Needs review"
+          },
+          "reviewStatus": {
+            "type": "string",
+            "enum": [
+              "0",
+              "1",
+              "2"
+            ],
+            "description": "Review status",
+            "readOnly": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Created at",
+            "readOnly": true,
+            "example": "2019-02-27T18:54:09.980Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Updated at",
+            "readOnly": true,
+            "example": "2019-02-27T18:54:09.980Z"
+          }
+        },
+        "description": "Resource object."
+      },
+      "ResourcePostBody": {
+        "type": "object",
+        "required": [
+          "title",
+          "author"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "text"
+            ],
+            "description": "The type of the resource. atSpoke supports many types of resources but only text-based ones can be created via API."
+          },
+          "author": {
+            "type": "string",
+            "description": "The user id of the author of this resource.",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of this resource.",
+            "example": "Wi-Fi password"
+          },
+          "body": {
+            "type": "string",
+            "description": "The body of this resource.",
+            "example": "<Wi-Fi password here>"
+          },
+          "team": {
+            "type": "string",
+            "description": "The id of the team this resource should belong to.",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          }
+        },
+        "description": "Resource object."
+      },
+      "BulkAddLabelBody": {
+        "type": "object",
+        "required": [
+          "requests",
+          "label"
+        ],
+        "properties": {
+          "requests": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of request ids to add a label to."
+          },
+          "label": {
+            "type": "string",
+            "description": "Label id to add to the requests.",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          }
+        },
+        "description": "Body to bulk add labels"
+      },
+      "Team": {
+        "type": "object",
+        "required": [
+          "name",
+          "owner"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID",
+            "readOnly": true,
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name",
+            "example": "Engineering"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Slug",
+            "example": "engineering"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description",
+            "example": "Build cool things."
+          },
+          "keywords": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Keywords",
+            "example": "['new feature', 'issue report']"
+          },
+          "icon": {
+            "type": "string",
+            "enum": [
+              "support",
+              "administrative",
+              "finance",
+              "it",
+              "security",
+              "sales",
+              "legal",
+              "hr",
+              "events",
+              "cleaning",
+              "design",
+              "engineering",
+              "facilities",
+              "operations",
+              "recruiting"
+            ],
+            "description": "Icon",
+            "example": "engineering"
+          },
+          "color": {
+            "type": "string",
+            "enum": [
+              "blue",
+              "cyan",
+              "green",
+              "grey",
+              "indigo",
+              "purple",
+              "red",
+              "pink",
+              "yellow"
+            ],
+            "description": "Color",
+            "example": "blue"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "CLOSED"
+            ],
+            "description": "Status",
+            "example": "ACTIVE"
+          },
+          "goals": {
+            "type": "object",
+            "description": "Goals",
+            "example": "{...}"
+          },
+          "agentList": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "description": "Agent list",
+            "example": "[...]"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Created at",
+            "readOnly": true,
+            "example": "2019-02-27T18:54:09.980Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Updated at",
+            "readOnly": true,
+            "example": "2019-02-27T18:54:09.980Z"
+          },
+          "owner": {
+            "type": "string",
+            "description": "Owner",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "org": {
+            "type": "string",
+            "description": "Org",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Email",
+            "readOnly": true
+          },
+          "permalink": {
+            "type": "string",
+            "format": "url",
+            "description": "Permalink",
+            "readOnly": true,
+            "example": "https://example.askspoke.com/teams/engineering"
+          },
+          "settings": {
+            "$ref": "#/components/schemas/TeamSettings",
+            "description": "Settings"
+          }
+        },
+        "description": "Team object."
+      },
+      "TeamPatchBody": {
+        "type": "object",
+        "properties": {
+          "settings": {
+            "$ref": "#/components/schemas/TeamSettings"
+          }
+        },
+        "description": "Team PATCH object"
+      },
+      "TeamSettings": {
+        "type": "object",
+        "properties": {
+          "delegation": {
+            "$ref": "#/components/schemas/TeamDelegation"
+          },
+          "flags": {
+            "type": "object",
+            "properties": {
+              "AUTO_DELEGATION": {
+                "type": "boolean",
+                "description": "whether this team should use auto delegation",
+                "example": "false"
+              }
+            },
+            "description": "Flags"
+          }
+        },
+        "description": "Team settings"
+      },
+      "TeamDelegation": {
+        "type": "object",
+        "properties": {
+          "strategy": {
+            "$ref": "#/components/schemas/TeamDelegationStrategy"
+          },
+          "specificUser": {
+            "type": "string",
+            "description": "user id, valid only for SPECIFIC_USER strategy",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "excludedUsers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "5c61e9f43e8c4c11f53240f8"
+            },
+            "description": "user ids of excluded users, valid only for ROUND_ROBIN strategy"
+          }
+        },
+        "description": "Team delegation settings"
+      },
+      "TeamDelegationStrategy": {
+        "type": "string",
+        "enum": [
+          "SPECIFIC_USER",
+          "ROUND_ROBIN",
+          "SMART_ASSIGNMENT"
+        ],
+        "description": "Team delegation strategies."
+      },
+      "User": {
+        "type": "object",
+        "required": [
+          "email",
+          "displayName"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID",
+            "readOnly": true,
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "Display name",
+            "example": "Jane Doe"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Email"
+          },
+          "isEmailVerified": {
+            "type": "boolean",
+            "description": "Is email verified",
+            "readOnly": true
+          },
+          "isProfileCompleted": {
+            "type": "boolean",
+            "description": "Is profile completed",
+            "readOnly": true
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INVITED"
+            ],
+            "description": "Status",
+            "example": "ACTIVE"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/Profile",
+            "description": "Profile"
+          },
+          "memberships": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Memberships",
+            "example": "[...]"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Created at",
+            "readOnly": true,
+            "example": "2019-02-27T18:54:09.980Z"
+          }
+        },
+        "description": "User object."
+      },
+      "CustomNavList": {
+        "type": "object",
+        "required": [
+          "name",
+          "slug"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Slug"
+          },
+          "filters": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "object",
+                "properties": {
+                  "includeNoValue": {
+                    "type": "boolean",
+                    "description": "Include no value",
+                    "default": false
+                  },
+                  "values": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "5c61e9f43e8c4c11f53240f8"
+                    },
+                    "description": "Values"
+                  }
+                },
+                "description": "Status"
+              },
+              "team": {
+                "type": "object",
+                "properties": {
+                  "includeNoValue": {
+                    "type": "boolean",
+                    "description": "Include no value",
+                    "default": false
+                  },
+                  "values": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "5c61e9f43e8c4c11f53240f8"
+                    },
+                    "description": "Values"
+                  }
+                },
+                "description": "Team"
+              },
+              "requestType": {
+                "type": "object",
+                "properties": {
+                  "includeNoValue": {
+                    "type": "boolean",
+                    "description": "Include no value",
+                    "default": false
+                  },
+                  "values": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "5c61e9f43e8c4c11f53240f8"
+                    },
+                    "description": "Values"
+                  }
+                },
+                "description": "Request type"
+              },
+              "assignee": {
+                "type": "object",
+                "properties": {
+                  "includeNoValue": {
+                    "type": "boolean",
+                    "description": "Include no value",
+                    "default": false
+                  },
+                  "values": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "5c61e9f43e8c4c11f53240f8"
+                    },
+                    "description": "Values"
+                  }
+                },
+                "description": "Assignee"
+              },
+              "requester": {
+                "type": "object",
+                "properties": {
+                  "includeNoValue": {
+                    "type": "boolean",
+                    "description": "Include no value",
+                    "default": false
+                  },
+                  "values": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "5c61e9f43e8c4c11f53240f8"
+                    },
+                    "description": "Values"
+                  }
+                },
+                "description": "Requester"
+              },
+              "follower": {
+                "type": "object",
+                "properties": {
+                  "includeNoValue": {
+                    "type": "boolean",
+                    "description": "Include no value",
+                    "default": false
+                  },
+                  "values": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "5c61e9f43e8c4c11f53240f8"
+                    },
+                    "description": "Values"
+                  }
+                },
+                "description": "Follower"
+              },
+              "taskAssignee": {
+                "type": "object",
+                "properties": {
+                  "includeNoValue": {
+                    "type": "boolean",
+                    "description": "Include no value",
+                    "default": false
+                  },
+                  "values": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "5c61e9f43e8c4c11f53240f8"
+                    },
+                    "description": "Values"
+                  }
+                },
+                "description": "Task assignee"
+              },
+              "tag": {
+                "type": "object",
+                "properties": {
+                  "includeNoValue": {
+                    "type": "boolean",
+                    "description": "Include no value",
+                    "default": false
+                  },
+                  "values": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "5c61e9f43e8c4c11f53240f8"
+                    },
+                    "description": "Values"
+                  }
+                },
+                "description": "Tag"
+              },
+              "query": {
+                "type": "string",
+                "description": "Query",
+                "example": "Search query"
+              }
+            },
+            "description": "Filters"
+          }
+        },
+        "description": "A custom nav list used to organize a user’s requests"
+      },
+      "RequestType": {
+        "type": "object",
+        "required": [
+          "org",
+          "team",
+          "title"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID",
+            "readOnly": true,
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title",
+            "example": "Software error/bug"
+          },
+          "form": {
+            "type": "object",
+            "properties": {
+              "fields": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "uuid": {
+                      "type": "string",
+                      "example": "5c61e9f43e8c4c11f53240f8"
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "SELECT",
+                        "TEXT"
+                      ]
+                    },
+                    "label": {
+                      "type": "string",
+                      "example": "When kind of license?"
+                    },
+                    "select": {
+                      "type": "object",
+                      "properties": {
+                        "choices": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "example": "Annual Subscription"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "description": "Fields"
+              }
+            },
+            "description": "Form"
+          },
+          "taskTemplates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskTemplate"
+            },
+            "description": "Task template"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "TOMBSTONE"
+            ],
+            "description": "Status"
+          },
+          "icon": {
+            "type": "string",
+            "description": "Icon",
+            "example": "bug"
+          },
+          "team": {
+            "type": "string",
+            "description": "Team",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description",
+            "example": "For bugs"
+          },
+          "org": {
+            "type": "string",
+            "description": "Org",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "hasForm": {
+            "type": "boolean",
+            "description": "Has form",
+            "readOnly": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Created at",
+            "readOnly": true,
+            "example": "2019-02-27T18:54:09.980Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Updated at",
+            "readOnly": true,
+            "example": "2019-02-27T18:54:09.980Z"
+          }
+        },
+        "description": "Request type object"
+      },
+      "TaskTemplate": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "description": "UUID",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "subject": {
+            "type": "string",
+            "description": "Subject",
+            "example": "Add user to Okta."
+          },
+          "assignmentRule": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "TEAM_MEMBER",
+                  "SPECIFIC_USER",
+                  "ASSIGNEE",
+                  "REQUESTER",
+                  "MANAGER",
+                  "UNASSIGNED"
+                ],
+                "description": "Type"
+              },
+              "team": {
+                "type": "string",
+                "description": "Team",
+                "example": "5c61e9f43e8c4c11f53240f8"
+              },
+              "user": {
+                "type": "string",
+                "description": "User",
+                "example": "5c61e9f43e8c4c11f53240f8"
+              }
+            },
+            "description": "Assignment rule"
+          }
+        },
+        "description": "the template a RequestType uses to create a task. Copied onto the created TaskInstance at instantiation"
+      },
+      "RequestTypeInfoResponse": {
+        "type": "object",
+        "properties": {
+          "answeredFields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "simpleValue": {
+                  "type": "string",
+                  "example": "Annual Subscription"
+                },
+                "field": {
+                  "type": "object",
+                  "properties": {
+                    "uuid": {
+                      "type": "string",
+                      "example": "5c61e9f43e8c4c11f53240f8"
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "SELECT",
+                        "TEXT"
+                      ]
+                    },
+                    "label": {
+                      "type": "string",
+                      "example": "When kind of license?"
+                    },
+                    "select": {
+                      "type": "object",
+                      "properties": {
+                        "choices": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "example": "Annual Subscription"
+                          }
+                        }
+                      }
+                    },
+                    "assignmentRule": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "TEAM_MEMBER",
+                            "SPECIFIC_USER",
+                            "ASSIGNEE",
+                            "REQUESTER",
+                            "MANAGER",
+                            "UNASSIGNED"
+                          ]
+                        },
+                        "team": {
+                          "type": "string",
+                          "example": "5c61e9f43e8c4c11f53240f8"
+                        },
+                        "user": {
+                          "type": "string",
+                          "example": "5c61e9f43e8c4c11f53240f8"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Answered fields"
+          }
+        },
+        "description": "Request type form answer values."
+      },
+      "RequestTypeInfo": {
+        "type": "object",
+        "properties": {
+          "answeredFields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "fieldId": {
+                  "type": "string",
+                  "example": "b0ca44ec-7d38-4be2-85ba-17ca23478953"
+                },
+                "value": {
+                  "type": "string",
+                  "example": "Form field value"
+                }
+              }
+            },
+            "description": "Answered fields"
+          }
+        },
+        "description": "Request type form values."
+      },
+      "SubscriberList": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "subscriber": {
+              "type": "string",
+              "description": "The user id of a user subscribed to this request",
+              "example": "5c61e9f43e8c4c11f53240f8"
+            },
+            "unsubscribed": {
+              "type": "boolean",
+              "description": "whether this user has unsubscribed from this request",
+              "example": false
+            },
+            "reason": {
+              "type": "string",
+              "description": "why this user was subscribed"
+            }
+          }
+        },
+        "description": "A list of the subscribers on the request"
+      },
+      "Tag": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "color": {
+            "type": "string",
+            "enum": [
+              "blue",
+              "green",
+              "red",
+              "yellow",
+              "orange",
+              "purple"
+            ],
+            "description": "Color"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "TOMBSTONE"
+            ],
+            "description": "Status"
+          },
+          "text": {
+            "type": "string",
+            "description": "Text",
+            "example": "Priority 1"
+          },
+          "org": {
+            "type": "string",
+            "description": "Org",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          }
+        },
+        "description": "Request tag."
+      },
+      "ConfigList": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name",
+            "example": "Computer types"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "TOMBSTONED"
+            ],
+            "description": "Status"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConfigListItem"
+            },
+            "description": "Items"
+          },
+          "externalData": {
+            "$ref": "#/components/schemas/ConfigListExternalData",
+            "description": "External data"
+          },
+          "org": {
+            "type": "string",
+            "description": "Org",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          }
+        },
+        "description": "Configuration Item List"
+      },
+      "ConfigListItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name",
+            "example": "MacBook Pro"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "ARCHIVED"
+            ],
+            "description": "Status"
+          },
+          "externalData": {
+            "$ref": "#/components/schemas/ConfigListItemExternalData"
+          }
+        },
+        "description": "A single item in a configuration list"
+      },
+      "ConfigListExternalData": {
+        "type": "object",
+        "properties": {
+          "sourceIntegrationId": {
+            "type": "string",
+            "description": "Integration id of the third party app this list or item is synced from",
+            "example": "OKTA"
+          },
+          "lastSyncedAt": {
+            "type": "string",
+            "description": "Most recent timestamp when this list was synced with the third-party system",
+            "example": "2019-02-27T18:54:09.980Z"
+          }
+        },
+        "description": "Third-party data associated with a configuration list"
+      },
+      "ConfigListItemExternalData": {
+        "type": "object",
+        "properties": {
+          "sourceIntegrationId": {
+            "type": "string",
+            "description": "Integration id of the third party app this list or item is synced from",
+            "example": "OKTA"
+          },
+          "remoteId": {
+            "type": "string",
+            "description": "Unique id in the third-party system for this item",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "remoteLink": {
+            "type": "string",
+            "description": "Unique link for this item in the third-party system",
+            "example": "https://example.com"
+          },
+          "lastSyncedAt": {
+            "type": "string",
+            "description": "Most recent timestamp when this list was synced with the third-party system",
+            "example": "2019-02-27T18:54:09.980Z"
+          }
+        },
+        "description": "Third-party data associated with a configuration list"
+      },
+      "Profile": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID",
+            "example": "WORKDAY-1001"
+          },
+          "jobTitle": {
+            "type": "string",
+            "description": "Job title",
+            "example": "Software Engineer"
+          },
+          "location": {
+            "type": "string",
+            "description": "Location",
+            "example": "San Francisco, CA"
+          },
+          "department": {
+            "type": "string",
+            "description": "Department",
+            "example": "Sales"
+          },
+          "manager": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name",
+                "example": "John Doe"
+              },
+              "email": {
+                "type": "string",
+                "description": "Email",
+                "example": "john@example.com"
+              }
+            },
+            "description": "Manager"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Start date",
+            "example": "01-01-2001"
+          }
+        },
+        "description": "User profile object."
+      },
+      "WebhookSubscription": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the webhook subscription.",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "client": {
+            "type": "string",
+            "description": "A description of the client software that created the webhook.",
+            "example": "Zapier"
+          },
+          "org": {
+            "type": "string",
+            "description": "The subscriptions org.",
+            "readOnly": true,
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "user": {
+            "type": "string",
+            "description": "The user who owns the subscription.",
+            "readOnly": true,
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "url": {
+            "type": "string",
+            "description": "The URL to which webhooks will be posted.",
+            "example": "https://example.com/receive_hook"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether the webhook is enabled. If disabled, webhooks will not be sent, but one can always re-enable the subscription later."
+          },
+          "topics": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "request.created",
+                "resource.created",
+                "request.updated"
+              ]
+            },
+            "description": "An array of the topics to which to subscribe."
+          },
+          "description": {
+            "type": "string",
+            "description": "A description of this subscription in particular",
+            "example": "Push resource creation to external system."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the subscription was created",
+            "readOnly": true,
+            "example": "2019-02-27T18:54:09.980Z"
+          },
+          "authentication": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "The type of authentication for this webhook.  Currently, client_secret is the default and only supported value. This means that a secret will be sent in the headers of each request (as the \"Client-Secret\" header).",
+                "example": "client_secret"
+              },
+              "clientSecret": {
+                "type": "string",
+                "description": "The secret sent with each request. Set only if authentication.type is client_secret.",
+                "example": "a9841c029bff989d2"
+              }
+            },
+            "description": "Webhook authentication mechanism"
+          }
+        },
+        "description": "Webhook Subscription object."
+      },
+      "WebhookSubscriptionPostBody": {
+        "type": "object",
+        "required": [
+          "url",
+          "client"
+        ],
+        "properties": {
+          "client": {
+            "type": "string",
+            "description": "A description of the client software that created the webhook.",
+            "example": "Zapier"
+          },
+          "url": {
+            "type": "string",
+            "description": "The URL to which webhooks will be posted. Must be HTTPS",
+            "example": "https://example.com/receive_hook"
+          },
+          "topics": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "request.created",
+                "resource.created",
+                "request.updated"
+              ]
+            },
+            "description": "An array of the topics to which to subscribe. If this is left empty, it will default to an empty array.\n- request.created is fired when a request is created \n- resource.created is fired when a resource is created \n- request.updated is fired when a request is updated \n - Change in request status\n - Change in associated requestType\n - Change in request tags\n - Change in form fields"
+          },
+          "description": {
+            "type": "string",
+            "description": "A description of this subscription in particular",
+            "example": "Push resource creation to external system."
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "if false, webhook will not actually be sent."
+          },
+          "authentication": {
+            "type": "object",
+            "properties": {
+              "clientSecret": {
+                "type": "string",
+                "description": "A secret that will be sent with every fired webhook. Use this to confirm that webhooks are coming from atSpoke."
+              }
+            },
+            "description": "Authentication info for this webhook."
+          }
+        },
+        "description": "Webhook Subscription object."
+      },
+      "TeamAgentStatus": {
+        "type": "string",
+        "enum": [
+          "AVAILABLE",
+          "AWAY"
+        ],
+        "description": "Team agent statuses."
+      },
+      "TeamAgent": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "status": {
+            "$ref": "#/components/schemas/TeamAgentStatus"
+          },
+          "lastAssignedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "last request assigned at timestamp",
+            "readOnly": true
+          },
+          "joinedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "timestamp when this agent joined the team",
+            "readOnly": true
+          },
+          "timestamps": {
+            "type": "object",
+            "properties": {
+              "lastAvailableAt": {
+                "type": "string",
+                "format": "date-time",
+                "description": "when this agent became available most recently",
+                "readOnly": true
+              },
+              "lastAwayAt": {
+                "type": "string",
+                "format": "date-time",
+                "description": "when this agent went away most recently",
+                "readOnly": true
+              }
+            },
+            "description": "Timestamps"
+          },
+          "isExcluded": {
+            "type": "boolean",
+            "description": "Whether this agent is excluded from rotation"
+          },
+          "numRequests": {
+            "type": "integer",
+            "description": "number of open requests assigned to this user on this team"
+          }
+        },
+        "description": "Describes an agent in a team."
+      },
+      "Update": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "$ref": "#/components/schemas/MessageContent"
+          },
+          "actor": {
+            "$ref": "#/components/schemas/UpdateActor"
+          }
+        },
+        "description": "Update object"
+      },
+      "MessageContent": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string",
+                "description": "a plain text string of the message to be posted to the request"
+              }
+            },
+            "description": "An object that holds various types of updates. Only the text type is supported via the public API. Attachments are not supported."
+          }
+        },
+        "description": "The content of the update",
+        "example": {
+          "message": {
+            "text": "Your request is complete!"
+          }
+        }
+      },
+      "UpdateActor": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "User",
+              "Team",
+              null
+            ],
+            "description": "Kind"
+          },
+          "ref": {
+            "type": "string",
+            "description": "A team or user id",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          }
+        },
+        "description": "Describes the actor that led to an update."
+      },
+      "VisibleSegment": {
+        "type": "object",
+        "required": [
+          "org"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID",
+            "readOnly": true,
+            "example": "VisibleSegment uid"
+          },
+          "org": {
+            "type": "string",
+            "description": "Org"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name",
+            "example": "Segment name"
+          },
+          "teams": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SegmentTeamField"
+            },
+            "description": "Teams",
+            "example": "list of teams"
+          },
+          "locations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SegmentStringField"
+            },
+            "description": "SegmentStringField"
+          },
+          "departments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SegmentStringField"
+            },
+            "description": "Departments"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Created at",
+            "readOnly": true,
+            "example": "created timestamp"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Updated at",
+            "readOnly": true,
+            "example": "timestamp for last update"
+          }
+        },
+        "description": "VisibleSegment object."
+      },
+      "SegmentTeamField": {
+        "type": "object",
+        "properties": {
+          "operator": {
+            "type": "string",
+            "enum": [
+              "IS",
+              "IS_NOT"
+            ],
+            "description": "Operator"
+          },
+          "value": {
+            "$ref": "#/components/schemas/Team"
+          }
+        },
+        "description": "A team field in a VisibleSegment"
+      },
+      "SegmentStringField": {
+        "type": "object",
+        "properties": {
+          "operator": {
+            "type": "string",
+            "enum": [
+              "IS",
+              "IS_NOT"
+            ],
+            "description": "Operator"
+          },
+          "value": {
+            "type": "string",
+            "description": "Value"
+          }
+        },
+        "description": "A string field in a VisibleSegment"
+      },
+      "SearchProposal": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query"
+          },
+          "channelId": {
+            "type": "string",
+            "enum": [
+              "WEB_SEARCH_BAR",
+              "WEB_REQUEST_PANEL_SUGGESTIONS",
+              "WEB_NEW_REQUEST_PAGE",
+              "SLACK",
+              "EMAIL",
+              "GOOGLE_CHAT",
+              "MSFT_TEAMS",
+              "ZOOM"
+            ],
+            "description": "Channel ID"
+          },
+          "user": {
+            "type": "string",
+            "description": "User",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          },
+          "org": {
+            "type": "string",
+            "description": "Org"
+          },
+          "pivot": {
+            "$ref": "#/components/schemas/SearchProposalPivot",
+            "description": "Pivot"
+          },
+          "interactionId": {
+            "type": "string",
+            "description": "Interaction ID"
+          },
+          "proposals": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SearchProposalItem"
+            },
+            "description": "Proposals",
+            "example": "list of search proposal items"
+          }
+        },
+        "description": "A DB record for storing search recommendations."
+      },
+      "SearchProposalPivot": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "Request",
+              "ChatSession"
+            ],
+            "description": "Kind"
+          },
+          "ref": {
+            "type": "string",
+            "description": "Ref",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          }
+        },
+        "description": "The item created from the search proposal."
+      },
+      "SearchProposalItem": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "ACCEPTED",
+              "NEUTRAL",
+              "REJECTED"
+            ],
+            "description": "Action"
+          },
+          "itemType": {
+            "type": "string",
+            "enum": [
+              "request",
+              "resource",
+              "request_type",
+              "action",
+              "team",
+              "user"
+            ],
+            "description": "Item type"
+          },
+          "ref": {
+            "type": "string",
+            "description": "Ref",
+            "example": "5c61e9f43e8c4c11f53240f8"
+          }
+        },
+        "description": "The item created from the search proposal."
+      },
+      "Forbidden": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "atSpoke error code.",
+            "example": 11038
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message.",
+            "example": "API Key invalid. Use the Api-Key header to pass your key."
+          }
+        },
+        "description": "Forbidden"
+      },
+      "NotFound": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "atSpoke error code.",
+            "example": 11003
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message.",
+            "example": "The requested item could not be found."
+          }
+        },
+        "description": "Not Found"
+      },
+      "PaymentRequired": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "atSpoke error code.",
+            "example": 11003
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message.",
+            "example": "The requested item could not be found."
+          }
+        },
+        "description": "Payment required"
+      },
+      "BadRequest": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "atSpoke error code.",
+            "example": 11008
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message.",
+            "example": "The request was malformed."
+          }
+        },
+        "description": "Bad request"
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Bad request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/BadRequest"
+            }
+          }
+        }
+      },
+      "PaymentRequired": {
+        "description": "You do not have access to this feature.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/PaymentRequired"
+            }
+          }
+        }
+      },
+      "Forbidden": {
+        "description": "Forbidden",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Forbidden"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Not Found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/NotFound"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "api_key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Api-Key",
+        "x-ballerina-apikey-description": "Provide your API key as `api_key`. Eg: `{\"api_key\" : \"<API key>\"}`",
+        "description": "Users on atSpoke's Standard and Plus plans can\n           generate an API key by navigating to \"My Profile\" and then selecting\n           the API tab. All API actions are taken by the API user. If a\n           new key is generated or the user is deactivated, the old API key is\n           deactivated automatically.<br\/><br\/>\n           Requests made to atSpoke's public API are rate-limited to no more\n           than 6000 requests per minute per API key.<br\/><br\/>\n           <b> Warning:<\/b> _All_ private items viewable by the user whose\n        API key is being used will be viewable via the API. This means that if\n        an admin uses their key to connect atSpoke to an external system,\n        requests and resources that are private to a team in atSpoke will\n        accessible in the external system. Keep this in mind when building with\n        the API so that private data does not become public."
+      }
+    }
+  },
+  "info": {
+    "title": "atSpoke API Reference",
+    "x-logo": {
+      "url": "https://static.askspoke.com/img/logo/full-logo.png"
+    },
+    "contact": {
+      "name": "atSpoke Support",
+      "email": "support@askpoke.com"
+    },
+    "version": "0.1.0",
+    "termsOfService": "https://www.askspoke.com/terms-of-service/",
+    "description": "This is a generated connector for [atSpoke API v0.1.0](https:\/\/askspoke.com\/api\/reference) OpenAPI specification.\nThe atSpoke REST API provides a broad set of operations including:\n- Creation, manipulation, and deletion of requests in atSpoke\n- Management of users in atSpoke\n- Creation, manipulation, and deletion of knowledge resources in atSpoke\nThe public API is served from https:\/\/api.askspoke.com\/api\/v1 – note `api` in the host name, not your usual organization id.",
+    "x-ballerina-init-description": "The connector initialization requires setting the API credentials.\nCreate a [atSpoke account](https:\/\/www.atspoke.com) and obtain tokens by following [this guide](https:\/\/help.atspoke.com\/article\/uga6efxps2-api-authentication).\n",
+    "x-ballerina-display": {
+      "label": "atSpoke",
+      "iconPath": "icon.png"
+    }
+  },
+  "tags": [
+    {
+      "name": "Users"
+    },
+    {
+      "name": "Requests"
+    },
+    {
+      "name": "Resources"
+    },
+    {
+      "name": "Webhook Subscriptions",
+      "description": "Webhooks allow for the integration of atSpoke with\nexternal systems. When certain events take place in atSpoke, we will send an\nHTTPS POST request to a URL endpoint of your choosing.<br\/><br\/>When you receive a POST request from atSpoke, it will have the following\nproperties:\n\n- you: the atSpoke User id of the user that set up the webhook\n- org: the atSpoke Org id that the request or resource was filed against\n- topic: `enum(\"request.created\", \"resource.created\", \"request.updated\")`\n- message:\n - updates\n - the resource or request (their schemas can be viewed earlier in this\n document)\nThe APIs below allow you to manage your Webhook Subscriptions."
+    }
+  ]
+}

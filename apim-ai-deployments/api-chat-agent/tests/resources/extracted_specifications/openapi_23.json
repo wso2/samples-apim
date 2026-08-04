@@ -1,0 +1,163 @@
+{
+    "tools": [
+        {
+            "name": "post-timeseries-last-detect",
+            "description": "This operation generates a model using points before the latest one. With this method, only historical points are used to determine whether the target point is an anomaly. The latest point detecting matches the scenario of real-time monitoring of business metrics.",
+            "method": "POST",
+            "path": "/timeseries/last/detect",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "granularity",
+                        "series"
+                    ],
+                    "properties": {
+                        "series": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "timestamp",
+                                    "value"
+                                ],
+                                "properties": {
+                                    "timestamp": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                                    },
+                                    "value": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        },
+                        "granularity": {
+                            "type": "string"
+                        },
+                        "customInterval": {
+                            "type": "integer"
+                        },
+                        "period": {
+                            "type": "integer"
+                        },
+                        "maxAnomalyRatio": {
+                            "type": "number"
+                        },
+                        "sensitivity": {
+                            "type": "number"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "post-timeseries-entire-detect",
+            "description": "This operation generates a model using an entire series, each point is detected with the same model. With this method, points before and after a certain point are used to determine whether it is an anomaly. The entire detection can give the user an overall status of the time series.",
+            "method": "POST",
+            "path": "/timeseries/entire/detect",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "granularity",
+                        "series"
+                    ],
+                    "properties": {
+                        "series": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "timestamp",
+                                    "value"
+                                ],
+                                "properties": {
+                                    "timestamp": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                                    },
+                                    "value": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        },
+                        "granularity": {
+                            "type": "string"
+                        },
+                        "customInterval": {
+                            "type": "integer"
+                        },
+                        "period": {
+                            "type": "integer"
+                        },
+                        "maxAnomalyRatio": {
+                            "type": "number"
+                        },
+                        "sensitivity": {
+                            "type": "number"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "post-timeseries-changepoint-detect",
+            "description": "This operation generates a model using an entire series, each point is detected with the same model. With this method, points before and after a certain point are used to determine whether it is a trend change point. The entire detection can detect all trend change points of the time series.",
+            "method": "POST",
+            "path": "/timeseries/changepoint/detect",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "granularity",
+                        "series"
+                    ],
+                    "properties": {
+                        "series": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "timestamp",
+                                    "value"
+                                ],
+                                "properties": {
+                                    "timestamp": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                                    },
+                                    "value": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        },
+                        "granularity": {
+                            "type": "string"
+                        },
+                        "customInterval": {
+                            "type": "integer"
+                        },
+                        "period": {
+                            "type": "integer"
+                        },
+                        "stableTrendWindow": {
+                            "type": "integer"
+                        },
+                        "threshold": {
+                            "type": "number"
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

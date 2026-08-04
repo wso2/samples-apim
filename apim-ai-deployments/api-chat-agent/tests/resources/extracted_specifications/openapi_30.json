@@ -1,0 +1,61 @@
+{
+    "serviceUrl": "https://{endpoint}/openai",
+    "tools": [
+        {
+            "name": "embeddings_create",
+            "description": "Get a vector representation of a given input that can be easily consumed by machine learning models and algorithms.",
+            "method": "POST",
+            "path": "/deployments/{deployment-id}/embeddings",
+            "parameters": {
+                "deployment-id": {
+                    "location": "path",
+                    "description": "The deployment id of the model which was deployed.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "input"
+                    ],
+                    "properties": {
+                        "input": {
+                            "oneOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            ]
+                        },
+                        "user": {
+                            "type": "string"
+                        },
+                        "input_type": {
+                            "type": "string"
+                        },
+                        "model": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

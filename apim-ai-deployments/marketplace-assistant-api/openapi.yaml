@@ -1,0 +1,281 @@
+openapi: 3.0.3
+
+info:
+  title: Marketplace Assistant API
+  description: |
+    Conversational discovery of published APIs. A retrieval-augmented pipeline
+    searches a Milvus vector store for APIs relevant to the user's question and
+    answers in natural language, naming the APIs the answer was grounded on.
+
+    ## Where this sits
+
+    A backend service deployed behind an API gateway. WSO2 API Manager calls it
+    through that gateway and proxied, so what API Manager builds is what arrives.
+
+    The vector store this service reads is populated by the Spec Populator service,
+    which API Manager drives whenever an API is published, updated or removed.
+
+    ## Access control
+
+    No service-level authentication. Access is controlled by the Frontier Gateway in
+    front of the deployment, so `security: []` below is deliberate.
+
+    ## Partitioning and filtering
+
+    Retrieval is scoped along three axes, and getting any of them wrong silently
+    changes which APIs can be found:
+
+    - `keyID` — the vector store partition, passed as a query parameter.
+    - `tenant_domain` — narrows results to one tenant within that partition.
+    - `user_roles` — drops APIs whose visibility roles the caller does not hold.
+
+    ## Two fields arrive as JSON-encoded strings
+
+    `history` and `user_roles` read like arrays but are sent as **strings**. API
+    Manager serialises both with `new Gson().toJson(...)` before putting them into
+    the body, and no component between there and here decodes them.
+
+    Parse them before use. An implementation that binds `history` straight to a list
+    type will reject every request API Manager sends.
+
+    ## Additional properties
+
+    API Manager may attach extra top-level fields beyond those documented here —
+    `apim_version` always, plus anything a deployment's `AIRequestPropertyEnricher`
+    contributes. Ignore what you do not recognise; do not reject it.
+
+    ## The response shape is strict
+
+    The tolerance above applies to the **request** only.
+
+    Return exactly the two documented fields. In particular, do not return a `usage`
+    object.
+
+  version: 1.0.0
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+
+servers:
+  - url: http://{host}:{port}
+    description: Internal service endpoint
+    variables:
+      host:
+        default: localhost
+      port:
+        default: '8000'
+
+tags:
+  - name: Marketplace Assistant
+    description: Retrieval-augmented question answering over published APIs.
+
+security: []
+
+paths:
+  /marketplace-assistant:
+    post:
+      tags:
+        - Marketplace Assistant
+      summary: Ask about published APIs
+      description: |
+        Answers the question in `query` from the APIs indexed under `keyID`, scoped
+        by `tenant_domain` and filtered by `user_roles`.
+
+        The reply is the model's own JSON object when it produced valid JSON. When it
+        did not, the raw text is returned in `response` with an empty `apis` array,
+        still under `201` — so an empty `apis` means either "nothing matched" or "the
+        model did not answer in the expected shape", and the two are not
+        distinguishable from the response alone.
+      operationId: marketplaceAssistantChat
+      parameters:
+        - $ref: '#/components/parameters/KeyIdQueryParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Query'
+      responses:
+        '201':
+          description: The assistant's answer.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketplaceAssistantResponse'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  parameters:
+    KeyIdQueryParam:
+      name: keyID
+      in: query
+      required: true
+      description: |
+        Vector store partition to search. API Manager does not send it, it is
+        injected by the gateway from the caller's credential, and must match the
+        value the Spec Populator indexed under. APIs filed under a different key are
+        invisible to this call.
+      schema:
+        type: string
+        example: 7f3c9d21-4a6e-4b18-9f52-2c8e1d4a7b30
+
+  responses:
+    ValidationError:
+      description: The request body or a query parameter failed schema validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HTTPValidationError'
+
+    InternalServerError:
+      description: |
+        Unhandled failure — most often the vector store or the LLM endpoint being
+        unreachable.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDetail'
+
+  schemas:
+    ErrorDetail:
+      type: object
+      description: FastAPI-style error body.
+      properties:
+        detail:
+          type: string
+      required:
+        - detail
+
+    HTTPValidationError:
+      type: object
+      title: HTTPValidationError
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      required:
+        - detail
+
+    ValidationError:
+      type: object
+      title: ValidationError
+      properties:
+        loc:
+          type: array
+          description: Path to the offending value.
+          items:
+            oneOf:
+              - type: string
+              - type: integer
+          example:
+            - body
+            - user_roles
+        msg:
+          type: string
+          example: field required
+        type:
+          type: string
+          example: value_error.missing
+      required:
+        - loc
+        - msg
+        - type
+
+    Query:
+      type: object
+      description: |
+        The body API Manager sends, verbatim. Note that `history` and `user_roles`
+        are JSON-encoded strings, not arrays.
+      properties:
+        query:
+          type: string
+          description: |
+            The user's question. API Manager rejects an empty or missing `query` with
+            its own `400` before the call is made, so it always arrives populated.
+          example: Which API lets me place a pizza order?
+        history:
+          type: string
+          description: |
+            Prior turns, oldest first, as a **JSON-encoded string**. Decodes to an
+            array of `{"role": string, "content": string}` objects. An empty history
+            serialises to `"[]"` — the field is never omitted.
+          example: '[{"role":"user","content":"Hi"},{"role":"assistant","content":"Hello! How can I help you?"}]'
+        user_roles:
+          type: string
+          description: |
+            The caller's roles as a **JSON-encoded string**, lower-cased, used to
+            filter APIs by visibility. Decodes to an array of strings; a user with no
+            roles serialises to `"[]"`.
+          example: '["admin","internal/subscriber"]'
+        tenant_domain:
+          type: string
+          description: |
+            Tenant to search within the partition. API Manager sends the validated
+            organization of the calling user and never omits it.
+          example: carbon.super
+        apim_version:
+          type: string
+          description: |
+            Version of the calling API Manager, read from its server configuration.
+            Informational — the service is not expected to act on it.
+          example: 4.7.0
+      required:
+        - query
+        - history
+        - user_roles
+        - tenant_domain
+      additionalProperties: true
+
+    MarketplaceAssistantResponse:
+      type: object
+      description: |
+        Mirrors API Manager's `MarketplaceAssistantResponseDTO` exactly. These two
+        fields are the whole contract — see "The response shape is strict" above
+        before adding anything.
+      properties:
+        response:
+          type: string
+          description: Natural-language answer, in Markdown.
+        apis:
+          type: array
+          description: |
+            APIs the answer was grounded on, empty when the answer is not grounded on
+            any. Return `[]` rather than omitting it.
+          items:
+            $ref: '#/components/schemas/MarketplaceApi'
+      required:
+        - response
+        - apis
+      additionalProperties: false
+      example:
+        response: The PizzaShack API lets you place an order. Use `POST /order`.
+        apis:
+          - apiId: 5acfba2e-7501-481c-a9cd-3d0951f7d3f3
+            apiName: PizzaShackAPI
+            version: 1.0.0
+
+    MarketplaceApi:
+      type: object
+      description: |
+        A referenced API. Mirrors `MarketplaceAssistantApiDTO`; an unrecognised field
+        here aborts deserialisation just as one at the top level does.
+      properties:
+        apiId:
+          type: string
+          example: 5acfba2e-7501-481c-a9cd-3d0951f7d3f3
+        apiName:
+          type: string
+          example: PizzaShackAPI
+        version:
+          type: string
+          example: 1.0.0
+      required:
+        - apiId
+        - apiName
+        - version
+      additionalProperties: false
+

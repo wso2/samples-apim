@@ -1,0 +1,172 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "url": "https://api.bintable.com/v1"
+    }
+  ],
+  "paths": {
+    "/balance": {
+      "get": {
+        "tags": [
+          "Balance"
+        ],
+        "summary": "Check Balance",
+        "description": "Get Account balance and expiry",
+        "operationId": "balanceLookup",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "query",
+            "required": true,
+            "description": "The API key, which you can get from bintable.com website.",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Balance reponse",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseItem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Your balance is exhausted,or package expired"
+          },
+          "403": {
+            "description": "Invalid API Key"
+          },
+          "422": {
+            "description": "API key is missing"
+          }
+        }
+      }
+    },
+    "/{bin}": {
+      "get": {
+        "tags": [
+          "Lookup"
+        ],
+        "summary": "Lookup for bin",
+        "description": "By passing in the appropriate BIN, you can lookup for\ncard meta data in bintable.com API\n",
+        "operationId": "binLookup",
+        "parameters": [
+          {
+            "name": "bin",
+            "in": "path",
+            "required": true,
+            "description": "pass the required BIN(Bank Identification Number) code",
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "api_key",
+            "in": "query",
+            "required": true,
+            "description": "The API key, which you can get from bintable.com website.",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "BIN data response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseItem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Your balance is exhausted,or package expired"
+          },
+          "403": {
+            "description": "Invalid API Key"
+          },
+          "422": {
+            "description": "API key is missing"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ResponseItem": {
+        "type": "object",
+        "required": [
+          "data",
+          "message",
+          "result"
+        ],
+        "properties": {
+          "data": {
+            "type": "object"
+          },
+          "message": {
+            "type": "string",
+            "example": "SUCCESS"
+          },
+          "result": {
+            "type": "integer",
+            "example": 200
+          }
+        }
+      }
+    }
+  },
+  "info": {
+    "x-ballerina-display": {
+      "label": "BINTable",
+      "iconPath": "icon.png"
+    },
+    "contact": {
+      "email": "hello@bintable.com"
+    },
+    "description": "This is a generated connector from [BINTable API v1](https:\/\/bintable.com\/get-api) OpenAPI Specification. \nBIN lookup API, the free api service from bintable.com to lookup card information using it's BIN. \nThe service maintains updated database based on the comunity and other third party services to make sure all BINs in the database are accurate and up to date.\n",
+    "x-ballerina-init-description": "The connector initialization doesn't require setting the API credentials.\nCreate a [BINTable Account](https:\/\/bintable.com\/get-api) and obtain the API key.\nSome operations may require passing the token as a parameter.\n",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "title": "BIN Lookup API",
+    "version": "1.0.0-oas3",
+    "x-apisguru-categories": [
+      "financial"
+    ],
+    "x-origin": [
+      {
+        "format": "openapi",
+        "url": "https://bintable.com/api-files/openapi.json",
+        "version": "3.0"
+      }
+    ],
+    "x-providerName": "bintable.com"
+  },
+  "tags": [
+    {
+      "description": "Authorized users with API Key can call this service",
+      "name": "Lookup"
+    },
+    {
+      "description": "Authorized users with API Key can call endpoints under this tag.",
+      "name": "Balance"
+    }
+  ]
+}

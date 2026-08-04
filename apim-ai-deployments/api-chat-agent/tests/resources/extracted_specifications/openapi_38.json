@@ -1,0 +1,51 @@
+{
+    "serviceUrl": "https://api.bintable.com/v1",
+    "tools": [
+        {
+            "name": "balanceLookup",
+            "description": "Get Account balance and expiry",
+            "method": "GET",
+            "path": "/balance",
+            "parameters": {
+                "api_key": {
+                    "location": "query",
+                    "description": "The API key, which you can get from bintable.com website.",
+                    "required": true,
+                    "style": "form",
+                    "explode": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "binLookup",
+            "description": "By passing in the appropriate BIN, you can lookup for\ncard meta data in bintable.com API\n",
+            "method": "GET",
+            "path": "/{bin}",
+            "parameters": {
+                "bin": {
+                    "location": "path",
+                    "description": "pass the required BIN(Bank Identification Number) code",
+                    "required": true,
+                    "style": "simple",
+                    "explode": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api_key": {
+                    "location": "query",
+                    "description": "The API key, which you can get from bintable.com website.",
+                    "required": true,
+                    "style": "form",
+                    "explode": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    ]
+}

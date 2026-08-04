@@ -1,0 +1,304 @@
+{
+    "serviceUrl": "https://v2.api2pdf.com/",
+    "tools": [
+        {
+            "name": "convertWebUrlToPdfGet",
+            "description": "Convert a URL or Web Page to PDF using Headless Chrome on AWS Lambda. This GET request is for convenience and does not support advanced options. Use the POST request for more flexibility.\n### Authorize via Query String Parameter\n**apikey=YOUR-API-KEY**\n### Example\n``` https:\/\/v2018.api2pdf.com\/chrome\/url?url={UrlToConvert}&apikey={YourApiKey} ``` ",
+            "method": "GET",
+            "path": "/chrome/pdf/url",
+            "parameters": {
+                "url": {
+                    "location": "query",
+                    "description": "Url of the page to convert to PDF. Must start with http:// or https://.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "output": {
+                    "location": "query",
+                    "description": "Specify output=json to receive a JSON output. Defaults to PDF file.",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "convertWebUrlToPdfPost",
+            "description": "Convert a URL or Web Page to PDF using Headless Chrome on AWS Lambda..\n### Authorize via Header of Request\n**Authorization: YOUR-API-KEY**",
+            "method": "POST",
+            "path": "/chrome/pdf/url",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "url"
+                    ],
+                    "properties": {
+                        "fileName": {
+                            "type": "string"
+                        },
+                        "inlinePdf": {
+                            "type": "boolean"
+                        },
+                        "options": {
+                            "type": "object",
+                            "properties": {
+                                "landscape": {
+                                    "type": "string"
+                                },
+                                "printBackground": {
+                                    "type": "boolean"
+                                }
+                            }
+                        },
+                        "url": {
+                            "type": "string",
+                            "format": "url"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "convertHtmlToPdf",
+            "description": "Convert HTML to a PDF using Headless Chrome on AWS Lambda.\n### Authorize via Header of Request\n**Authorization: YOUR-API-KEY**",
+            "method": "POST",
+            "path": "/chrome/pdf/html",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "html"
+                    ],
+                    "properties": {
+                        "fileName": {
+                            "type": "string"
+                        },
+                        "html": {
+                            "type": "string",
+                            "format": "html"
+                        },
+                        "inlinePdf": {
+                            "type": "boolean"
+                        },
+                        "options": {
+                            "type": "object",
+                            "properties": {
+                                "landscape": {
+                                    "type": "string"
+                                },
+                                "printBackground": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "mergePdfs",
+            "description": "Merge two or more PDFs together on AWS Lambda.\n### Authorize via Header of Request\n**Authorization: YOUR-API-KEY**",
+            "method": "POST",
+            "path": "/merge",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "urls"
+                    ],
+                    "properties": {
+                        "fileName": {
+                            "type": "string"
+                        },
+                        "inlinePdf": {
+                            "type": "boolean"
+                        },
+                        "urls": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "convertOfficeDocToPdf",
+            "description": "Convert an office document (Word, Excel, Powerpoint) or an image (jpg, gif, png) to a PDF using LibreOffice on AWS Lambda.\n### Authorize via Header of Request\n**Authorization: YOUR-API-KEY**",
+            "method": "POST",
+            "path": "/libreoffice/convert",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "url"
+                    ],
+                    "properties": {
+                        "fileName": {
+                            "type": "string"
+                        },
+                        "inlinePdf": {
+                            "type": "boolean"
+                        },
+                        "url": {
+                            "type": "string",
+                            "format": "url"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "zebra",
+            "description": "See full list of options and documentation [here](https:\/\/www.api2pdf.com\/documentation\/advanced-options-zxing-zebra-crossing-barcodes\/)\n### Authorize via Query String Parameter\n**apikey=YOUR-API-KEY**\n### Example\n``` https:\/\/v2018.api2pdf.com\/zebra?format={format}&apikey={YourApiKey}&value={YourText} ``` ",
+            "method": "GET",
+            "path": "/zebra",
+            "parameters": {
+                "format": {
+                    "location": "query",
+                    "description": "Most common is CODE_39 or QR_CODE",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "value": {
+                    "location": "query",
+                    "description": "Specify the text value you want to convert",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "showlabel": {
+                    "location": "query",
+                    "description": "Show label of text below barcode",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                },
+                "height": {
+                    "location": "query",
+                    "description": "Height of the barcode generated image",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "width": {
+                    "location": "query",
+                    "description": "Width of the barcode generated image",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "convertHtmlToPdfWithWkhtml",
+            "description": "Convert HTML to a PDF using WkHtmlToPdf on AWS Lambda.\n### Authorize via Header of Request\n**Authorization: YOUR-API-KEY**",
+            "method": "POST",
+            "path": "/wkhtml/pdf/html",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "html"
+                    ],
+                    "properties": {
+                        "fileName": {
+                            "type": "string"
+                        },
+                        "html": {
+                            "type": "string",
+                            "format": "html"
+                        },
+                        "inlinePdf": {
+                            "type": "boolean"
+                        },
+                        "options": {
+                            "type": "object",
+                            "properties": {
+                                "orientation": {
+                                    "type": "string"
+                                },
+                                "pageSize": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "convertWebUrlToPdfWithWkhtmlGet",
+            "description": "Convert a URL or Web Page to PDF using WkHtmlToPdf on AWS Lambda. This GET request is for convenience and does not support advanced options. Use the POST request for more flexibility.\n### Authorize via Query String Parameter\n**apikey=YOUR-API-KEY**\n### Example\n``` https:\/\/v2018.api2pdf.com\/wkhtmltopdf\/url?url={UrlToConvert}&apikey={YourApiKey} ``` ",
+            "method": "GET",
+            "path": "/wkhtml/pdf/url",
+            "parameters": {
+                "url": {
+                    "location": "query",
+                    "description": "Url of the page to convert to PDF. Must start with http:// or https://.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "output": {
+                    "location": "query",
+                    "description": "Specify output=json to receive a JSON output. Defaults to PDF file.",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "convertWebUrlToPdfWithWkhtmlPost",
+            "description": "Convert a URL or Web Page to PDF using WkHtmlToPdf on AWS Lambda..\n### Authorize via Header of Request\n**Authorization: YOUR-API-KEY**",
+            "method": "POST",
+            "path": "/wkhtml/pdf/url",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "url"
+                    ],
+                    "properties": {
+                        "fileName": {
+                            "type": "string"
+                        },
+                        "inlinePdf": {
+                            "type": "boolean"
+                        },
+                        "options": {
+                            "type": "object",
+                            "properties": {
+                                "orientation": {
+                                    "type": "string"
+                                },
+                                "pageSize": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "url": {
+                            "type": "string",
+                            "format": "url"
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

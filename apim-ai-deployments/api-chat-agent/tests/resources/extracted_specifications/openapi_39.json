@@ -1,0 +1,1461 @@
+{
+    "serviceUrl": "https://stats.bis.org/api/v1",
+    "tools": [
+        {
+            "name": "getAllowedConstraints",
+            "description": "Get allowed constraints",
+            "method": "GET",
+            "path": "/allowedconstraint/{agencyID}/{resourceID}/{version}",
+            "parameters": {
+                "agencyID": {
+                    "location": "path",
+                    "description": "The agency maintaining the artefact to be returned. \n\nIt is possible to set more than one agency, using `+` as separator (e.g. BIS+ECB).\n\nThe keyword `all` can be used to indicate that artefacts maintained by any maintenance agency should be returned.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(([A-Za-z][A-Za-z\\d_-]*)(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+(\\+([A-Za-z][A-Za-z\\d_-]*(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+)*$"
+                    }
+                },
+                "resourceID": {
+                    "location": "path",
+                    "description": "The id of the artefact to be returned.\n\nIt is possible to set more than one id, using `+` as separator (e.g. CL_FREQ+CL_CONF_STATUS).\n\nThe keyword `all` can be used to indicate that any artefact of the specified resource type, {agencyID} and {version} should be returned. \n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^([A-Za-z\\d_@$-]+(\\+[A-Za-z\\d_@$-]+)*)*$"
+                    }
+                },
+                "version": {
+                    "location": "path",
+                    "description": "The version of the artefact to be returned. \n\nIt is possible to set more than one version, using `+` as separator (e.g. 1.0+2.1).\n\nThe keyword `all` can be used to return all versions of the matching resource.\n\nThe keyword `latest` can be used to return the latest production version of the matching resource.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(all|latest|[\\d]+(\\.[\\d]+)*(\\+[\\d]+(\\.[\\d]+)*)*)$"
+                    }
+                },
+                "references": {
+                    "location": "query",
+                    "description": "Instructs the web service to return (or not) the artefacts referenced by the artefact to be returned.\n\nPossible values are: \n\n* `none`: No references will be returned\n* `parents`: Returns the artefacts that use the artefact matching the query\n* `parentsandsiblings`: Returns the artefacts that use the artefact matching the query, as well as the artefacts referenced by these artefacts\n* `children`: Returns the artefacts referenced by the artefact to be returned\n* `descendants`: References of references, up to any level, will be returned\n* `all`: The combination of parentsandsiblings and descendants\n* In addition, a concrete type of resource may also be used (for example, references=codelist).\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "none",
+                            "parents",
+                            "parentsandsiblings",
+                            "children",
+                            "descendants",
+                            "all",
+                            "datastructure",
+                            "categoryscheme",
+                            "conceptscheme",
+                            "codelist",
+                            "hierarchicalcodelist",
+                            "agencyscheme",
+                            "dataflow",
+                            "provisionagreement",
+                            "categorisation",
+                            "contentconstraint",
+                            "actualconstraint",
+                            "allowedconstraint"
+                        ]
+                    }
+                },
+                "detail": {
+                    "location": "query",
+                    "description": "The amount of information to be returned. \n\nPossible values are: \n\n* `allstubs`: All artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencestubs`: Referenced artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencepartial`: Referenced item schemes should only include items used by the artefact to be returned. For example, a concept scheme would only contain the concepts used in a DSD, and its isPartial flag would be set to `true`\n* `allcompletestubs`: All artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `referencecompletestubs`: Referenced artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `full`: All available information for all artefacts should be returned\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "allstubs",
+                            "referencestubs",
+                            "referencepartial",
+                            "allcompletestubs",
+                            "referencecompletestubs",
+                            "full"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "getConceptSchemes",
+            "description": "Get concept schemes",
+            "method": "GET",
+            "path": "/conceptscheme/{agencyID}/{resourceID}/{version}",
+            "parameters": {
+                "agencyID": {
+                    "location": "path",
+                    "description": "The agency maintaining the artefact to be returned. \n\nIt is possible to set more than one agency, using `+` as separator (e.g. BIS+ECB).\n\nThe keyword `all` can be used to indicate that artefacts maintained by any maintenance agency should be returned.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(([A-Za-z][A-Za-z\\d_-]*)(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+(\\+([A-Za-z][A-Za-z\\d_-]*(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+)*$"
+                    }
+                },
+                "resourceID": {
+                    "location": "path",
+                    "description": "The id of the artefact to be returned.\n\nIt is possible to set more than one id, using `+` as separator (e.g. CL_FREQ+CL_CONF_STATUS).\n\nThe keyword `all` can be used to indicate that any artefact of the specified resource type, {agencyID} and {version} should be returned. \n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^([A-Za-z\\d_@$-]+(\\+[A-Za-z\\d_@$-]+)*)*$"
+                    }
+                },
+                "version": {
+                    "location": "path",
+                    "description": "The version of the artefact to be returned. \n\nIt is possible to set more than one version, using `+` as separator (e.g. 1.0+2.1).\n\nThe keyword `all` can be used to return all versions of the matching resource.\n\nThe keyword `latest` can be used to return the latest production version of the matching resource.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(all|latest|[\\d]+(\\.[\\d]+)*(\\+[\\d]+(\\.[\\d]+)*)*)$"
+                    }
+                },
+                "references": {
+                    "location": "query",
+                    "description": "Instructs the web service to return (or not) the artefacts referenced by the artefact to be returned.\n\nPossible values are: \n\n* `none`: No references will be returned\n* `parents`: Returns the artefacts that use the artefact matching the query\n* `parentsandsiblings`: Returns the artefacts that use the artefact matching the query, as well as the artefacts referenced by these artefacts\n* `children`: Returns the artefacts referenced by the artefact to be returned\n* `descendants`: References of references, up to any level, will be returned\n* `all`: The combination of parentsandsiblings and descendants\n* In addition, a concrete type of resource may also be used (for example, references=codelist).\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "none",
+                            "parents",
+                            "parentsandsiblings",
+                            "children",
+                            "descendants",
+                            "all",
+                            "datastructure",
+                            "categoryscheme",
+                            "conceptscheme",
+                            "codelist",
+                            "hierarchicalcodelist",
+                            "agencyscheme",
+                            "dataflow",
+                            "provisionagreement",
+                            "categorisation",
+                            "contentconstraint",
+                            "actualconstraint",
+                            "allowedconstraint"
+                        ]
+                    }
+                },
+                "detail": {
+                    "location": "query",
+                    "description": "The amount of information to be returned. \n\nPossible values are: \n\n* `allstubs`: All artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencestubs`: Referenced artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencepartial`: Referenced item schemes should only include items used by the artefact to be returned. For example, a concept scheme would only contain the concepts used in a DSD, and its isPartial flag would be set to `true`\n* `allcompletestubs`: All artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `referencecompletestubs`: Referenced artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `full`: All available information for all artefacts should be returned\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "allstubs",
+                            "referencestubs",
+                            "referencepartial",
+                            "allcompletestubs",
+                            "referencecompletestubs",
+                            "full"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "getCodes",
+            "description": "Get codes",
+            "method": "GET",
+            "path": "/codelist/{agencyID}/{resourceID}/{version}/{itemID}",
+            "parameters": {
+                "agencyID": {
+                    "location": "path",
+                    "description": "The agency maintaining the artefact to be returned. \n\nIt is possible to set more than one agency, using `+` as separator (e.g. BIS+ECB).\n\nThe keyword `all` can be used to indicate that artefacts maintained by any maintenance agency should be returned.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(([A-Za-z][A-Za-z\\d_-]*)(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+(\\+([A-Za-z][A-Za-z\\d_-]*(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+)*$"
+                    }
+                },
+                "resourceID": {
+                    "location": "path",
+                    "description": "The id of the artefact to be returned.\n\nIt is possible to set more than one id, using `+` as separator (e.g. CL_FREQ+CL_CONF_STATUS).\n\nThe keyword `all` can be used to indicate that any artefact of the specified resource type, {agencyID} and {version} should be returned. \n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^([A-Za-z\\d_@$-]+(\\+[A-Za-z\\d_@$-]+)*)*$"
+                    }
+                },
+                "version": {
+                    "location": "path",
+                    "description": "The version of the artefact to be returned. \n\nIt is possible to set more than one version, using `+` as separator (e.g. 1.0+2.1).\n\nThe keyword `all` can be used to return all versions of the matching resource.\n\nThe keyword `latest` can be used to return the latest production version of the matching resource.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(all|latest|[\\d]+(\\.[\\d]+)*(\\+[\\d]+(\\.[\\d]+)*)*)$"
+                    }
+                },
+                "itemID": {
+                    "location": "path",
+                    "description": "The id of the item to be returned. \n\nIt is possible to set more than one id, using `+` as separator (e.g. A+Q+M).\n\nThe keyword `all` can be used to return all items of the matching resource.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z\\d_@$-]+(\\.[A-Za-z\\d_@$-]+)*(\\+[A-Za-z\\d_@$-]+(\\.[A-Za-z\\d_@$-]+)*)*$"
+                    }
+                },
+                "references": {
+                    "location": "query",
+                    "description": "Instructs the web service to return (or not) the artefacts referenced by the artefact to be returned.\n\nPossible values are: \n\n* `none`: No references will be returned\n* `parents`: Returns the artefacts that use the artefact matching the query\n* `parentsandsiblings`: Returns the artefacts that use the artefact matching the query, as well as the artefacts referenced by these artefacts\n* `children`: Returns the artefacts referenced by the artefact to be returned\n* `descendants`: References of references, up to any level, will be returned\n* `all`: The combination of parentsandsiblings and descendants\n* In addition, a concrete type of resource may also be used (for example, references=codelist).\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "none",
+                            "parents",
+                            "parentsandsiblings",
+                            "children",
+                            "descendants",
+                            "all",
+                            "datastructure",
+                            "categoryscheme",
+                            "conceptscheme",
+                            "codelist",
+                            "hierarchicalcodelist",
+                            "agencyscheme",
+                            "dataflow",
+                            "provisionagreement",
+                            "categorisation",
+                            "contentconstraint",
+                            "actualconstraint",
+                            "allowedconstraint"
+                        ]
+                    }
+                },
+                "detail": {
+                    "location": "query",
+                    "description": "The amount of information to be returned. \n\nPossible values are: \n\n* `allstubs`: All artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencestubs`: Referenced artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencepartial`: Referenced item schemes should only include items used by the artefact to be returned. For example, a concept scheme would only contain the concepts used in a DSD, and its isPartial flag would be set to `true`\n* `allcompletestubs`: All artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `referencecompletestubs`: Referenced artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `full`: All available information for all artefacts should be returned\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "allstubs",
+                            "referencestubs",
+                            "referencepartial",
+                            "allcompletestubs",
+                            "referencecompletestubs",
+                            "full"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "getCodelists",
+            "description": "Get codelists",
+            "method": "GET",
+            "path": "/codelist/{agencyID}/{resourceID}/{version}",
+            "parameters": {
+                "agencyID": {
+                    "location": "path",
+                    "description": "The agency maintaining the artefact to be returned. \n\nIt is possible to set more than one agency, using `+` as separator (e.g. BIS+ECB).\n\nThe keyword `all` can be used to indicate that artefacts maintained by any maintenance agency should be returned.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(([A-Za-z][A-Za-z\\d_-]*)(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+(\\+([A-Za-z][A-Za-z\\d_-]*(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+)*$"
+                    }
+                },
+                "resourceID": {
+                    "location": "path",
+                    "description": "The id of the artefact to be returned.\n\nIt is possible to set more than one id, using `+` as separator (e.g. CL_FREQ+CL_CONF_STATUS).\n\nThe keyword `all` can be used to indicate that any artefact of the specified resource type, {agencyID} and {version} should be returned. \n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^([A-Za-z\\d_@$-]+(\\+[A-Za-z\\d_@$-]+)*)*$"
+                    }
+                },
+                "version": {
+                    "location": "path",
+                    "description": "The version of the artefact to be returned. \n\nIt is possible to set more than one version, using `+` as separator (e.g. 1.0+2.1).\n\nThe keyword `all` can be used to return all versions of the matching resource.\n\nThe keyword `latest` can be used to return the latest production version of the matching resource.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(all|latest|[\\d]+(\\.[\\d]+)*(\\+[\\d]+(\\.[\\d]+)*)*)$"
+                    }
+                },
+                "references": {
+                    "location": "query",
+                    "description": "Instructs the web service to return (or not) the artefacts referenced by the artefact to be returned.\n\nPossible values are: \n\n* `none`: No references will be returned\n* `parents`: Returns the artefacts that use the artefact matching the query\n* `parentsandsiblings`: Returns the artefacts that use the artefact matching the query, as well as the artefacts referenced by these artefacts\n* `children`: Returns the artefacts referenced by the artefact to be returned\n* `descendants`: References of references, up to any level, will be returned\n* `all`: The combination of parentsandsiblings and descendants\n* In addition, a concrete type of resource may also be used (for example, references=codelist).\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "none",
+                            "parents",
+                            "parentsandsiblings",
+                            "children",
+                            "descendants",
+                            "all",
+                            "datastructure",
+                            "categoryscheme",
+                            "conceptscheme",
+                            "codelist",
+                            "hierarchicalcodelist",
+                            "agencyscheme",
+                            "dataflow",
+                            "provisionagreement",
+                            "categorisation",
+                            "contentconstraint",
+                            "actualconstraint",
+                            "allowedconstraint"
+                        ]
+                    }
+                },
+                "detail": {
+                    "location": "query",
+                    "description": "The amount of information to be returned. \n\nPossible values are: \n\n* `allstubs`: All artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencestubs`: Referenced artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencepartial`: Referenced item schemes should only include items used by the artefact to be returned. For example, a concept scheme would only contain the concepts used in a DSD, and its isPartial flag would be set to `true`\n* `allcompletestubs`: All artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `referencecompletestubs`: Referenced artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `full`: All available information for all artefacts should be returned\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "allstubs",
+                            "referencestubs",
+                            "referencepartial",
+                            "allcompletestubs",
+                            "referencecompletestubs",
+                            "full"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "getData",
+            "description": "Get data",
+            "method": "GET",
+            "path": "/data/{flow}/{key}/all",
+            "parameters": {
+                "flow": {
+                    "location": "path",
+                    "description": "The **statistical domain** (aka dataflow) of the data to be returned.\n\nExamples:\n\n* `BISWEB_EERDATAFLOW`: The ID of the domain\n* `BIS,BISWEB_EERDATAFLOW`: The BISWEB_EERDATAFLOW domain, maintained by the BIS\n* `BIS,BISWEB_EERDATAFLOW,1.0`: Version 1.0 of the BISWEB_EERDATAFLOW domain, maintained by the BIS\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^([a-zA-Z][a-zA-Z\\d_-]*(\\.[a-zA-Z][a-zA-Z\\d_-]*)*,)?[a-zA-Z\\d_@$-]+(,(latest|(\\d+(\\.\\d+)*)))?$"
+                    }
+                },
+                "key": {
+                    "location": "path",
+                    "description": "The (possibly partial) **key identifying the data to be returned**. \n\nThe keyword `all` can be used to indicate that all data belonging to the specified dataflow and provided by the specified provider must be returned.\n\nThe examples below are based on the following key: Frequency, Type, Basket, Country.\n * `M.N.B.CH`: Full key, matching exactly one series, i.e. the monthly (`M`) nominal rate (`N`) in the broad basket (`B`) for Switzerland (`CH`).\n * `M.N+R.B.CH`: Retrieves both nominal and real rates (`N+R`), matching exactly two series.\n * `M.N.B.`: The last dimension is wildcarded, and it will therefore match all countries.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^([\\.A-Za-z\\d_@$-]+(\\+[A-Za-z\\d_@$-]+)*)*$"
+                    }
+                },
+                "startPeriod": {
+                    "location": "query",
+                    "description": "The start of the period for which results should be supplied (inclusive).\n\nCan be expressed using 8601 dates or SDMX reporting periods. \n\nExamples:\n* `2000`: Year (ISO 8601)\n* `2000-01`: Month (ISO 8601)\n* `2000-01-01`: Date (ISO 8601)\n* `2000-Q1`: Quarter (SDMX)\n* `2000-W01`: Week (SDMX)\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^\\d{4}-?((\\d{2}(-\\d{2})?)|A1|S[1|2]|Q[1-4]|T[1-3]|M(0[1-9]|1[0-2])|W(0[1-9]|[1-4][0-9]|5[0-3])|D(0[0-9][1-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-6]))?$"
+                    }
+                },
+                "endPeriod": {
+                    "location": "query",
+                    "description": "The end of the period for which results should be supplied (inclusive).\n\nCan be expressed using 8601 dates or SDMX reporting periods. \n\nExamples:\n* `2000`: Year (ISO 8601)\n* `2000-01`: Month (ISO 8601)\n* `2000-01-01`: Date (ISO 8601)\n* `2000-S1`: Semester (SDMX)\n* `2000-D001`: Day (SDMX)\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^\\d{4}-?((\\d{2}(-\\d{2})?)|A1|S[1|2]|Q[1-4]|T[1-3]|M(0[1-9]|1[0-2])|W(0[1-9]|[1-4][0-9]|5[0-3])|D(0[0-9][1-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-6]))?$"
+                    }
+                },
+                "firstNObservations": {
+                    "location": "query",
+                    "description": "The maximum number of observations to be returned starting from the oldest one\n",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "lastNObservations": {
+                    "location": "query",
+                    "description": "The maximum number of observations to be returned starting from the most recent one\n",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "detail": {
+                    "location": "query",
+                    "description": "The **amount of information** to be returned. \n\nPossible options are: \n\n* `full`: All data and documentation\n* `dataonly`: Everything except attributes\n* `serieskeysonly`: The series keys. This is useful to return the series that match a certain query, without returning the actual data (e.g. overview page)\n* `nodata`: The series, including attributes and annotations, without observations.\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "full",
+                            "dataonly",
+                            "serieskeysonly",
+                            "nodata"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "getDataAvailabilityInformation",
+            "description": "Get information about data availability",
+            "method": "GET",
+            "path": "/availableconstraint/{flow}/{key}/all/{componentID}",
+            "parameters": {
+                "flow": {
+                    "location": "path",
+                    "description": "The **statistical domain** (aka dataflow) of the data to be returned.\n\nExamples:\n\n* `BISWEB_EERDATAFLOW`: The ID of the domain\n* `BIS,BISWEB_EERDATAFLOW`: The BISWEB_EERDATAFLOW domain, maintained by the BIS\n* `BIS,BISWEB_EERDATAFLOW,1.0`: Version 1.0 of the BISWEB_EERDATAFLOW domain, maintained by the BIS\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^([a-zA-Z][a-zA-Z\\d_-]*(\\.[a-zA-Z][a-zA-Z\\d_-]*)*,)?[a-zA-Z\\d_@$-]+(,(latest|(\\d+(\\.\\d+)*)))?$"
+                    }
+                },
+                "key": {
+                    "location": "path",
+                    "description": "The (possibly partial) **key identifying the data to be returned**. \n\nThe keyword `all` can be used to indicate that all data belonging to the specified dataflow and provided by the specified provider must be returned.\n\nThe examples below are based on the following key: Frequency, Type, Basket, Country.\n * `M.N.B.CH`: Full key, matching exactly one series, i.e. the monthly (`M`) nominal rate (`N`) in the broad basket (`B`) for Switzerland (`CH`).\n * `M.N+R.B.CH`: Retrieves both nominal and real rates (`N+R`), matching exactly two series.\n * `M.N.B.`: The last dimension is wildcarded, and it will therefore match all countries.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^([\\.A-Za-z\\d_@$-]+(\\+[A-Za-z\\d_@$-]+)*)*$"
+                    }
+                },
+                "componentID": {
+                    "location": "path",
+                    "description": "The id of the Dimension for which to obtain availability information about. Use all to indicate that data availability should be provided for all dimensions.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z][A-Za-z\\d_-]*$"
+                    }
+                },
+                "mode": {
+                    "location": "query",
+                    "description": "Instructs the web service to return a ContentConstraint which defines a Cube Region containing values which will be returned by executing the query (mode=\"exact\") vs a Cube Region showing what values remain valid selections that could be added to the data query (mode=\"available\"). A valid selection is one which results in one or more series existing for the selected value, based on the current data query selection state defined by the current path parameters.\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "exact",
+                            "available"
+                        ]
+                    }
+                },
+                "references": {
+                    "location": "query",
+                    "description": "Instructs the web service to return (or not) the artefacts referenced by the ContentConstraint to be returned.\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "none",
+                            "all",
+                            "datastructure",
+                            "conceptscheme",
+                            "codelist",
+                            "dataproviderscheme",
+                            "dataflow"
+                        ]
+                    }
+                },
+                "startPeriod": {
+                    "location": "query",
+                    "description": "The start of the period for which results should be supplied (inclusive).\n\nCan be expressed using 8601 dates or SDMX reporting periods. \n\nExamples:\n* `2000`: Year (ISO 8601)\n* `2000-01`: Month (ISO 8601)\n* `2000-01-01`: Date (ISO 8601)\n* `2000-Q1`: Quarter (SDMX)\n* `2000-W01`: Week (SDMX)\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^\\d{4}-?((\\d{2}(-\\d{2})?)|A1|S[1|2]|Q[1-4]|T[1-3]|M(0[1-9]|1[0-2])|W(0[1-9]|[1-4][0-9]|5[0-3])|D(0[0-9][1-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-6]))?$"
+                    }
+                },
+                "endPeriod": {
+                    "location": "query",
+                    "description": "The end of the period for which results should be supplied (inclusive).\n\nCan be expressed using 8601 dates or SDMX reporting periods. \n\nExamples:\n* `2000`: Year (ISO 8601)\n* `2000-01`: Month (ISO 8601)\n* `2000-01-01`: Date (ISO 8601)\n* `2000-S1`: Semester (SDMX)\n* `2000-D001`: Day (SDMX)\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^\\d{4}-?((\\d{2}(-\\d{2})?)|A1|S[1|2]|Q[1-4]|T[1-3]|M(0[1-9]|1[0-2])|W(0[1-9]|[1-4][0-9]|5[0-3])|D(0[0-9][1-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-6]))?$"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getCategorisations",
+            "description": "Get categorisations",
+            "method": "GET",
+            "path": "/categorisation/{agencyID}/{resourceID}/{version}",
+            "parameters": {
+                "agencyID": {
+                    "location": "path",
+                    "description": "The agency maintaining the artefact to be returned. \n\nIt is possible to set more than one agency, using `+` as separator (e.g. BIS+ECB).\n\nThe keyword `all` can be used to indicate that artefacts maintained by any maintenance agency should be returned.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(([A-Za-z][A-Za-z\\d_-]*)(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+(\\+([A-Za-z][A-Za-z\\d_-]*(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+)*$"
+                    }
+                },
+                "resourceID": {
+                    "location": "path",
+                    "description": "The id of the artefact to be returned.\n\nIt is possible to set more than one id, using `+` as separator (e.g. CL_FREQ+CL_CONF_STATUS).\n\nThe keyword `all` can be used to indicate that any artefact of the specified resource type, {agencyID} and {version} should be returned. \n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^([A-Za-z\\d_@$-]+(\\+[A-Za-z\\d_@$-]+)*)*$"
+                    }
+                },
+                "version": {
+                    "location": "path",
+                    "description": "The version of the artefact to be returned. \n\nIt is possible to set more than one version, using `+` as separator (e.g. 1.0+2.1).\n\nThe keyword `all` can be used to return all versions of the matching resource.\n\nThe keyword `latest` can be used to return the latest production version of the matching resource.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(all|latest|[\\d]+(\\.[\\d]+)*(\\+[\\d]+(\\.[\\d]+)*)*)$"
+                    }
+                },
+                "references": {
+                    "location": "query",
+                    "description": "Instructs the web service to return (or not) the artefacts referenced by the artefact to be returned.\n\nPossible values are: \n\n* `none`: No references will be returned\n* `parents`: Returns the artefacts that use the artefact matching the query\n* `parentsandsiblings`: Returns the artefacts that use the artefact matching the query, as well as the artefacts referenced by these artefacts\n* `children`: Returns the artefacts referenced by the artefact to be returned\n* `descendants`: References of references, up to any level, will be returned\n* `all`: The combination of parentsandsiblings and descendants\n* In addition, a concrete type of resource may also be used (for example, references=codelist).\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "none",
+                            "parents",
+                            "parentsandsiblings",
+                            "children",
+                            "descendants",
+                            "all",
+                            "datastructure",
+                            "categoryscheme",
+                            "conceptscheme",
+                            "codelist",
+                            "hierarchicalcodelist",
+                            "agencyscheme",
+                            "dataflow",
+                            "provisionagreement",
+                            "categorisation",
+                            "contentconstraint",
+                            "actualconstraint",
+                            "allowedconstraint"
+                        ]
+                    }
+                },
+                "detail": {
+                    "location": "query",
+                    "description": "The amount of information to be returned. \n\nPossible values are: \n\n* `allstubs`: All artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencestubs`: Referenced artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencepartial`: Referenced item schemes should only include items used by the artefact to be returned. For example, a concept scheme would only contain the concepts used in a DSD, and its isPartial flag would be set to `true`\n* `allcompletestubs`: All artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `referencecompletestubs`: Referenced artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `full`: All available information for all artefacts should be returned\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "allstubs",
+                            "referencestubs",
+                            "referencepartial",
+                            "allcompletestubs",
+                            "referencecompletestubs",
+                            "full"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "getHierarchies",
+            "description": "Get hierarchies",
+            "method": "GET",
+            "path": "/hierarchicalcodelist/{agencyID}/{resourceID}/{version}/{itemID}",
+            "parameters": {
+                "agencyID": {
+                    "location": "path",
+                    "description": "The agency maintaining the artefact to be returned. \n\nIt is possible to set more than one agency, using `+` as separator (e.g. BIS+ECB).\n\nThe keyword `all` can be used to indicate that artefacts maintained by any maintenance agency should be returned.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(([A-Za-z][A-Za-z\\d_-]*)(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+(\\+([A-Za-z][A-Za-z\\d_-]*(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+)*$"
+                    }
+                },
+                "resourceID": {
+                    "location": "path",
+                    "description": "The id of the artefact to be returned.\n\nIt is possible to set more than one id, using `+` as separator (e.g. CL_FREQ+CL_CONF_STATUS).\n\nThe keyword `all` can be used to indicate that any artefact of the specified resource type, {agencyID} and {version} should be returned. \n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^([A-Za-z\\d_@$-]+(\\+[A-Za-z\\d_@$-]+)*)*$"
+                    }
+                },
+                "version": {
+                    "location": "path",
+                    "description": "The version of the artefact to be returned. \n\nIt is possible to set more than one version, using `+` as separator (e.g. 1.0+2.1).\n\nThe keyword `all` can be used to return all versions of the matching resource.\n\nThe keyword `latest` can be used to return the latest production version of the matching resource.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(all|latest|[\\d]+(\\.[\\d]+)*(\\+[\\d]+(\\.[\\d]+)*)*)$"
+                    }
+                },
+                "itemID": {
+                    "location": "path",
+                    "description": "The id of the item to be returned. \n\nIt is possible to set more than one id, using `+` as separator (e.g. A+Q+M).\n\nThe keyword `all` can be used to return all items of the matching resource.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z\\d_@$-]+(\\.[A-Za-z\\d_@$-]+)*(\\+[A-Za-z\\d_@$-]+(\\.[A-Za-z\\d_@$-]+)*)*$"
+                    }
+                },
+                "references": {
+                    "location": "query",
+                    "description": "Instructs the web service to return (or not) the artefacts referenced by the artefact to be returned.\n\nPossible values are: \n\n* `none`: No references will be returned\n* `parents`: Returns the artefacts that use the artefact matching the query\n* `parentsandsiblings`: Returns the artefacts that use the artefact matching the query, as well as the artefacts referenced by these artefacts\n* `children`: Returns the artefacts referenced by the artefact to be returned\n* `descendants`: References of references, up to any level, will be returned\n* `all`: The combination of parentsandsiblings and descendants\n* In addition, a concrete type of resource may also be used (for example, references=codelist).\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "none",
+                            "parents",
+                            "parentsandsiblings",
+                            "children",
+                            "descendants",
+                            "all",
+                            "datastructure",
+                            "categoryscheme",
+                            "conceptscheme",
+                            "codelist",
+                            "hierarchicalcodelist",
+                            "agencyscheme",
+                            "dataflow",
+                            "provisionagreement",
+                            "categorisation",
+                            "contentconstraint",
+                            "actualconstraint",
+                            "allowedconstraint"
+                        ]
+                    }
+                },
+                "detail": {
+                    "location": "query",
+                    "description": "The amount of information to be returned. \n\nPossible values are: \n\n* `allstubs`: All artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencestubs`: Referenced artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencepartial`: Referenced item schemes should only include items used by the artefact to be returned. For example, a concept scheme would only contain the concepts used in a DSD, and its isPartial flag would be set to `true`\n* `allcompletestubs`: All artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `referencecompletestubs`: Referenced artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `full`: All available information for all artefacts should be returned\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "allstubs",
+                            "referencestubs",
+                            "referencepartial",
+                            "allcompletestubs",
+                            "referencecompletestubs",
+                            "full"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "getContentConstraints",
+            "description": "Get content constraints",
+            "method": "GET",
+            "path": "/contentconstraint/{agencyID}/{resourceID}/{version}",
+            "parameters": {
+                "agencyID": {
+                    "location": "path",
+                    "description": "The agency maintaining the artefact to be returned. \n\nIt is possible to set more than one agency, using `+` as separator (e.g. BIS+ECB).\n\nThe keyword `all` can be used to indicate that artefacts maintained by any maintenance agency should be returned.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(([A-Za-z][A-Za-z\\d_-]*)(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+(\\+([A-Za-z][A-Za-z\\d_-]*(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+)*$"
+                    }
+                },
+                "resourceID": {
+                    "location": "path",
+                    "description": "The id of the artefact to be returned.\n\nIt is possible to set more than one id, using `+` as separator (e.g. CL_FREQ+CL_CONF_STATUS).\n\nThe keyword `all` can be used to indicate that any artefact of the specified resource type, {agencyID} and {version} should be returned. \n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^([A-Za-z\\d_@$-]+(\\+[A-Za-z\\d_@$-]+)*)*$"
+                    }
+                },
+                "version": {
+                    "location": "path",
+                    "description": "The version of the artefact to be returned. \n\nIt is possible to set more than one version, using `+` as separator (e.g. 1.0+2.1).\n\nThe keyword `all` can be used to return all versions of the matching resource.\n\nThe keyword `latest` can be used to return the latest production version of the matching resource.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(all|latest|[\\d]+(\\.[\\d]+)*(\\+[\\d]+(\\.[\\d]+)*)*)$"
+                    }
+                },
+                "references": {
+                    "location": "query",
+                    "description": "Instructs the web service to return (or not) the artefacts referenced by the artefact to be returned.\n\nPossible values are: \n\n* `none`: No references will be returned\n* `parents`: Returns the artefacts that use the artefact matching the query\n* `parentsandsiblings`: Returns the artefacts that use the artefact matching the query, as well as the artefacts referenced by these artefacts\n* `children`: Returns the artefacts referenced by the artefact to be returned\n* `descendants`: References of references, up to any level, will be returned\n* `all`: The combination of parentsandsiblings and descendants\n* In addition, a concrete type of resource may also be used (for example, references=codelist).\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "none",
+                            "parents",
+                            "parentsandsiblings",
+                            "children",
+                            "descendants",
+                            "all",
+                            "datastructure",
+                            "categoryscheme",
+                            "conceptscheme",
+                            "codelist",
+                            "hierarchicalcodelist",
+                            "agencyscheme",
+                            "dataflow",
+                            "provisionagreement",
+                            "categorisation",
+                            "contentconstraint",
+                            "actualconstraint",
+                            "allowedconstraint"
+                        ]
+                    }
+                },
+                "detail": {
+                    "location": "query",
+                    "description": "The amount of information to be returned. \n\nPossible values are: \n\n* `allstubs`: All artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencestubs`: Referenced artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencepartial`: Referenced item schemes should only include items used by the artefact to be returned. For example, a concept scheme would only contain the concepts used in a DSD, and its isPartial flag would be set to `true`\n* `allcompletestubs`: All artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `referencecompletestubs`: Referenced artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `full`: All available information for all artefacts should be returned\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "allstubs",
+                            "referencestubs",
+                            "referencepartial",
+                            "allcompletestubs",
+                            "referencecompletestubs",
+                            "full"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "getCategorySchemes",
+            "description": "Get category schemes",
+            "method": "GET",
+            "path": "/categoryscheme/{agencyID}/{resourceID}/{version}",
+            "parameters": {
+                "agencyID": {
+                    "location": "path",
+                    "description": "The agency maintaining the artefact to be returned. \n\nIt is possible to set more than one agency, using `+` as separator (e.g. BIS+ECB).\n\nThe keyword `all` can be used to indicate that artefacts maintained by any maintenance agency should be returned.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(([A-Za-z][A-Za-z\\d_-]*)(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+(\\+([A-Za-z][A-Za-z\\d_-]*(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+)*$"
+                    }
+                },
+                "resourceID": {
+                    "location": "path",
+                    "description": "The id of the artefact to be returned.\n\nIt is possible to set more than one id, using `+` as separator (e.g. CL_FREQ+CL_CONF_STATUS).\n\nThe keyword `all` can be used to indicate that any artefact of the specified resource type, {agencyID} and {version} should be returned. \n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^([A-Za-z\\d_@$-]+(\\+[A-Za-z\\d_@$-]+)*)*$"
+                    }
+                },
+                "version": {
+                    "location": "path",
+                    "description": "The version of the artefact to be returned. \n\nIt is possible to set more than one version, using `+` as separator (e.g. 1.0+2.1).\n\nThe keyword `all` can be used to return all versions of the matching resource.\n\nThe keyword `latest` can be used to return the latest production version of the matching resource.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(all|latest|[\\d]+(\\.[\\d]+)*(\\+[\\d]+(\\.[\\d]+)*)*)$"
+                    }
+                },
+                "references": {
+                    "location": "query",
+                    "description": "Instructs the web service to return (or not) the artefacts referenced by the artefact to be returned.\n\nPossible values are: \n\n* `none`: No references will be returned\n* `parents`: Returns the artefacts that use the artefact matching the query\n* `parentsandsiblings`: Returns the artefacts that use the artefact matching the query, as well as the artefacts referenced by these artefacts\n* `children`: Returns the artefacts referenced by the artefact to be returned\n* `descendants`: References of references, up to any level, will be returned\n* `all`: The combination of parentsandsiblings and descendants\n* In addition, a concrete type of resource may also be used (for example, references=codelist).\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "none",
+                            "parents",
+                            "parentsandsiblings",
+                            "children",
+                            "descendants",
+                            "all",
+                            "datastructure",
+                            "categoryscheme",
+                            "conceptscheme",
+                            "codelist",
+                            "hierarchicalcodelist",
+                            "agencyscheme",
+                            "dataflow",
+                            "provisionagreement",
+                            "categorisation",
+                            "contentconstraint",
+                            "actualconstraint",
+                            "allowedconstraint"
+                        ]
+                    }
+                },
+                "detail": {
+                    "location": "query",
+                    "description": "The amount of information to be returned. \n\nPossible values are: \n\n* `allstubs`: All artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencestubs`: Referenced artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencepartial`: Referenced item schemes should only include items used by the artefact to be returned. For example, a concept scheme would only contain the concepts used in a DSD, and its isPartial flag would be set to `true`\n* `allcompletestubs`: All artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `referencecompletestubs`: Referenced artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `full`: All available information for all artefacts should be returned\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "allstubs",
+                            "referencestubs",
+                            "referencepartial",
+                            "allcompletestubs",
+                            "referencecompletestubs",
+                            "full"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "getStructures",
+            "description": "Get structures",
+            "method": "GET",
+            "path": "/structure/{agencyID}/{resourceID}/{version}",
+            "parameters": {
+                "agencyID": {
+                    "location": "path",
+                    "description": "The agency maintaining the artefact to be returned. \n\nIt is possible to set more than one agency, using `+` as separator (e.g. BIS+ECB).\n\nThe keyword `all` can be used to indicate that artefacts maintained by any maintenance agency should be returned.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(([A-Za-z][A-Za-z\\d_-]*)(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+(\\+([A-Za-z][A-Za-z\\d_-]*(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+)*$"
+                    }
+                },
+                "resourceID": {
+                    "location": "path",
+                    "description": "The id of the artefact to be returned.\n\nIt is possible to set more than one id, using `+` as separator (e.g. CL_FREQ+CL_CONF_STATUS).\n\nThe keyword `all` can be used to indicate that any artefact of the specified resource type, {agencyID} and {version} should be returned. \n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^([A-Za-z\\d_@$-]+(\\+[A-Za-z\\d_@$-]+)*)*$"
+                    }
+                },
+                "version": {
+                    "location": "path",
+                    "description": "The version of the artefact to be returned. \n\nIt is possible to set more than one version, using `+` as separator (e.g. 1.0+2.1).\n\nThe keyword `all` can be used to return all versions of the matching resource.\n\nThe keyword `latest` can be used to return the latest production version of the matching resource.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(all|latest|[\\d]+(\\.[\\d]+)*(\\+[\\d]+(\\.[\\d]+)*)*)$"
+                    }
+                },
+                "references": {
+                    "location": "query",
+                    "description": "Instructs the web service to return (or not) the artefacts referenced by the artefact to be returned.\n\nPossible values are: \n\n* `none`: No references will be returned\n* `parents`: Returns the artefacts that use the artefact matching the query\n* `parentsandsiblings`: Returns the artefacts that use the artefact matching the query, as well as the artefacts referenced by these artefacts\n* `children`: Returns the artefacts referenced by the artefact to be returned\n* `descendants`: References of references, up to any level, will be returned\n* `all`: The combination of parentsandsiblings and descendants\n* In addition, a concrete type of resource may also be used (for example, references=codelist).\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "none",
+                            "parents",
+                            "parentsandsiblings",
+                            "children",
+                            "descendants",
+                            "all",
+                            "datastructure",
+                            "categoryscheme",
+                            "conceptscheme",
+                            "codelist",
+                            "hierarchicalcodelist",
+                            "agencyscheme",
+                            "dataflow",
+                            "provisionagreement",
+                            "categorisation",
+                            "contentconstraint",
+                            "actualconstraint",
+                            "allowedconstraint"
+                        ]
+                    }
+                },
+                "detail": {
+                    "location": "query",
+                    "description": "The amount of information to be returned. \n\nPossible values are: \n\n* `allstubs`: All artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencestubs`: Referenced artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencepartial`: Referenced item schemes should only include items used by the artefact to be returned. For example, a concept scheme would only contain the concepts used in a DSD, and its isPartial flag would be set to `true`\n* `allcompletestubs`: All artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `referencecompletestubs`: Referenced artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `full`: All available information for all artefacts should be returned\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "allstubs",
+                            "referencestubs",
+                            "referencepartial",
+                            "allcompletestubs",
+                            "referencecompletestubs",
+                            "full"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "getConcepts",
+            "description": "Get concepts",
+            "method": "GET",
+            "path": "/conceptscheme/{agencyID}/{resourceID}/{version}/{itemID}",
+            "parameters": {
+                "agencyID": {
+                    "location": "path",
+                    "description": "The agency maintaining the artefact to be returned. \n\nIt is possible to set more than one agency, using `+` as separator (e.g. BIS+ECB).\n\nThe keyword `all` can be used to indicate that artefacts maintained by any maintenance agency should be returned.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(([A-Za-z][A-Za-z\\d_-]*)(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+(\\+([A-Za-z][A-Za-z\\d_-]*(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+)*$"
+                    }
+                },
+                "resourceID": {
+                    "location": "path",
+                    "description": "The id of the artefact to be returned.\n\nIt is possible to set more than one id, using `+` as separator (e.g. CL_FREQ+CL_CONF_STATUS).\n\nThe keyword `all` can be used to indicate that any artefact of the specified resource type, {agencyID} and {version} should be returned. \n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^([A-Za-z\\d_@$-]+(\\+[A-Za-z\\d_@$-]+)*)*$"
+                    }
+                },
+                "version": {
+                    "location": "path",
+                    "description": "The version of the artefact to be returned. \n\nIt is possible to set more than one version, using `+` as separator (e.g. 1.0+2.1).\n\nThe keyword `all` can be used to return all versions of the matching resource.\n\nThe keyword `latest` can be used to return the latest production version of the matching resource.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(all|latest|[\\d]+(\\.[\\d]+)*(\\+[\\d]+(\\.[\\d]+)*)*)$"
+                    }
+                },
+                "itemID": {
+                    "location": "path",
+                    "description": "The id of the item to be returned. \n\nIt is possible to set more than one id, using `+` as separator (e.g. A+Q+M).\n\nThe keyword `all` can be used to return all items of the matching resource.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z\\d_@$-]+(\\.[A-Za-z\\d_@$-]+)*(\\+[A-Za-z\\d_@$-]+(\\.[A-Za-z\\d_@$-]+)*)*$"
+                    }
+                },
+                "references": {
+                    "location": "query",
+                    "description": "Instructs the web service to return (or not) the artefacts referenced by the artefact to be returned.\n\nPossible values are: \n\n* `none`: No references will be returned\n* `parents`: Returns the artefacts that use the artefact matching the query\n* `parentsandsiblings`: Returns the artefacts that use the artefact matching the query, as well as the artefacts referenced by these artefacts\n* `children`: Returns the artefacts referenced by the artefact to be returned\n* `descendants`: References of references, up to any level, will be returned\n* `all`: The combination of parentsandsiblings and descendants\n* In addition, a concrete type of resource may also be used (for example, references=codelist).\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "none",
+                            "parents",
+                            "parentsandsiblings",
+                            "children",
+                            "descendants",
+                            "all",
+                            "datastructure",
+                            "categoryscheme",
+                            "conceptscheme",
+                            "codelist",
+                            "hierarchicalcodelist",
+                            "agencyscheme",
+                            "dataflow",
+                            "provisionagreement",
+                            "categorisation",
+                            "contentconstraint",
+                            "actualconstraint",
+                            "allowedconstraint"
+                        ]
+                    }
+                },
+                "detail": {
+                    "location": "query",
+                    "description": "The amount of information to be returned. \n\nPossible values are: \n\n* `allstubs`: All artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencestubs`: Referenced artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencepartial`: Referenced item schemes should only include items used by the artefact to be returned. For example, a concept scheme would only contain the concepts used in a DSD, and its isPartial flag would be set to `true`\n* `allcompletestubs`: All artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `referencecompletestubs`: Referenced artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `full`: All available information for all artefacts should be returned\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "allstubs",
+                            "referencestubs",
+                            "referencepartial",
+                            "allcompletestubs",
+                            "referencecompletestubs",
+                            "full"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "getActualConstraints",
+            "description": "Get actual constraints",
+            "method": "GET",
+            "path": "/actualconstraint/{agencyID}/{resourceID}/{version}",
+            "parameters": {
+                "agencyID": {
+                    "location": "path",
+                    "description": "The agency maintaining the artefact to be returned. \n\nIt is possible to set more than one agency, using `+` as separator (e.g. BIS+ECB).\n\nThe keyword `all` can be used to indicate that artefacts maintained by any maintenance agency should be returned.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(([A-Za-z][A-Za-z\\d_-]*)(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+(\\+([A-Za-z][A-Za-z\\d_-]*(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+)*$"
+                    }
+                },
+                "resourceID": {
+                    "location": "path",
+                    "description": "The id of the artefact to be returned.\n\nIt is possible to set more than one id, using `+` as separator (e.g. CL_FREQ+CL_CONF_STATUS).\n\nThe keyword `all` can be used to indicate that any artefact of the specified resource type, {agencyID} and {version} should be returned. \n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^([A-Za-z\\d_@$-]+(\\+[A-Za-z\\d_@$-]+)*)*$"
+                    }
+                },
+                "version": {
+                    "location": "path",
+                    "description": "The version of the artefact to be returned. \n\nIt is possible to set more than one version, using `+` as separator (e.g. 1.0+2.1).\n\nThe keyword `all` can be used to return all versions of the matching resource.\n\nThe keyword `latest` can be used to return the latest production version of the matching resource.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(all|latest|[\\d]+(\\.[\\d]+)*(\\+[\\d]+(\\.[\\d]+)*)*)$"
+                    }
+                },
+                "references": {
+                    "location": "query",
+                    "description": "Instructs the web service to return (or not) the artefacts referenced by the artefact to be returned.\n\nPossible values are: \n\n* `none`: No references will be returned\n* `parents`: Returns the artefacts that use the artefact matching the query\n* `parentsandsiblings`: Returns the artefacts that use the artefact matching the query, as well as the artefacts referenced by these artefacts\n* `children`: Returns the artefacts referenced by the artefact to be returned\n* `descendants`: References of references, up to any level, will be returned\n* `all`: The combination of parentsandsiblings and descendants\n* In addition, a concrete type of resource may also be used (for example, references=codelist).\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "none",
+                            "parents",
+                            "parentsandsiblings",
+                            "children",
+                            "descendants",
+                            "all",
+                            "datastructure",
+                            "categoryscheme",
+                            "conceptscheme",
+                            "codelist",
+                            "hierarchicalcodelist",
+                            "agencyscheme",
+                            "dataflow",
+                            "provisionagreement",
+                            "categorisation",
+                            "contentconstraint",
+                            "actualconstraint",
+                            "allowedconstraint"
+                        ]
+                    }
+                },
+                "detail": {
+                    "location": "query",
+                    "description": "The amount of information to be returned. \n\nPossible values are: \n\n* `allstubs`: All artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencestubs`: Referenced artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencepartial`: Referenced item schemes should only include items used by the artefact to be returned. For example, a concept scheme would only contain the concepts used in a DSD, and its isPartial flag would be set to `true`\n* `allcompletestubs`: All artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `referencecompletestubs`: Referenced artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `full`: All available information for all artefacts should be returned\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "allstubs",
+                            "referencestubs",
+                            "referencepartial",
+                            "allcompletestubs",
+                            "referencecompletestubs",
+                            "full"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "getAgencySchemes",
+            "description": "Get agency schemes",
+            "method": "GET",
+            "path": "/agencyscheme/{agencyID}/{resourceID}/{version}",
+            "parameters": {
+                "agencyID": {
+                    "location": "path",
+                    "description": "The agency maintaining the artefact to be returned. \n\nIt is possible to set more than one agency, using `+` as separator (e.g. BIS+ECB).\n\nThe keyword `all` can be used to indicate that artefacts maintained by any maintenance agency should be returned.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(([A-Za-z][A-Za-z\\d_-]*)(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+(\\+([A-Za-z][A-Za-z\\d_-]*(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+)*$"
+                    }
+                },
+                "resourceID": {
+                    "location": "path",
+                    "description": "The id of the artefact to be returned.\n\nIt is possible to set more than one id, using `+` as separator (e.g. CL_FREQ+CL_CONF_STATUS).\n\nThe keyword `all` can be used to indicate that any artefact of the specified resource type, {agencyID} and {version} should be returned. \n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^([A-Za-z\\d_@$-]+(\\+[A-Za-z\\d_@$-]+)*)*$"
+                    }
+                },
+                "version": {
+                    "location": "path",
+                    "description": "The version of the artefact to be returned. \n\nIt is possible to set more than one version, using `+` as separator (e.g. 1.0+2.1).\n\nThe keyword `all` can be used to return all versions of the matching resource.\n\nThe keyword `latest` can be used to return the latest production version of the matching resource.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(all|latest|[\\d]+(\\.[\\d]+)*(\\+[\\d]+(\\.[\\d]+)*)*)$"
+                    }
+                },
+                "references": {
+                    "location": "query",
+                    "description": "Instructs the web service to return (or not) the artefacts referenced by the artefact to be returned.\n\nPossible values are: \n\n* `none`: No references will be returned\n* `parents`: Returns the artefacts that use the artefact matching the query\n* `parentsandsiblings`: Returns the artefacts that use the artefact matching the query, as well as the artefacts referenced by these artefacts\n* `children`: Returns the artefacts referenced by the artefact to be returned\n* `descendants`: References of references, up to any level, will be returned\n* `all`: The combination of parentsandsiblings and descendants\n* In addition, a concrete type of resource may also be used (for example, references=codelist).\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "none",
+                            "parents",
+                            "parentsandsiblings",
+                            "children",
+                            "descendants",
+                            "all",
+                            "datastructure",
+                            "categoryscheme",
+                            "conceptscheme",
+                            "codelist",
+                            "hierarchicalcodelist",
+                            "agencyscheme",
+                            "dataflow",
+                            "provisionagreement",
+                            "categorisation",
+                            "contentconstraint",
+                            "actualconstraint",
+                            "allowedconstraint"
+                        ]
+                    }
+                },
+                "detail": {
+                    "location": "query",
+                    "description": "The amount of information to be returned. \n\nPossible values are: \n\n* `allstubs`: All artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencestubs`: Referenced artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencepartial`: Referenced item schemes should only include items used by the artefact to be returned. For example, a concept scheme would only contain the concepts used in a DSD, and its isPartial flag would be set to `true`\n* `allcompletestubs`: All artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `referencecompletestubs`: Referenced artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `full`: All available information for all artefacts should be returned\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "allstubs",
+                            "referencestubs",
+                            "referencepartial",
+                            "allcompletestubs",
+                            "referencecompletestubs",
+                            "full"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "getDataFlows",
+            "description": "Get dataflows",
+            "method": "GET",
+            "path": "/dataflow/{agencyID}/{resourceID}/{version}",
+            "parameters": {
+                "agencyID": {
+                    "location": "path",
+                    "description": "The agency maintaining the artefact to be returned. \n\nIt is possible to set more than one agency, using `+` as separator (e.g. BIS+ECB).\n\nThe keyword `all` can be used to indicate that artefacts maintained by any maintenance agency should be returned.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(([A-Za-z][A-Za-z\\d_-]*)(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+(\\+([A-Za-z][A-Za-z\\d_-]*(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+)*$"
+                    }
+                },
+                "resourceID": {
+                    "location": "path",
+                    "description": "The id of the artefact to be returned.\n\nIt is possible to set more than one id, using `+` as separator (e.g. CL_FREQ+CL_CONF_STATUS).\n\nThe keyword `all` can be used to indicate that any artefact of the specified resource type, {agencyID} and {version} should be returned. \n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^([A-Za-z\\d_@$-]+(\\+[A-Za-z\\d_@$-]+)*)*$"
+                    }
+                },
+                "version": {
+                    "location": "path",
+                    "description": "The version of the artefact to be returned. \n\nIt is possible to set more than one version, using `+` as separator (e.g. 1.0+2.1).\n\nThe keyword `all` can be used to return all versions of the matching resource.\n\nThe keyword `latest` can be used to return the latest production version of the matching resource.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(all|latest|[\\d]+(\\.[\\d]+)*(\\+[\\d]+(\\.[\\d]+)*)*)$"
+                    }
+                },
+                "references": {
+                    "location": "query",
+                    "description": "Instructs the web service to return (or not) the artefacts referenced by the artefact to be returned.\n\nPossible values are: \n\n* `none`: No references will be returned\n* `parents`: Returns the artefacts that use the artefact matching the query\n* `parentsandsiblings`: Returns the artefacts that use the artefact matching the query, as well as the artefacts referenced by these artefacts\n* `children`: Returns the artefacts referenced by the artefact to be returned\n* `descendants`: References of references, up to any level, will be returned\n* `all`: The combination of parentsandsiblings and descendants\n* In addition, a concrete type of resource may also be used (for example, references=codelist).\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "none",
+                            "parents",
+                            "parentsandsiblings",
+                            "children",
+                            "descendants",
+                            "all",
+                            "datastructure",
+                            "categoryscheme",
+                            "conceptscheme",
+                            "codelist",
+                            "hierarchicalcodelist",
+                            "agencyscheme",
+                            "dataflow",
+                            "provisionagreement",
+                            "categorisation",
+                            "contentconstraint",
+                            "actualconstraint",
+                            "allowedconstraint"
+                        ]
+                    }
+                },
+                "detail": {
+                    "location": "query",
+                    "description": "The amount of information to be returned. \n\nPossible values are: \n\n* `allstubs`: All artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencestubs`: Referenced artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencepartial`: Referenced item schemes should only include items used by the artefact to be returned. For example, a concept scheme would only contain the concepts used in a DSD, and its isPartial flag would be set to `true`\n* `allcompletestubs`: All artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `referencecompletestubs`: Referenced artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `full`: All available information for all artefacts should be returned\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "allstubs",
+                            "referencestubs",
+                            "referencepartial",
+                            "allcompletestubs",
+                            "referencecompletestubs",
+                            "full"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "getCategories",
+            "description": "Get categories",
+            "method": "GET",
+            "path": "/categoryscheme/{agencyID}/{resourceID}/{version}/{itemID}",
+            "parameters": {
+                "agencyID": {
+                    "location": "path",
+                    "description": "The agency maintaining the artefact to be returned. \n\nIt is possible to set more than one agency, using `+` as separator (e.g. BIS+ECB).\n\nThe keyword `all` can be used to indicate that artefacts maintained by any maintenance agency should be returned.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(([A-Za-z][A-Za-z\\d_-]*)(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+(\\+([A-Za-z][A-Za-z\\d_-]*(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+)*$"
+                    }
+                },
+                "resourceID": {
+                    "location": "path",
+                    "description": "The id of the artefact to be returned.\n\nIt is possible to set more than one id, using `+` as separator (e.g. CL_FREQ+CL_CONF_STATUS).\n\nThe keyword `all` can be used to indicate that any artefact of the specified resource type, {agencyID} and {version} should be returned. \n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^([A-Za-z\\d_@$-]+(\\+[A-Za-z\\d_@$-]+)*)*$"
+                    }
+                },
+                "version": {
+                    "location": "path",
+                    "description": "The version of the artefact to be returned. \n\nIt is possible to set more than one version, using `+` as separator (e.g. 1.0+2.1).\n\nThe keyword `all` can be used to return all versions of the matching resource.\n\nThe keyword `latest` can be used to return the latest production version of the matching resource.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(all|latest|[\\d]+(\\.[\\d]+)*(\\+[\\d]+(\\.[\\d]+)*)*)$"
+                    }
+                },
+                "itemID": {
+                    "location": "path",
+                    "description": "The id of the item to be returned. \n\nIt is possible to set more than one id, using `+` as separator (e.g. A+Q+M).\n\nThe keyword `all` can be used to return all items of the matching resource.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z\\d_@$-]+(\\.[A-Za-z\\d_@$-]+)*(\\+[A-Za-z\\d_@$-]+(\\.[A-Za-z\\d_@$-]+)*)*$"
+                    }
+                },
+                "references": {
+                    "location": "query",
+                    "description": "Instructs the web service to return (or not) the artefacts referenced by the artefact to be returned.\n\nPossible values are: \n\n* `none`: No references will be returned\n* `parents`: Returns the artefacts that use the artefact matching the query\n* `parentsandsiblings`: Returns the artefacts that use the artefact matching the query, as well as the artefacts referenced by these artefacts\n* `children`: Returns the artefacts referenced by the artefact to be returned\n* `descendants`: References of references, up to any level, will be returned\n* `all`: The combination of parentsandsiblings and descendants\n* In addition, a concrete type of resource may also be used (for example, references=codelist).\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "none",
+                            "parents",
+                            "parentsandsiblings",
+                            "children",
+                            "descendants",
+                            "all",
+                            "datastructure",
+                            "categoryscheme",
+                            "conceptscheme",
+                            "codelist",
+                            "hierarchicalcodelist",
+                            "agencyscheme",
+                            "dataflow",
+                            "provisionagreement",
+                            "categorisation",
+                            "contentconstraint",
+                            "actualconstraint",
+                            "allowedconstraint"
+                        ]
+                    }
+                },
+                "detail": {
+                    "location": "query",
+                    "description": "The amount of information to be returned. \n\nPossible values are: \n\n* `allstubs`: All artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencestubs`: Referenced artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencepartial`: Referenced item schemes should only include items used by the artefact to be returned. For example, a concept scheme would only contain the concepts used in a DSD, and its isPartial flag would be set to `true`\n* `allcompletestubs`: All artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `referencecompletestubs`: Referenced artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `full`: All available information for all artefacts should be returned\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "allstubs",
+                            "referencestubs",
+                            "referencepartial",
+                            "allcompletestubs",
+                            "referencecompletestubs",
+                            "full"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "getHierarchicalCodelists",
+            "description": "Get hierarchical codelists",
+            "method": "GET",
+            "path": "/hierarchicalcodelist/{agencyID}/{resourceID}/{version}",
+            "parameters": {
+                "agencyID": {
+                    "location": "path",
+                    "description": "The agency maintaining the artefact to be returned. \n\nIt is possible to set more than one agency, using `+` as separator (e.g. BIS+ECB).\n\nThe keyword `all` can be used to indicate that artefacts maintained by any maintenance agency should be returned.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(([A-Za-z][A-Za-z\\d_-]*)(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+(\\+([A-Za-z][A-Za-z\\d_-]*(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+)*$"
+                    }
+                },
+                "resourceID": {
+                    "location": "path",
+                    "description": "The id of the artefact to be returned.\n\nIt is possible to set more than one id, using `+` as separator (e.g. CL_FREQ+CL_CONF_STATUS).\n\nThe keyword `all` can be used to indicate that any artefact of the specified resource type, {agencyID} and {version} should be returned. \n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^([A-Za-z\\d_@$-]+(\\+[A-Za-z\\d_@$-]+)*)*$"
+                    }
+                },
+                "version": {
+                    "location": "path",
+                    "description": "The version of the artefact to be returned. \n\nIt is possible to set more than one version, using `+` as separator (e.g. 1.0+2.1).\n\nThe keyword `all` can be used to return all versions of the matching resource.\n\nThe keyword `latest` can be used to return the latest production version of the matching resource.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(all|latest|[\\d]+(\\.[\\d]+)*(\\+[\\d]+(\\.[\\d]+)*)*)$"
+                    }
+                },
+                "references": {
+                    "location": "query",
+                    "description": "Instructs the web service to return (or not) the artefacts referenced by the artefact to be returned.\n\nPossible values are: \n\n* `none`: No references will be returned\n* `parents`: Returns the artefacts that use the artefact matching the query\n* `parentsandsiblings`: Returns the artefacts that use the artefact matching the query, as well as the artefacts referenced by these artefacts\n* `children`: Returns the artefacts referenced by the artefact to be returned\n* `descendants`: References of references, up to any level, will be returned\n* `all`: The combination of parentsandsiblings and descendants\n* In addition, a concrete type of resource may also be used (for example, references=codelist).\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "none",
+                            "parents",
+                            "parentsandsiblings",
+                            "children",
+                            "descendants",
+                            "all",
+                            "datastructure",
+                            "categoryscheme",
+                            "conceptscheme",
+                            "codelist",
+                            "hierarchicalcodelist",
+                            "agencyscheme",
+                            "dataflow",
+                            "provisionagreement",
+                            "categorisation",
+                            "contentconstraint",
+                            "actualconstraint",
+                            "allowedconstraint"
+                        ]
+                    }
+                },
+                "detail": {
+                    "location": "query",
+                    "description": "The amount of information to be returned. \n\nPossible values are: \n\n* `allstubs`: All artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencestubs`: Referenced artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencepartial`: Referenced item schemes should only include items used by the artefact to be returned. For example, a concept scheme would only contain the concepts used in a DSD, and its isPartial flag would be set to `true`\n* `allcompletestubs`: All artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `referencecompletestubs`: Referenced artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `full`: All available information for all artefacts should be returned\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "allstubs",
+                            "referencestubs",
+                            "referencepartial",
+                            "allcompletestubs",
+                            "referencecompletestubs",
+                            "full"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "getDataStructures",
+            "description": "Get data structures",
+            "method": "GET",
+            "path": "/datastructure/{agencyID}/{resourceID}/{version}",
+            "parameters": {
+                "agencyID": {
+                    "location": "path",
+                    "description": "The agency maintaining the artefact to be returned. \n\nIt is possible to set more than one agency, using `+` as separator (e.g. BIS+ECB).\n\nThe keyword `all` can be used to indicate that artefacts maintained by any maintenance agency should be returned.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(([A-Za-z][A-Za-z\\d_-]*)(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+(\\+([A-Za-z][A-Za-z\\d_-]*(\\.[A-Za-z][A-Za-z\\d_-]*)*,)?[A-Za-z\\d_@$-]+)*$"
+                    }
+                },
+                "resourceID": {
+                    "location": "path",
+                    "description": "The id of the artefact to be returned.\n\nIt is possible to set more than one id, using `+` as separator (e.g. CL_FREQ+CL_CONF_STATUS).\n\nThe keyword `all` can be used to indicate that any artefact of the specified resource type, {agencyID} and {version} should be returned. \n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^([A-Za-z\\d_@$-]+(\\+[A-Za-z\\d_@$-]+)*)*$"
+                    }
+                },
+                "version": {
+                    "location": "path",
+                    "description": "The version of the artefact to be returned. \n\nIt is possible to set more than one version, using `+` as separator (e.g. 1.0+2.1).\n\nThe keyword `all` can be used to return all versions of the matching resource.\n\nThe keyword `latest` can be used to return the latest production version of the matching resource.\n",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^(all|latest|[\\d]+(\\.[\\d]+)*(\\+[\\d]+(\\.[\\d]+)*)*)$"
+                    }
+                },
+                "references": {
+                    "location": "query",
+                    "description": "Instructs the web service to return (or not) the artefacts referenced by the artefact to be returned.\n\nPossible values are: \n\n* `none`: No references will be returned\n* `parents`: Returns the artefacts that use the artefact matching the query\n* `parentsandsiblings`: Returns the artefacts that use the artefact matching the query, as well as the artefacts referenced by these artefacts\n* `children`: Returns the artefacts referenced by the artefact to be returned\n* `descendants`: References of references, up to any level, will be returned\n* `all`: The combination of parentsandsiblings and descendants\n* In addition, a concrete type of resource may also be used (for example, references=codelist).\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "none",
+                            "parents",
+                            "parentsandsiblings",
+                            "children",
+                            "descendants",
+                            "all",
+                            "datastructure",
+                            "categoryscheme",
+                            "conceptscheme",
+                            "codelist",
+                            "hierarchicalcodelist",
+                            "agencyscheme",
+                            "dataflow",
+                            "provisionagreement",
+                            "categorisation",
+                            "contentconstraint",
+                            "actualconstraint",
+                            "allowedconstraint"
+                        ]
+                    }
+                },
+                "detail": {
+                    "location": "query",
+                    "description": "The amount of information to be returned. \n\nPossible values are: \n\n* `allstubs`: All artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencestubs`: Referenced artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name\n* `referencepartial`: Referenced item schemes should only include items used by the artefact to be returned. For example, a concept scheme would only contain the concepts used in a DSD, and its isPartial flag would be set to `true`\n* `allcompletestubs`: All artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `referencecompletestubs`: Referenced artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information\n* `full`: All available information for all artefacts should be returned\n",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "allstubs",
+                            "referencestubs",
+                            "referencepartial",
+                            "allcompletestubs",
+                            "referencecompletestubs",
+                            "full"
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+}

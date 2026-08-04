@@ -1,0 +1,3166 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "url": "https://test.api.amadeus.com/v1"
+    }
+  ],
+  "paths": {
+    "/booking/flight-orders": {
+      "post": {
+        "tags": [
+          "Booking"
+        ],
+        "summary": "Create Order associated to the Flight offers.",
+        "description": "",
+        "operationId": "createFlightOrders",
+        "requestBody": {
+          "description": "list of element needed to book a flight Order",
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "data": {
+                    "$ref": "#/components/schemas/FlightOrder"
+                  }
+                },
+                "title": "FlightOrderQuery",
+                "example": {
+                  "data": {
+                    "type": "flight-order",
+                    "flightOffers": [
+                      {
+                        "type": "flight-offer",
+                        "id": "1",
+                        "source": "GDS",
+                        "instantTicketingRequired": false,
+                        "nonHomogeneous": false,
+                        "paymentCardRequired": false,
+                        "lastTicketingDate": "2020-03-01T00:00:00.000Z",
+                        "itineraries": [
+                          {
+                            "segments": [
+                              {
+                                "departure": {
+                                  "iataCode": "GIG",
+                                  "terminal": "2",
+                                  "at": "2020-03-01T21:05:00.000Z"
+                                },
+                                "arrival": {
+                                  "iataCode": "CDG",
+                                  "terminal": "2E",
+                                  "at": "2020-03-02T12:20:00.000Z"
+                                },
+                                "carrierCode": "KL",
+                                "number": "2410",
+                                "aircraft": {
+                                  "code": "772"
+                                },
+                                "operating": {
+                                  "carrierCode": "AF"
+                                },
+                                "duration": "PT11H15M",
+                                "id": "40",
+                                "numberOfStops": 0
+                              },
+                              {
+                                "departure": {
+                                  "iataCode": "CDG",
+                                  "terminal": "2F",
+                                  "at": "2020-03-02T14:30:00.000Z"
+                                },
+                                "arrival": {
+                                  "iataCode": "AMS",
+                                  "at": "2020-03-02T15:45:00.000Z"
+                                },
+                                "carrierCode": "KL",
+                                "number": "1234",
+                                "aircraft": {
+                                  "code": "73H"
+                                },
+                                "operating": {
+                                  "carrierCode": "KL"
+                                },
+                                "duration": "PT1H15M",
+                                "id": "41",
+                                "numberOfStops": 0
+                              },
+                              {
+                                "departure": {
+                                  "iataCode": "AMS",
+                                  "at": "2020-03-02T17:05:00.000Z"
+                                },
+                                "arrival": {
+                                  "iataCode": "MAD",
+                                  "terminal": "2",
+                                  "at": "2020-03-02T19:35:00.000Z"
+                                },
+                                "carrierCode": "KL",
+                                "number": "1705",
+                                "aircraft": {
+                                  "code": "73J"
+                                },
+                                "operating": {
+                                  "carrierCode": "KL"
+                                },
+                                "duration": "PT2H30M",
+                                "id": "42",
+                                "numberOfStops": 0
+                              }
+                            ]
+                          },
+                          {
+                            "segments": [
+                              {
+                                "departure": {
+                                  "iataCode": "MAD",
+                                  "terminal": "2",
+                                  "at": "2020-03-05T20:25:00.000Z"
+                                },
+                                "arrival": {
+                                  "iataCode": "AMS",
+                                  "at": "2020-03-05T23:00:00.000Z"
+                                },
+                                "carrierCode": "KL",
+                                "number": "1706",
+                                "aircraft": {
+                                  "code": "73J"
+                                },
+                                "operating": {
+                                  "carrierCode": "KL"
+                                },
+                                "duration": "PT2H35M",
+                                "id": "81",
+                                "numberOfStops": 0
+                              },
+                              {
+                                "departure": {
+                                  "iataCode": "AMS",
+                                  "at": "2020-03-06T10:40:00.000Z"
+                                },
+                                "arrival": {
+                                  "iataCode": "GIG",
+                                  "terminal": "2",
+                                  "at": "2020-03-06T18:35:00.000Z"
+                                },
+                                "carrierCode": "KL",
+                                "number": "705",
+                                "aircraft": {
+                                  "code": "772"
+                                },
+                                "operating": {
+                                  "carrierCode": "KL"
+                                },
+                                "duration": "PT11H55M",
+                                "id": "82",
+                                "numberOfStops": 0
+                              }
+                            ]
+                          }
+                        ],
+                        "price": {
+                          "currency": "USD",
+                          "total": "8514.96",
+                          "base": "8314.00",
+                          "fees": [
+                            {
+                              "amount": "0.00",
+                              "type": "SUPPLIER"
+                            },
+                            {
+                              "amount": "0.00",
+                              "type": "TICKETING"
+                            },
+                            {
+                              "amount": "0.00",
+                              "type": "FORM_OF_PAYMENT"
+                            }
+                          ],
+                          "grandTotal": "8514.96",
+                          "billingCurrency": "USD"
+                        },
+                        "pricingOptions": {
+                          "fareType": [
+                            "PUBLISHED"
+                          ],
+                          "includedCheckedBagsOnly": true
+                        },
+                        "validatingAirlineCodes": [
+                          "AF"
+                        ],
+                        "travelerPricings": [
+                          {
+                            "travelerId": "1",
+                            "fareOption": "STANDARD",
+                            "travelerType": "ADULT",
+                            "price": {
+                              "currency": "USD",
+                              "total": "4849.48",
+                              "base": "4749.00",
+                              "taxes": [
+                                {
+                                  "amount": "31.94",
+                                  "code": "BR"
+                                },
+                                {
+                                  "amount": "14.68",
+                                  "code": "CJ"
+                                },
+                                {
+                                  "amount": "5.28",
+                                  "code": "FR"
+                                },
+                                {
+                                  "amount": "17.38",
+                                  "code": "JD"
+                                },
+                                {
+                                  "amount": "0.69",
+                                  "code": "OG"
+                                },
+                                {
+                                  "amount": "3.95",
+                                  "code": "QV"
+                                },
+                                {
+                                  "amount": "12.12",
+                                  "code": "QX"
+                                },
+                                {
+                                  "amount": "14.44",
+                                  "code": "RN"
+                                }
+                              ]
+                            },
+                            "fareDetailsBySegment": [
+                              {
+                                "segmentId": "40",
+                                "cabin": "BUSINESS",
+                                "fareBasis": "CFFBR",
+                                "brandedFare": "BUSINESS",
+                                "class": "C",
+                                "includedCheckedBags": {
+                                  "quantity": 2
+                                }
+                              },
+                              {
+                                "segmentId": "41",
+                                "cabin": "BUSINESS",
+                                "fareBasis": "CFFBR",
+                                "brandedFare": "BUSINESS",
+                                "class": "J",
+                                "includedCheckedBags": {
+                                  "quantity": 2
+                                }
+                              },
+                              {
+                                "segmentId": "42",
+                                "cabin": "BUSINESS",
+                                "fareBasis": "CFFBR",
+                                "brandedFare": "BUSINESS",
+                                "class": "J",
+                                "includedCheckedBags": {
+                                  "quantity": 2
+                                }
+                              },
+                              {
+                                "segmentId": "81",
+                                "cabin": "ECONOMY",
+                                "fareBasis": "YFFBR",
+                                "brandedFare": "FULLFLEX",
+                                "class": "Y",
+                                "includedCheckedBags": {
+                                  "quantity": 1
+                                }
+                              },
+                              {
+                                "segmentId": "82",
+                                "cabin": "ECONOMY",
+                                "fareBasis": "YFFBR",
+                                "brandedFare": "FULLFLEX",
+                                "class": "Y",
+                                "includedCheckedBags": {
+                                  "quantity": 1
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "travelerId": "2",
+                            "fareOption": "STANDARD",
+                            "travelerType": "CHILD",
+                            "price": {
+                              "currency": "USD",
+                              "total": "3665.48",
+                              "base": "3565.00",
+                              "taxes": [
+                                {
+                                  "amount": "31.94",
+                                  "code": "BR"
+                                },
+                                {
+                                  "amount": "14.68",
+                                  "code": "CJ"
+                                },
+                                {
+                                  "amount": "5.28",
+                                  "code": "FR"
+                                },
+                                {
+                                  "amount": "17.38",
+                                  "code": "JD"
+                                },
+                                {
+                                  "amount": "0.69",
+                                  "code": "OG"
+                                },
+                                {
+                                  "amount": "3.95",
+                                  "code": "QV"
+                                },
+                                {
+                                  "amount": "12.12",
+                                  "code": "QX"
+                                },
+                                {
+                                  "amount": "14.44",
+                                  "code": "RN"
+                                }
+                              ]
+                            },
+                            "fareDetailsBySegment": [
+                              {
+                                "segmentId": "40",
+                                "cabin": "BUSINESS",
+                                "fareBasis": "CFFBR",
+                                "brandedFare": "BUSINESS",
+                                "class": "C",
+                                "includedCheckedBags": {
+                                  "quantity": 2
+                                }
+                              },
+                              {
+                                "segmentId": "41",
+                                "cabin": "BUSINESS",
+                                "fareBasis": "CFFBR",
+                                "brandedFare": "BUSINESS",
+                                "class": "J",
+                                "includedCheckedBags": {
+                                  "quantity": 2
+                                }
+                              },
+                              {
+                                "segmentId": "42",
+                                "cabin": "BUSINESS",
+                                "fareBasis": "CFFBR",
+                                "brandedFare": "BUSINESS",
+                                "class": "J",
+                                "includedCheckedBags": {
+                                  "quantity": 2
+                                }
+                              },
+                              {
+                                "segmentId": "81",
+                                "cabin": "ECONOMY",
+                                "fareBasis": "YFFBR",
+                                "brandedFare": "FULLFLEX",
+                                "class": "Y",
+                                "includedCheckedBags": {
+                                  "quantity": 1
+                                }
+                              },
+                              {
+                                "segmentId": "82",
+                                "cabin": "ECONOMY",
+                                "fareBasis": "YFFBR",
+                                "brandedFare": "FULLFLEX",
+                                "class": "Y",
+                                "includedCheckedBags": {
+                                  "quantity": 1
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ],
+                    "travelers": [
+                      {
+                        "id": "1",
+                        "dateOfBirth": "1982-01-16T00:00:00.000Z",
+                        "name": {
+                          "firstName": "JORGE",
+                          "lastName": "GONZALES"
+                        },
+                        "gender": "MALE",
+                        "contact": {
+                          "emailAddress": "jorge.gonzales833@telefonica.es",
+                          "phones": [
+                            {
+                              "deviceType": "MOBILE",
+                              "countryCallingCode": "34",
+                              "number": "480080076"
+                            }
+                          ]
+                        },
+                        "documents": [
+                          {
+                            "documentType": "PASSPORT",
+                            "birthPlace": "Madrid",
+                            "issuanceLocation": "Madrid",
+                            "issuanceDate": "2015-04-14T00:00:00.000Z",
+                            "number": "00000000",
+                            "expiryDate": "2025-04-14T00:00:00.000Z",
+                            "issuanceCountry": "ES",
+                            "validityCountry": "ES",
+                            "nationality": "ES",
+                            "holder": true
+                          }
+                        ]
+                      },
+                      {
+                        "id": "2",
+                        "dateOfBirth": "2012-10-11T00:00:00.000Z",
+                        "gender": "FEMALE",
+                        "contact": {
+                          "emailAddress": "jorge.gonzales833@telefonica.es",
+                          "phones": [
+                            {
+                              "deviceType": "MOBILE",
+                              "countryCallingCode": "34",
+                              "number": "480080076"
+                            }
+                          ]
+                        },
+                        "name": {
+                          "firstName": "ADRIANA",
+                          "lastName": "GONZALES"
+                        }
+                      }
+                    ],
+                    "remarks": {
+                      "general": [
+                        {
+                          "subType": "GENERAL_MISCELLANEOUS",
+                          "text": "ONLINE BOOKING FROM INCREIBLE VIAJES"
+                        }
+                      ]
+                    },
+                    "ticketingAgreement": {
+                      "option": "DELAY_TO_CANCEL",
+                      "delay": "6D"
+                    },
+                    "contacts": [
+                      {
+                        "addresseeName": {
+                          "firstName": "PABLO",
+                          "lastName": "RODRIGUEZ"
+                        },
+                        "companyName": "INCREIBLE VIAJES",
+                        "purpose": "STANDARD",
+                        "phones": [
+                          {
+                            "deviceType": "LANDLINE",
+                            "countryCallingCode": "34",
+                            "number": "480080071"
+                          },
+                          {
+                            "deviceType": "MOBILE",
+                            "countryCallingCode": "33",
+                            "number": "480080072"
+                          }
+                        ],
+                        "emailAddress": "support@increibleviajes.es",
+                        "address": {
+                          "lines": [
+                            "Calle Prado, 16"
+                          ],
+                          "postalCode": "28014",
+                          "cityName": "Madrid",
+                          "countryCode": "ES"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/returnFlightOrders"
+          },
+          "400": {
+            "$ref": "#/components/responses/400_Book"
+          },
+          "default": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Error_400": {
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Issue"
+            }
+          }
+        },
+        "required": [
+          "errors"
+        ],
+        "example": {
+          "errors": [
+            {
+              "status": 400,
+              "code": 477,
+              "title": "INVALID FORMAT",
+              "detail": "invalid query parameter format",
+              "source": {
+                "parameter": "airport",
+                "example": "CDG"
+              }
+            }
+          ]
+        }
+      },
+      "Error_500": {
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Issue"
+            }
+          }
+        },
+        "required": [
+          "errors"
+        ],
+        "example": {
+          "errors": [
+            {
+              "status": 500,
+              "code": 141,
+              "title": "SYSTEM ERROR HAS OCCURRED"
+            }
+          ]
+        }
+      },
+      "Issue": {
+        "properties": {
+          "status": {
+            "type": "integer",
+            "description": "the HTTP status code applicable to this error"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int64",
+            "description": "an application-specific error code"
+          },
+          "title": {
+            "type": "string",
+            "description": "a short summary of the error"
+          },
+          "detail": {
+            "type": "string",
+            "description": "explanation of the error"
+          },
+          "source": {
+            "type": "object",
+            "maxProperties": 1,
+            "properties": {
+              "pointer": {
+                "type": "string",
+                "description": "a JSON Pointer [RFC6901] to the associated entity in the request document"
+              },
+              "parameter": {
+                "type": "string",
+                "description": "a string indicating which URI query parameter caused the issue"
+              },
+              "example": {
+                "type": "string",
+                "description": "a string indicating an example of the right value"
+              }
+            },
+            "description": "an object containing references to the source of the error",
+            "title": "Issue_Source"
+          }
+        }
+      },
+      "Collection_Meta_Link": {
+        "properties": {
+          "count": {
+            "type": "integer",
+            "example": 1
+          },
+          "links": {
+            "properties": {
+              "self": {
+                "type": "string",
+                "format": "uri",
+                "example": "https://test.api.amadeus.com/v1/area/resources?..."
+              },
+              "next": {
+                "type": "string",
+                "format": "uri",
+                "example": "https://test.api.amadeus.com/v1/area/resources?..."
+              },
+              "previous": {
+                "type": "string",
+                "format": "uri",
+                "example": "https://test.api.amadeus.com/v1/area/resources?..."
+              },
+              "last": {
+                "type": "string",
+                "format": "uri",
+                "example": "https://test.api.amadeus.com/v1/area/resources?..."
+              },
+              "first": {
+                "type": "string",
+                "format": "uri",
+                "example": "https://test.api.amadeus.com/v1/area/resources?..."
+              },
+              "up": {
+                "type": "string",
+                "format": "uri",
+                "example": "https://test.api.amadeus.com/v1/area/resources?..."
+              }
+            },
+            "title": "CollectionLinks",
+            "example": {
+              "self": "https://test.api.amadeus.com/v1/area/resources?param=value"
+            }
+          }
+        },
+        "title": "Collection_Meta"
+      },
+      "LocationEntry": {
+        "properties": {
+          "key": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": {
+          "$ref": "#/components/schemas/LocationValue"
+        }
+      },
+      "AircraftEntry": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": {
+          "type": "string",
+          "description": "the manufacturer/model of aircraft"
+        }
+      },
+      "CurrencyEntry": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "example": "Euro"
+          }
+        },
+        "additionalProperties": {
+          "type": "string",
+          "example": "EUR"
+        }
+      },
+      "CarrierEntry": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": {
+          "type": "string",
+          "description": "the carrier name"
+        }
+      },
+      "FlightSegment": {
+        "type": "object",
+        "properties": {
+          "departure": {
+            "$ref": "#/components/schemas/FlightEndPoint"
+          },
+          "arrival": {
+            "$ref": "#/components/schemas/FlightEndPoint"
+          },
+          "carrierCode": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2,
+            "description": "providing the airline / carrier code",
+            "example": "DL"
+          },
+          "number": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4,
+            "description": "the flight number as assigned by the carrier",
+            "example": "212"
+          },
+          "aircraft": {
+            "$ref": "#/components/schemas/AircraftEquipment"
+          },
+          "operating": {
+            "$ref": "#/components/schemas/OperatingFlight"
+          },
+          "duration": {
+            "type": "string",
+            "description": "stop duration in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) PnYnMnDTnHnMnS format, e.g. PT2H10M",
+            "example": "PT2H10M"
+          },
+          "stops": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FlightStop"
+            },
+            "description": "information regarding the different stops composing the flight segment. E.g. technical stop, change of gauge..."
+          }
+        },
+        "description": "defining a flight segment; including both operating and marketing details when applicable"
+      },
+      "OriginalFlightEndPoint": {
+        "type": "object",
+        "properties": {
+          "iataCode": {
+            "type": "string",
+            "description": "[IATA airline codes](http://www.iata.org/publications/Pages/code-search.aspx)",
+            "example": "JFK"
+          },
+          "terminal": {
+            "type": "string",
+            "description": "terminal name / number",
+            "example": "T2"
+          }
+        },
+        "description": "departure or arrival information"
+      },
+      "FlightEndPoint": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/OriginalFlightEndPoint"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "local date and time in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) YYYY-MM-ddThh:mm:ss format, e.g. 2017-02-10T20:40:00",
+                "example": "2017-10-23T20:00:00.000Z"
+              }
+            }
+          }
+        ],
+        "description": "departure or arrival information",
+        "title": "FlightEndPoint"
+      },
+      "OriginalFlightStop": {
+        "type": "object",
+        "properties": {
+          "iataCode": {
+            "type": "string",
+            "description": "[IATA airline codes](http://www.iata.org/publications/Pages/code-search.aspx)",
+            "example": "JFK"
+          },
+          "duration": {
+            "type": "string",
+            "description": "stop duration in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) PnYnMnDTnHnMnS format, e.g. PT2H10M",
+            "example": "PT2H10M"
+          }
+        },
+        "description": "details of stops for direct or change of gauge flights"
+      },
+      "FlightStop": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/OriginalFlightStop"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "arrivalAt": {
+                "type": "string",
+                "format": "date-time",
+                "description": "arrival at the stop in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) YYYY-MM-ddThh:mm:ss format, e.g. 2017-02-10T20:40:00",
+                "example": "2017-10-23T20:00:00.000Z"
+              },
+              "departureAt": {
+                "type": "string",
+                "format": "date-time",
+                "description": "departure from the stop in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) YYYY-MM-ddThh:mm:ss format, e.g. 2017-02-10T20:40:00",
+                "example": "2017-10-23T20:00:00.000Z"
+              }
+            }
+          }
+        ],
+        "description": "details of stops for direct or change of gauge flights",
+        "title": "FlightStop"
+      },
+      "AircraftEquipment": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "[a-zA-Z0-9]{3}",
+            "description": "IATA aircraft code (http:\/\/www.flugzeuginfo.net\/table_accodes_iata_en.php)\n",
+            "example": "318"
+          }
+        },
+        "description": "information related to the aircraft"
+      },
+      "OperatingFlight": {
+        "type": "object",
+        "properties": {
+          "carrierCode": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2,
+            "description": "providing the airline / carrier code",
+            "example": "DL"
+          }
+        },
+        "description": "information about the operating flight"
+      },
+      "Price": {
+        "properties": {
+          "currency": {
+            "type": "string",
+            "example": "USD"
+          },
+          "total": {
+            "type": "string",
+            "description": "Total amount paid by the user",
+            "example": "932.70"
+          },
+          "base": {
+            "type": "string",
+            "description": "Amount without taxes",
+            "example": "632.70"
+          },
+          "fees": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Fee"
+            },
+            "description": "List of applicable fees"
+          },
+          "taxes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tax"
+            }
+          },
+          "refundableTaxes": {
+            "type": "string",
+            "description": "The amount of taxes which are refundable",
+            "example": "200.00"
+          }
+        }
+      },
+      "Extended_Price": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "margin": {
+                "type": "string",
+                "description": "BOOK step ONLY - The price margin percentage (plus or minus) that the booking can tolerate. When set to 0, then no price magin is tolerated.",
+                "example": "1.00"
+              },
+              "grandTotal": {
+                "type": "string",
+                "description": "Total amount paid by the user (including fees and selected additional services).",
+                "example": "987.00"
+              },
+              "billingCurrency": {
+                "type": "string",
+                "description": "Currency of the payment. It may be different than the requested currency",
+                "example": "EUR"
+              },
+              "additionalServices": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "amount": {
+                      "type": "string",
+                      "example": "332.70"
+                    },
+                    "type": {
+                      "$ref": "#/components/schemas/AdditionalServiceType"
+                    }
+                  },
+                  "title": "AdditionalService"
+                },
+                "title": "AdditionalServices"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/Price"
+          }
+        ],
+        "description": "price information",
+        "type": "object",
+        "title": "Price"
+      },
+      "Fee": {
+        "properties": {
+          "amount": {
+            "type": "string",
+            "example": "332.70"
+          },
+          "type": {
+            "$ref": "#/components/schemas/FeeType"
+          }
+        },
+        "description": "a fee"
+      },
+      "FeeType": {
+        "type": "string",
+        "enum": [
+          "TICKETING",
+          "FORM_OF_PAYMENT",
+          "SUPPLIER"
+        ],
+        "description": "type of fee",
+        "example": "TICKETING"
+      },
+      "Tax": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "string",
+            "example": "332.70"
+          },
+          "code": {
+            "type": "string",
+            "example": "MX"
+          }
+        },
+        "description": "a tax"
+      },
+      "TravelClass": {
+        "type": "string",
+        "enum": [
+          "ECONOMY",
+          "PREMIUM_ECONOMY",
+          "BUSINESS",
+          "FIRST"
+        ],
+        "description": "quality of service offered in the cabin where the seat is located in this flight. Economy, premium economy, business or first class",
+        "example": "PREMIUM_ECONOMY"
+      },
+      "Co2Emission": {
+        "type": "object",
+        "properties": {
+          "weight": {
+            "type": "integer",
+            "description": "Weight of Co2 emitted for the concerned segment",
+            "example": 90
+          },
+          "weightUnit": {
+            "type": "string",
+            "description": "Code to qualify unit as pounds or kilos",
+            "example": "KG"
+          },
+          "cabin": {
+            "$ref": "#/components/schemas/TravelClass"
+          }
+        }
+      },
+      "FlightOffer": {
+        "type": "object",
+        "required": [
+          "type",
+          "id"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "the resource name",
+            "example": "flight-offer"
+          },
+          "id": {
+            "type": "string",
+            "description": "Id of the flight offer",
+            "example": "1"
+          },
+          "source": {
+            "$ref": "#/components/schemas/FlightOfferSource"
+          },
+          "instantTicketingRequired": {
+            "type": "boolean",
+            "description": "If true, inform that a ticketing will be required at booking step.",
+            "example": false
+          },
+          "disablePricing": {
+            "type": "boolean",
+            "description": "BOOK step ONLY - If true, allows to book a PNR without pricing. Only for the source \"GDS\"",
+            "example": false
+          },
+          "nonHomogeneous": {
+            "type": "boolean",
+            "description": "If true, upon completion of the booking, this pricing solution is expected to yield multiple records (a record contains booking information confirmed and stored, typically a Passenger Name Record (PNR), in the provider GDS or system)",
+            "example": false
+          },
+          "oneWay": {
+            "type": "boolean",
+            "description": "If true, the flight offer fulfills only one originDestination and has to be combined with other oneWays to complete the whole journey.",
+            "example": false
+          },
+          "paymentCardRequired": {
+            "type": "boolean",
+            "description": "If true, a payment card is mandatory to book this flight offer",
+            "example": false
+          },
+          "lastTicketingDate": {
+            "type": "string",
+            "description": "If booked on the same day as the search (with respect to timezone), this flight offer is guaranteed to be thereafter valid for ticketing until this date (included). Unspecified when it does not make sense for this flight offer (e.g. no control over ticketing once booked). YYYY-MM-DD format, e.g. 2019-06-07",
+            "example": "2018-06-19T00:00:00.000Z"
+          },
+          "numberOfBookableSeats": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 9,
+            "description": "Number of seats bookable in a single request. Can not be higher than 9.",
+            "example": 9
+          },
+          "itineraries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "segments"
+              ],
+              "properties": {
+                "duration": {
+                  "type": "string",
+                  "description": "duration in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) PnYnMnDTnHnMnS format, e.g. PT2H10M for a duration of 2h10m",
+                  "example": "PT2H10M"
+                },
+                "segments": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Segment"
+                  },
+                  "minItems": 1,
+                  "maxItems": 9,
+                  "title": "Segments"
+                }
+              },
+              "title": "Itineraries"
+            },
+            "minItems": 1,
+            "maxItems": 250
+          },
+          "price": {
+            "$ref": "#/components/schemas/Extended_Price"
+          },
+          "pricingOptions": {
+            "type": "object",
+            "properties": {
+              "fareType": {
+                "$ref": "#/components/schemas/PricingOptionsFareType"
+              },
+              "includedCheckedBagsOnly": {
+                "type": "boolean",
+                "description": "If true, returns the flight-offers with included checked bags only",
+                "example": true
+              },
+              "refundableFare": {
+                "type": "boolean",
+                "description": "If true, returns the flight-offers with refundable fares only",
+                "example": true
+              },
+              "noRestrictionFare": {
+                "type": "boolean",
+                "description": "If true, returns the flight-offers with no restriction fares only",
+                "example": true
+              },
+              "noPenaltyFare": {
+                "type": "boolean",
+                "description": "If true, returns the flight-offers with no penalty fares only",
+                "example": true
+              }
+            },
+            "title": "PricingOptions"
+          },
+          "validatingAirlineCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "maxItems": 9,
+            "description": "This option ensures that the system will only consider these airlines.",
+            "example": [
+              "AF"
+            ]
+          },
+          "travelerPricings": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "travelerId": {
+                  "type": "string",
+                  "description": "Id of the traveler",
+                  "example": "1"
+                },
+                "fareOption": {
+                  "$ref": "#/components/schemas/TravelerPricingFareOption"
+                },
+                "travelerType": {
+                  "$ref": "#/components/schemas/TravelerType"
+                },
+                "associatedAdultId": {
+                  "type": "string",
+                  "description": "if type=\"HELD_INFANT\", corresponds to the adult traveler's id who will share the seat"
+                },
+                "price": {
+                  "$ref": "#/components/schemas/Price"
+                },
+                "fareDetailsBySegment": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "segmentId": {
+                        "type": "string",
+                        "description": "Id of the segment",
+                        "example": "1"
+                      },
+                      "cabin": {
+                        "$ref": "#/components/schemas/TravelClass"
+                      },
+                      "fareBasis": {
+                        "type": "string",
+                        "pattern": "[[A-Z0-9]{1,18}",
+                        "description": "Fare basis specifying the rules of a fare. Usually, though not always, is composed of the booking class code followed by a set of letters and digits representing other characteristics of the ticket, such as refundability, minimum stay requirements, discounts or special promotional elements.",
+                        "example": "ANNNNF4K"
+                      },
+                      "brandedFare": {
+                        "type": "string",
+                        "description": "The name of the Fare Family corresponding to the fares. Only for the GDS provider and if the airline has fare families filled",
+                        "example": "LIGHTONE"
+                      },
+                      "class": {
+                        "type": "string",
+                        "pattern": "[A-Z]{1}",
+                        "description": "The code of the booking class, a.k.a. class of service or Reservations/Booking Designator (RBD)",
+                        "example": "A"
+                      },
+                      "isAllotment": {
+                        "type": "boolean",
+                        "description": "True if the corresponding booking class is in an allotment",
+                        "example": true
+                      },
+                      "allotmentDetails": {
+                        "type": "object",
+                        "properties": {
+                          "tourName": {
+                            "type": "string"
+                          },
+                          "tourReference": {
+                            "type": "string"
+                          }
+                        },
+                        "title": "AllotmentDetails"
+                      },
+                      "sliceDiceIndicator": {
+                        "$ref": "#/components/schemas/SliceDiceIndicator"
+                      },
+                      "includedCheckedBags": {
+                        "$ref": "#/components/schemas/BaggageAllowance"
+                      },
+                      "additionalServices": {
+                        "type": "object",
+                        "properties": {
+                          "chargeableCheckedBags": {
+                            "$ref": "#/components/schemas/BaggageAllowance"
+                          },
+                          "chargeableSeatNumber": {
+                            "type": "string",
+                            "pattern": "[1-9][0-9]{0,2}[A-Z]?",
+                            "description": "seat number",
+                            "example": "33D"
+                          },
+                          "otherServices": {
+                            "type": "array",
+                            "items": {
+                              "$ref": "#/components/schemas/ServiceName"
+                            },
+                            "description": "Other services to add",
+                            "example": [
+                              "PRIORITY_BOARDING"
+                            ]
+                          }
+                        },
+                        "title": "AdditionalServicesRequest"
+                      }
+                    },
+                    "required": [
+                      "segmentId"
+                    ],
+                    "description": "Fare details of the segment",
+                    "title": "FareDetailsBySegment"
+                  },
+                  "minItems": 1,
+                  "maxItems": 18
+                }
+              },
+              "required": [
+                "travelerId",
+                "fareOption",
+                "travelerType",
+                "fareDetailsBySegment"
+              ],
+              "title": "TravelerPricing"
+            },
+            "minItems": 1,
+            "maxItems": 18,
+            "description": "Fare information for each traveler/segment",
+            "title": "TravelerPricings"
+          }
+        },
+        "title": "Flight-offer"
+      },
+      "Segment": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Id of the segment",
+                "example": 1
+              },
+              "numberOfStops": {
+                "type": "integer",
+                "description": "Number of stops",
+                "example": 0
+              },
+              "blacklistedInEU": {
+                "type": "boolean",
+                "description": "When the flight has a marketing or\/and operating airline that is identified as blacklisted by the European Commission. \n\nTo improve travel safety, the European Commission regularly updates the list of the banned carriers from operating in Europe. It allows any Travel Agency located in the European Union to easily identify and hide any travel recommendation based on some unsafe airlines. \nThe [list of the banned airlines](https:\/\/ec.europa.eu\/transport\/sites\/transport\/files\/air-safety-list_en.pdf) is published in the Official Journal of the European Union, where they are included as annexes A and B to the Commission Regulation. The blacklist of an airline can concern all its flights or some specific aircraft types pertaining to the airline   \n",
+                "example": false
+              },
+              "co2Emissions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Co2Emission"
+                },
+                "minItems": 1,
+                "description": "Co2 informations"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/FlightSegment"
+          }
+        ]
+      },
+      "TravelerType": {
+        "type": "string",
+        "enum": [
+          "ADULT",
+          "CHILD",
+          "SENIOR",
+          "YOUNG",
+          "HELD_INFANT",
+          "SEATED_INFANT",
+          "STUDENT"
+        ],
+        "description": "traveler type\nage restrictions : CHILD < 12y, HELD_INFANT < 2y, SEATED_INFANT < 2y, SENIOR >=60y\n",
+        "example": "ADULT"
+      },
+      "AdditionalServiceType": {
+        "type": "string",
+        "enum": [
+          "CHECKED_BAGS",
+          "MEALS",
+          "SEATS",
+          "OTHER_SERVICES"
+        ],
+        "description": "additional service type",
+        "example": "CHECKED_BAGS"
+      },
+      "FlightOfferSource": {
+        "type": "string",
+        "enum": [
+          "GDS"
+        ],
+        "description": "source of the flight offer",
+        "example": "GDS"
+      },
+      "PricingOptionsFareType": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "PUBLISHED"
+          ]
+        },
+        "description": "type of fare of the flight-offer",
+        "example": [
+          "PUBLISHED"
+        ]
+      },
+      "TravelerPricingFareOption": {
+        "type": "string",
+        "enum": [
+          "STANDARD",
+          "INCLUSIVE_TOUR",
+          "SPANISH_MELILLA_RESIDENT",
+          "SPANISH_CEUTA_RESIDENT",
+          "SPANISH_CANARY_RESIDENT",
+          "SPANISH_BALEARIC_RESIDENT",
+          "AIR_FRANCE_METROPOLITAN_DISCOUNT_PASS",
+          "AIR_FRANCE_DOM_DISCOUNT_PASS",
+          "AIR_FRANCE_COMBINED_DISCOUNT_PASS",
+          "AIR_FRANCE_FAMILY",
+          "ADULT_WITH_COMPANION",
+          "COMPANION"
+        ],
+        "description": "option specifying a group of fares, which may be valid under certain conditons\nCan be used to specify special fare discount for a passenger\n",
+        "example": "STANDARD"
+      },
+      "SliceDiceIndicator": {
+        "type": "string",
+        "enum": [
+          "LOCAL_AVAILABILITY",
+          "SUB_OD_AVAILABILITY_1",
+          "SUB_OD_AVAILABILITY_2"
+        ],
+        "description": "slice and Dice indicator, such as Local Availability, Sub OnD(Origin and Destination) 1 Availability and Sub OnD 2 Availability"
+      },
+      "Dictionaries": {
+        "type": "object",
+        "properties": {
+          "locations": {
+            "$ref": "#/components/schemas/LocationEntry"
+          },
+          "aircraft": {
+            "$ref": "#/components/schemas/AircraftEntry"
+          },
+          "currencies": {
+            "$ref": "#/components/schemas/CurrencyEntry"
+          },
+          "carriers": {
+            "$ref": "#/components/schemas/CarrierEntry"
+          }
+        }
+      },
+      "LocationValue": {
+        "properties": {
+          "cityCode": {
+            "type": "string",
+            "description": "City code associated to the airport",
+            "example": "PAR"
+          },
+          "countryCode": {
+            "type": "string",
+            "description": "Country code of the airport",
+            "example": "FR"
+          }
+        }
+      },
+      "ElementaryPrice": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "string",
+            "description": "Amount of the fare. could be alpha numeric. Ex- 500.20 or 514.13A, 'A'signifies additional collection."
+          },
+          "currencyCode": {
+            "type": "string",
+            "description": "Currency type of the fare."
+          }
+        },
+        "description": "elementaryPrice"
+      },
+      "BaggageAllowance": {
+        "type": "object",
+        "properties": {
+          "quantity": {
+            "type": "integer",
+            "description": "Total number of units",
+            "example": 1
+          },
+          "weight": {
+            "type": "integer",
+            "description": "Weight of the baggage allowance",
+            "example": 20
+          },
+          "weightUnit": {
+            "type": "string",
+            "description": "Code to qualify unit as pounds or kilos",
+            "example": "KG"
+          }
+        },
+        "description": "baggageAllowance"
+      },
+      "ServiceName": {
+        "type": "string",
+        "enum": [
+          "PRIORITY_BOARDING",
+          "AIRPORT_CHECKIN"
+        ],
+        "description": "type of service",
+        "example": "PRIORITY_BOARDING"
+      },
+      "FlightOrder": {
+        "type": "object",
+        "required": [
+          "type",
+          "flightOffers",
+          "travelers",
+          "contacts"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "the resource name",
+            "example": "flight-order"
+          },
+          "id": {
+            "type": "string",
+            "description": "unique identifier of the flight order",
+            "readOnly": true,
+            "example": "MlpZVkFMfFdBVFNPTnwyMDE1LTExLTAy"
+          },
+          "queuingOfficeId": {
+            "type": "string",
+            "description": "office Id where to queue the order",
+            "example": "NCE1A0955"
+          },
+          "ownerOfficeId": {
+            "type": "string",
+            "description": "office Id where will be transfered the ownership of the order",
+            "example": "NCE1A0955"
+          },
+          "associatedRecords": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssociatedRecord"
+            },
+            "description": "list of associated record",
+            "readOnly": true
+          },
+          "flightOffers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FlightOffer"
+            },
+            "minItems": 1,
+            "maxItems": 6,
+            "description": "list of flight offer"
+          },
+          "travelers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Traveler"
+            },
+            "minItems": 1,
+            "maxItems": 18,
+            "description": "list of travelers"
+          },
+          "remarks": {
+            "$ref": "#/components/schemas/Remarks"
+          },
+          "formOfPayments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FormOfPayment"
+            },
+            "minItems": 1,
+            "maxItems": 6,
+            "description": "list of form of payments",
+            "readOnly": true
+          },
+          "ticketingAgreement": {
+            "$ref": "#/components/schemas/TicketingAgreement"
+          },
+          "automatedProcess": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutomatedProcess"
+            },
+            "minItems": 0,
+            "maxItems": 31,
+            "description": "list of automatic queuing"
+          },
+          "contacts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Contact"
+            },
+            "description": "list of general contact information"
+          },
+          "tickets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AirTravelDocument"
+            },
+            "description": "list of tickets",
+            "readOnly": true
+          }
+        },
+        "description": "input parameter to create a flight order",
+        "title": "FlightOrderCreateQuery"
+      },
+      "Stakeholder": {
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "item identifier"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date",
+            "description": "The date of birth in ISO 8601 format (yyyy-mm-dd)"
+          },
+          "gender": {
+            "$ref": "#/components/schemas/StakeholderGender"
+          },
+          "name": {
+            "$ref": "#/components/schemas/Name"
+          },
+          "documents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IdentityDocument"
+            },
+            "description": "Advanced Passenger Information - regulatory identity documents - SSR DOCS & DOCO elements"
+          }
+        },
+        "description": "stakeholder definition"
+      },
+      "StakeholderGender": {
+        "type": "string",
+        "enum": [
+          "MALE",
+          "FEMALE",
+          "UNSPECIFIED",
+          "UNDISCLOSED"
+        ],
+        "description": "Gender for individual",
+        "title": "Gender",
+        "example": "FEMALE"
+      },
+      "IdentityDocument": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Document"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "documentType": {
+                "$ref": "#/components/schemas/DocumentType"
+              },
+              "validityCountry": {
+                "type": "string",
+                "pattern": "[a-zA-Z]{2}",
+                "description": "[ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of the country where the document is valid",
+                "example": "IN"
+              },
+              "birthCountry": {
+                "type": "string",
+                "pattern": "[a-zA-Z]{2}",
+                "description": "[ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of the country of birth",
+                "example": "FR"
+              },
+              "holder": {
+                "type": "boolean",
+                "description": "boolean to specify if the traveler is the holder of the document",
+                "example": true
+              }
+            }
+          }
+        ],
+        "description": "documents of the traveler",
+        "title": "traveler documents"
+      },
+      "Document": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "string",
+            "description": "The document number (shown on the document) . E.g. QFU514563221J"
+          },
+          "issuanceDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Date at which the document has been issued."
+          },
+          "expiryDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Date after which the document is not valid anymore."
+          },
+          "issuanceCountry": {
+            "type": "string",
+            "pattern": "[a-zA-Z]{2}",
+            "description": "[ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of the country that issued the document"
+          },
+          "issuanceLocation": {
+            "type": "string",
+            "description": "A more precise information concerning the place where the document has been issued, when available. It may be a country, a state, a city or any other type of location. e.g. New-York"
+          },
+          "nationality": {
+            "type": "string",
+            "pattern": "[a-zA-Z]{2}",
+            "description": "[ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of the nationality appearing on the document"
+          },
+          "birthPlace": {
+            "type": "string",
+            "description": "Birth place as indicated on the document"
+          }
+        },
+        "description": "the information that are found on an ID document"
+      },
+      "DocumentType": {
+        "type": "string",
+        "enum": [
+          "VISA",
+          "PASSPORT",
+          "IDENTITY_CARD",
+          "KNOWN_TRAVELER",
+          "REDRESS"
+        ],
+        "description": "the nature/type of the document",
+        "example": "VISA"
+      },
+      "EmergencyContact": {
+        "type": "object",
+        "properties": {
+          "addresseeName": {
+            "type": "string",
+            "pattern": "[a-zA-Z -]",
+            "description": "Adressee name (e.g. in case of emergency purpose it corresponds to name of the person to be contacted)."
+          },
+          "countryCode": {
+            "type": "string",
+            "pattern": "[A-Z]{2}",
+            "description": "Country code of the country (ISO3166-1). E.g. \"US\" for the United States"
+          },
+          "number": {
+            "type": "string",
+            "pattern": "[0-9]{1,15}",
+            "description": "Phone number. Composed of digits only. The number of digits depends on the country."
+          },
+          "text": {
+            "type": "string",
+            "description": "additional details"
+          }
+        },
+        "description": "emergency contact number"
+      },
+      "LoyaltyProgram": {
+        "type": "object",
+        "properties": {
+          "programOwner": {
+            "type": "string",
+            "description": "loyalty program airline code",
+            "example": "AF"
+          },
+          "id": {
+            "type": "string",
+            "description": "loyalty program number",
+            "example": "12357466574"
+          }
+        },
+        "description": "loyalty program information",
+        "title": "LoyaltyProgram"
+      },
+      "Discount": {
+        "type": "object",
+        "properties": {
+          "subType": {
+            "$ref": "#/components/schemas/DiscountType"
+          },
+          "cityName": {
+            "type": "string",
+            "description": "city of residence",
+            "example": "MADRID"
+          },
+          "travelerType": {
+            "$ref": "#/components/schemas/DiscountTravelerType"
+          },
+          "cardNumber": {
+            "type": "string",
+            "pattern": "[0-9A-Z][0-9]{0,12}[A-Z]",
+            "description": "resident card number",
+            "example": "12568215Z"
+          },
+          "certificateNumber": {
+            "type": "string",
+            "pattern": "[0-9A-Z][0-9]{0,12}[A-Z]",
+            "description": "resident certificate number",
+            "example": "12568215Z"
+          }
+        },
+        "description": "traveler discount",
+        "title": "Discount"
+      },
+      "DiscountType": {
+        "type": "string",
+        "enum": [
+          "SPANISH_RESIDENT",
+          "AIR_FRANCE_DOMESTIC",
+          "AIR_FRANCE_COMBINED",
+          "AIR_FRANCE_METROPOLITAN"
+        ],
+        "description": "type of discount applied",
+        "example": "SPANISH_RESIDENT"
+      },
+      "DiscountTravelerType": {
+        "type": "string",
+        "enum": [
+          "SPANISH_CITIZEN",
+          "EUROPEAN_CITIZEN",
+          "GOVERNMENT_WORKER",
+          "MILITARY",
+          "MINOR_WITHOUT_ID"
+        ],
+        "description": "type of discount applied",
+        "example": "SPANISH_CITIZEN"
+      },
+      "Traveler": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Stakeholder"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "emergencyContact": {
+                "$ref": "#/components/schemas/EmergencyContact"
+              },
+              "loyaltyPrograms": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/LoyaltyProgram"
+                },
+                "minItems": 0,
+                "maxItems": 10,
+                "description": "list of loyalty program followed by the traveler"
+              },
+              "discountEligibility": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Discount"
+                },
+                "minItems": 0,
+                "maxItems": 10,
+                "description": "list of element that allow a discount."
+              },
+              "contact": {
+                "$ref": "#/components/schemas/Contact"
+              }
+            }
+          }
+        ],
+        "description": "the traveler of the trip",
+        "title": "traveler element"
+      },
+      "Contact": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ContactDictionary"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "phones": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Phone"
+                },
+                "maxItems": 3,
+                "description": "Phone numbers"
+              },
+              "companyName": {
+                "type": "string",
+                "description": "Name of the company",
+                "example": "AMADEUS"
+              },
+              "emailAddress": {
+                "type": "string",
+                "description": "Email address (e.g. john@smith.com)",
+                "example": "support@mail.com"
+              }
+            }
+          }
+        ],
+        "description": "contact information"
+      },
+      "ContactPurpose": {
+        "type": "string",
+        "enum": [
+          "STANDARD",
+          "INVOICE",
+          "STANDARD_WITHOUT_TRANSMISSION"
+        ],
+        "description": "the purpose for which this contact is to be used.\n - STANDARD for standard use, comunication, advertissement etc...\n - INVOICE for your invoice contact, usually its your billing adress. it's mandatory in france when you buy online\n - STANDARD_WITHOUT_TRANSMISSION is standard contact that are not share with third party outside of Amadeus"
+      },
+      "ContactDictionary": {
+        "type": "object",
+        "properties": {
+          "addresseeName": {
+            "$ref": "#/components/schemas/Name"
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "language": {
+            "type": "string",
+            "description": "the preferred language of communication with this Contact"
+          },
+          "purpose": {
+            "$ref": "#/components/schemas/ContactPurpose"
+          }
+        },
+        "description": "represents a contact"
+      },
+      "Name": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseName"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "secondLastName": {
+                "type": "string",
+                "description": "second last name"
+              }
+            }
+          }
+        ],
+        "description": "name",
+        "title": "name"
+      },
+      "BaseName": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "description": "First name."
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Last name."
+          },
+          "middleName": {
+            "type": "string",
+            "description": "Middle name(s), for example \"Lee\" in \"John Lee Smith\"."
+          }
+        },
+        "description": "description of the name of a physical person"
+      },
+      "Phone": {
+        "type": "object",
+        "required": [
+          "deviceType",
+          "countryCallingCode",
+          "number"
+        ],
+        "properties": {
+          "deviceType": {
+            "$ref": "#/components/schemas/PhoneDeviceType"
+          },
+          "countryCallingCode": {
+            "type": "string",
+            "pattern": "[0-9+]{2,5}",
+            "description": "Country calling code of the phone number, as defined by the International Communication Union. Examples - \"1\" for US, \"371\" for Latvia."
+          },
+          "number": {
+            "type": "string",
+            "pattern": "[0-9]{1,15}",
+            "description": "Phone number. Composed of digits only. The number of digits depends on the country."
+          }
+        },
+        "description": "phone information"
+      },
+      "PhoneDeviceType": {
+        "type": "string",
+        "enum": [
+          "MOBILE",
+          "LANDLINE",
+          "FAX"
+        ],
+        "description": "Type of the device (Landline, Mobile or Fax)"
+      },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "lines": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Line 1 = Street address, Line 2 = Apartment, suite, unit, building, floor, etc \nEach line is limited to 35 characters"
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "Example: 74130"
+          },
+          "countryCode": {
+            "type": "string",
+            "pattern": "[a-zA-Z]{2}",
+            "description": "country code [ISO 3166-1 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)"
+          },
+          "cityName": {
+            "type": "string",
+            "pattern": "[a-zA-Z -]{1,35}",
+            "description": "Full city name. Example: Dublin"
+          },
+          "stateName": {
+            "type": "string",
+            "description": "Full state name"
+          },
+          "postalBox": {
+            "type": "string",
+            "description": "E.g. BP 220"
+          }
+        },
+        "description": "address information"
+      },
+      "TicketingAgreement": {
+        "type": "object",
+        "properties": {
+          "option": {
+            "$ref": "#/components/schemas/TicketingAgreementOption"
+          },
+          "delay": {
+            "type": "string",
+            "description": "Delay before applying automatic process if no issuance in days"
+          },
+          "dateTime": {
+            "type": "string",
+            "description": "Exact date to apply automatic process if no issuance. YYYY-MM-DD format, e.g. 2019-06-07",
+            "readOnly": true,
+            "example": "2017-10-23T00:00:00.000Z"
+          },
+          "segmentIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Ids of the impacted segments",
+            "readOnly": true,
+            "example": "1"
+          }
+        },
+        "description": "ticketing agreement",
+        "title": "Ticketing Agreement"
+      },
+      "TicketingAgreementOption": {
+        "type": "string",
+        "enum": [
+          "CONFIRM",
+          "DELAY_TO_QUEUE",
+          "DELAY_TO_CANCEL"
+        ],
+        "description": "Ticketing agreement option\n* **CONFIRM**, when the payment is done\n* **DELAY_TO_QUEUE**, queue the reservation at a wished date if the payment is not done\n* **DELAY_TO_CANCEL**, cancel the reservation at a wished date if the payment is not done\n\nQueueing and cancellation occurs at local date and time. When no time is specified, reservation is queued or cancelled at 00:00.\n",
+        "example": "DELAY_TO_QUEUE"
+      },
+      "AutomatedProcessCommon": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/AutomatedProcessCode"
+          },
+          "queue": {
+            "type": "object",
+            "properties": {
+              "number": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              }
+            },
+            "description": "Identifies the queue onto which PNR must be automatically placed upon process execution.",
+            "title": "Queue"
+          },
+          "text": {
+            "type": "string",
+            "description": "Free text"
+          }
+        },
+        "description": "Provides information on ticketing arrangements and Amadeus Time Limits"
+      },
+      "AutomatedProcess": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AutomatedProcessCommon"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "delay": {
+                "type": "string",
+                "description": "Delay before applying process in days"
+              },
+              "officeId": {
+                "type": "string",
+                "description": "Office into which the process must be triggered.",
+                "example": "NCE1A0955"
+              },
+              "dateTime": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Datetime limit at which the process takes action in case issuance is not done."
+              }
+            }
+          }
+        ],
+        "description": "automatic process applied to the Order",
+        "title": "Automated Process"
+      },
+      "AutomatedProcessCode": {
+        "type": "string",
+        "enum": [
+          "IMMEDIATE",
+          "DELAYED",
+          "ERROR"
+        ],
+        "description": "queuing action to be taken",
+        "example": "IMMEDIATE"
+      },
+      "Remarks": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GeneralRemark"
+            },
+            "minItems": 0,
+            "maxItems": 200,
+            "description": "list of general remarks"
+          },
+          "airline": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AirlineRemark"
+            },
+            "minItems": 0,
+            "maxItems": 200,
+            "description": "list of airline remarks"
+          }
+        },
+        "description": "remarks",
+        "title": "Remarks"
+      },
+      "GeneralRemark": {
+        "type": "object",
+        "required": [
+          "subType",
+          "text"
+        ],
+        "properties": {
+          "subType": {
+            "$ref": "#/components/schemas/GeneralRemarkType"
+          },
+          "category": {
+            "type": "string",
+            "pattern": "[A-Z]{1}",
+            "description": "remark category",
+            "example": "Z"
+          },
+          "text": {
+            "type": "string",
+            "description": "remark free text",
+            "example": "PASSENGER NEED ASSISTANCE"
+          },
+          "travelerIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Id of the concerned traveler",
+            "example": "1"
+          },
+          "flightOfferIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "maxItems": 6,
+            "description": "Id of the concern flightOffers",
+            "example": "1"
+          }
+        },
+        "title": "GeneralRemark"
+      },
+      "GeneralRemarkType": {
+        "type": "string",
+        "enum": [
+          "GENERAL_MISCELLANEOUS",
+          "CONFIDENTIAL",
+          "INVOICE",
+          "QUALITY_CONTROL",
+          "BACKOFFICE",
+          "FULFILLMENT",
+          "ITINERARY",
+          "TICKETING_MISCELLANEOUS",
+          "TOUR_CODE"
+        ],
+        "description": "general remark type",
+        "example": "GENERAL_MISCELLANEOUS"
+      },
+      "AirlineRemark": {
+        "type": "object",
+        "required": [
+          "subType",
+          "airlineCode",
+          "text"
+        ],
+        "properties": {
+          "subType": {
+            "$ref": "#/components/schemas/AirlineRemarkType"
+          },
+          "keyword": {
+            "type": "string",
+            "description": "keyword code - only applicable for subType Keyword",
+            "example": "PARK"
+          },
+          "airlineCode": {
+            "type": "string",
+            "description": "Code of the airline following IATA standard ([IATA table codes](http:\/\/www.iata.org\/publications\/Pages\/code-search.aspx))\n\nWhen it apply to any airline, value is YY.\n",
+            "example": "AF"
+          },
+          "text": {
+            "type": "string",
+            "description": "remark free text",
+            "example": "CAR PARK"
+          },
+          "travelerIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Id of the concerned traveler",
+            "example": "1"
+          },
+          "flightOfferIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "maxItems": 6,
+            "description": "Id of the concern flightOffers",
+            "example": "1"
+          }
+        },
+        "title": "AirlineRemark"
+      },
+      "AirlineRemarkType": {
+        "type": "string",
+        "enum": [
+          "OTHER_SERVICE_INFORMATION",
+          "KEYWORD",
+          "OTHER_SERVICE",
+          "CLIENT_ID",
+          "ADVANCED_TICKET_TIME_LIMIT"
+        ],
+        "description": "airline remark type",
+        "example": "KEYWORD"
+      },
+      "FormOfPayment": {
+        "type": "object",
+        "properties": {
+          "b2bWallet": {
+            "$ref": "#/components/schemas/B2bWallet"
+          },
+          "creditCard": {
+            "$ref": "#/components/schemas/CreditCard"
+          },
+          "other": {
+            "$ref": "#/components/schemas/OtherMethod"
+          }
+        },
+        "description": "form of payment used",
+        "title": "Form Of Payment"
+      },
+      "B2bWallet": {
+        "type": "object",
+        "properties": {
+          "cardId": {
+            "type": "string",
+            "description": "card identifier",
+            "readOnly": true,
+            "example": "1245365895336"
+          },
+          "cardUsageName": {
+            "type": "string",
+            "description": "card usage name"
+          },
+          "cardFriendlyName": {
+            "type": "string",
+            "pattern": "[a-zA-Z0-9]{1,35}",
+            "description": "card name",
+            "example": "CB1"
+          },
+          "reportingData": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "reconcil1"
+                },
+                "value": {
+                  "type": "string",
+                  "example": "data1"
+                }
+              },
+              "title": "reportingData"
+            },
+            "title": "reportingData"
+          },
+          "virtualCreditCardDetails": {
+            "$ref": "#/components/schemas/VirtualCreditCardDetails"
+          },
+          "flightOfferIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "maxItems": 6,
+            "description": "Id of the concern flightOffers",
+            "example": "1"
+          }
+        },
+        "description": "b2b wallet",
+        "title": "B2bWallet"
+      },
+      "VirtualCreditCardDetails": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CreditCardCommon"
+          },
+          {
+            "$ref": "#/components/schemas/ElementaryPrice"
+          }
+        ],
+        "description": "detail information of the virtual card"
+      },
+      "CreditCard": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CreditCardCommon"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "securityCode": {
+                "type": "string",
+                "description": "card security code",
+                "example": "123"
+              },
+              "flightOfferIds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1,
+                "maxItems": 6,
+                "description": "Id of the concern flightOffers",
+                "example": "1"
+              }
+            }
+          }
+        ],
+        "description": "credit card",
+        "title": "creditCard",
+        "type": "object"
+      },
+      "CreditCardCommon": {
+        "type": "object",
+        "properties": {
+          "brand": {
+            "$ref": "#/components/schemas/CreditCardBrand"
+          },
+          "holder": {
+            "type": "string",
+            "description": "card holder as on the card",
+            "example": "MR DUPON DAMIEN"
+          },
+          "number": {
+            "type": "string",
+            "pattern": "[a-zA-Z0-9]{1,35}",
+            "description": "card number",
+            "example": "4012999999999999"
+          },
+          "expiryDate": {
+            "type": "string",
+            "description": "credit card expiration date following [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) (YYYY-MM format, e.g. 2012-08)",
+            "example": "2021-08"
+          }
+        },
+        "description": "credit card common attribute",
+        "title": "creditCardCommon"
+      },
+      "CreditCardBrand": {
+        "type": "string",
+        "enum": [
+          "VISA",
+          "AMERICAN_EXPRESS",
+          "MASTERCARD",
+          "VISA_ELECTRON",
+          "VISA_DEBIT",
+          "MASTERCARD_DEBIT",
+          "MAESTRO",
+          "DINERS",
+          "EASYPAY"
+        ],
+        "description": "credit card brand",
+        "example": "VISA"
+      },
+      "OtherMethod": {
+        "type": "object",
+        "properties": {
+          "method": {
+            "$ref": "#/components/schemas/OtherPaymentMethod"
+          },
+          "flightOfferIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "maxItems": 6,
+            "description": "Id of the concern flightOffers",
+            "example": "1"
+          }
+        },
+        "description": "other payment method",
+        "title": "creditCard"
+      },
+      "OtherPaymentMethod": {
+        "type": "string",
+        "enum": [
+          "ACCOUNT",
+          "CHECK",
+          "CASH",
+          "NONREFUNDABLE"
+        ],
+        "description": "other payment method",
+        "example": "CASH"
+      },
+      "AssociatedRecordCommon": {
+        "type": "object",
+        "properties": {
+          "reference": {
+            "type": "string",
+            "description": "Record locator [Amadeus or OA] with which the current reservation is related. In case of a codeshare relation, it enables to identify the operating PNR."
+          },
+          "creationDate": {
+            "type": "string",
+            "description": "Creation date of the referenced reservation. Date and time in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) YYYY-MM-ddThh:mm:ss.sss format, e.g. 2019-07-09T12:30:00.000",
+            "example": "2019-07-09T12:30:00.000Z"
+          },
+          "originSystemCode": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 3,
+            "description": "Designates the system which has originated the referenced reservation."
+          }
+        },
+        "description": "describes the relation between the current reservation and another one"
+      },
+      "AssociatedRecord": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AssociatedRecordCommon"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "flightOfferId": {
+                "type": "string",
+                "description": "id of the impacted flight offer",
+                "example": "1"
+              }
+            }
+          }
+        ],
+        "description": "record associated to the order",
+        "title": "associated record"
+      },
+      "AirTravelDocument": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AirTravelDocumentCommon"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "travelerId": {
+                "type": "string",
+                "description": "id of the impacted traveler",
+                "example": "1"
+              },
+              "segmentIds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Ids of the impacted segments",
+                "example": "1"
+              }
+            }
+          }
+        ],
+        "description": "ticket information",
+        "title": "AirTravelDocument"
+      },
+      "AirTravelDocumentCommon": {
+        "type": "object",
+        "properties": {
+          "documentType": {
+            "type": "string",
+            "enum": [
+              "ETICKET",
+              "PTICKET",
+              "EMD",
+              "MCO"
+            ],
+            "description": "Type of the travel document"
+          },
+          "documentNumber": {
+            "type": "string",
+            "description": "Identifier of the travel document prefixed by its owner code [NALC - 3 digits]. Can either be a primary or a conjunctive document number. Necessary for TicketingReference definition."
+          },
+          "documentStatus": {
+            "type": "string",
+            "enum": [
+              "ISSUED",
+              "REFUNDED",
+              "VOID",
+              "ORIGINAL",
+              "EXCHANGED"
+            ],
+            "description": "Status of the travel document contained in the fare element"
+          }
+        }
+      }
+    },
+    "responses": {
+      "500": {
+        "description": "Unexpected error",
+        "content": {
+          "application/vnd.amadeus+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error_500"
+            }
+          }
+        }
+      },
+      "returnFlightOrders": {
+        "description": "Successful Operation",
+        "content": {
+          "application/vnd.amadeus+json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "data"
+              ],
+              "properties": {
+                "meta": {
+                  "$ref": "#/components/schemas/Collection_Meta_Link"
+                },
+                "warnings": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Issue"
+                  }
+                },
+                "data": {
+                  "$ref": "#/components/schemas/FlightOrder"
+                },
+                "dictionaries": {
+                  "$ref": "#/components/schemas/Dictionaries"
+                }
+              },
+              "title": "Success_Booking",
+              "example": {
+                "data": {
+                  "type": "flight-order",
+                  "id": "MlpZVkFMfFdBVFNPTnwyMDE1LTExLTAy",
+                  "queuingOfficeId": "NCE1A0950",
+                  "associatedRecords": [
+                    {
+                      "reference": "2ZYVAL",
+                      "creationDateTime": "2018-07-13T20:17:00.000Z",
+                      "originSystemCode": "1A",
+                      "flightOfferId": "1"
+                    }
+                  ],
+                  "travelers": [
+                    {
+                      "id": "1",
+                      "dateOfBirth": "1982-01-16T00:00:00.000Z",
+                      "name": {
+                        "firstName": "STEPHANE",
+                        "lastName": "MARTIN"
+                      },
+                      "contact": {
+                        "phones": [
+                          {
+                            "countryCallingCode": "33",
+                            "number": "487692704"
+                          }
+                        ]
+                      },
+                      "documents": [
+                        {
+                          "documentType": "PASSPORT",
+                          "number": "012345678",
+                          "expiryDate": "2009-04-14T00:00:00.000Z",
+                          "issuanceCountry": "GB",
+                          "nationality": "GB",
+                          "holder": true
+                        }
+                      ]
+                    },
+                    {
+                      "id": "3",
+                      "dateOfBirth": "2018-03-24T00:00:00.000Z",
+                      "name": {
+                        "firstName": "JULES",
+                        "lastName": "MARTIN"
+                      }
+                    },
+                    {
+                      "id": "2",
+                      "dateOfBirth": "2007-10-11T00:00:00.000Z",
+                      "name": {
+                        "firstName": "EMILIE",
+                        "lastName": "MARTIN"
+                      }
+                    }
+                  ],
+                  "flightOffers": [
+                    {
+                      "id": "1",
+                      "type": "flight-offer",
+                      "source": "GDS",
+                      "itineraries": [
+                        {
+                          "duration": "PT2H",
+                          "segments": [
+                            {
+                              "id": "1",
+                              "duration": "PT2H",
+                              "aircraft": {
+                                "code": "320"
+                              },
+                              "numberOfStops": 0,
+                              "blacklistedInEU": false,
+                              "carrierCode": "IB",
+                              "operating": {
+                                "carrierCode": "IB"
+                              },
+                              "number": "3403",
+                              "departure": {
+                                "at": "2018-09-22T10:15:00.000Z",
+                                "terminal": "W",
+                                "iataCode": "ORY"
+                              },
+                              "arrival": {
+                                "at": "2018-09-22T12:15:00.000Z",
+                                "terminal": "4",
+                                "iataCode": "MAD"
+                              },
+                              "co2Emissions": [
+                                {
+                                  "weight": "100",
+                                  "weightUnit": "KG",
+                                  "cabin": "ECONOMY"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "duration": "PT1H20M",
+                          "segments": [
+                            {
+                              "id": "20",
+                              "duration": "PT1H20M",
+                              "aircraft": {
+                                "code": "320"
+                              },
+                              "numberOfStops": 0,
+                              "blacklistedInEU": false,
+                              "carrierCode": "IB",
+                              "operating": {
+                                "carrierCode": "IB"
+                              },
+                              "number": "3118",
+                              "departure": {
+                                "at": "2018-09-26T23:05:00.000Z",
+                                "terminal": "4",
+                                "iataCode": "MAD"
+                              },
+                              "arrival": {
+                                "at": "2018-09-26T23:25:00.000Z",
+                                "terminal": "1",
+                                "iataCode": "LIS"
+                              },
+                              "co2Emissions": [
+                                {
+                                  "weight": "100",
+                                  "weightUnit": "KG",
+                                  "cabin": "ECONOMY"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "duration": "PT4H30M",
+                          "segments": [
+                            {
+                              "id": "30",
+                              "duration": "PT2H",
+                              "aircraft": {
+                                "code": "320"
+                              },
+                              "numberOfStops": 0,
+                              "blacklistedInEU": false,
+                              "carrierCode": "IB",
+                              "operating": {
+                                "carrierCode": "IB"
+                              },
+                              "number": "3109",
+                              "departure": {
+                                "at": "2018-10-04T12:35:00.000Z",
+                                "terminal": "1",
+                                "iataCode": "LIS"
+                              },
+                              "arrival": {
+                                "at": "2018-10-04T14:55:00.000Z",
+                                "terminal": "4",
+                                "iataCode": "MAD"
+                              },
+                              "co2Emissions": [
+                                {
+                                  "weight": "100",
+                                  "weightUnit": "KG",
+                                  "cabin": "ECONOMY"
+                                }
+                              ]
+                            },
+                            {
+                              "id": "31",
+                              "duration": "PT2H30M",
+                              "aircraft": {
+                                "code": "320"
+                              },
+                              "numberOfStops": 0,
+                              "blacklistedInEU": false,
+                              "carrierCode": "IB",
+                              "operating": {
+                                "carrierCode": "IB"
+                              },
+                              "number": "3444",
+                              "departure": {
+                                "at": "2018-10-04T16:05:00.000Z",
+                                "terminal": "4",
+                                "iataCode": "MAD"
+                              },
+                              "arrival": {
+                                "at": "2018-10-04T18:05:00.000Z",
+                                "terminal": "W",
+                                "iataCode": "ORY"
+                              },
+                              "co2Emissions": [
+                                {
+                                  "weight": "100",
+                                  "weightUnit": "KG",
+                                  "cabin": "ECONOMY"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ],
+                      "price": {
+                        "grandTotal": "689.21",
+                        "total": "423.21",
+                        "base": "242.00",
+                        "currency": "EUR",
+                        "billingCurrency": "EUR",
+                        "fees": [
+                          {
+                            "type": "SUPPLIER",
+                            "amount": "0"
+                          },
+                          {
+                            "type": "FORM_OF_PAYMENT",
+                            "amount": "6"
+                          },
+                          {
+                            "type": "TICKETING",
+                            "amount": "0"
+                          }
+                        ],
+                        "additionalServices": [
+                          {
+                            "type": "CHECKED_BAGS",
+                            "amount": "100"
+                          },
+                          {
+                            "type": "SEATS",
+                            "amount": "166"
+                          }
+                        ]
+                      },
+                      "pricingOptions": {
+                        "fareType": [
+                          "PUBLISHED"
+                        ],
+                        "includedCheckedBags": false
+                      },
+                      "validatingAirlineCodes": [
+                        "IB"
+                      ],
+                      "travelerPricings": [
+                        {
+                          "travelerId": "1",
+                          "fareOption": "STANDARD",
+                          "travelerType": "ADULT",
+                          "price": {
+                            "currency": "EUR",
+                            "total": "200.94",
+                            "base": "126",
+                            "taxes": [
+                              {
+                                "code": "YQ",
+                                "amount": "0.94"
+                              },
+                              {
+                                "code": "CJ",
+                                "amount": "41.67"
+                              },
+                              {
+                                "code": "FR",
+                                "amount": "31.33"
+                              }
+                            ]
+                          },
+                          "fareDetailsBySegment": [
+                            {
+                              "segmentId": "1",
+                              "cabin": "ECONOMY",
+                              "fareBasis": "ANNNNF4K",
+                              "brandedFare": "LIGHTONE",
+                              "class": "A",
+                              "isAllotment": true,
+                              "allotmentDetails": {
+                                "tourName": "tour",
+                                "tourReference": "ref"
+                              },
+                              "sliceDiceIndicator": "ABCDEF",
+                              "includedCheckedBags": {
+                                "quantity": 0
+                              }
+                            },
+                            {
+                              "segmentId": "20",
+                              "cabin": "ECONOMY",
+                              "fareBasis": "ANNNNF4K",
+                              "brandedFare": "LIGHTONE",
+                              "class": "A",
+                              "isAllotment": true,
+                              "allotmentDetails": {
+                                "tourName": "tour",
+                                "tourReference": "ref"
+                              },
+                              "sliceDiceIndicator": "ABCDEF",
+                              "includedCheckedBags": {
+                                "quantity": 0
+                              }
+                            },
+                            {
+                              "segmentId": "30",
+                              "cabin": "ECONOMY",
+                              "fareBasis": "ANNNNF4K",
+                              "brandedFare": "LIGHTONE",
+                              "class": "A",
+                              "isAllotment": true,
+                              "allotmentDetails": {
+                                "tourName": "tour",
+                                "tourReference": "ref"
+                              },
+                              "sliceDiceIndicator": "ABCDEF",
+                              "includedCheckedBags": {
+                                "quantity": 0
+                              }
+                            },
+                            {
+                              "segmentId": "31",
+                              "cabin": "ECONOMY",
+                              "fareBasis": "ANNNNF4K",
+                              "brandedFare": "LIGHTONE",
+                              "class": "A",
+                              "isAllotment": true,
+                              "allotmentDetails": {
+                                "tourName": "tour",
+                                "tourReference": "ref"
+                              },
+                              "sliceDiceIndicator": "ABCDEF",
+                              "includedCheckedBags": {
+                                "quantity": 0
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "travelerId": "2",
+                          "fareOption": "STANDARD",
+                          "travelerType": "CHILD",
+                          "price": {
+                            "currency": "EUR",
+                            "total": "180.94",
+                            "base": "106",
+                            "taxes": [
+                              {
+                                "code": "YQ",
+                                "amount": "0.94"
+                              },
+                              {
+                                "code": "CJ",
+                                "amount": "41.67"
+                              },
+                              {
+                                "code": "FR",
+                                "amount": "31.33"
+                              }
+                            ]
+                          },
+                          "fareDetailsBySegment": [
+                            {
+                              "segmentId": "1",
+                              "cabin": "ECONOMY",
+                              "fareBasis": "ANNNNF4K",
+                              "brandedFare": "LIGHTONE",
+                              "class": "A",
+                              "isAllotment": true,
+                              "allotmentDetails": {
+                                "tourName": "tour",
+                                "tourReference": "ref"
+                              },
+                              "sliceDiceIndicator": "ABCDEF",
+                              "includedCheckedBags": {
+                                "quantity": 0
+                              },
+                              "additionalServices": {
+                                "chargeableCheckedBags": {
+                                  "quantity": 1,
+                                  "weight": 20
+                                },
+                                "chargeableSeatNumber": "33D"
+                              }
+                            },
+                            {
+                              "segmentId": "20",
+                              "cabin": "ECONOMY",
+                              "fareBasis": "ANNNNF4K",
+                              "brandedFare": "LIGHTONE",
+                              "class": "A",
+                              "isAllotment": true,
+                              "allotmentDetails": {
+                                "tourName": "tour",
+                                "tourReference": "ref"
+                              },
+                              "sliceDiceIndicator": "ABCDEF",
+                              "includedCheckedBags": {
+                                "quantity": 0
+                              },
+                              "additionalServices": {
+                                "chargeableCheckedBags": {
+                                  "quantity": 1,
+                                  "weight": 20
+                                },
+                                "chargeableSeatNumber": "28A"
+                              }
+                            },
+                            {
+                              "segmentId": "30",
+                              "cabin": "ECONOMY",
+                              "fareBasis": "ANNNNF4K",
+                              "brandedFare": "LIGHTONE",
+                              "class": "A",
+                              "isAllotment": true,
+                              "allotmentDetails": {
+                                "tourName": "tour",
+                                "tourReference": "ref"
+                              },
+                              "sliceDiceIndicator": "ABCDEF",
+                              "includedCheckedBags": {
+                                "quantity": 0
+                              },
+                              "additionalServices": {
+                                "chargeableCheckedBags": {
+                                  "quantity": 1,
+                                  "weight": 20
+                                },
+                                "chargeableSeatNumber": "12C"
+                              }
+                            },
+                            {
+                              "segmentId": "31",
+                              "cabin": "ECONOMY",
+                              "fareBasis": "ANNNNF4K",
+                              "brandedFare": "LIGHTONE",
+                              "class": "A",
+                              "isAllotment": true,
+                              "allotmentDetails": {
+                                "tourName": "tour",
+                                "tourReference": "ref"
+                              },
+                              "sliceDiceIndicator": "ABCDEF",
+                              "includedCheckedBags": {
+                                "quantity": 0
+                              },
+                              "additionalServices": {
+                                "chargeableCheckedBags": {
+                                  "quantity": 1,
+                                  "weight": 20
+                                },
+                                "chargeableSeatNumber": "33D"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "travelerId": "3",
+                          "fareOption": "STANDARD",
+                          "travelerType": "HELD_INFANT",
+                          "associatedAdultId": "1",
+                          "price": {
+                            "currency": "EUR",
+                            "total": "41.33",
+                            "base": "10",
+                            "taxes": [
+                              {
+                                "code": "FR",
+                                "amount": "31.33"
+                              }
+                            ]
+                          },
+                          "fareDetailsBySegment": [
+                            {
+                              "segmentId": "1",
+                              "cabin": "ECONOMY",
+                              "fareBasis": "ANNNNF4K",
+                              "brandedFare": "LIGHTONE",
+                              "class": "A",
+                              "isAllotment": true,
+                              "allotmentDetails": {
+                                "tourName": "tour",
+                                "tourReference": "ref"
+                              },
+                              "sliceDiceIndicator": "ABCDEF",
+                              "includedCheckedBags": {
+                                "quantity": 0
+                              }
+                            },
+                            {
+                              "segmentId": "20",
+                              "cabin": "ECONOMY",
+                              "fareBasis": "ANNNNF4K",
+                              "brandedFare": "LIGHTONE",
+                              "class": "A",
+                              "isAllotment": true,
+                              "allotmentDetails": {
+                                "tourName": "tour",
+                                "tourReference": "ref"
+                              },
+                              "sliceDiceIndicator": "ABCDEF",
+                              "includedCheckedBags": {
+                                "quantity": 0
+                              }
+                            },
+                            {
+                              "segmentId": "30",
+                              "cabin": "ECONOMY",
+                              "fareBasis": "ANNNNF4K",
+                              "brandedFare": "LIGHTONE",
+                              "class": "A",
+                              "isAllotment": true,
+                              "allotmentDetails": {
+                                "tourName": "tour",
+                                "tourReference": "ref"
+                              },
+                              "sliceDiceIndicator": "ABCDEF",
+                              "includedCheckedBags": {
+                                "quantity": 0
+                              }
+                            },
+                            {
+                              "segmentId": "31",
+                              "cabin": "ECONOMY",
+                              "fareBasis": "ANNNNF4K",
+                              "brandedFare": "LIGHTONE",
+                              "class": "A",
+                              "isAllotment": true,
+                              "allotmentDetails": {
+                                "tourName": "tour",
+                                "tourReference": "ref"
+                              },
+                              "sliceDiceIndicator": "ABCDEF",
+                              "includedCheckedBags": {
+                                "quantity": 0
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "ticketingAggreement": {
+                    "option": "DELAY_TO_CANCEL",
+                    "dateTime": "2018-08-21T10:15:00.000Z"
+                  },
+                  "contacts": [
+                    {
+                      "companyName": "AMADEUS",
+                      "purpose": "STANDARD",
+                      "phones": [
+                        {
+                          "deviceType": "FAX",
+                          "countryCallingCode": "33",
+                          "number": "480080070"
+                        },
+                        {
+                          "deviceType": "LANDLINE",
+                          "countryCallingCode": "33",
+                          "number": "480080070"
+                        }
+                      ],
+                      "emailAddress": "support@mail.com",
+                      "address": {
+                        "lines": [
+                          "485 route du Pin Montard"
+                        ],
+                        "postalCode": "06902",
+                        "cityName": "Sophia Antipolis Cedex",
+                        "countryCode": "FR"
+                      }
+                    }
+                  ]
+                },
+                "dictionaries": {
+                  "locations": {
+                    "CDG": {
+                      "cityCode": "PAR",
+                      "countryCode": "FR"
+                    },
+                    "ORY": {
+                      "cityCode": "PAR",
+                      "countryCode": "FR"
+                    },
+                    "MAD": {
+                      "cityCode": "MAD",
+                      "countryCode": "ES"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400_Book": {
+        "description": "code    | title                                 \n------- | ------------------------------------- \n477     | INVALID FORMAT\n1304    | CREDIT CARD NOT ACCEPTED\n2781    | INVALID LENGTH\n4926    | INVALID DATA RECEIVED\n9112    | TICKETING - TKT\n2668    | PARAMETER COMBINATION INVALID\/RESTRICTED\n32171   | MANDATORY DATA MISSING\n34107   | NOT APPLICABLE FARE\n34651   | SEGMENT SELL FAILURE\n34733   | VIRTUAL CARD CREATION FAILED\n36870   | BOOKING FAILED\n37200   | PRICE DISCREPANCY\n38034   | ONE OR MORE SERVICES ARE NOT AVAILABLE\n",
+        "content": {
+          "application/vnd.amadeus+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error_400"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "OAuth2": {
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "scopes": {},
+            "tokenUrl": "https://test.api.amadeus.com/v1/security/oauth2/token"
+          }
+        }
+      }
+    }
+  },
+  "x-generatedAt": "2021-05-03T13:13:05.285Z",
+  "info": {
+    "version": "1.5.2",
+    "title": "Flight Create Orders",
+    "x-tags": [
+      "#quick-connect",
+      "#online-retail",
+      "#mobile-services",
+      "#ama-for-dev"
+    ],
+    "x-status": "validated",
+    "x-release-note": {
+      "1.5.0": [
+        "Add new General Remark enum \"TOUR_CODE\""
+      ],
+      "1.4.0": [
+        "Add new Gender enum \"UNSPECIFIED\" and \"UNDISCLOSED\"",
+        "Add EasyPay credit card brand - **not available in self-service**"
+      ],
+      "1.3.0": [
+        "Add new airlineRemark subtype \"ADVANCED_TICKET_TIME_LIMIT\""
+      ],
+      "1.2.0": [
+        "Add new sources \"LTC\" and \"EAC\" - **not available in self-service**"
+      ],
+      "1.1.0": [
+        "Add Co2Emissions information into Create flight-order reply",
+        "Add language in Contact for the APN feature"
+      ],
+      "1.0.0": [
+        "Initial version"
+      ]
+    },
+    "description": "This is a generated connector for [Amadeus Flight Create Orders API](https:\/\/developers.amadeus.com\/self-service\/category\/air\/api-doc\/flight-create-orders) OpenAPI specification. \nThis [Amadeus Flight Create Orders API](https:\/\/developers.amadeus.com\/) provides the capability to perform the final booking for a chosen flight.  Use this after completing a flight search with Flight Offers Search and confirming real-time price and availability with Flight Offers Price.",
+    "x-ballerina-init-description": "The connector initialization requires clientId and clientSecret. \nPlease create [Amadeus](https:\/\/developers.amadeus.com\/register) account and Obtain clientId and clientSecret following [this guide](https:\/\/developers.amadeus.com\/get-started\/get-started-with-self-service-apis-335)\n",
+    "x-ballerina-display": {
+      "label": "Amadeus Flight Create Orders",
+      "iconPath": "icon.png"
+    }
+  }
+}

@@ -1,0 +1,1203 @@
+{
+    "serviceUrl": "https://api.clever.com/v1.2",
+    "tools": [
+        {
+            "name": "getDistrictStatus",
+            "description": "Returns the status of the district.",
+            "method": "GET",
+            "path": "/districts/{id}/status",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "District ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getContactsForStudent",
+            "description": "Returns the contacts for a student.",
+            "method": "GET",
+            "path": "/students/{id}/contacts",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Contact ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "Number of contacts",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getStudent",
+            "description": "Returns a specific student.",
+            "method": "GET",
+            "path": "/students/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Student ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "include": {
+                    "location": "query",
+                    "description": "Include",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getSection",
+            "description": "Returns a specific section.",
+            "method": "GET",
+            "path": "/sections/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Section ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getGradeLevelsForTeacher",
+            "description": "Returns the grade levels for sections a teacher teaches.",
+            "method": "GET",
+            "path": "/teachers/{id}/grade_levels",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Teacher ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getContact",
+            "description": "Returns a specific student contact.",
+            "method": "GET",
+            "path": "/contacts/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Contact ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getSections",
+            "description": "Returns a list of sections.",
+            "method": "GET",
+            "path": "/sections",
+            "parameters": {
+                "limit": {
+                    "location": "query",
+                    "description": "Number of sections",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "starting_after": {
+                    "location": "query",
+                    "description": "Starting after",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "ending_before": {
+                    "location": "query",
+                    "description": "Ending before",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "where": {
+                    "location": "query",
+                    "description": "Location",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getSectionsForStudent",
+            "description": "Returns the sections for a student.",
+            "method": "GET",
+            "path": "/students/{id}/sections",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Student ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "Number of students",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "starting_after": {
+                    "location": "query",
+                    "description": "Starting after",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "ending_before": {
+                    "location": "query",
+                    "description": "Ending before",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getSchoolForTeacher",
+            "description": "Retrieves school info for a teacher.",
+            "method": "GET",
+            "path": "/teachers/{id}/school",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Teacher ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getDistrictForSchool",
+            "description": "Returns the district for a school.",
+            "method": "GET",
+            "path": "/schools/{id}/district",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "School ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getDistrict",
+            "description": "Returns a specific district.",
+            "method": "GET",
+            "path": "/districts/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "District ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "include": {
+                    "location": "query",
+                    "description": "Includes",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getSchools",
+            "description": "Returns a list of schools.",
+            "method": "GET",
+            "path": "/schools",
+            "parameters": {
+                "limit": {
+                    "location": "query",
+                    "description": "Number of schools",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "starting_after": {
+                    "location": "query",
+                    "description": "Starting after",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "ending_before": {
+                    "location": "query",
+                    "description": "Ending before",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "where": {
+                    "location": "query",
+                    "description": "Location",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getStudentsForSchool",
+            "description": "Returns the students for a school.",
+            "method": "GET",
+            "path": "/schools/{id}/students",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "School ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "Number of students",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "starting_after": {
+                    "location": "query",
+                    "description": "Starting after",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "ending_before": {
+                    "location": "query",
+                    "description": "Ending before",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "where": {
+                    "location": "query",
+                    "description": "Location",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getDistrictAdmin",
+            "description": "Returns a specific district admin.",
+            "method": "GET",
+            "path": "/district_admins/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "District admin ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getDistrictForSection",
+            "description": "Returns the district for a section.",
+            "method": "GET",
+            "path": "/sections/{id}/district",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Section ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getSchoolsForSchoolAdmin",
+            "description": "Returns the schools for a school admin.",
+            "method": "GET",
+            "path": "/school_admins/{id}/schools",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "School admin ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "Number of schools",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "starting_after": {
+                    "location": "query",
+                    "description": "Starting after",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "ending_before": {
+                    "location": "query",
+                    "description": "Ending before",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getDistrictForStudent",
+            "description": "Returns the district for a student.",
+            "method": "GET",
+            "path": "/students/{id}/district",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Student ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getTeachersForSection",
+            "description": "Returns the teachers for a section.",
+            "method": "GET",
+            "path": "/sections/{id}/teachers",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Section ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "Number of teachers",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "starting_after": {
+                    "location": "query",
+                    "description": "Starting after",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "ending_before": {
+                    "location": "query",
+                    "description": "Ending before",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getTeachers",
+            "description": "Returns a list of teachers.",
+            "method": "GET",
+            "path": "/teachers",
+            "parameters": {
+                "limit": {
+                    "location": "query",
+                    "description": "Number of teachers",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "starting_after": {
+                    "location": "query",
+                    "description": "Starting after",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "ending_before": {
+                    "location": "query",
+                    "description": "Ending before",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "where": {
+                    "location": "query",
+                    "description": "Location",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getSectionsForTeacher",
+            "description": "Returns the sections for a teacher.",
+            "method": "GET",
+            "path": "/teachers/{id}/sections",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Teacher ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "Number of sections",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "starting_after": {
+                    "location": "query",
+                    "description": "Starting after",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "ending_before": {
+                    "location": "query",
+                    "description": "Ending before",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getSchoolForSection",
+            "description": "Returns the school for a section",
+            "method": "GET",
+            "path": "/sections/{id}/school",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Section ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getStudentsForTeacher",
+            "description": "Returns the students for a teacher.",
+            "method": "GET",
+            "path": "/teachers/{id}/students",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Teacher ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "Number of students",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "starting_after": {
+                    "location": "query",
+                    "description": "Starting after",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "ending_before": {
+                    "location": "query",
+                    "description": "Ending before",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getDistrictForStudentContact",
+            "description": "Returns the district for a student contact.",
+            "method": "GET",
+            "path": "/contacts/{id}/district",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Contact ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getSchoolAdmin",
+            "description": "Returns a specific school admin.",
+            "method": "GET",
+            "path": "/school_admins/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "School admin ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "include": {
+                    "location": "query",
+                    "description": "Include",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getTeacher",
+            "description": "Returns a specific teacher.",
+            "method": "GET",
+            "path": "/teachers/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Teacher ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "include": {
+                    "location": "query",
+                    "description": "Include",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getTeacherForSection",
+            "description": "Returns the primary teacher for a section.",
+            "method": "GET",
+            "path": "/sections/{id}/teacher",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Section ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getStudents",
+            "description": "Returns a list of students.",
+            "method": "GET",
+            "path": "/students",
+            "parameters": {
+                "limit": {
+                    "location": "query",
+                    "description": "Number of students",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "starting_after": {
+                    "location": "query",
+                    "description": "Starting after",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "ending_before": {
+                    "location": "query",
+                    "description": "Ending before",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "where": {
+                    "location": "query",
+                    "description": "Location",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getStudentsForSection",
+            "description": "Returns the students for a section.",
+            "method": "GET",
+            "path": "/sections/{id}/students",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Section ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "Number of students",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "starting_after": {
+                    "location": "query",
+                    "description": "Starting after",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "ending_before": {
+                    "location": "query",
+                    "description": "Ending before",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getSectionsForSchool",
+            "description": "Returns the sections for a school.",
+            "method": "GET",
+            "path": "/schools/{id}/sections",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "School ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "Number of sections",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "starting_after": {
+                    "location": "query",
+                    "description": "Starting after",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "ending_before": {
+                    "location": "query",
+                    "description": "Ending before",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "where": {
+                    "location": "query",
+                    "description": "Location",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getStudentForContact",
+            "description": "Returns the student for a student contact.",
+            "method": "GET",
+            "path": "/contacts/{id}/student",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Contact ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getTeachersForDistrict",
+            "description": "Returns the teachers for a district.",
+            "method": "GET",
+            "path": "/districts/{id}/teachers",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "District ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "Number of teachers",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "starting_after": {
+                    "location": "query",
+                    "description": "Starting after",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "ending_before": {
+                    "location": "query",
+                    "description": "Ending before",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "where": {
+                    "location": "query",
+                    "description": "Location",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getSchoolForStudent",
+            "description": "Returns the primary school for a student.",
+            "method": "GET",
+            "path": "/students/{id}/school",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Student ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getDistrictForTeacher",
+            "description": "Returns the district for a teacher.",
+            "method": "GET",
+            "path": "/teachers/{id}/district",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Teacher ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getSectionsForDistrict",
+            "description": "Returns the sections for a district.",
+            "method": "GET",
+            "path": "/districts/{id}/sections",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "District ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "Number of sections",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "starting_after": {
+                    "location": "query",
+                    "description": "Starting after",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "ending_before": {
+                    "location": "query",
+                    "description": "Ending before",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "where": {
+                    "location": "query",
+                    "description": "Location",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getDistrictAdmins",
+            "description": "Returns a list of district admins.",
+            "method": "GET",
+            "path": "/district_admins",
+            "parameters": {
+                "starting_after": {
+                    "location": "query",
+                    "description": "Starting after",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "ending_before": {
+                    "location": "query",
+                    "description": "Ending before",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "show_links": {
+                    "location": "query",
+                    "description": "Show links",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getSchoolsForDistrict",
+            "description": "Returns the schools for a district.",
+            "method": "GET",
+            "path": "/districts/{id}/schools",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "District ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "Number of schools",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "starting_after": {
+                    "location": "query",
+                    "description": "Starting after",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "ending_before": {
+                    "location": "query",
+                    "description": "Ending before",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "where": {
+                    "location": "query",
+                    "description": "Location",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getSchool",
+            "description": "Returns a specific school.",
+            "method": "GET",
+            "path": "/schools/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "School ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getTeachersForStudent",
+            "description": "Returns the teachers for a student.",
+            "method": "GET",
+            "path": "/students/{id}/teachers",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Student ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "Number of teachers",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "starting_after": {
+                    "location": "query",
+                    "description": "Starting after",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "ending_before": {
+                    "location": "query",
+                    "description": "Ending before",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getTeachersForSchool",
+            "description": "Returns the teachers for a school.",
+            "method": "GET",
+            "path": "/schools/{id}/teachers",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "School ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "Number of schools",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "starting_after": {
+                    "location": "query",
+                    "description": "Starting after",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "ending_before": {
+                    "location": "query",
+                    "description": "Ending before",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "where": {
+                    "location": "query",
+                    "description": "Location",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getStudentsForDistrict",
+            "description": "Returns the students for a district.",
+            "method": "GET",
+            "path": "/districts/{id}/students",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "District ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "Number of students",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "starting_after": {
+                    "location": "query",
+                    "description": "Starting after",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "ending_before": {
+                    "location": "query",
+                    "description": "Ending before",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "where": {
+                    "location": "query",
+                    "description": "Location",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getSchoolAdmins",
+            "description": "Returns a list of school admins.",
+            "method": "GET",
+            "path": "/school_admins",
+            "parameters": {
+                "limit": {
+                    "location": "query",
+                    "description": "Number of admins",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "starting_after": {
+                    "location": "query",
+                    "description": "Starting after",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "ending_before": {
+                    "location": "query",
+                    "description": "Ending before",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "where": {
+                    "location": "query",
+                    "description": "Location",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getContacts",
+            "description": "Returns a list of student contacts.",
+            "method": "GET",
+            "path": "/contacts",
+            "parameters": {
+                "limit": {
+                    "location": "query",
+                    "description": "Number of contacts",
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "starting_after": {
+                    "location": "query",
+                    "description": "Starting after",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "ending_before": {
+                    "location": "query",
+                    "description": "Ending before",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getDistricts",
+            "description": "Returns a list of districts.",
+            "method": "GET",
+            "path": "/districts"
+        },
+        {
+            "name": "getAdminsForDistrict",
+            "description": "Returns the admins for a district.",
+            "method": "GET",
+            "path": "/districts/{id}/admins",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "District ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    ]
+}

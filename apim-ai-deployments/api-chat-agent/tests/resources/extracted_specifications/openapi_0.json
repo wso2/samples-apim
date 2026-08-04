@@ -1,0 +1,90 @@
+{
+    "serviceUrl": "https://f2c7f522-ef47-48ce-a429-3fc2f15d2011-dev.e1-us-east-azure.choreoapis.dev/fgbx/wifiapi/1.0.0",
+    "tools": [
+        {
+            "name": "postGuestWifiAccounts",
+            "description": "Create new guest WiFi account",
+            "method": "POST",
+            "path": "/guest-wifi-accounts",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "allOf": [
+                        {
+                            "type": "object",
+                            "required": [
+                                "email",
+                                "username"
+                            ],
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "username": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        {
+                            "type": "object",
+                            "required": [
+                                "password"
+                            ],
+                            "properties": {
+                                "password": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "deleteGuestWifiAccountsOwneremailUsername",
+            "description": "Delete a guest WiFi account",
+            "method": "DELETE",
+            "path": "/guest-wifi-accounts/{ownerEmail}/{username}",
+            "parameters": {
+                "ownerEmail": {
+                    "location": "path",
+                    "description": "Email address of the owner of the guest WiFi accounts",
+                    "required": true,
+                    "style": "simple",
+                    "explode": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "username": {
+                    "location": "path",
+                    "description": "Username of the guest WiFi account to be deleted",
+                    "required": true,
+                    "style": "simple",
+                    "explode": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getGuestWifiAccountsOwneremail",
+            "description": "Get list of guest WiFi accounts of a given owner email address",
+            "method": "GET",
+            "path": "/guest-wifi-accounts/{ownerEmail}",
+            "parameters": {
+                "ownerEmail": {
+                    "location": "path",
+                    "description": "Email address of the owner of the guest WiFi accounts",
+                    "required": true,
+                    "style": "simple",
+                    "explode": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    ]
+}

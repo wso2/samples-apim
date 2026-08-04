@@ -1,0 +1,649 @@
+{
+    "serviceUrl": "https://platform.staging.brexapps.com",
+    "tools": [
+        {
+            "name": "getUserLimitGet",
+            "description": "This endpoint gets the monthly limit for the user including the monthly available limit.\n",
+            "method": "GET",
+            "path": "/v2/users/{id}/limit",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "User ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "setUserLimitPost",
+            "description": "This endpoint sets the monthly limit for a user.  The limit amount must be non-negative.  To unset the monthly limit of the user, just set `monthly_limit` to null.\n",
+            "method": "POST",
+            "path": "/v2/users/{id}/limit",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "User ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "monthly_limit": {
+                            "type": "object",
+                            "properties": {
+                                "amount": {
+                                    "type": "integer"
+                                },
+                                "currency": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "listLocationsGet",
+            "description": "This endpoint lists all locations.\n",
+            "method": "GET",
+            "path": "/v2/locations",
+            "parameters": {
+                "cursor": {
+                    "location": "query",
+                    "description": "Page cursor",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "Object limit",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "createLocationPost",
+            "description": "This endpoint creates a new location\n",
+            "method": "POST",
+            "path": "/v2/locations",
+            "parameters": {},
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "name"
+                    ],
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "getCardNumberGet",
+            "description": "Retrieves card number, CVV and expiration date of a card by ID.\n",
+            "method": "GET",
+            "path": "/v2/cards/{id}/pan",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Card ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "listUsersGet",
+            "description": "This endpoint lists all users.\n",
+            "method": "GET",
+            "path": "/v2/users",
+            "parameters": {
+                "cursor": {
+                    "location": "query",
+                    "description": "Page cursor",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "Object limit",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "createUserPost",
+            "description": "This endpoint invites a new user as an employee. To update user's role, check out [this article](https:\/\/support.brex.com\/how-do-i-change-another-user-s-role\/).\n",
+            "method": "POST",
+            "path": "/v2/users",
+            "parameters": {},
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "email",
+                        "first_name",
+                        "last_name"
+                    ],
+                    "properties": {
+                        "first_name": {
+                            "type": "string"
+                        },
+                        "last_name": {
+                            "type": "string"
+                        },
+                        "email": {
+                            "type": "string",
+                            "format": "email"
+                        },
+                        "manager_id": {
+                            "type": "string"
+                        },
+                        "department_id": {
+                            "type": "string"
+                        },
+                        "location_id": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "listDepartmentsGet",
+            "description": "This endpoint lists all departments.\n",
+            "method": "GET",
+            "path": "/v2/departments",
+            "parameters": {
+                "cursor": {
+                    "location": "query",
+                    "description": "Page cursor",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "Object limit",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "createDepartmentPost",
+            "description": "This endpoint creates a new department\n",
+            "method": "POST",
+            "path": "/v2/departments",
+            "parameters": {},
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "name"
+                    ],
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "getDepartmentByIdGet",
+            "description": "This endpoint gets a department by ID.\n",
+            "method": "GET",
+            "path": "/v2/departments/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Department ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getLocationByIdGet",
+            "description": "This endpoint gets a location by ID.\n",
+            "method": "GET",
+            "path": "/v2/locations/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Location ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getCardByIdGet",
+            "description": "Retrieves a card by ID. Only cards with `limit_type = CARD` have `spend_controls`\n",
+            "method": "GET",
+            "path": "/v2/cards/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Card ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "updateCardPut",
+            "description": "Update an existing vendor card\n",
+            "method": "PUT",
+            "path": "/v2/cards/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Card ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "spend_controls": {
+                            "type": "object",
+                            "properties": {
+                                "spend_limit": {
+                                    "type": "object",
+                                    "properties": {
+                                        "amount": {
+                                            "type": "integer"
+                                        },
+                                        "currency": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "spend_duration": {
+                                    "type": "string",
+                                    "enum": [
+                                        "MONTHLY",
+                                        "QUARTERLY",
+                                        "YEARLY",
+                                        "ONE_TIME"
+                                    ]
+                                },
+                                "lock_after_date": {
+                                    "type": "string",
+                                    "format": "date",
+                                    "pattern": "yyyy-MM-dd"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "lockCardPost",
+            "description": "Locks an existing, unlocked card. And the card owner will receive a notification about it.\n",
+            "method": "POST",
+            "path": "/v2/cards/{id}/lock",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Card ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "reason"
+                    ],
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "reason": {
+                            "type": "string",
+                            "enum": [
+                                "CARD_DAMAGED",
+                                "CARD_LOST",
+                                "CARD_NOT_RECEIVED",
+                                "DO_NOT_NEED_PHYSICAL_CARD",
+                                "DO_NOT_NEED_VIRTUAL_CARD",
+                                "FRAUD",
+                                "OTHER"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "getUserByIdGet",
+            "description": "This endpoint gets a user by ID.\n",
+            "method": "GET",
+            "path": "/v2/users/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "User ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "updateUserPut",
+            "description": "This endpoint updates a user. Any parameters not provided will be left unchanged.\n",
+            "method": "PUT",
+            "path": "/v2/users/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "User ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "status": {
+                            "type": "string",
+                            "enum": [
+                                "ACTIVE",
+                                "DISABLED"
+                            ]
+                        },
+                        "manager_id": {
+                            "type": "string"
+                        },
+                        "department_id": {
+                            "type": "string"
+                        },
+                        "location_id": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "listCardsByUserIdGet",
+            "description": "Lists all cards by a `user_id`. Only cards with `limit_type = CARD` have `spend_controls`\n",
+            "method": "GET",
+            "path": "/v2/cards",
+            "parameters": {
+                "user_id": {
+                    "location": "query",
+                    "description": "User ID",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "cursor": {
+                    "location": "query",
+                    "description": "Page cursor",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "Object limit",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "createCardPost",
+            "description": "Creates a new card. It's strongly recommended that you set an idempotency-key in this request. The `spend_controls` field is required when `limit_type` = `CARD`. The `mailing_address` field is required for physical cards, and the first two lines of the address must be under 60 characters long.\n",
+            "method": "POST",
+            "path": "/v2/cards",
+            "parameters": {},
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "card_name",
+                        "card_type",
+                        "limit_type",
+                        "owner"
+                    ],
+                    "properties": {
+                        "owner": {
+                            "type": "object",
+                            "properties": {
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "USER"
+                                    ]
+                                },
+                                "user_id": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "card_name": {
+                            "type": "string"
+                        },
+                        "card_type": {
+                            "type": "string",
+                            "enum": [
+                                "VIRTUAL",
+                                "PHYSICAL"
+                            ]
+                        },
+                        "limit_type": {
+                            "type": "string",
+                            "enum": [
+                                "CARD",
+                                "USER"
+                            ]
+                        },
+                        "spend_controls": {
+                            "type": "object",
+                            "required": [
+                                "spend_duration",
+                                "spend_limit"
+                            ],
+                            "properties": {
+                                "spend_limit": {
+                                    "type": "object",
+                                    "properties": {
+                                        "amount": {
+                                            "type": "integer"
+                                        },
+                                        "currency": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "spend_duration": {
+                                    "type": "string",
+                                    "enum": [
+                                        "MONTHLY",
+                                        "QUARTERLY",
+                                        "YEARLY",
+                                        "ONE_TIME"
+                                    ]
+                                },
+                                "reason": {
+                                    "type": "string"
+                                },
+                                "lock_after_date": {
+                                    "type": "string",
+                                    "format": "date",
+                                    "pattern": "yyyy-MM-dd"
+                                }
+                            }
+                        },
+                        "mailing_address": {
+                            "type": "object",
+                            "properties": {
+                                "line1": {
+                                    "type": "string"
+                                },
+                                "line2": {
+                                    "type": "string"
+                                },
+                                "city": {
+                                    "type": "string"
+                                },
+                                "state": {
+                                    "type": "string"
+                                },
+                                "country": {
+                                    "type": "string"
+                                },
+                                "postal_code": {
+                                    "type": "string"
+                                },
+                                "phone_number": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "getMeGet",
+            "description": "This endpoint returns the user associated with the OAuth2 access token\n",
+            "method": "GET",
+            "path": "/v2/users/me"
+        },
+        {
+            "name": "terminateCardPost",
+            "description": "Terminates an existing card. And the card owner will receive a notification about it.\n",
+            "method": "POST",
+            "path": "/v2/cards/{id}/terminate",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Card ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "reason"
+                    ],
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "reason": {
+                            "type": "string",
+                            "enum": [
+                                "CARD_DAMAGED",
+                                "CARD_LOST",
+                                "CARD_NOT_RECEIVED",
+                                "DO_NOT_NEED_PHYSICAL_CARD",
+                                "DO_NOT_NEED_VIRTUAL_CARD",
+                                "FRAUD",
+                                "OTHER"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "unlockCardPost",
+            "description": "Unlocks an existing card.\n",
+            "method": "POST",
+            "path": "/v2/cards/{id}/unlock",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "Card ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {}
+                }
+            }
+        }
+    ]
+}

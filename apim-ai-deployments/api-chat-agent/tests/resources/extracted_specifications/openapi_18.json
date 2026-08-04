@@ -1,0 +1,1553 @@
+{
+    "serviceUrl": "https://api.askspoke.com/api/v1",
+    "tools": [
+        {
+            "name": "mergeRequest",
+            "description": "Merge a list of spoke requests to a primary request. Merging a request carries out the following actions – 1. Mark all the tasks of the secondary requests as completed. 2. Lock all the secondary requests. 3. Add all the viewers of secondary requests to primary request.",
+            "method": "POST",
+            "path": "/requests/{requestId}/merge",
+            "parameters": {
+                "requestId": {
+                    "location": "path",
+                    "description": "the request id of the request you wish to merge in to",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "requests"
+                    ],
+                    "properties": {
+                        "requests": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "getTags",
+            "description": "Returns a list of tags.",
+            "method": "GET",
+            "path": "/tags",
+            "parameters": {
+                "start": {
+                    "location": "query",
+                    "description": "The index of the tag to start with.",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "The number of tags to return. Defaults to 25.",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "q": {
+                    "location": "query",
+                    "description": "A search query to search tags for",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "tagId": {
+                    "location": "query",
+                    "description": "A comma separated list of tags",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getRequest",
+            "description": "Get a request.",
+            "method": "GET",
+            "path": "/requests/{requestId}",
+            "parameters": {
+                "requestId": {
+                    "location": "path",
+                    "description": "the ID of the request, 24 characters, hexadecimal",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "deleteRequest",
+            "description": "Delete a request.",
+            "method": "DELETE",
+            "path": "/requests/{requestId}",
+            "parameters": {
+                "requestId": {
+                    "location": "path",
+                    "description": "the ID of the request, 24 characters, hexadecimal",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "updateRequest",
+            "description": "Update a request.",
+            "method": "PATCH",
+            "path": "/requests/{requestId}",
+            "parameters": {
+                "requestId": {
+                    "location": "path",
+                    "description": "the ID of the request, 24 characters, hexadecimal",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "requester": {
+                            "type": "string"
+                        },
+                        "owner": {
+                            "type": "string"
+                        },
+                        "subject": {
+                            "type": "string"
+                        },
+                        "status": {
+                            "type": "string",
+                            "enum": [
+                                "AUTO_RESOLVED",
+                                "OPEN",
+                                "RESOLVED"
+                            ]
+                        },
+                        "requestType": {
+                            "type": "object",
+                            "properties": {}
+                        },
+                        "requestTypeInfo": {
+                            "type": "object",
+                            "properties": {
+                                "answeredFields": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "fieldId": {
+                                                "type": "string"
+                                            },
+                                            "value": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "taskInstances": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "uuid"
+                                ],
+                                "properties": {
+                                    "uuid": {
+                                        "type": "string"
+                                    },
+                                    "owner": {
+                                        "type": "string"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "OPEN",
+                                            "COMPLETED",
+                                            "TOMBSTONED"
+                                        ]
+                                    },
+                                    "dueDate": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "privacyLevel": {
+                            "type": "string",
+                            "enum": [
+                                "private",
+                                "public"
+                            ]
+                        },
+                        "team": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "addConfigList",
+            "description": "Create a single config list.",
+            "method": "POST",
+            "path": "/configlists/{listId}",
+            "parameters": {
+                "listId": {
+                    "location": "path",
+                    "description": "List ID",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "status": {
+                            "type": "string",
+                            "enum": [
+                                "ACTIVE",
+                                "TOMBSTONED"
+                            ]
+                        },
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "ACTIVE",
+                                            "ARCHIVED"
+                                        ]
+                                    },
+                                    "externalData": {
+                                        "type": "object",
+                                        "properties": {
+                                            "sourceIntegrationId": {
+                                                "type": "string"
+                                            },
+                                            "remoteId": {
+                                                "type": "string"
+                                            },
+                                            "remoteLink": {
+                                                "type": "string"
+                                            },
+                                            "lastSyncedAt": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "externalData": {
+                            "type": "object",
+                            "properties": {
+                                "sourceIntegrationId": {
+                                    "type": "string"
+                                },
+                                "lastSyncedAt": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "org": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "deleteConfigList",
+            "description": "Delete a single config list.",
+            "method": "DELETE",
+            "path": "/configlists/{listId}",
+            "parameters": {
+                "listId": {
+                    "location": "path",
+                    "description": "the ID of the configlist, 24 characters, hexadecimal",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "updateConfigList",
+            "description": "Update a single config list.",
+            "method": "PATCH",
+            "path": "/configlists/{listId}",
+            "parameters": {
+                "listId": {
+                    "location": "path",
+                    "description": "the ID of the configlist, 24 characters, hexadecimal",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "status": {
+                            "type": "string",
+                            "enum": [
+                                "ACTIVE",
+                                "TOMBSTONED"
+                            ]
+                        },
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "ACTIVE",
+                                            "ARCHIVED"
+                                        ]
+                                    },
+                                    "externalData": {
+                                        "type": "object",
+                                        "properties": {
+                                            "sourceIntegrationId": {
+                                                "type": "string"
+                                            },
+                                            "remoteId": {
+                                                "type": "string"
+                                            },
+                                            "remoteLink": {
+                                                "type": "string"
+                                            },
+                                            "lastSyncedAt": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "externalData": {
+                            "type": "object",
+                            "properties": {
+                                "sourceIntegrationId": {
+                                    "type": "string"
+                                },
+                                "lastSyncedAt": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "org": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "AddSubscriberToRequest",
+            "description": "Add a subscriber to a request",
+            "method": "POST",
+            "path": "/requests/{requestId}/subscribers/{userId}",
+            "parameters": {
+                "requestId": {
+                    "location": "path",
+                    "description": "ID of the request that will have the new subscriber.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "userId": {
+                    "location": "path",
+                    "description": "ID of the user to subscribe to the request.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "RemoveSubscriberFromRequest",
+            "description": "Remove a subscriber to a request",
+            "method": "DELETE",
+            "path": "/requests/{requestId}/subscribers/{userId}",
+            "parameters": {
+                "requestId": {
+                    "location": "path",
+                    "description": "ID of the request that will have the subscriber removed.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "userId": {
+                    "location": "path",
+                    "description": "ID of the user to remove as a subscriber.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getUser",
+            "description": "Get a user.",
+            "method": "GET",
+            "path": "/users/{userId}",
+            "parameters": {
+                "userId": {
+                    "location": "path",
+                    "description": "ID of the user.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "updateUser",
+            "description": "Update a user.",
+            "method": "PATCH",
+            "path": "/users/{userId}",
+            "parameters": {
+                "userId": {
+                    "location": "path",
+                    "description": "ID of user that needs to be updated.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "displayName": {
+                            "type": "string"
+                        },
+                        "phoneNumber": {
+                            "type": "string"
+                        },
+                        "countryId": {
+                            "type": "string"
+                        },
+                        "email": {
+                            "type": "string",
+                            "format": "email"
+                        },
+                        "profile": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string"
+                                },
+                                "jobTitle": {
+                                    "type": "string"
+                                },
+                                "location": {
+                                    "type": "string"
+                                },
+                                "department": {
+                                    "type": "string"
+                                },
+                                "manager": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "startDate": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "getRequestType",
+            "description": "Return a single equest type.",
+            "method": "GET",
+            "path": "/request_types/{requestTypeId}",
+            "parameters": {
+                "requestTypeId": {
+                    "location": "path",
+                    "description": "id of the request type",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getResources",
+            "description": "Return a list of resources.",
+            "method": "GET",
+            "path": "/resources",
+            "parameters": {
+                "q": {
+                    "location": "query",
+                    "description": "A search query to search resources for.",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "ai": {
+                    "location": "query",
+                    "description": "Whether or not to use AI-based search. Requires q to be set as well.",
+                    "required": false,
+                    "schema": {
+                        "type": "boolean"
+                    }
+                },
+                "status": {
+                    "location": "query",
+                    "description": "Parameter to get resources by status.  0 = ok, 1 = needs_review, 2 = deprecated..",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            0,
+                            1,
+                            2
+                        ]
+                    }
+                },
+                "team": {
+                    "location": "query",
+                    "description": "Get resources belonging to one or more teams. Send comma-separated string for multiple teams, \"none\" for no team",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "author": {
+                    "location": "query",
+                    "description": "Get resources created one or more authors. Send comma-separated string for multiple authors.",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "reviewBy": {
+                    "location": "query",
+                    "description": "Get resources up for review before this timestamp (ms since epoch).",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "start": {
+                    "location": "query",
+                    "description": "The index of the request to start with.",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "The number of parameters to return. Defaults to 25.",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "addResource",
+            "description": "Create a new askSpoke resource. Users with Administrator permissions can create a resource with anyone as the author. Regularly permissioned users can only author requests as themselves.",
+            "method": "POST",
+            "path": "/resources",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "title",
+                        "author"
+                    ],
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "text"
+                            ]
+                        },
+                        "author": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        },
+                        "body": {
+                            "type": "string"
+                        },
+                        "team": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "getConfigLists",
+            "description": "Return a list of CMDB lists.",
+            "method": "GET",
+            "path": "/configlists",
+            "parameters": {
+                "q": {
+                    "location": "query",
+                    "description": "Parameter for text-searching lists by name or item name",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "start": {
+                    "location": "query",
+                    "description": "The index of the list to start with.",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "The number of lists to return. Defaults to 25.",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "listId": {
+                    "location": "query",
+                    "description": "comma-separated list of listids to return",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "withItem": {
+                    "location": "query",
+                    "description": "comma-separated list of itemids to return",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getUserByEmail",
+            "description": "Look up a user by email address.",
+            "method": "GET",
+            "path": "/users/email/{address}",
+            "parameters": {
+                "address": {
+                    "location": "path",
+                    "description": "Email address of the user. Case insensitive.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getTeams",
+            "description": "Return a list of teams.",
+            "method": "GET",
+            "path": "/teams",
+            "parameters": {
+                "q": {
+                    "location": "query",
+                    "description": "Text search to search teams for.",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "ai": {
+                    "location": "query",
+                    "description": "Whether or not to use AI-based search. Requires q to be set as well.",
+                    "required": false,
+                    "schema": {
+                        "type": "boolean"
+                    }
+                },
+                "slug": {
+                    "location": "query",
+                    "description": "Comma-separated list of team slugs to get.",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "start": {
+                    "location": "query",
+                    "description": "The index of the request to start with. Ignored if ai is set to true.",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "The number of parameters to return. Defaults to 25. Ignored if ai is set to true.",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "bulkAddTags",
+            "description": "Add a tag to multiple requests.",
+            "method": "PATCH",
+            "path": "/requests/bulk_add_tag",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "requests",
+                        "tag"
+                    ],
+                    "properties": {
+                        "requests": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "tag": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "getUsers",
+            "description": "Return a list of users.",
+            "method": "GET",
+            "path": "/users",
+            "parameters": {
+                "q": {
+                    "location": "query",
+                    "description": "Text search to search user for.",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "status": {
+                    "location": "query",
+                    "description": "Filter user based on status.",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "ACTIVE",
+                            "INVITED"
+                        ]
+                    }
+                },
+                "team": {
+                    "location": "query",
+                    "description": "Filter user based on team.",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "start": {
+                    "location": "query",
+                    "description": "The index of the request to start with.",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "The number of parameters to return. Defaults to 10.",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getRequestTypes",
+            "description": "Return a list of request types.",
+            "method": "GET",
+            "path": "/request_types",
+            "parameters": {
+                "q": {
+                    "location": "query",
+                    "description": "Parameter for text-searching requestTypes",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "team": {
+                    "location": "query",
+                    "description": "Get request types belonging to a team.",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "start": {
+                    "location": "query",
+                    "description": "The index of the request type to start with.",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "The number of request types to return. Defaults to 25.",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "sort": {
+                    "location": "query",
+                    "description": "sort order for the returned request types",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "createdLast",
+                            "createdFirst",
+                            "updated",
+                            "text"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "getWebhook",
+            "description": "Get a webhook subscription.",
+            "method": "GET",
+            "path": "/webhooks/{webhookId}",
+            "parameters": {
+                "webhookId": {
+                    "location": "path",
+                    "description": "The ID of the webhook to get.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "deleteWebhook",
+            "description": "Delete a  webhook subscription.",
+            "method": "DELETE",
+            "path": "/webhooks/{webhookId}",
+            "parameters": {
+                "webhookId": {
+                    "location": "path",
+                    "description": "ID of  webhook subscription to deleted.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "updateWebhook",
+            "description": "Update a webhook subscription.",
+            "method": "PATCH",
+            "path": "/webhooks/{webhookId}",
+            "parameters": {
+                "webhookId": {
+                    "location": "path",
+                    "description": "ID of the webhook subscription that needs to be updated.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "url",
+                        "client"
+                    ],
+                    "properties": {
+                        "client": {
+                            "type": "string"
+                        },
+                        "url": {
+                            "type": "string"
+                        },
+                        "topics": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "request.created",
+                                    "resource.created",
+                                    "request.updated"
+                                ]
+                            }
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "enabled": {
+                            "type": "boolean"
+                        },
+                        "authentication": {
+                            "type": "object",
+                            "properties": {
+                                "clientSecret": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "postRequestMessage",
+            "description": "Post a message to a request. The message will show up in the Request Panel. If creating a message as a User, the user id included in the POST body must match the user that generated the API key",
+            "method": "POST",
+            "path": "/requests/{requestId}/messages",
+            "parameters": {
+                "requestId": {
+                    "location": "path",
+                    "description": "ID of the request.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "actor",
+                        "content"
+                    ],
+                    "properties": {
+                        "actor": {
+                            "type": "object",
+                            "properties": {
+                                "kind": {
+                                    "type": "string",
+                                    "enum": [
+                                        "User",
+                                        "Team",
+                                        null
+                                    ]
+                                },
+                                "ref": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "content": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "object",
+                                    "properties": {
+                                        "text": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "getRequests",
+            "description": "Return a list of requests.",
+            "method": "GET",
+            "path": "/requests",
+            "parameters": {
+                "filter": {
+                    "location": "query",
+                    "description": "Parameter to filter queries",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "inbox",
+                            "unassigned",
+                            "sent"
+                        ]
+                    }
+                },
+                "status": {
+                    "location": "query",
+                    "description": "Parameter to get requests by status. Should be a comma-separated string of statuses.",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "OPEN",
+                            "PENDING",
+                            "LOCKED",
+                            "RESOLVED",
+                            "AUTO_RESOLVED"
+                        ]
+                    }
+                },
+                "team": {
+                    "location": "query",
+                    "description": "Get requests belonging to this team",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "tag": {
+                    "location": "query",
+                    "description": "Get requests tagged with this tag. Accepts a comma-separated string of many tags, and returns requests that match any provided tag. The keyword `none` can also be passed to return requests that are not tagged.",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "q": {
+                    "location": "query",
+                    "description": "Searches and returns request with this text",
+                    "required": false,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "start": {
+                    "location": "query",
+                    "description": "The index of the request to start with",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "The number of requests to return at once. Max is 100.",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "sort": {
+                    "location": "query",
+                    "description": "The order by which requests should be returned. When querying with a `q` param, results will be sorted by their similarity to the query when no other `sort` is specified.",
+                    "required": false,
+                    "schema": {
+                        "type": "string",
+                        "enum": [
+                            "updated",
+                            "updatedFirst",
+                            "createdLast",
+                            "createdFirst",
+                            "slaAscending"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "addRequest",
+            "description": "Create a new askSpoke request. Admins can create a request with anyone as the requester while regularly priviledged users can only request for themselves.",
+            "method": "POST",
+            "path": "/requests",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "subject",
+                        "requester"
+                    ],
+                    "properties": {
+                        "subject": {
+                            "type": "string"
+                        },
+                        "body": {
+                            "type": "string"
+                        },
+                        "requester": {
+                            "type": "string"
+                        },
+                        "owner": {
+                            "type": "string"
+                        },
+                        "team": {
+                            "type": "string"
+                        },
+                        "privacyLevel": {
+                            "type": "string",
+                            "enum": [
+                                "private",
+                                "public"
+                            ]
+                        },
+                        "requestType": {
+                            "type": "string"
+                        },
+                        "requestTypeInfo": {
+                            "type": "object",
+                            "properties": {
+                                "answeredFields": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "fieldId": {
+                                                "type": "string"
+                                            },
+                                            "value": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "getOpenTasks",
+            "description": "Return open tasks with requests subject and permalinkId.",
+            "method": "GET",
+            "path": "/requests/tasks",
+            "parameters": {
+                "start": {
+                    "location": "query",
+                    "description": "The index of the task to start with.",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "The number of tasks to return.",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "byDueDate": {
+                    "location": "query",
+                    "description": "Whether to sort tasks by due date or not.",
+                    "required": false,
+                    "schema": {
+                        "type": "boolean"
+                    }
+                }
+            }
+        },
+        {
+            "name": "getResource",
+            "description": "Get a resource.",
+            "method": "GET",
+            "path": "/resources/{resourceId}",
+            "parameters": {
+                "resourceId": {
+                    "location": "path",
+                    "description": "ID of the resource.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "deleteResource",
+            "description": "Delete a resource.",
+            "method": "DELETE",
+            "path": "/resources/{resourceId}",
+            "parameters": {
+                "resourceId": {
+                    "location": "path",
+                    "description": "ID of resource that needs to be deleted.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "updateResource",
+            "description": "Update a resource.",
+            "method": "PATCH",
+            "path": "/resources/{resourceId}",
+            "parameters": {
+                "resourceId": {
+                    "location": "path",
+                    "description": "ID of the resource that needs to be updated.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "title",
+                        "author"
+                    ],
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "text"
+                            ]
+                        },
+                        "author": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        },
+                        "body": {
+                            "type": "string"
+                        },
+                        "team": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "whoami",
+            "description": "Returns user id, name, current org and role for the API key.",
+            "method": "GET",
+            "path": "/whoami"
+        },
+        {
+            "name": "getTeam",
+            "description": "Get a team.",
+            "method": "GET",
+            "path": "/teams/{teamId}",
+            "parameters": {
+                "teamId": {
+                    "location": "path",
+                    "description": "ID of the team.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "updateTeam",
+            "description": "Update a team.",
+            "method": "PATCH",
+            "path": "/teams/{teamId}",
+            "parameters": {
+                "teamId": {
+                    "location": "path",
+                    "description": "ID of the team.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "settings": {
+                            "type": "object",
+                            "properties": {
+                                "delegation": {
+                                    "type": "object",
+                                    "properties": {
+                                        "strategy": {
+                                            "type": "string",
+                                            "enum": [
+                                                "SPECIFIC_USER",
+                                                "ROUND_ROBIN",
+                                                "SMART_ASSIGNMENT"
+                                            ]
+                                        },
+                                        "specificUser": {
+                                            "type": "string"
+                                        },
+                                        "excludedUsers": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "flags": {
+                                    "type": "object",
+                                    "properties": {
+                                        "AUTO_DELEGATION": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "getWebhooks",
+            "description": "An array of all the webhook subscriptions for this user on this org.",
+            "method": "GET",
+            "path": "/webhooks"
+        },
+        {
+            "name": "addWebhook",
+            "description": "Sign up to receive webhooks from askSpoke.",
+            "method": "POST",
+            "path": "/webhooks",
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "url",
+                        "client"
+                    ],
+                    "properties": {
+                        "client": {
+                            "type": "string"
+                        },
+                        "url": {
+                            "type": "string"
+                        },
+                        "topics": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "request.created",
+                                    "resource.created",
+                                    "request.updated"
+                                ]
+                            }
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "enabled": {
+                            "type": "boolean"
+                        },
+                        "authentication": {
+                            "type": "object",
+                            "properties": {
+                                "clientSecret": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "AddTagsToRequest",
+            "description": "Add tags to a request.",
+            "method": "PATCH",
+            "path": "/requests/{requestId}/tags",
+            "parameters": {
+                "requestId": {
+                    "location": "path",
+                    "description": "ID of the request that needs to be updated.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "tags"
+                    ],
+                    "properties": {
+                        "tags": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "_id": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "getMergedRequests",
+            "description": "Gets requests merged into the given request.",
+            "method": "GET",
+            "path": "/requests/{requestId}/secondary",
+            "parameters": {
+                "requestId": {
+                    "location": "path",
+                    "description": "the request id of the request for which you wish to see the merged requests of",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "start": {
+                    "location": "query",
+                    "description": "The index of merged requests to start with",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "The number of requests merged with your initial request to return. Defaults to 25.",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "DeleteTagFromRequest",
+            "description": "Delete tag from a request.",
+            "method": "DELETE",
+            "path": "/requests/{requestId}/tags/{tagId}",
+            "parameters": {
+                "requestId": {
+                    "location": "path",
+                    "description": "ID of the request that needs to be updated.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "tagId": {
+                    "location": "path",
+                    "description": "ID of the tag to remove from the request.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    ]
+}

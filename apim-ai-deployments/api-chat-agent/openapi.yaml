@@ -1,0 +1,636 @@
+openapi: 3.0.3
+
+info:
+  title: REST API Chat Agent
+  description: |
+    Natural-language testing of an API. Given the API's definition, the service
+    enriches it into agent tools and generates sample queries, then drives an agent
+    that decides — one step at a time — which resource to invoke next, until it can
+    answer the user's command.
+
+    ## API type
+
+    Both resources take an `apiType` query parameter naming the kind of API under
+    test. It is the single point of variation in this contract: the request and
+    response shapes are otherwise identical across types.
+
+    **`REST` is the only type implemented today**, and is the default. The remaining
+    values are declared so that clients can be written against the final contract
+    now; a request naming one of them is rejected with `501` until the corresponding
+    support lands. Adding a type is a change to this service, not a new endpoint and
+    not a new deployment.
+
+    ## Where this sits
+
+    An internal service, reached by API Manager through the Interceptor Service or an
+    API gateway. Two resources make up the whole integration:
+
+    | Caller-side resource | Resource here |
+    |---|---|
+    | `POST /ai/api-chat/prepare` | `POST /prepare` |
+    | `POST /ai/api-chat/execute` | `POST /chat` |
+
+    **Note the rename on the second row.** API Manager's configuration key is
+    `api_chat_execute_resource` and its value is `/ai/api-chat/execute`, but the
+    resource that must be invoked here is `/chat`. A deployment that routes `execute`
+    straight through to a same-named resource will not reach this contract.
+
+    This is the only published API Chat service. `apiType` is forwarded through
+    unchanged and no longer selects between deployments.
+
+    ## The execution model
+
+    This service never invokes the API under test. `/chat` decides which resource
+    *should* be called next and returns that decision; the client invokes it and
+    reports the outcome on the following call, which is what advances the session.
+
+    On-premises API Manager needs it this way, because the API under test is typically
+    behind the customer's firewall and unreachable from wherever this service runs.
+
+    > The deployed Ballerina service also exposes a self-invoking `POST /execute`, in
+    > which the agent calls the API under test itself using a supplied token. Nothing
+    > in the API Manager path reaches it, so it is deliberately not part of this
+    > contract and is not specified here.
+
+    ## Session state
+
+    `apiChatRequestId` correlates the steps of one conversation. `/chat` caches the
+    enriched specification, the command, the iteration counter and the execution
+    history in Redis under that id, so every call of a session must reuse the same
+    value. `/prepare` caches its result under a hash of the submitted definition, so
+    repeat calls for an unchanged definition skip the LLM entirely.
+
+    A session stops after 15 iterations, returning `TERMINATED`.
+
+    ## Additional request properties
+
+    The interceptor forwards request bodies verbatim, so payloads arrive carrying any
+    top-level attributes API Manager's `AIRequestPropertyEnricher` added. Every
+    request record in this service is an **open** Ballerina record, so the extra
+    fields bind into the record's rest field and are ignored rather than rejected.
+
+    Every request schema therefore sets `additionalProperties: true`, and bodies with
+    more than one accepted shape use `anyOf` rather than `oneOf`. Do not tighten
+    either: a validator that rejects unknown top-level attributes would break every
+    enriched call.
+
+    ## Access control
+
+    No service-level authentication. Access is controlled by the Frontier Gateway in
+    front of the deployment, so `security: []` below is deliberate.
+
+    Neither resource carries a credential for the API under test — this service never
+    calls it.
+
+    ## Keep API Manager's sentinel phrases out of `detail`
+
+    API Manager classifies a failure by substring-matching the exception message
+    (`RestApiUtil.detailedMessageMatches`), and on the `500` branch that message *is*
+    your `detail` string. A `detail` containing `Invalid credentials` is reported to
+    the user as a `401`; one containing `You have exceeded your quota` is reported as
+    a `429`. Keep both phrases out of it.
+  version: 2.0.0
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+
+servers:
+  - url: http://{host}:{port}
+    description: Internal service endpoint
+    variables:
+      host:
+        default: localhost
+      port:
+        default: '9090'
+
+tags:
+  - name: API Chat
+    description: Preparation and step-wise execution of a REST chat session.
+
+security: []
+
+paths:
+  /prepare:
+    post:
+      tags:
+        - API Chat
+      summary: Enrich an OpenAPI definition and generate sample queries
+      description: |
+        Asks the LLM to describe each resource, converts the enriched definition into
+        the agent tool set, and generates sample queries the user can start from.
+
+        The `apiSpec` returned here must be sent back on the first `/chat` call of the
+        session.
+
+        Results are cached against a hash of the submitted definition, so a repeat
+        call for an unchanged definition skips the LLM and returns the same response.
+      operationId: prepareApiChat
+      parameters:
+        - $ref: '#/components/parameters/ApiTypeQueryParam'
+        - $ref: '#/components/parameters/ApiChatRequestIdHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiChatPrepareRequest'
+            examples:
+              rest:
+                summary: REST API
+                value:
+                  openapi:
+                    openapi: 3.0.0
+                    info:
+                      title: PizzaShackAPI
+                      version: 1.0.0
+                    paths:
+                      /menu:
+                        get:
+                          summary: Retrieve a list of available menu items
+                          responses:
+                            '200':
+                              description: OK
+      responses:
+        '201':
+          description: The enriched specification and sample queries.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiChatPrepareResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '501':
+          $ref: '#/components/responses/NotImplemented'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /chat:
+    post:
+      tags:
+        - API Chat
+      summary: Decide the next resource to invoke (client-invoked model)
+      description: |
+        Advances the agent by a single step without touching the API under test.
+
+        The first call of a session sends `command` and `apiSpec`. The agent replies
+        with the resource the **client** should invoke. Every later call sends
+        `response`, the result the client obtained; the rest of the state is restored
+        from the cache under `apiChatRequestId`.
+
+        This is the resource API Manager uses, reached through the interceptor's
+        `/ai/api-chat/execute`.
+
+        A command matching "test all resources" (or "invoke all endpoints", and
+        similar phrasings) switches the agent into a mode that walks every resource
+        in turn instead of reasoning about which one to pick.
+      operationId: advanceApiChat
+      parameters:
+        - $ref: '#/components/parameters/ApiTypeQueryParam'
+        - $ref: '#/components/parameters/ApiChatRequestIdHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              anyOf:
+                - $ref: '#/components/schemas/ApiChatInitializationRequest'
+                - $ref: '#/components/schemas/ApiChatExecutionResultRequest'
+            examples:
+              initialize:
+                summary: Start a session
+                value:
+                  command: Get the menu items
+                  apiSpec:
+                    serviceUrl: https://localhost:9443/am/sample/pizzashack/v1/api
+                    tools:
+                      - name: GET-menu
+                        description: Retrieve a list of available menu items. This tool invokes a HTTP GET resource
+                        method: GET
+                        path: /menu
+              continue:
+                summary: Report the result of the previous step
+                value:
+                  response:
+                    code: 200
+                    path: /menu
+                    headers:
+                      contentType: application/json
+                      contentLength: 512
+                    body: '[{"name":"BBQ Chicken Bacon","price":15.5}]'
+      responses:
+        '201':
+          description: |
+            The outcome of the step. `taskStatus` tells you which variant you got.
+
+            A failure must not be reported here. API Manager binds this body to
+            `ApiChatResponseDTO` and rejects unknown properties, so an `ErrorInfo`
+            returned under `201` fails to deserialise and reaches the user as an
+            opaque `500`. Use `500` and `ErrorInfo` instead.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ApiChatExecutionResponse'
+                  - $ref: '#/components/schemas/ApiChatCompletionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '501':
+          $ref: '#/components/responses/NotImplemented'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  parameters:
+    ApiTypeQueryParam:
+      name: apiType
+      in: query
+      required: false
+      description: |
+        Kind of API under test. Defaults to `REST`.
+
+        `REST` is the only value implemented today; every other value is accepted by
+        the contract and answered with `501` until support lands. Values match the API
+        types API Manager itself uses, so a caller can pass an API's type straight
+        through without mapping it.
+      schema:
+        $ref: '#/components/schemas/ApiType'
+
+    ApiChatRequestIdHeader:
+      name: apiChatRequestId
+      in: header
+      required: true
+      description: |
+        Correlation id for the chat session. Session state is cached under this id,
+        so every call of one session must reuse the same value.
+      schema:
+        type: string
+        example: 3f9c1a2e-5d7b-4e21-8a55-0b1c2d3e4f56
+
+  responses:
+
+    BadRequest:
+      description: |
+        The payload matched none of the accepted request records, or a required
+        header was missing. No response body.
+
+        API Manager has no `400` branch. This reaches the user as a `500`, and the
+        distinction between a malformed payload and a service fault is lost. Reserve
+        it for payloads this service genuinely cannot bind.
+
+    NotImplemented:
+      description: |
+        `apiType` names a type this service does not yet support. Only `REST` is
+        implemented; the value is valid, the capability is not present.
+
+        API Manager has no `501` branch either — this also reaches the user as a
+        `500`, with the body recorded only in the log.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorInfo'
+          example:
+            level: WARN
+            detail: API type GRAPHQL is not supported yet.
+            code: UNSUPPORTED_API_TYPE
+
+    InternalServerError:
+      description: |
+        A handled failure, and the only failure API Manager parses.
+
+        The body must be a JSON object carrying `detail` as a JSON string. API Manager
+        parses it before testing for any field, so a non-object body or a non-string
+        `detail` raises an unchecked exception rather than producing the handled `500`
+        described here.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorInfo'
+          examples:
+            unsupportedSpec:
+              value:
+                level: WARN
+                detail: The OpenAPI specification includes components that are currently not supported.
+                code: UNSUPPORTED_SPECIFICATION
+            tokenLimit:
+              value:
+                level: WARN
+                detail: The OpenAPI specification for the API exceeds the maximum limit.
+                code: TOKEN_LIMIT_EXCEEDED
+            generic:
+              value:
+                level: ERROR
+                detail: An error occurred during query execution.
+                code: GENERIC
+
+  schemas:
+    ApiChatPrepareRequest:
+      type: object
+      description: The OpenAPI definition of the API under test.
+      properties:
+        openapi:
+          type: object
+          description: OpenAPI definition as a JSON object.
+          additionalProperties: true
+      required:
+        - openapi
+      additionalProperties: true
+
+    ApiChatPrepareResponse:
+      type: object
+      description: |
+        The enriched specification to echo back on the first `/chat` call, plus sample
+        commands the user can start from.
+      properties:
+        apiSpec:
+          $ref: '#/components/schemas/HttpApiSpecification'
+        queries:
+          type: array
+          items:
+            $ref: '#/components/schemas/SampleQuery'
+      required:
+        - apiSpec
+        - queries
+
+    ApiChatExecutionResponse:
+      type: object
+      description: The test is still running, or was stopped at the iteration limit.
+      properties:
+        taskStatus:
+          type: string
+          enum:
+            - IN_PROGRESS
+            - TERMINATED
+        resource:
+          $ref: '#/components/schemas/ApiResourceDefinition'
+      required:
+        - taskStatus
+        - resource
+
+    ApiChatCompletionResponse:
+      type: object
+      description: The agent finished the task.
+      properties:
+        taskStatus:
+          type: string
+          enum:
+            - COMPLETED
+        result:
+          type: string
+          description: Final natural-language answer.
+      required:
+        - taskStatus
+        - result
+
+    ApiChatInitializationRequest:
+      type: object
+      description: |
+        First call of a session. Recognised by the presence of `command` and `apiSpec`.
+      properties:
+        command:
+          type: string
+          description: Natural-language task for the agent. Must not be blank.
+          example: Get the menu items
+        apiSpec:
+          $ref: '#/components/schemas/HttpApiSpecification'
+      required:
+        - command
+        - apiSpec
+      additionalProperties: true
+
+    ApiChatExecutionResultRequest:
+      type: object
+      description: |
+        Every later call of a session, carrying the HTTP result of the resource the
+        agent last asked the client to invoke. Recognised by the presence of
+        `response`.
+      properties:
+        response:
+          $ref: '#/components/schemas/HttpOutput'
+      required:
+        - response
+      additionalProperties: true
+
+    ApiType:
+      type: string
+      default: REST
+      description: |
+        Kind of API under test. Only `REST` is implemented; the rest are reserved and
+        answered with `501`.
+      enum:
+        - REST
+        - GRAPHQL
+        - SOAP
+        - SOAPTOREST
+        - ASYNC
+        - WS
+        - WEBSUB
+        - SSE
+        - WEBHOOK
+      example: REST
+
+    # ---- Errors -----------------------------------------------------------
+    ErrorInfo:
+      type: object
+      description: |
+        Error body, returned with every `4xx` and `5xx`.
+
+        `detail` is the only field API Manager reads, and it reads it only on a `500`.
+        Earlier drafts of this contract called it `message`; the rename is what makes
+        API Manager's `500` branch resolve a cause instead of falling through to
+        "Unexpected response detected from the AI service", so implementations must
+        follow it.
+
+        **Never return this schema under a `201`.** API Manager binds a `201` body to
+        `ApiChatResponseDTO`, which declares only `apiSpec`, `taskStatus`, `resource`,
+        `result` and `queries`, carries no `@JsonIgnoreProperties`, and is read with a
+        default `ObjectMapper`. An error delivered as a `201` therefore fails to
+        deserialise and surfaces to the user as an opaque `500` with the cause lost.
+      properties:
+        level:
+          type: string
+          description: |
+            `WARN` for failures caused by the input, `ERROR` for failures of the
+            service or its dependencies. Ignored by API Manager.
+          enum:
+            - ERROR
+            - WARN
+        detail:
+          type: string
+          description: |
+            Human-readable cause. Must be a JSON **string** — API Manager casts it
+            without checking, so an array or an object here raises an unchecked
+            `ClassCastException` instead of the handled `500`.
+
+            It is recorded in the API Manager log and never shown to the end user, who
+            always sees API Manager's own message. Do not let it contain
+            `Invalid credentials` or `You have exceeded your quota`: API Manager
+            substring-matches both and would report the failure as a `401` or a `429`.
+        code:
+          type: string
+          description: |
+            Machine-readable cause. Ignored by API Manager; carried for other clients.
+
+            `INVALID_SPECIFICATION`, `INVALID_RESOURCE_PATH`,
+            `UNSUPPORTED_MEDIA_TYPE`, `UNSUPPORTED_SPECIFICATION` and
+            `STACK_OVERFLOW` mean the submitted definition cannot be used.
+            `LLM`, `LLM_CONNECTION`, `TOKEN_LIMIT_EXCEEDED` and
+            `CONTENT_POLICY_VIOLATION` come from the model.
+            `CACHING`, `API_COMMUNICATION` and `RESPONSE_PARSING` come from a
+            dependency. `INVALID_COMMAND` means the command was empty or unusable.
+            `UNSUPPORTED_API_TYPE` accompanies a `501` and means `apiType` names a
+            type this service does not yet implement.
+          enum:
+            - UNSUPPORTED_API_TYPE
+            - INVALID_SPECIFICATION
+            - INVALID_RESOURCE_PATH
+            - UNSUPPORTED_MEDIA_TYPE
+            - UNSUPPORTED_SPECIFICATION
+            - LLM
+            - LLM_CONNECTION
+            - CACHING
+            - RESPONSE_PARSING
+            - API_COMMUNICATION
+            - TOKEN_LIMIT_EXCEEDED
+            - CONTENT_POLICY_VIOLATION
+            - INVALID_COMMAND
+            - STACK_OVERFLOW
+            - GENERIC
+      required:
+        - level
+        - detail
+        - code
+
+    # ---- Shared -----------------------------------------------------------
+    HttpApiSpecification:
+      type: object
+      description: |
+        Agent-facing view of the API under test: the base URL plus one tool per
+        resource. Produced by `/prepare`; echo it back unchanged on the first `/chat`
+        call.
+      properties:
+        serviceUrl:
+          type: string
+          description: Base URL the agent invokes. Required in practice — a session cannot start without it.
+          example: https://localhost:9443/am/sample/pizzashack/v1/api
+        tools:
+          type: array
+          items:
+            $ref: '#/components/schemas/HttpTool'
+      required:
+        - serviceUrl
+        - tools
+
+    HttpTool:
+      type: object
+      description: One API resource, described so the agent can choose and call it.
+      properties:
+        name:
+          type: string
+          description: Unique tool name, conventionally `METHOD-resource`.
+          example: GET-menu
+        description:
+          type: string
+          description: LLM-generated description of what the resource does.
+          example: Retrieve a list of available menu items. This tool invokes a HTTP GET resource
+        method:
+          type: string
+          example: GET
+        path:
+          type: string
+          example: /order/{orderId}
+        parameters:
+          type: object
+          description: Path and query parameters, keyed by parameter name.
+          additionalProperties:
+            type: object
+            properties:
+              location:
+                type: string
+                enum:
+                  - path
+                  - query
+              required:
+                type: boolean
+              schema:
+                type: object
+                description: JSON Schema of the parameter.
+                additionalProperties: true
+            additionalProperties: true
+        requestBody:
+          type: object
+          properties:
+            mediaType:
+              type: string
+              example: application/json
+            schema:
+              type: object
+              description: JSON Schema of the request body.
+              additionalProperties: true
+      required:
+        - name
+        - method
+        - path
+      additionalProperties: true
+
+    SampleQuery:
+      type: object
+      description: A ready-to-use natural-language command for the prepared API.
+      properties:
+        scenario:
+          type: string
+          example: Single resource invocation
+        query:
+          type: string
+          example: Get the list of menu items
+      required:
+        - scenario
+        - query
+
+    ApiResourceDefinition:
+      type: object
+      description: A resource the agent selected, resolved back to the API definition.
+      properties:
+        method:
+          type: string
+          example: GET
+        path:
+          type: string
+          example: /order/{orderId}
+        inputs:
+          type: object
+          nullable: true
+          description: |
+            Inputs the agent chose — path and query parameters, and the request body
+            where one applies. `null` when the resource takes none.
+          additionalProperties: true
+      required:
+        - method
+        - path
+
+    HttpOutput:
+      type: object
+      description: The result of invoking one resource of the API under test.
+      properties:
+        code:
+          type: integer
+          description: HTTP status code the resource returned.
+          example: 200
+        path:
+          type: string
+          description: Path that was invoked, with parameters substituted.
+          example: /menu
+        headers:
+          type: object
+          description: Response headers.
+          additionalProperties: true
+          example:
+            contentType: application/json
+            contentLength: 512
+        body:
+          description: Response body, as received.
+      required:
+        - code
+        - path
+        - headers
+        - body
+

@@ -1,0 +1,3534 @@
+{
+    "serviceUrl": "https://unify.apideck.com",
+    "tools": [
+        {
+            "name": "contactsAll",
+            "description": "List Contacts",
+            "method": "GET",
+            "path": "/accounting/contacts",
+            "parameters": {
+                "raw": {
+                    "location": "query",
+                    "description": "Include raw response. Mostly used for debugging purposes",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                },
+                "cursor": {
+                    "location": "query",
+                    "description": "Cursor to start from. You can find cursors for next/previous pages in the meta.cursors property of the response.",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "Number of records to return",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "contactsAdd",
+            "description": "Create Contact",
+            "method": "POST",
+            "path": "/accounting/contacts",
+            "parameters": {
+                "raw": {
+                    "location": "query",
+                    "description": "Include raw response. Mostly used for debugging purposes",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "name"
+                    ],
+                    "properties": {
+                        "active": {
+                            "type": "boolean"
+                        },
+                        "addresses": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "city": {
+                                        "type": "string"
+                                    },
+                                    "country": {
+                                        "type": "string"
+                                    },
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "latitude": {
+                                        "type": "string"
+                                    },
+                                    "line1": {
+                                        "type": "string"
+                                    },
+                                    "line2": {
+                                        "type": "string"
+                                    },
+                                    "longitude": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "postal_code": {
+                                        "type": "string"
+                                    },
+                                    "state": {
+                                        "type": "string"
+                                    },
+                                    "string": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "primary",
+                                            "secondary",
+                                            "home",
+                                            "office",
+                                            "shipping",
+                                            "billing",
+                                            "other"
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "birthday": {
+                            "type": "string"
+                        },
+                        "company_id": {
+                            "type": "string"
+                        },
+                        "company_name": {
+                            "type": "string"
+                        },
+                        "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "current_balance": {
+                            "type": "number"
+                        },
+                        "custom_fields": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "value": {
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "number"
+                                            },
+                                            {
+                                                "type": "boolean"
+                                            },
+                                            {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "department": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "emails": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "primary",
+                                            "secondary",
+                                            "work",
+                                            "personal",
+                                            "billing",
+                                            "other"
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "fax": {
+                            "type": "string"
+                        },
+                        "first_call_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "first_email_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "first_name": {
+                            "type": "string"
+                        },
+                        "gender": {
+                            "type": "string",
+                            "enum": [
+                                "male",
+                                "female",
+                                "unisex"
+                            ]
+                        },
+                        "id": {
+                            "type": "string"
+                        },
+                        "image": {
+                            "type": "string"
+                        },
+                        "language": {
+                            "type": "string"
+                        },
+                        "last_activity_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "last_name": {
+                            "type": "string"
+                        },
+                        "lead_id": {
+                            "type": "string"
+                        },
+                        "lead_source": {
+                            "type": "string"
+                        },
+                        "middle_name": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "owner_id": {
+                            "type": "string"
+                        },
+                        "phone_numbers": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "number"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "number": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "primary",
+                                            "secondary",
+                                            "home",
+                                            "office",
+                                            "mobile",
+                                            "assistant",
+                                            "fax",
+                                            "other"
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "prefix": {
+                            "type": "string"
+                        },
+                        "social_links": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "url"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string"
+                                    },
+                                    "url": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "status": {
+                            "type": "string"
+                        },
+                        "suffix": {
+                            "type": "string"
+                        },
+                        "tags": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "title": {
+                            "type": "string"
+                        },
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "customer",
+                                "supplier",
+                                "employee",
+                                "personal"
+                            ]
+                        },
+                        "updated_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "websites": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "url"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "primary",
+                                            "secondary",
+                                            "work",
+                                            "personal",
+                                            "other"
+                                        ]
+                                    },
+                                    "url": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "ledgerAccountsAll",
+            "description": "List Ledger Accounts",
+            "method": "GET",
+            "path": "/accounting/ledger-accounts",
+            "parameters": {
+                "raw": {
+                    "location": "query",
+                    "description": "Include raw response. Mostly used for debugging purposes",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                },
+                "cursor": {
+                    "location": "query",
+                    "description": "Cursor to start from. You can find cursors for next/previous pages in the meta.cursors property of the response.",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "Number of records to return",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "ledgerAccountsAdd",
+            "description": "Create Ledger Account",
+            "method": "POST",
+            "path": "/accounting/ledger-accounts",
+            "parameters": {
+                "raw": {
+                    "location": "query",
+                    "description": "Include raw response. Mostly used for debugging purposes",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "active": {
+                            "type": "boolean"
+                        },
+                        "bank_account": {
+                            "type": "object",
+                            "properties": {
+                                "account_name": {
+                                    "type": "string"
+                                },
+                                "account_number": {
+                                    "type": "string"
+                                },
+                                "bank_code": {
+                                    "type": "string"
+                                },
+                                "bic": {
+                                    "type": "string"
+                                },
+                                "bsb_number": {
+                                    "type": "string"
+                                },
+                                "iban": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "classification": {
+                            "type": "string",
+                            "enum": [
+                                "asset",
+                                "equity",
+                                "expense",
+                                "liability",
+                                "revenue",
+                                "income",
+                                "other_income",
+                                "other_expense",
+                                "costs_of_sales"
+                            ]
+                        },
+                        "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "created_by": {
+                            "type": "string"
+                        },
+                        "currency": {
+                            "type": "string",
+                            "enum": [
+                                "UNKNOWN_CURRENCY",
+                                "AED",
+                                "AFN",
+                                "ALL",
+                                "AMD",
+                                "ANG",
+                                "AOA",
+                                "ARS",
+                                "AUD",
+                                "AWG",
+                                "AZN",
+                                "BAM",
+                                "BBD",
+                                "BDT",
+                                "BGN",
+                                "BHD",
+                                "BIF",
+                                "BMD",
+                                "BND",
+                                "BOB",
+                                "BOV",
+                                "BRL",
+                                "BSD",
+                                "BTN",
+                                "BWP",
+                                "BYR",
+                                "BZD",
+                                "CAD",
+                                "CDF",
+                                "CHE",
+                                "CHF",
+                                "CHW",
+                                "CLF",
+                                "CLP",
+                                "CNY",
+                                "COP",
+                                "COU",
+                                "CRC",
+                                "CUC",
+                                "CUP",
+                                "CVE",
+                                "CZK",
+                                "DJF",
+                                "DKK",
+                                "DOP",
+                                "DZD",
+                                "EGP",
+                                "ERN",
+                                "ETB",
+                                "EUR",
+                                "FJD",
+                                "FKP",
+                                "GBP",
+                                "GEL",
+                                "GHS",
+                                "GIP",
+                                "GMD",
+                                "GNF",
+                                "GTQ",
+                                "GYD",
+                                "HKD",
+                                "HNL",
+                                "HRK",
+                                "HTG",
+                                "HUF",
+                                "IDR",
+                                "ILS",
+                                "INR",
+                                "IQD",
+                                "IRR",
+                                "ISK",
+                                "JMD",
+                                "JOD",
+                                "JPY",
+                                "KES",
+                                "KGS",
+                                "KHR",
+                                "KMF",
+                                "KPW",
+                                "KRW",
+                                "KWD",
+                                "KYD",
+                                "KZT",
+                                "LAK",
+                                "LBP",
+                                "LKR",
+                                "LRD",
+                                "LSL",
+                                "LTL",
+                                "LVL",
+                                "LYD",
+                                "MAD",
+                                "MDL",
+                                "MGA",
+                                "MKD",
+                                "MMK",
+                                "MNT",
+                                "MOP",
+                                "MRO",
+                                "MUR",
+                                "MVR",
+                                "MWK",
+                                "MXN",
+                                "MXV",
+                                "MYR",
+                                "MZN",
+                                "NAD",
+                                "NGN",
+                                "NIO",
+                                "NOK",
+                                "NPR",
+                                "NZD",
+                                "OMR",
+                                "PAB",
+                                "PEN",
+                                "PGK",
+                                "PHP",
+                                "PKR",
+                                "PLN",
+                                "PYG",
+                                "QAR",
+                                "RON",
+                                "RSD",
+                                "RUB",
+                                "RWF",
+                                "SAR",
+                                "SBD",
+                                "SCR",
+                                "SDG",
+                                "SEK",
+                                "SGD",
+                                "SHP",
+                                "SLL",
+                                "SOS",
+                                "SRD",
+                                "SSP",
+                                "STD",
+                                "SVC",
+                                "SYP",
+                                "SZL",
+                                "THB",
+                                "TJS",
+                                "TMT",
+                                "TND",
+                                "TOP",
+                                "TRY",
+                                "TTD",
+                                "TWD",
+                                "TZS",
+                                "UAH",
+                                "UGX",
+                                "USD",
+                                "USN",
+                                "USS",
+                                "UYI",
+                                "UYU",
+                                "UZS",
+                                "VEF",
+                                "VND",
+                                "VUV",
+                                "WST",
+                                "XAF",
+                                "XAG",
+                                "XAU",
+                                "XBA",
+                                "XBB",
+                                "XBC",
+                                "XBD",
+                                "XCD",
+                                "XDR",
+                                "XOF",
+                                "XPD",
+                                "XPF",
+                                "XPT",
+                                "XTS",
+                                "XXX",
+                                "YER",
+                                "ZAR",
+                                "ZMK",
+                                "ZMW",
+                                "BTC"
+                            ]
+                        },
+                        "current_balance": {
+                            "type": "number"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "display_id": {
+                            "type": "string"
+                        },
+                        "fully_qualified_name": {
+                            "type": "string"
+                        },
+                        "id": {
+                            "type": "string"
+                        },
+                        "last_reconciliation_date": {
+                            "type": "string",
+                            "format": "date",
+                            "pattern": "yyyy-MM-dd"
+                        },
+                        "level": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "nominal_code": {
+                            "type": "string"
+                        },
+                        "opening_balance": {
+                            "type": "number"
+                        },
+                        "parent_account": {
+                            "type": "object",
+                            "properties": {
+                                "display_id": {
+                                    "type": "string"
+                                },
+                                "id": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "sub_account": {
+                            "type": "boolean"
+                        },
+                        "sub_accounts": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "account_sub_name": {
+                                        "type": "string"
+                                    },
+                                    "id": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "sub_type": {
+                            "type": "string"
+                        },
+                        "tax_code": {
+                            "type": "string"
+                        },
+                        "tax_type": {
+                            "type": "string"
+                        },
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "accounts_receivable",
+                                "bank",
+                                "current_asset",
+                                "non_current_asset",
+                                "other_asset",
+                                "equity",
+                                "expense",
+                                "other_expense",
+                                "costs_of_sales",
+                                "accounts_payable",
+                                "credit_card",
+                                "current_liability",
+                                "non_current_liability",
+                                "other_liability"
+                            ]
+                        },
+                        "updated_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "updated_by": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "invoicesAll",
+            "description": "List Invoices",
+            "method": "GET",
+            "path": "/accounting/invoices",
+            "parameters": {
+                "raw": {
+                    "location": "query",
+                    "description": "Include raw response. Mostly used for debugging purposes",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                },
+                "cursor": {
+                    "location": "query",
+                    "description": "Cursor to start from. You can find cursors for next/previous pages in the meta.cursors property of the response.",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "Number of records to return",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "invoicesAdd",
+            "description": "Create Invoice",
+            "method": "POST",
+            "path": "/accounting/invoices",
+            "parameters": {
+                "raw": {
+                    "location": "query",
+                    "description": "Include raw response. Mostly used for debugging purposes",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "balance": {
+                            "type": "number"
+                        },
+                        "billing_address": {
+                            "type": "object",
+                            "properties": {
+                                "city": {
+                                    "type": "string"
+                                },
+                                "country": {
+                                    "type": "string"
+                                },
+                                "id": {
+                                    "type": "string"
+                                },
+                                "latitude": {
+                                    "type": "string"
+                                },
+                                "line1": {
+                                    "type": "string"
+                                },
+                                "line2": {
+                                    "type": "string"
+                                },
+                                "longitude": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "postal_code": {
+                                    "type": "string"
+                                },
+                                "state": {
+                                    "type": "string"
+                                },
+                                "string": {
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "primary",
+                                        "secondary",
+                                        "home",
+                                        "office",
+                                        "shipping",
+                                        "billing",
+                                        "other"
+                                    ]
+                                }
+                            }
+                        },
+                        "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "created_by": {
+                            "type": "string"
+                        },
+                        "currency": {
+                            "type": "string",
+                            "enum": [
+                                "UNKNOWN_CURRENCY",
+                                "AED",
+                                "AFN",
+                                "ALL",
+                                "AMD",
+                                "ANG",
+                                "AOA",
+                                "ARS",
+                                "AUD",
+                                "AWG",
+                                "AZN",
+                                "BAM",
+                                "BBD",
+                                "BDT",
+                                "BGN",
+                                "BHD",
+                                "BIF",
+                                "BMD",
+                                "BND",
+                                "BOB",
+                                "BOV",
+                                "BRL",
+                                "BSD",
+                                "BTN",
+                                "BWP",
+                                "BYR",
+                                "BZD",
+                                "CAD",
+                                "CDF",
+                                "CHE",
+                                "CHF",
+                                "CHW",
+                                "CLF",
+                                "CLP",
+                                "CNY",
+                                "COP",
+                                "COU",
+                                "CRC",
+                                "CUC",
+                                "CUP",
+                                "CVE",
+                                "CZK",
+                                "DJF",
+                                "DKK",
+                                "DOP",
+                                "DZD",
+                                "EGP",
+                                "ERN",
+                                "ETB",
+                                "EUR",
+                                "FJD",
+                                "FKP",
+                                "GBP",
+                                "GEL",
+                                "GHS",
+                                "GIP",
+                                "GMD",
+                                "GNF",
+                                "GTQ",
+                                "GYD",
+                                "HKD",
+                                "HNL",
+                                "HRK",
+                                "HTG",
+                                "HUF",
+                                "IDR",
+                                "ILS",
+                                "INR",
+                                "IQD",
+                                "IRR",
+                                "ISK",
+                                "JMD",
+                                "JOD",
+                                "JPY",
+                                "KES",
+                                "KGS",
+                                "KHR",
+                                "KMF",
+                                "KPW",
+                                "KRW",
+                                "KWD",
+                                "KYD",
+                                "KZT",
+                                "LAK",
+                                "LBP",
+                                "LKR",
+                                "LRD",
+                                "LSL",
+                                "LTL",
+                                "LVL",
+                                "LYD",
+                                "MAD",
+                                "MDL",
+                                "MGA",
+                                "MKD",
+                                "MMK",
+                                "MNT",
+                                "MOP",
+                                "MRO",
+                                "MUR",
+                                "MVR",
+                                "MWK",
+                                "MXN",
+                                "MXV",
+                                "MYR",
+                                "MZN",
+                                "NAD",
+                                "NGN",
+                                "NIO",
+                                "NOK",
+                                "NPR",
+                                "NZD",
+                                "OMR",
+                                "PAB",
+                                "PEN",
+                                "PGK",
+                                "PHP",
+                                "PKR",
+                                "PLN",
+                                "PYG",
+                                "QAR",
+                                "RON",
+                                "RSD",
+                                "RUB",
+                                "RWF",
+                                "SAR",
+                                "SBD",
+                                "SCR",
+                                "SDG",
+                                "SEK",
+                                "SGD",
+                                "SHP",
+                                "SLL",
+                                "SOS",
+                                "SRD",
+                                "SSP",
+                                "STD",
+                                "SVC",
+                                "SYP",
+                                "SZL",
+                                "THB",
+                                "TJS",
+                                "TMT",
+                                "TND",
+                                "TOP",
+                                "TRY",
+                                "TTD",
+                                "TWD",
+                                "TZS",
+                                "UAH",
+                                "UGX",
+                                "USD",
+                                "USN",
+                                "USS",
+                                "UYI",
+                                "UYU",
+                                "UZS",
+                                "VEF",
+                                "VND",
+                                "VUV",
+                                "WST",
+                                "XAF",
+                                "XAG",
+                                "XAU",
+                                "XBA",
+                                "XBB",
+                                "XBC",
+                                "XBD",
+                                "XCD",
+                                "XDR",
+                                "XOF",
+                                "XPD",
+                                "XPF",
+                                "XPT",
+                                "XTS",
+                                "XXX",
+                                "YER",
+                                "ZAR",
+                                "ZMK",
+                                "ZMW",
+                                "BTC"
+                            ]
+                        },
+                        "customer": {
+                            "type": "object",
+                            "properties": {
+                                "company_name": {
+                                    "type": "string"
+                                },
+                                "id": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "customer_memo": {
+                            "type": "string"
+                        },
+                        "date": {
+                            "type": "string",
+                            "format": "date",
+                            "pattern": "yyyy-MM-dd"
+                        },
+                        "deposit": {
+                            "type": "number"
+                        },
+                        "due_date": {
+                            "type": "string",
+                            "format": "date",
+                            "pattern": "yyyy-MM-dd"
+                        },
+                        "id": {
+                            "type": "string"
+                        },
+                        "line_items": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "discount_percentage": {
+                                        "type": "integer"
+                                    },
+                                    "general_ledger_account": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "item_id": {
+                                        "type": "integer"
+                                    },
+                                    "line_number": {
+                                        "type": "integer"
+                                    },
+                                    "quantity": {
+                                        "type": "integer"
+                                    },
+                                    "tax_amount": {
+                                        "type": "integer"
+                                    },
+                                    "tax_rate": {
+                                        "type": "object",
+                                        "properties": {
+                                            "code": {
+                                                "type": "string"
+                                            },
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "total_amount": {
+                                        "type": "integer"
+                                    },
+                                    "type": {
+                                        "type": "string"
+                                    },
+                                    "unit_price": {
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        },
+                        "number": {
+                            "type": "string"
+                        },
+                        "po_number": {
+                            "type": "string"
+                        },
+                        "shipping_address": {
+                            "type": "object",
+                            "properties": {
+                                "city": {
+                                    "type": "string"
+                                },
+                                "country": {
+                                    "type": "string"
+                                },
+                                "id": {
+                                    "type": "string"
+                                },
+                                "latitude": {
+                                    "type": "string"
+                                },
+                                "line1": {
+                                    "type": "string"
+                                },
+                                "line2": {
+                                    "type": "string"
+                                },
+                                "longitude": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "postal_code": {
+                                    "type": "string"
+                                },
+                                "state": {
+                                    "type": "string"
+                                },
+                                "string": {
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "primary",
+                                        "secondary",
+                                        "home",
+                                        "office",
+                                        "shipping",
+                                        "billing",
+                                        "other"
+                                    ]
+                                }
+                            }
+                        },
+                        "status": {
+                            "type": "string",
+                            "enum": [
+                                "draft",
+                                "submitted",
+                                "partially_paid",
+                                "paid",
+                                "void"
+                            ]
+                        },
+                        "sub_total": {
+                            "type": "number"
+                        },
+                        "total": {
+                            "type": "number"
+                        },
+                        "total_tax": {
+                            "type": "number"
+                        },
+                        "type": {
+                            "type": "string"
+                        },
+                        "updated_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "updated_by": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "taxRatesOne",
+            "description": "Get Tax Rate",
+            "method": "GET",
+            "path": "/accounting/tax-rates/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "ID of the record you are acting upon.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "raw": {
+                    "location": "query",
+                    "description": "Include raw response. Mostly used for debugging purposes",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                }
+            }
+        },
+        {
+            "name": "taxRatesDelete",
+            "description": "Delete Tax Rate",
+            "method": "DELETE",
+            "path": "/accounting/tax-rates/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "ID of the record you are acting upon.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "raw": {
+                    "location": "query",
+                    "description": "Include raw response. Mostly used for debugging purposes",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                }
+            }
+        },
+        {
+            "name": "taxRatesUpdate",
+            "description": "Update Tax Rate",
+            "method": "PATCH",
+            "path": "/accounting/tax-rates/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "ID of the record you are acting upon.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "raw": {
+                    "location": "query",
+                    "description": "Include raw response. Mostly used for debugging purposes",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "active": {
+                            "type": "boolean"
+                        },
+                        "code": {
+                            "type": "string"
+                        },
+                        "components": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "compound": {
+                                        "type": "boolean"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "rate": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        },
+                        "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "created_by": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "effective_tax_rate": {
+                            "type": "number"
+                        },
+                        "id": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "original_tax_rate_id": {
+                            "type": "string"
+                        },
+                        "special_tax_type": {
+                            "type": "string"
+                        },
+                        "total_tax_rate": {
+                            "type": "number"
+                        },
+                        "updated_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "updated_by": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "contactsOne",
+            "description": "Get Contact",
+            "method": "GET",
+            "path": "/accounting/contacts/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "ID of the record you are acting upon.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "raw": {
+                    "location": "query",
+                    "description": "Include raw response. Mostly used for debugging purposes",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                }
+            }
+        },
+        {
+            "name": "contactsDelete",
+            "description": "Delete Contact",
+            "method": "DELETE",
+            "path": "/accounting/contacts/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "ID of the record you are acting upon.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "raw": {
+                    "location": "query",
+                    "description": "Include raw response. Mostly used for debugging purposes",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                }
+            }
+        },
+        {
+            "name": "contactsUpdate",
+            "description": "Update Contact",
+            "method": "PATCH",
+            "path": "/accounting/contacts/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "ID of the record you are acting upon.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "raw": {
+                    "location": "query",
+                    "description": "Include raw response. Mostly used for debugging purposes",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "name"
+                    ],
+                    "properties": {
+                        "active": {
+                            "type": "boolean"
+                        },
+                        "addresses": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "city": {
+                                        "type": "string"
+                                    },
+                                    "country": {
+                                        "type": "string"
+                                    },
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "latitude": {
+                                        "type": "string"
+                                    },
+                                    "line1": {
+                                        "type": "string"
+                                    },
+                                    "line2": {
+                                        "type": "string"
+                                    },
+                                    "longitude": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "postal_code": {
+                                        "type": "string"
+                                    },
+                                    "state": {
+                                        "type": "string"
+                                    },
+                                    "string": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "primary",
+                                            "secondary",
+                                            "home",
+                                            "office",
+                                            "shipping",
+                                            "billing",
+                                            "other"
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "birthday": {
+                            "type": "string"
+                        },
+                        "company_id": {
+                            "type": "string"
+                        },
+                        "company_name": {
+                            "type": "string"
+                        },
+                        "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "current_balance": {
+                            "type": "number"
+                        },
+                        "custom_fields": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "value": {
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "number"
+                                            },
+                                            {
+                                                "type": "boolean"
+                                            },
+                                            {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "department": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "emails": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "primary",
+                                            "secondary",
+                                            "work",
+                                            "personal",
+                                            "billing",
+                                            "other"
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "fax": {
+                            "type": "string"
+                        },
+                        "first_call_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "first_email_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "first_name": {
+                            "type": "string"
+                        },
+                        "gender": {
+                            "type": "string",
+                            "enum": [
+                                "male",
+                                "female",
+                                "unisex"
+                            ]
+                        },
+                        "id": {
+                            "type": "string"
+                        },
+                        "image": {
+                            "type": "string"
+                        },
+                        "language": {
+                            "type": "string"
+                        },
+                        "last_activity_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "last_name": {
+                            "type": "string"
+                        },
+                        "lead_id": {
+                            "type": "string"
+                        },
+                        "lead_source": {
+                            "type": "string"
+                        },
+                        "middle_name": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "owner_id": {
+                            "type": "string"
+                        },
+                        "phone_numbers": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "number"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "number": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "primary",
+                                            "secondary",
+                                            "home",
+                                            "office",
+                                            "mobile",
+                                            "assistant",
+                                            "fax",
+                                            "other"
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "prefix": {
+                            "type": "string"
+                        },
+                        "social_links": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "url"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string"
+                                    },
+                                    "url": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "status": {
+                            "type": "string"
+                        },
+                        "suffix": {
+                            "type": "string"
+                        },
+                        "tags": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "title": {
+                            "type": "string"
+                        },
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "customer",
+                                "supplier",
+                                "employee",
+                                "personal"
+                            ]
+                        },
+                        "updated_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "websites": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "url"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "primary",
+                                            "secondary",
+                                            "work",
+                                            "personal",
+                                            "other"
+                                        ]
+                                    },
+                                    "url": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "ledgerAccountsOne",
+            "description": "Get Ledger Account",
+            "method": "GET",
+            "path": "/accounting/ledger-accounts/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "ID of the record you are acting upon.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "raw": {
+                    "location": "query",
+                    "description": "Include raw response. Mostly used for debugging purposes",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                }
+            }
+        },
+        {
+            "name": "ledgerAccountsDelete",
+            "description": "Delete Ledger Account",
+            "method": "DELETE",
+            "path": "/accounting/ledger-accounts/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "ID of the record you are acting upon.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "raw": {
+                    "location": "query",
+                    "description": "Include raw response. Mostly used for debugging purposes",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                }
+            }
+        },
+        {
+            "name": "ledgerAccountsUpdate",
+            "description": "Update Ledger Account",
+            "method": "PATCH",
+            "path": "/accounting/ledger-accounts/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "ID of the record you are acting upon.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "raw": {
+                    "location": "query",
+                    "description": "Include raw response. Mostly used for debugging purposes",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "active": {
+                            "type": "boolean"
+                        },
+                        "bank_account": {
+                            "type": "object",
+                            "properties": {
+                                "account_name": {
+                                    "type": "string"
+                                },
+                                "account_number": {
+                                    "type": "string"
+                                },
+                                "bank_code": {
+                                    "type": "string"
+                                },
+                                "bic": {
+                                    "type": "string"
+                                },
+                                "bsb_number": {
+                                    "type": "string"
+                                },
+                                "iban": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "classification": {
+                            "type": "string",
+                            "enum": [
+                                "asset",
+                                "equity",
+                                "expense",
+                                "liability",
+                                "revenue",
+                                "income",
+                                "other_income",
+                                "other_expense",
+                                "costs_of_sales"
+                            ]
+                        },
+                        "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "created_by": {
+                            "type": "string"
+                        },
+                        "currency": {
+                            "type": "string",
+                            "enum": [
+                                "UNKNOWN_CURRENCY",
+                                "AED",
+                                "AFN",
+                                "ALL",
+                                "AMD",
+                                "ANG",
+                                "AOA",
+                                "ARS",
+                                "AUD",
+                                "AWG",
+                                "AZN",
+                                "BAM",
+                                "BBD",
+                                "BDT",
+                                "BGN",
+                                "BHD",
+                                "BIF",
+                                "BMD",
+                                "BND",
+                                "BOB",
+                                "BOV",
+                                "BRL",
+                                "BSD",
+                                "BTN",
+                                "BWP",
+                                "BYR",
+                                "BZD",
+                                "CAD",
+                                "CDF",
+                                "CHE",
+                                "CHF",
+                                "CHW",
+                                "CLF",
+                                "CLP",
+                                "CNY",
+                                "COP",
+                                "COU",
+                                "CRC",
+                                "CUC",
+                                "CUP",
+                                "CVE",
+                                "CZK",
+                                "DJF",
+                                "DKK",
+                                "DOP",
+                                "DZD",
+                                "EGP",
+                                "ERN",
+                                "ETB",
+                                "EUR",
+                                "FJD",
+                                "FKP",
+                                "GBP",
+                                "GEL",
+                                "GHS",
+                                "GIP",
+                                "GMD",
+                                "GNF",
+                                "GTQ",
+                                "GYD",
+                                "HKD",
+                                "HNL",
+                                "HRK",
+                                "HTG",
+                                "HUF",
+                                "IDR",
+                                "ILS",
+                                "INR",
+                                "IQD",
+                                "IRR",
+                                "ISK",
+                                "JMD",
+                                "JOD",
+                                "JPY",
+                                "KES",
+                                "KGS",
+                                "KHR",
+                                "KMF",
+                                "KPW",
+                                "KRW",
+                                "KWD",
+                                "KYD",
+                                "KZT",
+                                "LAK",
+                                "LBP",
+                                "LKR",
+                                "LRD",
+                                "LSL",
+                                "LTL",
+                                "LVL",
+                                "LYD",
+                                "MAD",
+                                "MDL",
+                                "MGA",
+                                "MKD",
+                                "MMK",
+                                "MNT",
+                                "MOP",
+                                "MRO",
+                                "MUR",
+                                "MVR",
+                                "MWK",
+                                "MXN",
+                                "MXV",
+                                "MYR",
+                                "MZN",
+                                "NAD",
+                                "NGN",
+                                "NIO",
+                                "NOK",
+                                "NPR",
+                                "NZD",
+                                "OMR",
+                                "PAB",
+                                "PEN",
+                                "PGK",
+                                "PHP",
+                                "PKR",
+                                "PLN",
+                                "PYG",
+                                "QAR",
+                                "RON",
+                                "RSD",
+                                "RUB",
+                                "RWF",
+                                "SAR",
+                                "SBD",
+                                "SCR",
+                                "SDG",
+                                "SEK",
+                                "SGD",
+                                "SHP",
+                                "SLL",
+                                "SOS",
+                                "SRD",
+                                "SSP",
+                                "STD",
+                                "SVC",
+                                "SYP",
+                                "SZL",
+                                "THB",
+                                "TJS",
+                                "TMT",
+                                "TND",
+                                "TOP",
+                                "TRY",
+                                "TTD",
+                                "TWD",
+                                "TZS",
+                                "UAH",
+                                "UGX",
+                                "USD",
+                                "USN",
+                                "USS",
+                                "UYI",
+                                "UYU",
+                                "UZS",
+                                "VEF",
+                                "VND",
+                                "VUV",
+                                "WST",
+                                "XAF",
+                                "XAG",
+                                "XAU",
+                                "XBA",
+                                "XBB",
+                                "XBC",
+                                "XBD",
+                                "XCD",
+                                "XDR",
+                                "XOF",
+                                "XPD",
+                                "XPF",
+                                "XPT",
+                                "XTS",
+                                "XXX",
+                                "YER",
+                                "ZAR",
+                                "ZMK",
+                                "ZMW",
+                                "BTC"
+                            ]
+                        },
+                        "current_balance": {
+                            "type": "number"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "display_id": {
+                            "type": "string"
+                        },
+                        "fully_qualified_name": {
+                            "type": "string"
+                        },
+                        "id": {
+                            "type": "string"
+                        },
+                        "last_reconciliation_date": {
+                            "type": "string",
+                            "format": "date",
+                            "pattern": "yyyy-MM-dd"
+                        },
+                        "level": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "nominal_code": {
+                            "type": "string"
+                        },
+                        "opening_balance": {
+                            "type": "number"
+                        },
+                        "parent_account": {
+                            "type": "object",
+                            "properties": {
+                                "display_id": {
+                                    "type": "string"
+                                },
+                                "id": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "sub_account": {
+                            "type": "boolean"
+                        },
+                        "sub_accounts": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "account_sub_name": {
+                                        "type": "string"
+                                    },
+                                    "id": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "sub_type": {
+                            "type": "string"
+                        },
+                        "tax_code": {
+                            "type": "string"
+                        },
+                        "tax_type": {
+                            "type": "string"
+                        },
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "accounts_receivable",
+                                "bank",
+                                "current_asset",
+                                "non_current_asset",
+                                "other_asset",
+                                "equity",
+                                "expense",
+                                "other_expense",
+                                "costs_of_sales",
+                                "accounts_payable",
+                                "credit_card",
+                                "current_liability",
+                                "non_current_liability",
+                                "other_liability"
+                            ]
+                        },
+                        "updated_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "updated_by": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "taxRatesAll",
+            "description": "List Tax Rates",
+            "method": "GET",
+            "path": "/accounting/tax-rates",
+            "parameters": {
+                "raw": {
+                    "location": "query",
+                    "description": "Include raw response. Mostly used for debugging purposes",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                },
+                "cursor": {
+                    "location": "query",
+                    "description": "Cursor to start from. You can find cursors for next/previous pages in the meta.cursors property of the response.",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "Number of records to return",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "taxRatesAdd",
+            "description": "Create Tax Rate",
+            "method": "POST",
+            "path": "/accounting/tax-rates",
+            "parameters": {
+                "raw": {
+                    "location": "query",
+                    "description": "Include raw response. Mostly used for debugging purposes",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "active": {
+                            "type": "boolean"
+                        },
+                        "code": {
+                            "type": "string"
+                        },
+                        "components": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "compound": {
+                                        "type": "boolean"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "rate": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        },
+                        "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "created_by": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "effective_tax_rate": {
+                            "type": "number"
+                        },
+                        "id": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "original_tax_rate_id": {
+                            "type": "string"
+                        },
+                        "special_tax_type": {
+                            "type": "string"
+                        },
+                        "total_tax_rate": {
+                            "type": "number"
+                        },
+                        "updated_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "updated_by": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "companiesAll",
+            "description": "List Companies",
+            "method": "GET",
+            "path": "/accounting/companies",
+            "parameters": {
+                "raw": {
+                    "location": "query",
+                    "description": "Include raw response. Mostly used for debugging purposes",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                },
+                "cursor": {
+                    "location": "query",
+                    "description": "Cursor to start from. You can find cursors for next/previous pages in the meta.cursors property of the response.",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "limit": {
+                    "location": "query",
+                    "description": "Number of records to return",
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        {
+            "name": "companiesAdd",
+            "description": "Create Company",
+            "method": "POST",
+            "path": "/accounting/companies",
+            "parameters": {
+                "raw": {
+                    "location": "query",
+                    "description": "Include raw response. Mostly used for debugging purposes",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "name"
+                    ],
+                    "properties": {
+                        "abn_branch": {
+                            "type": "string"
+                        },
+                        "abn_or_tfn": {
+                            "type": "string"
+                        },
+                        "acn": {
+                            "type": "string"
+                        },
+                        "addresses": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "city": {
+                                        "type": "string"
+                                    },
+                                    "country": {
+                                        "type": "string"
+                                    },
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "latitude": {
+                                        "type": "string"
+                                    },
+                                    "line1": {
+                                        "type": "string"
+                                    },
+                                    "line2": {
+                                        "type": "string"
+                                    },
+                                    "longitude": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "postal_code": {
+                                        "type": "string"
+                                    },
+                                    "state": {
+                                        "type": "string"
+                                    },
+                                    "string": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "primary",
+                                            "secondary",
+                                            "home",
+                                            "office",
+                                            "shipping",
+                                            "billing",
+                                            "other"
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "annual_revenue": {
+                            "type": "string"
+                        },
+                        "bank_accounts": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "account_name": {
+                                        "type": "string"
+                                    },
+                                    "account_number": {
+                                        "type": "string"
+                                    },
+                                    "bank_code": {
+                                        "type": "string"
+                                    },
+                                    "bic": {
+                                        "type": "string"
+                                    },
+                                    "bsb_number": {
+                                        "type": "string"
+                                    },
+                                    "iban": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "created_by": {
+                            "type": "string"
+                        },
+                        "currency": {
+                            "type": "string"
+                        },
+                        "custom_fields": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "value": {
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "number"
+                                            },
+                                            {
+                                                "type": "boolean"
+                                            },
+                                            {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "deleted": {
+                            "type": "boolean"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "emails": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "primary",
+                                            "secondary",
+                                            "work",
+                                            "personal",
+                                            "billing",
+                                            "other"
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "fax": {
+                            "type": "string"
+                        },
+                        "id": {
+                            "type": "string"
+                        },
+                        "image": {
+                            "type": "string"
+                        },
+                        "industry": {
+                            "type": "string"
+                        },
+                        "interaction_count": {
+                            "type": "integer"
+                        },
+                        "last_activity_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "number_of_employees": {
+                            "type": "string"
+                        },
+                        "owner_id": {
+                            "type": "string"
+                        },
+                        "ownership": {
+                            "type": "string"
+                        },
+                        "parent_id": {
+                            "type": "string"
+                        },
+                        "payee_number": {
+                            "type": "string"
+                        },
+                        "phone_numbers": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "number"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "number": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "primary",
+                                            "secondary",
+                                            "home",
+                                            "office",
+                                            "mobile",
+                                            "assistant",
+                                            "fax",
+                                            "other"
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "read_only": {
+                            "type": "boolean"
+                        },
+                        "sales_tax_number": {
+                            "type": "string"
+                        },
+                        "social_links": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "url"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string"
+                                    },
+                                    "url": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "status": {
+                            "type": "string"
+                        },
+                        "tags": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "updated_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "updated_by": {
+                            "type": "string"
+                        },
+                        "vat_number": {
+                            "type": "string"
+                        },
+                        "websites": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "url"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "primary",
+                                            "secondary",
+                                            "work",
+                                            "personal",
+                                            "other"
+                                        ]
+                                    },
+                                    "url": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "companiesOne",
+            "description": "Get Company",
+            "method": "GET",
+            "path": "/accounting/companies/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "ID of the record you are acting upon.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "raw": {
+                    "location": "query",
+                    "description": "Include raw response. Mostly used for debugging purposes",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                }
+            }
+        },
+        {
+            "name": "companiesDelete",
+            "description": "Delete Company",
+            "method": "DELETE",
+            "path": "/accounting/companies/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "ID of the record you are acting upon.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "raw": {
+                    "location": "query",
+                    "description": "Include raw response. Mostly used for debugging purposes",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                }
+            }
+        },
+        {
+            "name": "companiesUpdate",
+            "description": "Update Company",
+            "method": "PATCH",
+            "path": "/accounting/companies/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "ID of the record you are acting upon.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "raw": {
+                    "location": "query",
+                    "description": "Include raw response. Mostly used for debugging purposes",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "name"
+                    ],
+                    "properties": {
+                        "abn_branch": {
+                            "type": "string"
+                        },
+                        "abn_or_tfn": {
+                            "type": "string"
+                        },
+                        "acn": {
+                            "type": "string"
+                        },
+                        "addresses": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "city": {
+                                        "type": "string"
+                                    },
+                                    "country": {
+                                        "type": "string"
+                                    },
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "latitude": {
+                                        "type": "string"
+                                    },
+                                    "line1": {
+                                        "type": "string"
+                                    },
+                                    "line2": {
+                                        "type": "string"
+                                    },
+                                    "longitude": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "postal_code": {
+                                        "type": "string"
+                                    },
+                                    "state": {
+                                        "type": "string"
+                                    },
+                                    "string": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "primary",
+                                            "secondary",
+                                            "home",
+                                            "office",
+                                            "shipping",
+                                            "billing",
+                                            "other"
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "annual_revenue": {
+                            "type": "string"
+                        },
+                        "bank_accounts": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "account_name": {
+                                        "type": "string"
+                                    },
+                                    "account_number": {
+                                        "type": "string"
+                                    },
+                                    "bank_code": {
+                                        "type": "string"
+                                    },
+                                    "bic": {
+                                        "type": "string"
+                                    },
+                                    "bsb_number": {
+                                        "type": "string"
+                                    },
+                                    "iban": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "created_by": {
+                            "type": "string"
+                        },
+                        "currency": {
+                            "type": "string"
+                        },
+                        "custom_fields": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "value": {
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "number"
+                                            },
+                                            {
+                                                "type": "boolean"
+                                            },
+                                            {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "deleted": {
+                            "type": "boolean"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "emails": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "primary",
+                                            "secondary",
+                                            "work",
+                                            "personal",
+                                            "billing",
+                                            "other"
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "fax": {
+                            "type": "string"
+                        },
+                        "id": {
+                            "type": "string"
+                        },
+                        "image": {
+                            "type": "string"
+                        },
+                        "industry": {
+                            "type": "string"
+                        },
+                        "interaction_count": {
+                            "type": "integer"
+                        },
+                        "last_activity_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "number_of_employees": {
+                            "type": "string"
+                        },
+                        "owner_id": {
+                            "type": "string"
+                        },
+                        "ownership": {
+                            "type": "string"
+                        },
+                        "parent_id": {
+                            "type": "string"
+                        },
+                        "payee_number": {
+                            "type": "string"
+                        },
+                        "phone_numbers": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "number"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "number": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "primary",
+                                            "secondary",
+                                            "home",
+                                            "office",
+                                            "mobile",
+                                            "assistant",
+                                            "fax",
+                                            "other"
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "read_only": {
+                            "type": "boolean"
+                        },
+                        "sales_tax_number": {
+                            "type": "string"
+                        },
+                        "social_links": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "url"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string"
+                                    },
+                                    "url": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "status": {
+                            "type": "string"
+                        },
+                        "tags": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "updated_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "updated_by": {
+                            "type": "string"
+                        },
+                        "vat_number": {
+                            "type": "string"
+                        },
+                        "websites": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "url"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "primary",
+                                            "secondary",
+                                            "work",
+                                            "personal",
+                                            "other"
+                                        ]
+                                    },
+                                    "url": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "invoicesOne",
+            "description": "Get Invoice",
+            "method": "GET",
+            "path": "/accounting/invoices/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "ID of the record you are acting upon.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "raw": {
+                    "location": "query",
+                    "description": "Include raw response. Mostly used for debugging purposes",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                }
+            }
+        },
+        {
+            "name": "invoicesDelete",
+            "description": "Delete Invoice",
+            "method": "DELETE",
+            "path": "/accounting/invoices/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "ID of the record you are acting upon.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "raw": {
+                    "location": "query",
+                    "description": "Include raw response. Mostly used for debugging purposes",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                }
+            }
+        },
+        {
+            "name": "invoicesUpdate",
+            "description": "Update Invoice",
+            "method": "PATCH",
+            "path": "/accounting/invoices/{id}",
+            "parameters": {
+                "id": {
+                    "location": "path",
+                    "description": "ID of the record you are acting upon.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "raw": {
+                    "location": "query",
+                    "description": "Include raw response. Mostly used for debugging purposes",
+                    "schema": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "balance": {
+                            "type": "number"
+                        },
+                        "billing_address": {
+                            "type": "object",
+                            "properties": {
+                                "city": {
+                                    "type": "string"
+                                },
+                                "country": {
+                                    "type": "string"
+                                },
+                                "id": {
+                                    "type": "string"
+                                },
+                                "latitude": {
+                                    "type": "string"
+                                },
+                                "line1": {
+                                    "type": "string"
+                                },
+                                "line2": {
+                                    "type": "string"
+                                },
+                                "longitude": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "postal_code": {
+                                    "type": "string"
+                                },
+                                "state": {
+                                    "type": "string"
+                                },
+                                "string": {
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "primary",
+                                        "secondary",
+                                        "home",
+                                        "office",
+                                        "shipping",
+                                        "billing",
+                                        "other"
+                                    ]
+                                }
+                            }
+                        },
+                        "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "created_by": {
+                            "type": "string"
+                        },
+                        "currency": {
+                            "type": "string",
+                            "enum": [
+                                "UNKNOWN_CURRENCY",
+                                "AED",
+                                "AFN",
+                                "ALL",
+                                "AMD",
+                                "ANG",
+                                "AOA",
+                                "ARS",
+                                "AUD",
+                                "AWG",
+                                "AZN",
+                                "BAM",
+                                "BBD",
+                                "BDT",
+                                "BGN",
+                                "BHD",
+                                "BIF",
+                                "BMD",
+                                "BND",
+                                "BOB",
+                                "BOV",
+                                "BRL",
+                                "BSD",
+                                "BTN",
+                                "BWP",
+                                "BYR",
+                                "BZD",
+                                "CAD",
+                                "CDF",
+                                "CHE",
+                                "CHF",
+                                "CHW",
+                                "CLF",
+                                "CLP",
+                                "CNY",
+                                "COP",
+                                "COU",
+                                "CRC",
+                                "CUC",
+                                "CUP",
+                                "CVE",
+                                "CZK",
+                                "DJF",
+                                "DKK",
+                                "DOP",
+                                "DZD",
+                                "EGP",
+                                "ERN",
+                                "ETB",
+                                "EUR",
+                                "FJD",
+                                "FKP",
+                                "GBP",
+                                "GEL",
+                                "GHS",
+                                "GIP",
+                                "GMD",
+                                "GNF",
+                                "GTQ",
+                                "GYD",
+                                "HKD",
+                                "HNL",
+                                "HRK",
+                                "HTG",
+                                "HUF",
+                                "IDR",
+                                "ILS",
+                                "INR",
+                                "IQD",
+                                "IRR",
+                                "ISK",
+                                "JMD",
+                                "JOD",
+                                "JPY",
+                                "KES",
+                                "KGS",
+                                "KHR",
+                                "KMF",
+                                "KPW",
+                                "KRW",
+                                "KWD",
+                                "KYD",
+                                "KZT",
+                                "LAK",
+                                "LBP",
+                                "LKR",
+                                "LRD",
+                                "LSL",
+                                "LTL",
+                                "LVL",
+                                "LYD",
+                                "MAD",
+                                "MDL",
+                                "MGA",
+                                "MKD",
+                                "MMK",
+                                "MNT",
+                                "MOP",
+                                "MRO",
+                                "MUR",
+                                "MVR",
+                                "MWK",
+                                "MXN",
+                                "MXV",
+                                "MYR",
+                                "MZN",
+                                "NAD",
+                                "NGN",
+                                "NIO",
+                                "NOK",
+                                "NPR",
+                                "NZD",
+                                "OMR",
+                                "PAB",
+                                "PEN",
+                                "PGK",
+                                "PHP",
+                                "PKR",
+                                "PLN",
+                                "PYG",
+                                "QAR",
+                                "RON",
+                                "RSD",
+                                "RUB",
+                                "RWF",
+                                "SAR",
+                                "SBD",
+                                "SCR",
+                                "SDG",
+                                "SEK",
+                                "SGD",
+                                "SHP",
+                                "SLL",
+                                "SOS",
+                                "SRD",
+                                "SSP",
+                                "STD",
+                                "SVC",
+                                "SYP",
+                                "SZL",
+                                "THB",
+                                "TJS",
+                                "TMT",
+                                "TND",
+                                "TOP",
+                                "TRY",
+                                "TTD",
+                                "TWD",
+                                "TZS",
+                                "UAH",
+                                "UGX",
+                                "USD",
+                                "USN",
+                                "USS",
+                                "UYI",
+                                "UYU",
+                                "UZS",
+                                "VEF",
+                                "VND",
+                                "VUV",
+                                "WST",
+                                "XAF",
+                                "XAG",
+                                "XAU",
+                                "XBA",
+                                "XBB",
+                                "XBC",
+                                "XBD",
+                                "XCD",
+                                "XDR",
+                                "XOF",
+                                "XPD",
+                                "XPF",
+                                "XPT",
+                                "XTS",
+                                "XXX",
+                                "YER",
+                                "ZAR",
+                                "ZMK",
+                                "ZMW",
+                                "BTC"
+                            ]
+                        },
+                        "customer": {
+                            "type": "object",
+                            "properties": {
+                                "company_name": {
+                                    "type": "string"
+                                },
+                                "id": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "customer_memo": {
+                            "type": "string"
+                        },
+                        "date": {
+                            "type": "string",
+                            "format": "date",
+                            "pattern": "yyyy-MM-dd"
+                        },
+                        "deposit": {
+                            "type": "number"
+                        },
+                        "due_date": {
+                            "type": "string",
+                            "format": "date",
+                            "pattern": "yyyy-MM-dd"
+                        },
+                        "id": {
+                            "type": "string"
+                        },
+                        "line_items": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "discount_percentage": {
+                                        "type": "integer"
+                                    },
+                                    "general_ledger_account": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "item_id": {
+                                        "type": "integer"
+                                    },
+                                    "line_number": {
+                                        "type": "integer"
+                                    },
+                                    "quantity": {
+                                        "type": "integer"
+                                    },
+                                    "tax_amount": {
+                                        "type": "integer"
+                                    },
+                                    "tax_rate": {
+                                        "type": "object",
+                                        "properties": {
+                                            "code": {
+                                                "type": "string"
+                                            },
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "total_amount": {
+                                        "type": "integer"
+                                    },
+                                    "type": {
+                                        "type": "string"
+                                    },
+                                    "unit_price": {
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        },
+                        "number": {
+                            "type": "string"
+                        },
+                        "po_number": {
+                            "type": "string"
+                        },
+                        "shipping_address": {
+                            "type": "object",
+                            "properties": {
+                                "city": {
+                                    "type": "string"
+                                },
+                                "country": {
+                                    "type": "string"
+                                },
+                                "id": {
+                                    "type": "string"
+                                },
+                                "latitude": {
+                                    "type": "string"
+                                },
+                                "line1": {
+                                    "type": "string"
+                                },
+                                "line2": {
+                                    "type": "string"
+                                },
+                                "longitude": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "postal_code": {
+                                    "type": "string"
+                                },
+                                "state": {
+                                    "type": "string"
+                                },
+                                "string": {
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "primary",
+                                        "secondary",
+                                        "home",
+                                        "office",
+                                        "shipping",
+                                        "billing",
+                                        "other"
+                                    ]
+                                }
+                            }
+                        },
+                        "status": {
+                            "type": "string",
+                            "enum": [
+                                "draft",
+                                "submitted",
+                                "partially_paid",
+                                "paid",
+                                "void"
+                            ]
+                        },
+                        "sub_total": {
+                            "type": "number"
+                        },
+                        "total": {
+                            "type": "number"
+                        },
+                        "total_tax": {
+                            "type": "number"
+                        },
+                        "type": {
+                            "type": "string"
+                        },
+                        "updated_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                        },
+                        "updated_by": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

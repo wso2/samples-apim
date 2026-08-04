@@ -1,0 +1,400 @@
+{
+    "serviceUrl": "https://management.azure.com/",
+    "tools": [
+        {
+            "name": "ListManagedDatabasesByInstance",
+            "description": "Gets a list of managed databases.",
+            "method": "GET",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases",
+            "parameters": {
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "managedInstanceName": {
+                    "location": "path",
+                    "description": "The name of the managed instance.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription ID that identifies an Azure subscription.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "The API version to use for the request.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "CompleteRestoreManagedDatabases",
+            "description": "Completes the restore operation on a managed database.",
+            "method": "POST",
+            "path": "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/managedDatabaseRestoreAzureAsyncOperation/{operationId}/completeRestore",
+            "parameters": {
+                "locationName": {
+                    "location": "path",
+                    "description": "The name of the region where the resource is located.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "operationId": {
+                    "location": "path",
+                    "description": "Management operation id that this request tries to complete.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription ID that identifies an Azure subscription.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "The API version to use for the request.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "lastBackupName"
+                    ],
+                    "properties": {
+                        "lastBackupName": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "GetManagedDatabases",
+            "description": "Gets a managed database.",
+            "method": "GET",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}",
+            "parameters": {
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "managedInstanceName": {
+                    "location": "path",
+                    "description": "The name of the managed instance.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "databaseName": {
+                    "location": "path",
+                    "description": "The name of the database.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription ID that identifies an Azure subscription.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "The API version to use for the request.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "CreateOrUpdateManagedDatabases",
+            "description": "Creates a new database or updates an existing database.",
+            "method": "PUT",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}",
+            "parameters": {
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "managedInstanceName": {
+                    "location": "path",
+                    "description": "The name of the managed instance.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "databaseName": {
+                    "location": "path",
+                    "description": "The name of the database.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription ID that identifies an Azure subscription.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "The API version to use for the request.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "allOf": [
+                        {
+                            "allOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "type": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "DeleteManagedDatabases",
+            "description": "Deletes a managed database.",
+            "method": "DELETE",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}",
+            "parameters": {
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "managedInstanceName": {
+                    "location": "path",
+                    "description": "The name of the managed instance.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "databaseName": {
+                    "location": "path",
+                    "description": "The name of the database.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription ID that identifies an Azure subscription.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "The API version to use for the request.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        {
+            "name": "UpdateManagedDatabases",
+            "description": "Updates an existing database.",
+            "method": "PATCH",
+            "path": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}",
+            "parameters": {
+                "resourceGroupName": {
+                    "location": "path",
+                    "description": "The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "managedInstanceName": {
+                    "location": "path",
+                    "description": "The name of the managed instance.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "databaseName": {
+                    "location": "path",
+                    "description": "The name of the database.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "subscriptionId": {
+                    "location": "path",
+                    "description": "The subscription ID that identifies an Azure subscription.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                "api-version": {
+                    "location": "query",
+                    "description": "The API version to use for the request.",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            },
+            "requestBody": {
+                "mediaType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "properties": {
+                            "type": "object",
+                            "properties": {
+                                "catalogCollation": {
+                                    "type": "string",
+                                    "enum": [
+                                        "DATABASE_DEFAULT",
+                                        "SQL_Latin1_General_CP1_CI_AS"
+                                    ]
+                                },
+                                "collation": {
+                                    "type": "string"
+                                },
+                                "createMode": {
+                                    "type": "string",
+                                    "enum": [
+                                        "Default",
+                                        "RestoreExternalBackup",
+                                        "PointInTimeRestore",
+                                        "Recovery"
+                                    ]
+                                },
+                                "creationDate": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                                },
+                                "defaultSecondaryLocation": {
+                                    "type": "string"
+                                },
+                                "earliestRestorePoint": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                                },
+                                "failoverGroupId": {
+                                    "type": "string"
+                                },
+                                "recoverableDatabaseId": {
+                                    "type": "string"
+                                },
+                                "restorableDroppedDatabaseId": {
+                                    "type": "string"
+                                },
+                                "restorePointInTime": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "pattern": "yyyy-MM-dd'T'HH:mm:ssZ"
+                                },
+                                "sourceDatabaseId": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "enum": [
+                                        "Online",
+                                        "Offline",
+                                        "Shutdown",
+                                        "Creating",
+                                        "Inaccessible",
+                                        "Updating"
+                                    ]
+                                },
+                                "storageContainerSasToken": {
+                                    "type": "string"
+                                },
+                                "storageContainerUri": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "tags": {
+                            "type": "object",
+                            "properties": {}
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}
