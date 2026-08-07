@@ -34,15 +34,6 @@ class API:
     spec: dict
 
 
-@dataclass
-class ChoreoAPI:
-    id: str
-    version: str
-    type: str
-    name: str
-    spec: dict
-    api_uuid: str
-
 # because it might be needed in the future
 @dataclass
 class ReducedOpenAPISpec:

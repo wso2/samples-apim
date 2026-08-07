@@ -32,35 +32,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
-  /choreo-marketplace-assistant:
-    post:
-      summary: Marketplace Assistant
-      operationId: marketplace_assistant_choreo_marketplace_assistant_post
-      parameters:
-        - required: true
-          schema:
-            type: string
-            title: Orgid
-          name: orgID
-          in: query
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ChoreoQuery'
-        required: true
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
   /marketplace-assistant/streaming:
     post:
       summary: Marketplace Assistant Sse
@@ -103,24 +74,6 @@ paths:
               schema: {}
 components:
   schemas:
-    ChoreoQuery:
-      properties:
-        question:
-          items: {}
-          type: array
-          title: Question
-        history:
-          items: {}
-          type: array
-          title: History
-          default: []
-        tenant_domain:
-          type: string
-          title: Tenant Domain
-      type: object
-      required:
-        - question
-      title: ChoreoQuery
     HTTPValidationError:
       properties:
         detail:

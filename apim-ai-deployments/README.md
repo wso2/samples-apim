@@ -1,130 +1,156 @@
-# WSO2 API Manager AI Services Reference Implementations
+# Build and Integrate Custom AI Services with WSO2 API Manager
 
-This repository contains reference implementations and OpenAPI contracts for the backend services used by WSO2 API Manager AI features.
+This directory provides OpenAPI contracts and reference implementations for the backend services used by WSO2 API Manager AI features.
 
-The implementations are provided as development references. Customers should use the relevant OpenAPI contract and sample code to build their own service, deploy it in their environment, and connect it to API Manager through an API Gateway.
+Use these resources to build your own AI services. The sample source code is provided only as a reference and is not intended to be deployed unchanged in a customer environment. Your implementation can use any programming language, model provider, or data store as long as it follows the applicable OpenAPI contract.
 
-## Available References
+## What is provided
 
-| Directory | API Manager feature | Contract |
-| :--- | :--- | :--- |
-| `spec_populator_service` | Marketplace Assistant API indexing | [openapi.yaml](spec_populator_service/openapi.yaml) |
-| `marketplace-assistant-api` | Marketplace Assistant chat | [openapi.yaml](marketplace-assistant-api/openapi.yaml) |
-| `api-design-assistant` | Design Assistant | [openapi.yaml](api-design-assistant/openapi.yaml) |
-| `api-chat-agent` | API Chat | [openapi.yaml](api-chat-agent/openapi.yaml) |
+| Directory | API Manager feature | Purpose | Contract |
+| :--- | :--- | :--- | :--- |
+| `spec_populator_service` | Marketplace Assistant | Indexes, removes, and counts API records in the vector store | [openapi.yaml](spec_populator_service/openapi.yaml) |
+| `marketplace-assistant-api` | Marketplace Assistant | Retrieves indexed APIs and answers marketplace queries | [openapi.yaml](marketplace-assistant-api/openapi.yaml) |
+| `api-design-assistant` | Design Assistant | Generates and refines API specifications from natural-language input | [openapi.yaml](api-design-assistant/openapi.yaml) |
+| `api-chat-agent` | API Chat | Prepares a REST API definition and manages API Chat execution steps | [openapi.yaml](api-chat-agent/openapi.yaml) |
 
-The OpenAPI files define the public contracts. The source code shows one possible implementation and may change as it is aligned with the approved contracts.
+The OpenAPI files are the public contracts and should be treated as the source of truth. The reference source demonstrates one possible implementation and may temporarily differ from the approved contracts while it is being aligned.
 
-## How it fits together
-
-```mermaid
-flowchart LR
-  subgraph APIM["WSO2 API Manager"]
-    PUB["Publisher"]
-    DEV["Developer Portal"]
-    NOT["Publish / delete<br/>event notifier"]
-  end
-
-  CTL["apictl ai upload / delete"]
-
-  GW{{"API Gateway<br/>authenticates + injects keyID if necessary"}}
-
-  subgraph SVC["AI services"]
-    SP["spec_populator_service"]
-    MA["marketplace-assistant-api"]
-    DA["api-design-assistant"]
-    AC["api-chat-agent"]
-  end
-
-  VDB[("Milvus / Zilliz<br/>vector store")]
-  LLM["Azure OpenAI"]
-
-  PUB --> GW
-  DEV --> GW
-  NOT --> GW
-  CTL --> GW
-
-  GW --> SP
-  GW --> MA
-  GW --> DA
-  GW --> AC
-
-  SP --> VDB
-  MA --> VDB
-  SP --> LLM
-  MA --> LLM
-  DA --> LLM
-  AC --> LLM
-```
-
-## Integration Model
+## Integration overview
 
 ```mermaid
 flowchart LR
-    R["OpenAPI contracts and reference code"] --> S["Customer AI service"]
+    O["OpenAPI contracts"] --> S["Customer AI services"]
     A["WSO2 API Manager"] --> G["Customer API Gateway"]
-    G -->|"Configured API resources and policies"| S
+    G -->|"Authentication, routing, and policies"| S
+    S --> D["Customer-selected AI dependencies"]
 ```
 
-The expected integration flow is:
+The integration has seven main steps:
 
-1. Select the AI features required for the deployment.
-2. Review the corresponding OpenAPI contracts and reference implementations.
-3. Develop a customer-owned service that follows the selected contract.
-4. Deploy the service in the customer's environment.
-5. Expose the required service resources as APIs through the customer's API Gateway.
-6. Configure API Manager with the Gateway endpoint and exposed resource paths.
-7. Add the `keyID` policy to the Marketplace Assistant Gateway APIs.
+1. Select the API Manager AI features that you want to enable.
+2. Implement the corresponding service contracts.
+3. Deploy the services in your environment.
+4. Expose the service resources through an API Gateway.
+5. Create one Gateway application and subscribe it to the AI service APIs.
+6. Configure the Marketplace Assistant `keyID` policy when Marketplace Assistant is enabled.
+7. Configure and validate the integration in API Manager.
 
-## Implement a Compatible Service
+## Prerequisites
 
-The customer service must follow the relevant OpenAPI contract, including:
+Before starting, make sure that you have:
 
+- A WSO2 API Manager installation that contains the AI service extensibility update (4.6.0.39) and the configuration properties described in this guide
+- An API Gateway that API Manager can reach
+- A deployment environment for your custom services
+- The model, vector database, cache, or other dependencies required by your implementation
+- Access to create Gateway APIs, applications, subscriptions, and credentials
+
+Confirm that your API Manager update is compatible with the contracts in this directory. If an older API Manager implementation uses a different path or transport-level input, use the supported resource configuration or Gateway mediation for that version. Keep the customer service itself aligned with the published OpenAPI contract.
+
+## Step 1: Select the required features
+
+You only need to implement and configure services for the features that you plan to enable.
+
+| Feature | Required contract | Important dependency |
+| :--- | :--- | :--- |
+| Marketplace Assistant | `spec_populator_service` and `marketplace-assistant-api` | Both services must use the same indexed data, embedding configuration, and `keyID` |
+| Design Assistant | `api-design-assistant` | The service must preserve conversation state by `sessionId` as defined by the contract |
+| API Chat | `api-chat-agent` | The current contract and reference implementation support REST APIs |
+
+## Step 2: Implement contract-compatible services
+
+Build each selected service against its OpenAPI specification. Your implementation must preserve:
+
+- Resource paths and HTTP methods
+- Required query, path, and header parameters
 - Required request fields and data types
 - Response and error schemas
-- Required HTTP status codes
-- Resource-specific validation rules
-- Optional additional properties used by the customer deployment
+- Exact success status codes expected by API Manager
+- Validation behavior required by the contract
 
-The reference source may be reused or adapted, but it is not a packaged service that customers are expected to deploy unchanged.
+The status codes are part of the integration contract. For example, a resource defined to return `201` on success must not return `200`, even when the response body indicates success.
 
-For Marketplace Assistant, the indexing and chat operations must use the same vector store, collection, embedding model, and `keyID` value. Otherwise, indexed APIs cannot be retrieved by the chat service.
+Request schemas that allow additional properties can receive optional customer-specific fields added by the API Manager request property enricher. Read the fields your service needs and ignore supported optional fields that it does not use. Response DTOs can be strict, so do not add response fields that are not allowed by the corresponding response schema.
 
-## Expose the Service Through an API Gateway
+### Marketplace Assistant implementation requirements
 
-Create APIs in the Gateway for the customer service resources and configure the required authentication and mediation policies.
+Marketplace Assistant uses two cooperating services:
 
-The Gateway resource paths do not need to match any fixed paths shown in this repository. API Manager resource paths are configurable in `deployment.toml`. For example, if the Gateway exposes the indexing resource as `/vectors`, the corresponding API Manager resource configuration can also be set to `/vectors`.
+- The Spec Populator Service writes and removes API records.
+- The Marketplace Assistant service reads those records when answering user queries.
 
-Use the resource configuration properties for the AI features enabled in the deployment. Restart API Manager after changing `deployment.toml`.
+Both services must use compatible storage and embedding behavior. They must also receive the same `keyID`. A record written with one `keyID` cannot be retrieved or removed using another value.
 
-Ex:
-```toml
-[apim.ai]
-endpoint = "https://ai-gateway.example.com"
-marketplace_assistant_publish_api_resource = "/vectors"
+You can replace the model provider or vector database used by the reference implementation. The replacement must still produce the behavior and response formats defined by the contracts.
+
+## Step 3: Deploy the customer services
+
+Build and deploy your implementations using your normal application platform. The deployment method is customer-specific and is not prescribed by this repository.
+
+Before connecting API Manager, verify each service directly against its OpenAPI contract. At minimum, confirm that:
+
+- Each required resource is reachable.
+- Successful and failed requests return the documented status codes and schemas.
+- Required state, model, and data-store dependencies are available.
+- Logs do not expose credentials or customer prompt data.
+
+The reference contracts declare no service-level security because the initial integration protects the services through the API Gateway. Keep backend services private to the Gateway whenever possible. Additional backend protection can be added if required by your deployment architecture.
+
+## Step 4: Expose the services through an API Gateway
+
+Create a Gateway API for each custom service. You can import the corresponding OpenAPI file or create the Gateway API manually, provided that the exposed behavior remains compatible with the contract.
+
+For each Gateway API:
+
+1. Configure the deployed customer service as the backend.
+2. Expose the operations required by the selected API Manager feature.
+3. Enable OAuth authentication for requests from API Manager.
+4. Add any required route mapping or mediation policies.
+5. Publish the API.
+
+The public Gateway paths do not need to use the sample paths or API contexts shown in this repository. Configure the full exposed resource paths in `deployment.toml`. For example, if the Gateway exposes the Spec Populator operation at `/company-ai/1.0.0/vectors`, use that path in the corresponding API Manager property.
+
+Use Gateway mediation for transport-level adaptations such as external-to-backend path mapping and `keyID` injection. The backend service should still implement the published request and response contract.
+
+## Step 5: Create an application and subscriptions
+
+Create one application for API Manager to invoke the custom AI service APIs.
+
+1. In the Developer Portal, create an application for the AI service integration.
+2. Subscribe the application to every Gateway API required by the enabled features.
+3. Generate the production consumer key and consumer secret.
+4. Base64-encode the value in the following form, without a trailing line break:
+
+   ```text
+   <consumer-key>:<consumer-secret>
+   ```
+
+5. Use the encoded value as the `[apim.ai].key` value.
+
+For example, on a Unix-like system:
+
+```bash
+printf '%s' '<consumer-key>:<consumer-secret>' | base64
 ```
 
-## Add the Marketplace Assistant `keyID` Policy
+Base64 encoding does not encrypt the credentials. Store the value as a secret and do not commit it to source control.
 
-Marketplace Assistant uses `keyID` to partition vector records. API Manager cannot add this query parameter through the available AI service configuration. The **Gateway must therefore derive and append it before forwarding the request**.
+Use the same application for the Marketplace Assistant chat and Spec Populator APIs. The Marketplace Assistant `keyID` is derived from the application's consumer key, so using different applications would create different data partitions.
 
-Attach the policy to every Marketplace Assistant Gateway API involved in indexing, removal, count, and chat operations.
+## Step 6: Add the Marketplace Assistant `keyID` policy
 
-Below are the list of Marketplace Assistant APIs and corresponding resource paths that require the `keyID` policy. The Gateway must append the `keyID` query parameter to all requests to these resources.
+Skip this step if Marketplace Assistant is not enabled.
 
-||||
-| --- | --- | --- |
-| AI Service | Resource Path |
+Marketplace Assistant uses the `keyID` query parameter to partition indexed records. API Manager does not add this parameter through the current AI service configuration. The Gateway must derive it from the validated access token and append it before forwarding the request.
+
+In WSO2 API Gateway, the application's consumer key is available as `api.ut.consumerKey`. Attach the policy to all Marketplace Assistant and Spec Populator operations that accept `keyID`.
+
+| Service | Operations requiring `keyID` |
+| :--- | :--- |
 | Marketplace Assistant | `POST /marketplace-assistant` |
-| Spec Populator Service | `POST /vectors` |
-| Spec Populator Service | `DELETE /vectors` |
-| Spec Populator Service | `DELETE /vectors/{uuid}` |
-| Spec Populator Service | `GET /vectors/count` |
-| Spec Populator Service | `POST /vectors/bulk` |
+| Spec Populator Service | `POST /vectors`, `DELETE /vectors`, `DELETE /vectors/{uuid}`, `GET /vectors/count`, and `POST /vectors/bulk` |
 
-
-The policy should use the client identifier from the validated access token. In the WSO2 Gateway, this value is available through `api.ut.consumerKey`, which represents the application's consumer key associated with the `azp` claim.
+The following Synapse sequence shows the required behavior:
 
 ```xml
 <sequence name="ai-inject-keyid" xmlns="http://ws.apache.org/ns/synapse">
@@ -151,57 +177,83 @@ The policy should use the client identifier from the validated access token. In 
 </sequence>
 ```
 
-The `keyID` value must meet the following requirements:
+For another Gateway implementation, read the `azp` claim from the validated access token and append that value as the `keyID` query parameter.
 
-- The same value must be used for indexing, retrieval, removal, and count operations.
-- The value must remain stable after APIs are indexed.
-- The application's consumer key must not be regenerated, since previously stored vectors remain associated with the earlier value.
-- The value must meet the length restrictions defined in the Marketplace Assistant contract.
+The `keyID` must:
 
-For another Gateway implementation, apply the same behavior by reading the `azp` claim from the validated access token and appending it as the `keyID` query parameter.
+- Be identical for indexing, retrieval, removal, and count operations
+- Remain stable after records are indexed
+- Meet the length restrictions defined by the OpenAPI contract
 
-## Configure API Manager
+Do not regenerate the consumer key after indexing APIs unless you also re-index the records under the new `keyID`.
 
-Configure API Manager to use the Gateway endpoint and the resource paths exposed for the customer service.
+If `apictl ai delete` is used with `DELETE /vectors`, also map its `TENANT-DOMAIN` request header to the required `tenant_domain` query parameter as described in the Spec Populator contract.
+
+## Step 7: Configure API Manager
+
+Add the AI service configuration to `<API-M_HOME>/repository/conf/deployment.toml`.
+
+The following example enables all three features. Replace the host names, credentials, API contexts, versions, and paths with the values exposed by your Gateway.
 
 ```toml
 [apim.ai]
 enable = true
 endpoint = "https://ai-gateway.example.com"
-key = "base64encoded<client-credential-of-the-application>"
-endpoint = "https://<identity-provider>/oauth2/token"
+token_endpoint = "https://idp.example.com/oauth2/token"
+key = "<base64-encoded-consumer-key-and-secret>"
+
+marketplace_assistant_enable = true
+api_chat_enable = true
+design_assistant_enable = true
+
+marketplace_assistant_publish_api_resource = "/spec-populator/1.0.0/vectors"
+marketplace_assistant_remove_api_resource = "/spec-populator/1.0.0/vectors"
+marketplace_assistant_api_count_resource = "/spec-populator/1.0.0/vectors/count"
+marketplace_assistant_chat_resource = "/marketplace-assistant/1.0.0/marketplace-assistant"
+
+api_chat_prepare_resource = "/api-chat/1.0.0/prepare"
+api_chat_execute_resource = "/api-chat/1.0.0/chat"
+
+design_assistant_chat_resource = "/design-assistant/1.0.0/chat"
 ```
 
-The feature-specific enablement and resource properties can then be set according to the AI features used by the deployment. The exact path is controlled by these properties, so no fixed APIM-to-service route mapping is required in this guide.
+The Marketplace Assistant remove property must contain the base resource path. API Manager appends the API UUID when invoking the delete operation.
 
-Ex: Need to use only Marketplace Assistant with provided Gateway resource paths:
+Disable features that you have not implemented:
+
 ```toml
 [apim.ai]
-enable = true
-marketplace_assistant_publish_api_resource = "/vectors"
-marketplace_assistant_chat_resource = "/marketplace-assistant"
-marketplace_assistant_remove_api_resource = "/vectors/{uuid}"
-marketplace_assistant_api_count_resource = "/vectors/count"
-api_chat_enable = false                # since API Chat is not used
-design_assistant_enable = false        # since Design Assistant is not used
+api_chat_enable = false
+design_assistant_enable = false
 ```
 
-If the deployment uses a custom request property enricher, configure its implementation class as well:
+Restart API Manager after changing `deployment.toml`.
+
+### Optional: Add customer-specific request properties
+
+If your service requires optional fields that API Manager does not include in its standard payload, implement the API request property enricher extension and configure the implementation class:
 
 ```toml
 [apim.ai]
 property_enricher_impl = "com.example.apim.ai.CustomerAIRequestPropertyEnricher"
 ```
 
-The custom properties are appended to the standard request payload. The customer service should define and handle these optional properties while continuing to support the published contract.
+Create a class that extends `AbstractAIRequestPropertyEnricher`, override only the feature methods that require extra values, and return the additional properties as a map. The implementation must have a public no-argument constructor.
 
-## Validation
+The enricher can append customer-specific top-level fields, such as an external user identifier, according to the feature and request context. It cannot overwrite standard payload fields. The customer service must treat the additional fields as optional extensions to the published contract.
 
-Validate the integration in this order:
+Package the implementation as a JAR, place it in `<API-M_HOME>/repository/components/lib`, configure its fully qualified class name, and restart API Manager. The implementation should be stateless and thread-safe because API Manager can reuse it across concurrent requests.
 
-1. Confirm that the customer service responds according to the OpenAPI contract.
-2. Confirm that the Gateway routes each configured resource to the correct backend operation.
-3. Confirm that the Gateway appends `keyID` to all Marketplace Assistant feature related requests.
-4. Publish an API and verify that its vector record is created.
-5. Query Marketplace Assistant and verify that it can retrieve the indexed API.
-6. Verify any customer-specific properties added through the property enricher.
+## Validate the integration
+
+Validate one layer at a time so that routing, authentication, and service-contract problems can be isolated.
+
+1. Call each customer service directly and validate the response against its OpenAPI contract.
+2. Call each published Gateway API using the integration application's access token.
+3. Confirm that the Gateway routes every configured path to the intended backend operation.
+4. For Marketplace Assistant, confirm that the Gateway appends the same non-empty `keyID` to indexing, chat, removal, and count requests.
+5. Add or publish an API and confirm that the Spec Populator creates its record.
+6. Query Marketplace Assistant and confirm that it can retrieve the indexed API.
+7. Test Design Assistant and API Chat if those features are enabled.
+8. Confirm that any optional enriched properties reach the customer service.
+
