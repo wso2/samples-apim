@@ -1,0 +1,56 @@
+{
+  "category": "Mediation",
+  "name": "AdvancedPIIGuardrailByWSO2",
+  "version": "v1.0",
+  "displayName": "Advanced PII Guardrail by WSO2",
+  "description": "Detects and masks sensitive data using an advanced PII (personally identifiable information) detection model powered by WSO2 guardrails. By default, PII values are masked during the request flow and restored in the response flow. If the 'redact' attribute is set to true, PII values will be permanently replaced with '*****'.",
+  "applicableFlows": [
+    "request",
+    "response"
+  ],
+  "supportedGateways": [
+    "Synapse"
+  ],
+  "supportedApiTypes": [
+    {
+      "subType": "AIAPI",
+      "apiType": "HTTP"
+    }
+  ],
+  "policyAttributes": [
+    {
+      "name": "name",
+      "displayName": "Guardrail Name",
+      "description": "The name of the guardrail policy. This will be used for tracking purposes.",
+      "type": "String",
+      "allowedValues": [],
+      "required": true
+    },
+    {
+      "name": "piiEntities",
+      "displayName": "PII Entities",
+      "description": "The PII entities to detect and mask.",
+      "type": "JSON",
+      "defaultValue": "[\n  \"CREDIT_CARD\",\n  \"CRYPTO\",\n  \"DATE_TIME\",\n  \"EMAIL_ADDRESS\",\n  \"IBAN_CODE\",\n  \"IP_ADDRESS\",\n  \"NRP\",\n  \"LOCATION\",\n  \"PERSON\",\n  \"PHONE_NUMBER\",\n  \"MEDICAL_LICENSE\",\n  \"URL\",\n  \"US_BANK_NUMBER\",\n  \"US_DRIVER_LICENSE\",\n  \"US_ITIN\",\n  \"US_PASSPORT\",\n  \"US_SSN\",\n  \"UK_NHS\",\n  \"ES_NIF\",\n  \"ES_NIE\",\n  \"IT_FISCAL_CODE\",\n  \"IT_DRIVER_LICENSE\",\n  \"IT_VAT_CODE\",\n  \"IT_PASSPORT\",\n  \"IT_IDENTITY_CARD\",\n  \"PL_PESEL\",\n  \"SG_NRIC_FIN\",\n  \"SG_UEN\",\n  \"AU_ABN\",\n  \"AU_ACN\",\n  \"AU_TFN\",\n  \"AU_MEDICARE\",\n  \"IN_PAN\",\n  \"IN_AADHAAR\",\n  \"IN_VEHICLE_REGISTRATION\",\n  \"IN_VOTER\",\n  \"IN_PASSPORT\",\n  \"FI_PERSONAL_IDENTITY_CODE\"\n]",
+      "allowedValues": [],
+      "required": true
+    },
+    {
+      "name": "jsonPath",
+      "displayName": "JSON Path",
+      "description": "Specifies the JSONPath expression to extract content from the payload for analysis. If omitted, the entire payload will be analyzed.",
+      "type": "String",
+      "allowedValues": [],
+      "required": false
+    },
+    {
+      "name": "redact",
+      "displayName": "Redact PII",
+      "description": "If set to true, identified PII values will be permanently replaced with \"*****\" (irreversible).",
+      "type": "Boolean",
+      "allowedValues": [],
+      "defaultValue": "false",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,143 @@
+openapi: 3.1.0
+info:
+  title: Bookstore API
+  version: 1.0.0
+  description: |
+    A simple API for managing books in a bookstore.
+  contact:
+    name: API Support
+    email: support@bookstore.com
+servers:
+  - url: https://api.bookstore.com/v1
+    description: Production server
+  - url: https://staging-api.bookstore.com/v1
+    description: Staging server
+
+paths:
+  /books:
+    get:
+      summary: List all books
+      description: Retrieve a list of all available books.
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of results to return
+          required: false
+          schema:
+            type: integer
+            default: 20
+      responses:
+        "200":
+          description: A list of books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Book"
+    post:
+      summary: Add a new book
+      description: Add a new book to the store.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewBook"
+      responses:
+        "201":
+          description: Book created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        "400":
+          description: Invalid input data
+
+  /books/{bookId}:
+    get:
+      summary: Get book by ID
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          description: The ID of the book to retrieve
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Book details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        "404":
+          description: Book not found
+    delete:
+      summary: Delete a book
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Book deleted successfully
+        "404":
+          description: Book not found
+
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "bk101"
+        title:
+          type: string
+          example: "The Pragmatic Programmer"
+        author:
+          type: string
+          example: "Andrew Hunt"
+        price:
+          type: number
+          format: float
+          example: 39.99
+        inStock:
+          type: boolean
+          example: true
+    NewBook:
+      type: object
+      required:
+        - title
+        - author
+        - price
+      properties:
+        title:
+          type: string
+        author:
+          type: string
+        price:
+          type: number
+          format: float
+        inStock:
+          type: boolean
+          default: true
+
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+    basicAuth:
+      type: http
+      scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []

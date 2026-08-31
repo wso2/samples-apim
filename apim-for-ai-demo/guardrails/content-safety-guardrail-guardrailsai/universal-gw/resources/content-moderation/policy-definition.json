@@ -1,0 +1,173 @@
+{
+  "category": "Mediation",
+  "name": "AdvancedContentSafetyGuardrailByWSO2",
+  "displayName": "Advanced Content Safety Guardrail by WSO2",
+  "version": "v1.0",
+  "description": "Filters harmful content in AI API requests and AI generated responses using an advanced content safety model powered by WSO2 guardrails",
+  "applicableFlows": [
+    "request",
+    "response"
+  ],
+  "supportedApiTypes": [
+    {
+      "subType": "AIAPI",
+      "apiType": "HTTP"
+    }
+  ],
+  "supportedGateways": [
+    "Synapse"
+  ],
+  "policyAttributes": [
+    {
+      "name": "name",
+      "displayName": "Guardrail Name",
+      "description": "The name of the guardrail policy. This will be used for tracking purposes.",
+      "type": "String",
+      "allowedValues": [],
+      "required": true
+    },
+    {
+      "name": "violentCrimes",
+      "displayName": "Violent Crimes",
+      "description": "Content that enable, encourage, or endorse the commission of violent crimes, including: (1) unlawful violence toward people (ex: terrorism, genocide, murder, hate-motivated violent crimes, child abuse, assault, battery, kidnapping) and (2) unlawful violence toward animals (ex: animal abuse).",
+      "required": false,
+      "type": "Boolean",
+      "defaultValue": "false",
+      "allowedValues": []
+    },
+    {
+      "name": "nonViolentCrimes",
+      "displayName": "Non-Violent Crimes",
+      "description": "Content that enable, encourage, or endorse the commission of non-violent crimes, including: (1) personal crimes (ex: labor trafficking, threats, intimidation, hate-motivated non-violent crimes), (2) financial crimes (ex: fraud, scams, money laundering), (3) property crimes (ex: theft, arson, vandalism), (4) drug crimes (ex: creating or using regulated substances), (5) weapons crimes (ex: producing unlicensed firearms), and (6) cyber crimes (ex: hacking).",
+      "required": false,
+      "type": "Boolean",
+      "defaultValue": "false",
+      "allowedValues": []
+    },
+    {
+      "name": "sexRelatedCrimes",
+      "displayName": "Sex-Related Crimes",
+      "description": "Content that enable, encourage, or endorse the commission of sex-related crimes, including: (1) sex trafficking, (2) sexual assault (ex: rape), (3) sexual harassment (physical, verbal, or visual), and (4) prostitution.",
+      "required": false,
+      "type": "Boolean",
+      "defaultValue": "false",
+      "allowedValues": []
+    },
+    {
+      "name": "childSexualExploitation",
+      "displayName": "Child Sexual Exploitation",
+      "description": "Content that contain, describe, enable, encourage, or endorse the sexual abuse of children.",
+      "required": false,
+      "type": "Boolean",
+      "defaultValue": "false",
+      "allowedValues": []
+    },
+    {
+      "name": "defamation",
+      "displayName": "Defamation",
+      "description": "Content that are both verifiably false and likely to injure a living person’s reputation.",
+      "required": false,
+      "type": "Boolean",
+      "defaultValue": "false",
+      "allowedValues": []
+    },
+    {
+      "name": "specializedAdvice",
+      "displayName": "Specialized Advice",
+      "description": "Content that contain specialized financial, medical, or legal advice, or that indicate dangerous activities or objects are safe.",
+      "required": false,
+      "type": "Boolean",
+      "defaultValue": "false",
+      "allowedValues": []
+    },
+    {
+      "name": "privacy",
+      "displayName": "Privacy",
+      "description": "Content that contain sensitive, nonpublic personal information that could undermine someone’s physical, digital, or financial security.",
+      "required": false,
+      "type": "Boolean",
+      "defaultValue": "false",
+      "allowedValues": []
+    },
+    {
+      "name": "intellectualProperty",
+      "displayName": "Intellectual Property",
+      "description": "Content that may violate the intellectual property rights of any third party.",
+      "required": false,
+      "type": "Boolean",
+      "defaultValue": "false",
+      "allowedValues": []
+    },
+    {
+      "name": "indiscriminateWeapons",
+      "displayName": "Indiscriminate Weapons",
+      "description": "Content that enable, encourage, or endorse the creation of indiscriminate weapons, including: (1) chemical weapons (ex: nerve gas), (2) biological weapons (ex: anthrax), (3) radiological weapons (ex: cobalt bombs), (4) nuclear weapons (ex: fission bombs), and (5) high-yield explosive weapons (ex: cluster munitions).",
+      "required": false,
+      "type": "Boolean",
+      "defaultValue": "false",
+      "allowedValues": []
+    },
+    {
+      "name": "hate",
+      "displayName": "Hate",
+      "description": "Content that demean or dehumanize people on the basis of their sensitive, personal characteristics (i.e., race, color, ethnicity, national origin, disability, religious affiliation, caste, sexual orientation, sex, gender identity, and/or serious disease).",
+      "required": false,
+      "type": "Boolean",
+      "defaultValue": "false",
+      "allowedValues": []
+    },
+    {
+      "name": "suicideAndSelfHarm",
+      "displayName": "Suicide & Self-Harm",
+      "description": "Content that enable, encourage, or endorse acts of intentional self-harm, including: (1) suicide, (2) self-injury (ex: cutting), and (3) disordered eating.",
+      "required": false,
+      "type": "Boolean",
+      "defaultValue": "false",
+      "allowedValues": []
+    },
+    {
+      "name": "sexualContent",
+      "displayName": "Sexual Content",
+      "description": "Content that contain erotica.",
+      "required": false,
+      "type": "Boolean",
+      "defaultValue": "false",
+      "allowedValues": []
+    },
+    {
+      "name": "elections",
+      "displayName": "Elections",
+      "description": "Content that contain factually incorrect information about electoral systems and processes, including in the time, place, or manner of voting in civic elections.",
+      "required": false,
+      "type": "Boolean",
+      "defaultValue": "false",
+      "allowedValues": []
+    },
+    {
+      "name": "jsonPath",
+      "displayName": "JSON Path",
+      "description": "Specify the JSONPath expression that identifies the content location for validation.",
+      "required": false,
+      "type": "String",
+      "allowedValues": []
+    },
+    {
+      "name": "passthroughOnError",
+      "displayName": "Passthrough on Error",
+      "description": "If enabled, the request or response is passed through without validation when the content safety service is unavailable. Otherwise, a guardrail validation error is triggered.",
+      "required": false,
+      "defaultValue": "false",
+      "type": "Boolean",
+      "allowedValues": []
+    },
+    {
+      "name": "showAssessment",
+      "displayName": "Show Guardrail Assessment",
+      "description": "When enabled, the error response will include detailed information about the reason for the guardrail intervention.",
+      "type": "Boolean",
+      "defaultValue": "false",
+      "allowedValues": [],
+      "required": false
+    }
+  ]
+}

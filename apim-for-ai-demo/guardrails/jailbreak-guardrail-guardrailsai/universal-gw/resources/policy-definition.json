@@ -1,0 +1,65 @@
+{
+  "category": "Mediation",
+  "name": "AdvancedPromptInjectionGuardrailByWSO2",
+  "version": "v1.0",
+  "displayName": "Advanced Prompt Injection Guardrail by WSO2",
+  "description": "Validates the request content using an advanced prompt injection detection model powered by WSO2 guardrails. If the detected prompt injection attempt score is higher than the allowed threshold, the guardrail intervenes and returns an error response.",
+  "applicableFlows": [
+    "request"
+  ],
+  "supportedGateways": [
+    "Synapse"
+  ],
+  "supportedApiTypes": [
+    {
+      "subType": "AIAPI",
+      "apiType": "HTTP"
+    }
+  ],
+  "policyAttributes": [
+    {
+      "name": "name",
+      "displayName": "Guardrail Name",
+      "description": "The name of the guardrail policy. This will be used for tracking purposes.",
+      "type": "String",
+      "allowedValues": [],
+      "required": true
+    },
+    {
+      "name": "threshold",
+      "displayName": "Prompt Injection Attempt Threshold",
+      "description": "The threshold that must be met for intervention.",
+      "required": false,
+      "type": "Integer",
+      "validationRegex": "^(100|[1-9]?[0-9])$",
+      "defaultValue": "90",
+      "allowedValues": []
+    },
+    {
+      "name": "jsonPath",
+      "displayName": "JSON Path",
+      "description": "The JSONPath expression used to extract content from the payload. If not specified, the entire payload will be used for validation.",
+      "type": "String",
+      "allowedValues": [],
+      "required": false
+    },
+    {
+      "name": "passthroughOnError",
+      "displayName": "Passthrough on Error",
+      "description": "If enabled, the request is passed through without validation when the prompt injection detection service is unavailable. Otherwise, a guardrail validation error is triggered.",
+      "required": false,
+      "defaultValue": "false",
+      "type": "Boolean",
+      "allowedValues": []
+    },
+    {
+      "name": "showAssessment",
+      "displayName": "Show Guardrail Assessment",
+      "description": "When enabled, the error response will include detailed information about the reason for the guardrail intervention.",
+      "type": "Boolean",
+      "defaultValue": "false",
+      "allowedValues": [],
+      "required": false
+    }
+  ]
+}
