@@ -1,7 +1,7 @@
-version: '2.4'
 services:
     api-manager:
-      image: wso2/wso2am:4.1.0
+      image: wso2/wso2am:4.3.0
+      platform: linux/amd64
       healthcheck:
         test: ["CMD", "nc", "-z","localhost", "9443"]
         interval: 10s
@@ -24,7 +24,8 @@ services:
       build: 
         context: ./dockerfiles/micro-integrator/
         args:
-          - BASE_IMAGE=wso2/wso2mi:4.1.0
+          - BASE_IMAGE=wso2/wso2mi:4.5.0
+      platform: linux/amd64
       healthcheck:
         test: ["CMD", "nc", "-z","localhost", "8290"]
         interval: 10s
@@ -51,7 +52,8 @@ services:
       build: 
         context: ./dockerfiles/streaming-integrator/
         args:
-          - BASE_IMAGE=wso2/wso2si:4.1.0
+          - BASE_IMAGE=wso2/wso2si:4.3.1
+      platform: linux/amd64
       healthcheck:
         test: ["CMD", "nc", "-z","localhost", "9443"]
         interval: 10s
@@ -65,6 +67,7 @@ services:
       cpus: 0.5
     backend-service:
       build: ./dockerfiles/backends/
+      platform: linux/amd64
       healthcheck:
         test: ["CMD", "nc", "-z","localhost", "8080"]
         interval: 10s
@@ -76,7 +79,8 @@ services:
       mem_reservation: 128M
       cpus: 1
     db:
-      image: mysql:8.0.23
+      image: mysql:8.0.44
+      platform: linux/amd64
       ports:
         - 8083:3306
       command: --init-file /data/application/init.sql
@@ -95,6 +99,7 @@ services:
       cpus: 0.5
     scripts:
       build: ./dockerfiles/scripts
+      platform: linux/amd64
       mem_limit: 256m
       mem_reservation: 128M
       cpus: 1
