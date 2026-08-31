@@ -1,0 +1,18 @@
+rules:
+  chat-completions-has-jailbreak-guardrail:
+    description: Ensure /chat/completions has AdvancedPromptInjectionGuardrailByWSO2 in request operation policies.
+    severity: error
+    given: "$['data']['operations'][?(@['target']=='/chat/completions')]"
+    message: "Missing AdvancedPromptInjectionGuardrailByWSO2 in /chat/completions.operationPolicies.request"
+    then:
+      - field: "operationPolicies.request[?(@['policyName']=='AdvancedPromptInjectionGuardrailByWSO2')]"
+        function: truthy
+
+  chat-completions-has-wordcount-guardrail:
+    description: Ensure /chat/completions has WordCountGuardrail in request operation policies.
+    severity: error
+    given: "$['data']['operations'][?(@['target']=='/chat/completions')]"
+    message: "Missing WordCountGuardrail in /chat/completions.operationPolicies.request"
+    then:
+      - field: "operationPolicies.request[?(@['policyName']=='WordCountGuardrail')]"
+        function: truthy
