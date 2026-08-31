@@ -1,0 +1,12 @@
+com/example/reviews/entity/Review.java
+ com.example.reviews.entity.Review
+com/example/reviews/repository/ReviewRepository.java
+ com.example.reviews.repository.ReviewRepository
+com/example/reviews/entity/Product.java
+ com.example.reviews.entity.Product
+com/example/reviews/Application.java
+ com.example.reviews.Application
+com/example/reviews/resolver/Query.java
+ com.example.reviews.resolver.Query
+com/example/reviews/entity/User.java
+ com.example.reviews.entity.User

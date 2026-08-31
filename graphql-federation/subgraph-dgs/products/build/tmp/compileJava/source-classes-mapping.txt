@@ -1,0 +1,8 @@
+com/example/products/repository/ProductRepository.java
+ com.example.products.repository.ProductRepository
+com/example/products/entity/Product.java
+ com.example.products.entity.Product
+com/example/products/Application.java
+ com.example.products.Application
+com/example/products/resolver/Query.java
+ com.example.products.resolver.Query

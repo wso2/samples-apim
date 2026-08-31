@@ -1,0 +1,1 @@
+{"version":3,"file":"prettyFormatQueryPlan.js","sourceRoot":"","sources":["../src/prettyFormatQueryPlan.ts"],"names":[],"mappings":";;;;;;AACA,kEAAyC;AACzC,+DAA2E;AAE3E,SAAgB,qBAAqB,CAAC,SAAoB;IACxD,OAAO,uBAAY,CAAC,SAAS,EAAE;QAC7B,OAAO,EAAE,CAAC,yCAAmB,EAAE,mCAAa,CAAC;KAC9C,CAAC,CAAC;AACL,CAAC;AAJD,sDAIC"}

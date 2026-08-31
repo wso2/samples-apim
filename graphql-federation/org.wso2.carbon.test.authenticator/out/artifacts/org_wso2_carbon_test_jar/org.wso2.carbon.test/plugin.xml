@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension-point id="generated_package" name="%_UI_PackageRegistry_extensionpoint" schema="schema/generated_package.exsd"/>
+   <extension-point id="dynamic_package" name="%_UI_DynamicPackageRegistry_extensionpoint" schema="schema/dynamic_package.exsd"/>
+   <extension-point id="factory_override" name="%_UI_FactoryRegistry_extensionpoint" schema="schema/factory_override.exsd"/>
+   <extension-point id="extension_parser" name="%_UI_URIExtensionParserRegistry_extensionpoint" schema="schema/extension_parser.exsd"/>
+   <extension-point id="protocol_parser" name="%_UI_URIProtocolParserRegistry_extensionpoint" schema="schema/protocol_parser.exsd"/>
+   <extension-point id="content_parser" name="%_UI_URIContentParserRegistry_extensionpoint" schema="schema/content_parser.exsd"/>
+   <extension-point id="content_handler" name="%_UI_ContentHandlerRegistry_extensionpoint" schema="schema/content_handler.exsd"/>
+   <extension-point id="uri_mapping" name="%_UI_URIMappingRegistry_extensionpoint" schema="schema/uri_mapping.exsd"/>
+   <extension-point id="package_registry_implementation" name="%_UI_PackageRegistryImplementation_extensionpoint" schema="schema/package_registry_implementation.exsd"/>
+   <extension-point id="validation_delegate" name="%_UI_ValidationDelegateRegistry_extensionpoint" schema="schema/validation_delegate.exsd"/>
+   <extension-point id="setting_delegate" name="%_UI_SettingDelegateRegistry_extensionpoint" schema="schema/setting_delegate.exsd"/>
+   <extension-point id="invocation_delegate" name="%_UI_InvocationDelegateRegistry_extensionpoint" schema="schema/invocation_delegate.exsd"/>
+   <extension-point id="query_delegate" name="%_UI_QueryDelegateRegistry_extensionpoint" schema="schema/query_delegate.exsd"/>
+   <extension-point id="conversion_delegate" name="%_UI_ConversionDelegateRegistry_extensionpoint" schema="schema/conversion_delegate.exsd"/>
+   <extension-point id="annotation_validator" name="%_UI_AnnotationValidatorRegistry_extensionpoint" schema="schema/annotation_validator.exsd"/>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http://www.eclipse.org/emf/2002/Ecore"
+            class="org.eclipse.emf.ecore.EcorePackage"
+            genModel="model/Ecore.genmodel"/>
+   </extension>
+
+   <!-- Don't generate these
+   <extension point="org.eclipse.emf.ecore.content_parser">
+      <parser
+            contentTypeIdentifier="org.eclipse.emf.ecore"
+            class="org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl"/>
+   </extension>
+
+   <extension point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            base-type="org.eclipse.emf.ecore.xmi"
+            file-extensions="ecore"
+            id="org.eclipse.emf.ecore"
+            name="%_UI_Ecore_content_type"
+            priority="normal">
+         <describer class="org.eclipse.emf.ecore.xmi.impl.RootXMLContentHandlerImpl$Describer">
+            <parameter name="namespace" value="http://www.eclipse.org/emf/2002/Ecore"/>
+            <parameter name="kind" value="xmi"/>
+         </describer>
+      </content-type>
+   </extension>
+   -->
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http://www.eclipse.org/emf/2003/XMLType"
+            class="org.eclipse.emf.ecore.xml.type.XMLTypePackage"
+            genModel="model/XMLType.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http://www.w3.org/XML/1998/namespace"
+            class="org.eclipse.emf.ecore.xml.namespace.XMLNamespacePackage"
+            genModel="model/XMLNamespace.genmodel"/>
+   </extension>
+
+   <extension
+         point="org.eclipse.emf.ecore.dynamic_package">
+      <resource
+            location="model/ExtendedMetaData.ecore"
+            uri="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      </resource>
+      <resource
+            location="model/EcoreAnnotation.ecore"
+            uri="http:///org/eclipse/emf/ecore/util/EcoreAnnotation">
+      </resource>
+      <resource
+            location="model/DateConversionDelegateAnnotation.ecore"
+            uri="http:///org/eclipse/emf/ecore/util/DateConversionDelegateAnnotation">
+      </resource>
+   </extension>
+
+   <extension
+         id="diagnostic"
+         name="%_UI_EMFDiagnostic_marker"
+         point="org.eclipse.core.resources.markers">
+      <super type="org.eclipse.core.resources.problemmarker"/>
+      <persistent value="true"/>
+      <attribute name="uri"/>
+   </extension>
+  
+   <extension point="org.eclipse.emf.ecore.content_handler">
+      <contentHandler
+            class="org.eclipse.emf.ecore.resource.impl.PlatformContentHandlerImpl"
+            priority="2000">
+      </contentHandler>
+   </extension>
+
+   <extension
+         point="org.eclipse.emf.ecore.annotation_validator">
+      <validator
+            uri="http://www.eclipse.org/emf/2002/Ecore"
+            class="org.eclipse.emf.ecore.util.EcoreAnnotationValidator">
+      </validator>
+      <validator
+            uri="http:///org/eclipse/emf/ecore/util/ExtendedMetaData"
+            class="org.eclipse.emf.ecore.util.ExtendedMetaDataAnnotationValidator">
+      </validator>
+      <validator
+            uri="http:///org/eclipse/emf/ecore/util/DateConversionDelegate"
+            class="org.eclipse.emf.ecore.util.DateConversionDelegateFactory$AnnotationValidator">
+      </validator>
+   </extension>
+
+   <extension
+         point="org.eclipse.emf.ecore.conversion_delegate">
+      <factory
+            class="org.eclipse.emf.ecore.util.DateConversionDelegateFactory"
+            uri="http:///org/eclipse/emf/ecore/util/DateConversionDelegate">
+      </factory>
+   </extension>
+
+</plugin>

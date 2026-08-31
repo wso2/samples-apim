@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="data" nsURI="http:///org/eclipse/emf/ecore/util/ExtendedMetaData"
+    nsPrefix="data">
+  <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+    <details key="schemaLocation" value="http:///org/eclipse/emf/ecore/util/ExtendedMetaData"/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EClass" name="Package">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="qualified" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        transient="true">
+      <eAnnotations source="Reflection">
+        <details key="accessor" value="Qualified"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Class" eSuperTypes="#//Classifier">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="documentRoot" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        derived="true">
+      <eAnnotations source="Reflection">
+        <details key="accessor" value="DocumentRoot"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" eType="#//ContentKind">
+      <eAnnotations source="Reflection">
+        <details key="accessor" value="ContentKind"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DataType" eSuperTypes="#//Classifier">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="baseType" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EDataType">
+      <eAnnotations source="Reflection">
+        <details key="accessor" value="BaseType"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="itemType" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EDataType">
+      <eAnnotations source="Reflection">
+        <details key="accessor" value="ItemType"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="memberTypes" upperBound="-1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EDataType">
+      <eAnnotations source="Reflection">
+        <details key="accessor" value="MemberTypes"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="whiteSpace" eType="#//WhiteSpaceKind">
+      <eAnnotations source="Reflection">
+        <details key="accessor" value="WhiteSpaceFacet"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="enumeration" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="Reflection">
+        <details key="accessor" value="EnumerationFacet"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="pattern" upperBound="-1"
+        eType="#//Pattern">
+      <eAnnotations source="Reflection">
+        <details key="accessor" value="PatternFacet"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="totalDigits" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+      <eAnnotations source="Reflection">
+        <details key="accessor" value="TotalDigitsFacet"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fractionDigits" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+      <eAnnotations source="Reflection">
+        <details key="accessor" value="FractionDigitsFacet"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+      <eAnnotations source="Reflection">
+        <details key="accessor" value="LengthFacet"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="minLength" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+      <eAnnotations source="Reflection">
+        <details key="accessor" value="MinLengthFacet"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxLength" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+      <eAnnotations source="Reflection">
+        <details key="accessor" value="MaxLengthFacet"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="minExclusive" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="Reflection">
+        <details key="accessor" value="MinExclusiveFacet"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxExclusive" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="Reflection">
+        <details key="accessor" value="MaxExclusiveFacet"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="minInclusive" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="Reflection">
+        <details key="accessor" value="MinInclusiveFacet"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxInclusive" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="Reflection">
+        <details key="accessor" value="MaxInclusiveFacet"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="StructuralFeature">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespace" eType="#//XMLNamespace">
+      <eAnnotations source="Reflection">
+        <details key="accessor" value="Namespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="#//XMLName">
+      <eAnnotations source="Reflection">
+        <details key="accessor" value="Name"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" eType="#//FeatureKind">
+      <eAnnotations source="Reflection">
+        <details key="accessor" value="FeatureKind"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="wildcards" upperBound="-1"
+        eType="#//Wildcard">
+      <eAnnotations source="Reflection">
+        <details key="accessor" value="Wildcards"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="processing" eType="#//ProcessingKind">
+      <eAnnotations source="Reflection">
+        <details key="accessor" value="ProcessingKind"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="group" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature">
+      <eAnnotations source="Reflection">
+        <details key="accessor" value="Group"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="affiliation" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature">
+      <eAnnotations source="Reflection">
+        <details key="accessor" value="Affiliation"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Classifier" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="#//XMLName">
+      <eAnnotations source="Reflection">
+        <details key="accessor" value="Name"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="XMLName" instanceClassName="java.lang.String">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="pattern" value="\c*"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="XMLNamespace" instanceClassName="java.lang.String">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="baseType" value="http://www.eclipse.org/emf/2003/XMLType#anyURI"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="Wildcard" instanceClassName="java.lang.String">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="minLength" value="1"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="Pattern" instanceClassName="java.lang.String">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="minLength" value="1"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="FeatureKind">
+    <eLiterals name="unspecified"/>
+    <eLiterals name="simple" value="1"/>
+    <eLiterals name="attribute" value="2"/>
+    <eLiterals name="attributeWildcard" value="3"/>
+    <eLiterals name="element" value="4"/>
+    <eLiterals name="elementWildcard" value="5"/>
+    <eLiterals name="group" value="6"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ContentKind">
+    <eLiterals name="unspecified"/>
+    <eLiterals name="empty" value="1"/>
+    <eLiterals name="simple" value="2"/>
+    <eLiterals name="mixed" value="3"/>
+    <eLiterals name="elementOnly" value="4"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ProcessingKind">
+    <eLiterals name="unspecified"/>
+    <eLiterals name="strict" value="1"/>
+    <eLiterals name="lax" value="2"/>
+    <eLiterals name="skip" value="3"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="WhiteSpaceKind">
+    <eLiterals name="unspecified"/>
+    <eLiterals name="preserve" value="1"/>
+    <eLiterals name="replace" value="2"/>
+    <eLiterals name="collapse" value="3"/>
+  </eClassifiers>
+</ecore:EPackage>
