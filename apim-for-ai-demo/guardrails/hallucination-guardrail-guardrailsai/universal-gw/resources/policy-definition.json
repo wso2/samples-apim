@@ -1,0 +1,83 @@
+{
+  "category": "Mediation",
+  "name": "AdvancedHallucinationGuardrailByWSO2",
+  "version": "v1.0",
+  "displayName": "Advanced Hallucination Guardrail by WSO2",
+  "description": "Validates response content using an advanced hallucination detection model powered by WSO2 guardrails. If the content is detected as hallucinated, the guardrail intervenes and returns an error response.",
+  "applicableFlows": [
+    "request",
+    "response"
+  ],
+  "supportedGateways": [
+    "Synapse"
+  ],
+  "supportedApiTypes": [
+    {
+      "subType": "AIAPI",
+      "apiType": "HTTP"
+    }
+  ],
+  "policyAttributes": [
+    {
+      "name": "name",
+      "displayName": "Guardrail Name",
+      "description": "The name of the guardrail policy. This will be used for tracking purposes.",
+      "type": "String",
+      "allowedValues": [],
+      "required": true
+    },
+    {
+      "name": "jsonPath",
+      "displayName": "JSON Path",
+      "description": "The JSONPath expression used to extract content from the payload. If not specified, the entire payload will be used for validation.",
+      "type": "String",
+      "allowedValues": [],
+      "required": false
+    },
+    {
+      "name": "connectKnowledgeBase",
+      "displayName": "Connect to a Vector Database for Hallucination Detection through Grounded Knowledge",
+      "description": "If enabled, the hallucination detection leverages a vector database to verify whether the response is grounded in the knowledge base.",
+      "required": false,
+      "defaultValue": "false",
+      "type": "Boolean",
+      "allowedValues": []
+    },
+    {
+      "name": "knowledgeBaseCollectionName",
+      "displayName": "Knowledge Base Collection Name",
+      "description": "The name of the knowledge base collection in the vector database to be used for grounding the hallucination detection. This is required if 'Connect to a Vector Database for Hallucination Detection through Grounded Knowledge' is enabled.",
+      "type": "String",
+      "allowedValues": [],
+      "required": false,
+      "defaultValue": ""
+    },
+    {
+      "name": "outputFields",
+      "displayName": "Output Fields",
+      "description": "A comma-separated list of vector database collection schema fields to include in the output for grounding verification. All fields will be used if not specified.",
+      "type": "String",
+      "allowedValues": [],
+      "required": false,
+      "defaultValue": ""
+    },
+    {
+      "name": "passthroughOnError",
+      "displayName": "Passthrough on Error",
+      "description": "If enabled, the response is passed through without validation when the hallucination detection service is unavailable. Otherwise, a guardrail validation error is triggered.",
+      "required": false,
+      "defaultValue": "false",
+      "type": "Boolean",
+      "allowedValues": []
+    },
+    {
+      "name": "showAssessment",
+      "displayName": "Show Guardrail Assessment",
+      "description": "When enabled, the error response will include detailed information about the reason for the guardrail intervention.",
+      "type": "Boolean",
+      "defaultValue": "false",
+      "allowedValues": [],
+      "required": false
+    }
+  ]
+}

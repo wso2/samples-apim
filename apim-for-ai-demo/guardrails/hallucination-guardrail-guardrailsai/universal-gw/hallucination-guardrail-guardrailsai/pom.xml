@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2025, WSO2 LLC. (http://www.wso2.com).
+  ~
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.wso2.am.policies</groupId>
+    <artifactId>org.wso2.apim.policies.mediation.ai.hallucination-guardrail-guardrailsai</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>bundle</packaging>
+    <name>WSO2 APIM Mediation Policies - Hallucination Detection Guardrail with Guardrails AI</name>
+
+    <scm>
+        <connection>scm:git:https://github.com/wso2-extensions/apim-policies.git</connection>
+        <url>https://github.com/wso2-extensions/apim-policies.git</url>
+        <developerConnection>scm:git:https://github.com/wso2-extensions/apim-policies.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>nexus-releases</id>
+            <name>WSO2 Release Distribution Repository</name>
+            <url>https://maven.wso2.org/nexus/service/local/staging/deploy/maven2/</url>
+        </repository>
+        <snapshotRepository>
+            <id>wso2.snapshots</id>
+            <name>Apache Snapshot Repository</name>
+            <url>https://maven.wso2.org/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <properties>
+        <maven.compiler.release>9</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+        <org.apache.felix.version>3.3.0</org.apache.felix.version>
+        <synapse.version>4.0.0-wso2v131</synapse.version>
+        <jackson.version>2.19.0</jackson.version>
+        <com.jayway.jsonpath.version>2.9.0.wso2v1</com.jayway.jsonpath.version>
+        <json.orbit.version>3.0.0.wso2v6</json.orbit.version>
+        <import.package.version.commons.logging>[1.2.0,2.0.0)</import.package.version.commons.logging>
+        <axis2.osgi.version.range>[1.6.1, 1.7.0)</axis2.osgi.version.range>
+    </properties>
+
+    <dependencies>
+        <!-- Synapse Dependencies -->
+        <dependency>
+            <groupId>org.apache.synapse</groupId>
+            <artifactId>synapse-core</artifactId>
+            <version>${synapse.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Jackson for JSON Processing -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- JSON Library -->
+        <dependency>
+            <groupId>org.json.wso2</groupId>
+            <artifactId>json</artifactId>
+            <version>${json.orbit.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.wso2.orbit.com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>${com.jayway.jsonpath.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.wso2.carbon.apimgt</groupId>
+            <artifactId>org.wso2.carbon.apimgt.impl</artifactId>
+            <version>9.32.26</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Compiler Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <release>${maven.compiler.release}</release>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>${org.apache.felix.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                        <Bundle-Name>${project.artifactId}</Bundle-Name>
+                        <Export-Package>
+                            org.wso2.apim.policies.mediation.ai.hallucination.guardrail.guardrailsai;version="${project.version}",
+                        </Export-Package>
+                        <Import-Package>
+                            !com.jayway.jsonpath.*,
+                            !net.minidev.json.*,
+                            !net.minidev.asm.*,
+                            !org.json.*,
+                            org.apache.axis2; version="${axis2.osgi.version.range}",
+                            org.apache.axis2.description; version="${axis2.osgi.version.range}",
+                            org.apache.axis2.engine; version="${axis2.osgi.version.range}",
+                            org.apache.axis2.rpc.receivers; version="${axis2.osgi.version.range}",
+                            org.apache.axis2.context; version="${axis2.osgi.version.range}",
+                            org.apache.commons.logging.*; version="${import.package.version.commons.logging}",
+                            org.apache.synapse,
+                            org.apache.synapse.config,
+                            org.apache.synapse.config.xml,
+                            org.apache.synapse.core,
+                            org.apache.synapse.core.axis2,
+                            org.apache.synapse.mediators.base,
+                            org.apache.axis2.transport.base,
+                            org.apache.synapse.*,
+                            *;resolution:=optional
+                        </Import-Package>
+                        <Embed-Dependency>
+                            json;scope=compile|runtime,
+                            json-path;scope=compile|runtime,
+                        </Embed-Dependency>
+                        <DynamicImport-Package>*</DynamicImport-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase> <!-- Runs after the JAR is built -->
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>assembly-zip.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>wso2-nexus</id>
+            <name>WSO2 internal Repository</name>
+            <url>https://maven.wso2.org/nexus/content/groups/wso2-public/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+        </repository>
+
+        <repository>
+            <id>wso2.releases</id>
+            <name>WSO2 internal Repository</name>
+            <url>https://maven.wso2.org/nexus/content/repositories/releases/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+        </repository>
+
+        <repository>
+            <id>wso2.snapshots</id>
+            <name>Apache Snapshot Repository</name>
+            <url>https://maven.wso2.org/nexus/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
+</project>
