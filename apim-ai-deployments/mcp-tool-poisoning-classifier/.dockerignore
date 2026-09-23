@@ -1,0 +1,13 @@
+# Allow-list: only what the image build needs enters the build context, so
+# local secrets (.env), virtualenvs, caches and test output never can.
+*
+!README.md
+!pyproject.toml
+!requirements.txt
+!src/
+!scripts/
+
+**/__pycache__/
+**/*.py[cod]
+**/*.egg-info/
+**/.DS_Store

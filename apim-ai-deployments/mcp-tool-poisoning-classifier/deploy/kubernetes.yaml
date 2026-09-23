@@ -1,0 +1,267 @@
+# Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+#
+# WSO2 LLC. licenses this file to you under the Apache License,
+# Version 2.0 (the "License"); you may not use this file except
+# in compliance with the License. You may obtain a copy of the
+# License at http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Internal deployment of the MCP tool poisoning classifier, in the namespace
+# the gateway runs in (api-gateway here; change every `namespace:` to yours).
+#
+# The Service is ClusterIP and there is no Ingress: the classifier is reachable
+# only from inside the cluster, and the NetworkPolicy narrows that to the
+# gateway pods. The gateway reaches it at
+#   http://mcp-tool-poisoning-classifier.api-gateway.svc.cluster.local:8080
+#
+#   1. Create the shared secret (never commit the value):
+#        kubectl -n api-gateway create secret generic mcp-tool-poisoning-classifier \
+#          --from-literal=apiKey="$(openssl rand -hex 32)"
+#   2. Build and push an image that has the model baked in (the default):
+#        docker build -t <registry>/mcp-tool-poisoning-classifier:0.1.0 .
+#        docker push <registry>/mcp-tool-poisoning-classifier:0.1.0
+#   3. Replace REGISTRY below — preferably with the pushed digest — and check
+#      the NetworkPolicy's gateway selector, then:
+#        kubectl apply -f deploy/kubernetes.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mcp-tool-poisoning-classifier
+  namespace: api-gateway
+  labels:
+    app.kubernetes.io/name: mcp-tool-poisoning-classifier
+    app.kubernetes.io/component: guardrail-inference
+spec:
+  # Internal only. Do not change to NodePort or LoadBalancer, or add an Ingress.
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: mcp-tool-poisoning-classifier
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
+      protocol: TCP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcp-tool-poisoning-classifier
+  namespace: api-gateway
+  labels:
+    app.kubernetes.io/name: mcp-tool-poisoning-classifier
+    app.kubernetes.io/component: guardrail-inference
+spec:
+  # Scale out for throughput: each replica scores one request at a time. Every
+  # replica loads its own copy of the model, so size memory per replica.
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mcp-tool-poisoning-classifier
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: mcp-tool-poisoning-classifier
+        app.kubernetes.io/component: guardrail-inference
+    spec:
+      automountServiceAccountToken: false
+      # uvicorn drains in-flight requests on SIGTERM; the preStop pause lets
+      # endpoint removal propagate before it stops accepting connections.
+      terminationGracePeriodSeconds: 30
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      # Keep the two replicas on different nodes when the cluster allows it,
+      # so the PodDisruptionBudget protects against a node drain.
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: mcp-tool-poisoning-classifier
+      containers:
+        - name: classifier
+          # Replace REGISTRY. Prefer an immutable digest over a tag, e.g.
+          #   <registry>/mcp-tool-poisoning-classifier@sha256:<digest>
+          # so every replica runs exactly the image that was smoke-tested.
+          image: REGISTRY/mcp-tool-poisoning-classifier:0.1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          env:
+            - name: TOOL_POISONING_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mcp-tool-poisoning-classifier
+                  key: apiKey
+            - name: TOOL_POISONING_MODEL_ID
+              value: wso2/tool-poisoning-detection
+            # Pinned: an unpinned revision would let the model change under a
+            # threshold calibrated against a different one. Must match the
+            # revision baked into the image.
+            - name: TOOL_POISONING_MODEL_REVISION
+              value: "1d62fb57258ee41c3e3ebe8520faad633de12ac2"
+            - name: TOOL_POISONING_DEVICE
+              value: cpu
+            - name: TOOL_POISONING_MAX_ITEMS
+              value: "32"
+            - name: TOOL_POISONING_MAX_CONCURRENT_REQUESTS
+              value: "4"
+            - name: TOOL_POISONING_MAX_CHUNKS_PER_ITEM
+              value: "24"
+            - name: TOOL_POISONING_LOG_LEVEL
+              value: INFO
+            - name: HF_HOME
+              value: /models
+            # The image carries the model; this pod must not reach the public
+            # internet. Remove only for an image built with PREFETCH_MODEL=false,
+            # which also needs a writable, ideally persistent, /models.
+            - name: HF_HUB_OFFLINE
+              value: "1"
+            # Match the CPU limit so inference does not oversubscribe cores.
+            - name: OMP_NUM_THREADS
+              value: "2"
+          # Initial CPU-inference sizing. A loaded replica measured about
+          # 0.5 GiB working set; the headroom covers large chunked batches.
+          # Measure under your own traffic and adjust.
+          resources:
+            requests:
+              cpu: "1"
+              memory: 2Gi
+            limits:
+              cpu: "2"
+              memory: 4Gi
+          # startupProbe buys the model load its time without weakening
+          # liveness. The model loads in the ASGI lifespan and uvicorn binds
+          # only after it finishes, so during the load the probe sees a refused
+          # connection rather than a 503 — both are failures to the probe.
+          # 10s x 30 allows five minutes.
+          startupProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 30
+          # Readiness gates traffic on the model being loaded and its class
+          # ordering verified.
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          # Liveness stays independent of the model and starts only after the
+          # startupProbe succeeds.
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sleep", "5"]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: cache
+              mountPath: /home/classifier/.cache
+      volumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: 256Mi
+        - name: cache
+          emptyDir:
+            sizeLimit: 256Mi
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mcp-tool-poisoning-classifier
+  namespace: api-gateway
+  labels:
+    app.kubernetes.io/name: mcp-tool-poisoning-classifier
+    app.kubernetes.io/component: guardrail-inference
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mcp-tool-poisoning-classifier
+
+---
+# Only the gateway may reach the classifier, and the classifier initiates
+# nothing outbound except DNS — the model is already in the image.
+#
+# CHANGE THE GATEWAY SELECTOR BELOW TO MATCH YOUR DEPLOYMENT. It admits pods
+# labelled app.kubernetes.io/component: gateway-runtime in this namespace,
+# which is what the WSO2 API Platform gateway Helm chart puts on its runtime
+# pods (the pods that run the Go policy). Check yours with
+#   kubectl -n api-gateway get pods --show-labels
+# and add app.kubernetes.io/instance: <release> if several gateway releases
+# share the namespace. If the gateway runs in another namespace, add a
+# namespaceSelector next to the podSelector in the same `from` entry.
+#
+# NetworkPolicy is enforced only when the cluster's network plugin supports it.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: mcp-tool-poisoning-classifier
+  namespace: api-gateway
+  labels:
+    app.kubernetes.io/name: mcp-tool-poisoning-classifier
+    app.kubernetes.io/component: guardrail-inference
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: mcp-tool-poisoning-classifier
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/component: gateway-runtime
+      ports:
+        - port: 8080
+          protocol: TCP
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+      ports:
+        - port: 53
+          protocol: UDP
+        - port: 53
+          protocol: TCP

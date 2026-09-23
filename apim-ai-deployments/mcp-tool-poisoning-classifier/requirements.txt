@@ -1,0 +1,27 @@
+# Runtime dependencies for the MCP tool poisoning classifier service.
+#
+# setfit==1.1.3 and transformers<5.0.0 are the versions the
+# wso2/tool-poisoning-detection model card specifies. The service verifies both
+# at startup and refuses to serve on drift unless
+# TOOL_POISONING_ALLOW_DEPENDENCY_DRIFT=true is set.
+#
+# The model was trained with SetFit 1.1.3, Transformers 4.57.6,
+# sentence-transformers 5.2.3, PyTorch 2.4.1 and Python 3.11.10. The ranges
+# below stay inside those constraints; pin them exactly if you need
+# bit-reproducible scores across rebuilds.
+
+fastapi>=0.115,<1.0
+uvicorn[standard]>=0.30,<1.0
+pydantic>=2.7,<3.0
+anyio>=4.0,<5.0
+
+setfit==1.1.3
+transformers>=4.57,<5.0.0
+sentence-transformers>=5.0,<6.0
+# Pinned exactly: model_head.pkl was pickled by scikit-learn 1.8.0, and
+# unpickling it under another version raises InconsistentVersionWarning —
+# "may lead to breaking code or invalid results". A guardrail cannot act on
+# scores produced by a head that may have been rehydrated incorrectly.
+scikit-learn==1.8.0
+torch>=2.4,<3.0
+huggingface-hub>=0.34,<1.0

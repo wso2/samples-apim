@@ -1,0 +1,30 @@
+# Local configuration and secrets. Copy .env.example to .env; never commit .env.
+.env
+.env.*
+!.env.example
+
+# Python environments, caches and build output.
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Coverage and test reports.
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+junit*.xml
+*.log
+
+# Model downloads, if HF_HOME is pointed inside the sample.
+models/
+.cache/
+
+.DS_Store

@@ -1,0 +1,86 @@
+# Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+#
+# WSO2 LLC. licenses this file to you under the Apache License,
+# Version 2.0 (the "License"); you may not use this file except
+# in compliance with the License. You may obtain a copy of the
+# License at http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Local run, with the model baked into the image:
+#   export TOOL_POISONING_API_KEY="$(openssl rand -hex 32)"
+#   docker compose up --build -d
+#
+# Then point the gateway at the classifier (see README.md) and set the same
+# key as mcp_tool_poisoning_classifier_api_key.
+#
+# To build without the model and download it on first start instead, add the
+# override file:
+#   docker compose -f docker-compose.yaml -f docker-compose.model-cache.yaml up --build -d
+
+services:
+  mcp-tool-poisoning-classifier:
+    build:
+      context: .
+      args:
+        # Bake the pinned model into the image so the container needs no
+        # egress at run time.
+        PREFETCH_MODEL: "true"
+        MODEL_ID: ${TOOL_POISONING_MODEL_ID:-wso2/tool-poisoning-detection}
+        MODEL_REVISION: ${TOOL_POISONING_MODEL_REVISION:-1d62fb57258ee41c3e3ebe8520faad633de12ac2}
+    image: mcp-tool-poisoning-classifier:0.1.0
+    # Bound to the loopback interface: this service is internal and has no
+    # business being reachable from the network. Containers on the same Docker
+    # network reach it at http://mcp-tool-poisoning-classifier:8080 instead.
+    ports:
+      - "127.0.0.1:8101:8080"
+    environment:
+      # Required, from your shell or .env. Use the same value for the gateway's
+      # mcp_tool_poisoning_classifier_api_key.
+      TOOL_POISONING_API_KEY: ${TOOL_POISONING_API_KEY:?set TOOL_POISONING_API_KEY, e.g. export TOOL_POISONING_API_KEY="$(openssl rand -hex 32)"}
+      TOOL_POISONING_MODEL_ID: ${TOOL_POISONING_MODEL_ID:-wso2/tool-poisoning-detection}
+      TOOL_POISONING_MODEL_REVISION: ${TOOL_POISONING_MODEL_REVISION:-1d62fb57258ee41c3e3ebe8520faad633de12ac2}
+      TOOL_POISONING_DEVICE: ${TOOL_POISONING_DEVICE:-cpu}
+      TOOL_POISONING_MAX_ITEMS: ${TOOL_POISONING_MAX_ITEMS:-32}
+      TOOL_POISONING_MAX_CONCURRENT_REQUESTS: ${TOOL_POISONING_MAX_CONCURRENT_REQUESTS:-4}
+      TOOL_POISONING_LOG_LEVEL: ${TOOL_POISONING_LOG_LEVEL:-INFO}
+      # The model is in the image; never reach out to huggingface.co.
+      HF_HUB_OFFLINE: "1"
+      # Keeps CPU inference from oversubscribing the cores. Match it to the
+      # CPUs you give the container.
+      OMP_NUM_THREADS: "2"
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /home/classifier/.cache
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      # Readiness, not liveness: /readyz answers 200 only once the model is
+      # loaded and its class ordering verified. Until the lifespan finishes
+      # loading, uvicorn has not bound the port, so probes see a refused
+      # connection rather than a 503 — start_period covers that window.
+      test:
+        - CMD
+        - python
+        - -c
+        - import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/readyz', timeout=4)
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 120s
+    # uvicorn drains in-flight requests on SIGTERM; give it time to finish.
+    stop_grace_period: 30s
+    restart: unless-stopped
+
+networks:
+  default:
+    # A fixed name, so a gateway started from another Compose project can join
+    # it as an external network and use http://mcp-tool-poisoning-classifier:8080.
+    name: mcp-tool-poisoning-classifier

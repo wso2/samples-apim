@@ -1,0 +1,260 @@
+# Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+#
+# WSO2 LLC. licenses this file to you under the Apache License,
+# Version 2.0 (the "License"); you may not use this file except
+# in compliance with the License. You may obtain a copy of the
+# License at http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+openapi: 3.0.3
+info:
+  title: MCP Tool Poisoning Classifier
+  version: 0.1.0
+  description: |
+    Internal service called by the mcp-tool-poisoning-guardrail gateway policy. It scores MCP tool
+    metadata with the wso2/tool-poisoning-detection SetFit model and returns the Tool Poisoning class
+    probability for each item. Enforcement (thresholds, filtering, blocking) stays in the gateway policy.
+
+    The policy calls POST {endpoint}/classify, where endpoint is the configured base URL. Keep this
+    service private to the gateway.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: http://mcp-tool-poisoning-classifier:8080
+    description: Docker network
+  - url: http://mcp-tool-poisoning-classifier.api-gateway.svc.cluster.local:8080
+    description: Kubernetes (internal ClusterIP)
+paths:
+  /classify:
+    post:
+      operationId: classify
+      summary: Score tool metadata for tool poisoning
+      description: |
+        Returns one result per item, in request order, with the id echoed back verbatim. A failure is
+        never reported as a score: any non-200 status means no item was scored.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassifyRequest'
+            example:
+              items:
+                - id: tools[0].description
+                  text: Returns the current weather for a city.
+      responses:
+        '200':
+          description: Every item was scored.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassifyResponse'
+              example:
+                model: wso2/tool-poisoning-detection
+                revision: 1d62fb57258ee41c3e3ebe8520faad633de12ac2
+                results:
+                  - id: tools[0].description
+                    poisoningScore: 0.0131
+        '401':
+          description: Missing or invalid bearer token.
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                example: Bearer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '413':
+          description: |
+            An item exceeds TOOL_POISONING_MAX_TEXT_BYTES, the request exceeds
+            TOOL_POISONING_MAX_TOTAL_BYTES, or an item needs more than
+            TOOL_POISONING_MAX_CHUNKS_PER_ITEM chunks. Nothing is truncated.
+            A raw body far above TOOL_POISONING_MAX_TOTAL_BYTES is refused
+            before it is parsed, and therefore before authentication.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: |
+            Malformed body, duplicate item ids, or more than TOOL_POISONING_MAX_ITEMS items.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '500':
+          description: The model violated its documented contract.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: |
+            The model is not loaded yet, or the service is at TOOL_POISONING_MAX_CONCURRENT_REQUESTS.
+            A capacity refusal carries Retry-After.
+          headers:
+            Retry-After:
+              description: Seconds to wait before retrying. Present on capacity refusals.
+              schema:
+                type: integer
+                example: 1
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /healthz:
+    get:
+      operationId: healthz
+      summary: Liveness
+      description: Returns 200 while the process is serving, independently of the model. Unauthenticated.
+      responses:
+        '200':
+          description: The process is serving.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+  /readyz:
+    get:
+      operationId: readyz
+      summary: Readiness
+      description: |
+        Returns 200 with the model identity once the model is loaded and verified. Unauthenticated.
+        During the model load the port is not yet open, so probes see a refused connection.
+      responses:
+        '200':
+          description: The model is loaded and can score.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadyResponse'
+        '503':
+          description: The model is not loaded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadyResponse'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: The value of TOOL_POISONING_API_KEY. This is not a Hugging Face token.
+  schemas:
+    ClassifyRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          minItems: 1
+          description: At most TOOL_POISONING_MAX_ITEMS (default 32) items, with unique ids.
+          items:
+            $ref: '#/components/schemas/ClassifyItem'
+    ClassifyItem:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - text
+      properties:
+        id:
+          type: string
+          minLength: 1
+          maxLength: 512
+          description: Opaque identifier, echoed back unchanged. Must be unique within the request.
+        text:
+          type: string
+          minLength: 1
+          description: Text to classify. At most TOOL_POISONING_MAX_TEXT_BYTES (default 100000) UTF-8 bytes.
+    ClassifyResponse:
+      type: object
+      required:
+        - model
+        - revision
+        - results
+      properties:
+        model:
+          type: string
+          description: The model that produced the scores, or local:<dir> for a local model directory.
+          example: wso2/tool-poisoning-detection
+        revision:
+          type: string
+          description: The pinned commit, or sha256:<digest> for a local model directory.
+          example: 1d62fb57258ee41c3e3ebe8520faad633de12ac2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassifyResult'
+    ClassifyResult:
+      type: object
+      required:
+        - id
+        - poisoningScore
+      properties:
+        id:
+          type: string
+        poisoningScore:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 1
+          description: Tool Poisoning class probability. Long text is chunked and scored by the maximum chunk.
+    HealthResponse:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          example: ok
+    ReadyResponse:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - ready
+            - loading
+        model:
+          type: string
+          nullable: true
+        revision:
+          type: string
+          nullable: true
+        detail:
+          type: string
+          nullable: true
+    Error:
+      type: object
+      required:
+        - detail
+      properties:
+        detail:
+          type: string
+    ValidationError:
+      type: object
+      required:
+        - detail
+      properties:
+        detail:
+          description: A message string, or the list of field errors for a malformed body.
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: object

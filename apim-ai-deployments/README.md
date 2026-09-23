@@ -17,6 +17,14 @@ For local setup and run instructions, open the README for the service you want t
 
 The OpenAPI files are the public contracts and should be treated as the source of truth. The reference source demonstrates one possible implementation and may temporarily differ from the approved contracts while it is being aligned.
 
+### Gateway policy services
+
+The following services back API Platform Gateway policies rather than API Manager AI features. The Gateway policy calls the service directly over an internal network, so the service is not exposed through a Gateway API or configured in `deployment.toml`, and the integration steps below do not apply to it. Follow the service README instead.
+
+| Directory | Gateway policy | Purpose | Local setup | Contract |
+| :--- | :--- | :--- | :--- | :--- |
+| `mcp-tool-poisoning-classifier` | MCP Tool Poisoning Guardrail | Scores MCP tool metadata with the `wso2/tool-poisoning-detection` SetFit model for the Gateway to flag, filter, or block poisoned tools | [README](mcp-tool-poisoning-classifier/README.md) | [openapi.yaml](mcp-tool-poisoning-classifier/openapi.yaml) |
+
 ## Integration overview
 
 ```mermaid
